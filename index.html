@@ -822,7 +822,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const username=$('studentNameInput').value.trim().replace(/\s+/g,'');const password=$('studentPasswordInput').value;
     const err=$('studentLoginError');err.classList.add('hidden');
     try{
-      const isTeacherEmail=/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(username);if(!/^[A-Za-z0-9._-]{4,32}$/.test(username)&&!isTeacherEmail)throw new Error('نام کاربری یا ایمیل معتبر وارد کن.');
+      const isTeacherEmail=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(username);if(!/^[A-Za-z0-9._-]{4,32}$/.test(username)&&!isTeacherEmail)throw new Error('نام کاربری یا ایمیل معتبر وارد کن.');
       if(!password)throw new Error('رمز عبور را وارد کن.');
       const auth=await cloudFetch('/functions/v1/super-endpoint',{method:'POST',token:null,body:{student_code:username,password}});
       if(!auth?.access_token)throw new Error('تابع student-login توکن ورود برنگرداند؛ کد تابع را بررسی کن.');
