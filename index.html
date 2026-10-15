@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v3-20261016-books-and-contrast">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v4-20261016-course-management">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -540,8 +540,18 @@ a{color:#d7ff76}
 .book-page-item{background:#fff!important;color:#172033!important;border:1px solid #9ca3af!important;border-radius:10px!important;margin:7px 0!important;padding:8px!important}
 .book-page-item summary{color:#172033!important;font-weight:850!important;padding:5px}.book-page-item img{display:block;width:100%;height:auto;max-width:100%;border-radius:7px;margin:8px auto 0;background:#fff}
 .lesson-text-section{color:#172033!important}.lesson-text-section h4{color:#172033!important}.lesson-main-text{font-size:16px;line-height:2;color:#172033!important}
+
+.course-lesson-settings{display:grid;gap:9px;margin:12px 0}
+.course-lesson-row{display:grid;grid-template-columns:minmax(160px,1.4fr) minmax(140px,1fr) minmax(150px,1fr) minmax(150px,1fr);gap:9px;align-items:center;padding:11px;border:1px solid #57486f;border-radius:13px;background:#211b30;color:#f6f1ff}
+.course-lesson-row b{color:#e2ff9b}.course-lesson-row small{display:block;color:#cbc3dc}
+.course-lesson-row input[type="datetime-local"]{min-width:0;width:100%;font-size:12px}.course-lesson-row .option{margin:0}
+.persian-source-note{background:#fff!important;color:#172033!important}.persian-source-note p,.persian-source-note b,.persian-word-chip{color:#172033!important}
+.persian-word-chip{background:#fff!important;border:1px solid #64748b!important;font-weight:800!important}
+.persian-pair{background:#fff!important;color:#172033!important;border:1px solid #64748b!important}.persian-pair b{color:#173a78!important}.persian-pair span{color:#172033!important}
+@media(max-width:700px){.course-lesson-row{grid-template-columns:1fr 1fr}.course-lesson-row .course-lesson-label{grid-column:1/-1}}
+@media(max-width:430px){.course-lesson-row{grid-template-columns:1fr}.course-lesson-row .course-lesson-label{grid-column:auto}}
 </style></head>
-<body data-build="chahromiha-v3-20261016-books-and-contrast"><main class="wrap">
+<body data-build="chahromiha-v4-20261016-course-management"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
 <section class="card" id="home"><div class="home-kicker"><span>📚</span> چهارمی ها</div><h2>سلام دانش‌آموز چهارمی! کدام کتاب را می‌خواهی شروع کنی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">بعد از ورود، کتاب موردنظرت را انتخاب کن و آموزش، یادآوری، تمرین و آزمون همان درس را باز کن.</p><div class="mission-strip"><div class="mission-chip"><span>📖</span><b>یادگیری</b><small>درس را مرحله‌به‌مرحله بخوان</small></div><div class="mission-chip"><span>✏️</span><b>تمرین</b><small>دانسته‌هایت را بسنج</small></div><div class="mission-chip"><span>🌟</span><b>پیشرفت</b><small>قدم‌به‌قدم بهتر شو</small></div></div><div class="notice adventure-note">🧭 برای شروع، با حساب دانش‌آموز وارد شو؛ سپس یکی از کتاب‌های پایهٔ چهارم را انتخاب کن. بخش‌های هر کتاب متناسب با همان درس نمایش داده می‌شوند.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -629,7 +639,7 @@ a{color:#d7ff76}
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
   <div class="row"><div><h3>🗂️ مدیریت کامل بانک سؤال‌های فصل‌ها</h3><p class="muted">همه سؤال‌های فصل انتخابی را ببین، جست‌وجو کن، ویرایش کن یا سؤال تازه بساز.</p></div><span class="pill" id="teacherBankTotal">۷۰۰ سؤال</span></div>
-  <label class="field" for="teacherBankChapter">انتخاب فصل</label><select id="teacherBankChapter"></select>
+  <label class="field" for="teacherBankSubject">انتخاب کتاب</label><select id="teacherBankSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" for="teacherBankChapter">انتخاب درس یا فصل</label><select id="teacherBankChapter"></select>
   <label class="field" for="teacherQuestionSearch">جست‌وجو در سؤال‌ها</label><input id="teacherQuestionSearch" placeholder="بخشی از متن سؤال یا مبحث را بنویس...">
   <div id="teacherBankCounts" class="notice">برای دیدن بانک، یک فصل را انتخاب کن.</div>
   <div id="teacherQuestionList" class="teacher-question-list"></div>
@@ -660,8 +670,8 @@ a{color:#d7ff76}
 <div id="tab-curriculum" class="tabpane"><h3>مدیریت فایل‌های کتاب‌های پایهٔ چهارم</h3><p class="muted">از این بخش می‌توانی PDF هر کتاب را جداگانه انتخاب و پیش‌نمایش کنی. فایل‌هایی که از این پنل اضافه می‌شوند در همین مرورگر/دستگاه ذخیره می‌شوند؛ برای دسترسی عمومی از گوشی‌های دانش‌آموزان، PDF باید در مخزن سایت در مسیر تعیین‌شده قرار بگیرد.</p><label class="field" for="bookSubject">انتخاب کتاب</label><select id="bookSubject"></select><label class="field" for="bookPdf">فایل PDF کتاب انتخاب‌شده</label><input id="bookPdf" type="file" accept="application/pdf,.pdf"><button id="attachBook" style="width:100%;margin-top:9px">افزودن PDF به کتاب انتخاب‌شده</button><div id="teacherBookStatus" class="notice">یک کتاب انتخاب کن و فایل PDF آن را اضافه کن.</div><h3 style="margin-top:18px">📚 فایل‌های هر کتاب</h3><div id="teacherBookLibrary" class="book-library"></div><div id="teacherBookPreview"></div><h3 style="margin-top:18px">دسترسی به بخش ریاضی</h3><p class="muted">می‌توانی دسترسی به بخش‌های ریاضی را مدیریت کنی. در نسخه بعدی امکان قفل‌کردن فصل‌ها و مبحث‌های ریاضی به‌صورت جداگانه اضافه می‌شود.</p><div id="subjectAccessList"></div><h3 style="margin-top:18px">مدیریت فصل‌ها و سرفصل‌های کتاب</h3><p class="muted">فصل‌های پیش‌فرض کتاب ریاضی چهارم در فهرست زیر هستند. می‌توانی فصل دیگری به کتاب اضافه کنی؛ نام فصل، خلاصه‌ی آموزشی و نکته‌ها برای دانش‌آموز نمایش داده می‌شود. تغییرات این نسخه آزمایشی فقط تا زمان بارگذاری مجدد همین صفحه باقی می‌مانند.</p><div class="chapter-manager"><label class="field" for="newChapterTitle">نام فصل جدید</label><input id="newChapterTitle" placeholder="مثلاً: مرور و حل مسئله"><label class="field" for="newChapterSummary">توضیح کوتاه فصل</label><input id="newChapterSummary" placeholder="موضوع‌ها و هدف این فصل را کوتاه بنویس"><label class="field" for="newChapterNotes">آموزش و نکته‌های مهم فصل</label><textarea id="newChapterNotes" rows="3" placeholder="قانون‌ها، روش حل و نکته‌هایی که دانش‌آموز باید یاد بگیرد..."></textarea><label class="field" for="newChapterExample">مثال حل‌شده (اختیاری)</label><textarea id="newChapterExample" rows="2" placeholder="مثلاً: ۲۴ ÷ ۶ = ۴، چون ۶ × ۴ = ۲۴."></textarea><h4>نمونه‌سؤال برای همین فصل (اختیاری)</h4><label class="field" for="newChapterQuestion">متن سؤال چهارگزینه‌ای</label><textarea id="newChapterQuestion" rows="2" placeholder="سؤال تمرینی را بنویس"></textarea><div class="grid"><div><label class="field" for="newChapterOpt0">گزینه ۱</label><input id="newChapterOpt0" placeholder="گزینه ۱"></div><div><label class="field" for="newChapterOpt1">گزینه ۲</label><input id="newChapterOpt1" placeholder="گزینه ۲"></div><div><label class="field" for="newChapterOpt2">گزینه ۳</label><input id="newChapterOpt2" placeholder="گزینه ۳"></div><div><label class="field" for="newChapterOpt3">گزینه ۴</label><input id="newChapterOpt3" placeholder="گزینه ۴"></div></div><div class="grid"><div><label class="field" for="newChapterCorrect">گزینه‌ی صحیح</label><select id="newChapterCorrect"><option value="0">گزینه ۱</option><option value="1">گزینه ۲</option><option value="2">گزینه ۳</option><option value="3">گزینه ۴</option></select></div><div><label class="field" for="newChapterWhy">توضیح پاسخ (اختیاری)</label><input id="newChapterWhy" placeholder="چرا این پاسخ درست است؟"></div></div><button id="addTeacherChapter" style="width:100%;margin-top:8px">➕ افزودن فصل به کتاب</button><div id="teacherChapterStatus" class="notice">فصل‌های کتاب آماده‌اند. برای افزودن فصل، نام و آموزش آن را وارد کن.</div></div><h3>فصل‌های فعلی کتاب</h3><div id="teacherChapterList"></div>
 <div class="video-manager"><h3>🎬 بارگذاری ویدیوی آموزشی</h3><p class="muted">برای هر فصل یک ویدیوی آموزشی انتخاب کن. دانش‌آموز ویدیو را در صفحه آموزش همان فصل می‌بیند. این نسخه ویدیو را فقط در همین مرورگر ذخیره می‌کند.</p><label class="field" for="teacherVideoChapter">فصل مربوط به ویدیو</label><select id="teacherVideoChapter"></select><label class="field" for="teacherVideoTitle">عنوان ویدیو</label><input id="teacherVideoTitle" maxlength="100" placeholder="مثلاً آموزش ضرب چندرقمی">
 <label class="field" for="teacherVideoFile">فایل ویدیویی</label><input id="teacherVideoFile" type="file" accept="video/*"><div class="profile-action-row"><button id="saveTeacherVideo">📤 ذخیره ویدیو برای این فصل</button><button id="removeTeacherVideo" class="outline">حذف ویدیوی این فصل</button></div><div id="teacherVideoStatus" class="notice" role="status">هنوز ویدیویی انتخاب نشده است.</div><div id="teacherVideoPreview"></div></div>
-</div><div id="tab-assignments" class="tabpane"><h3>🧩 آزمون‌ساز و سازندهٔ تمرین</h3><p class="muted">نوع فعالیت، فصل یا نوبت، تعداد سؤال، زمان و تعداد تلاش را تعیین کن. با ذخیره، فعالیت برای کلاس منتشر می‌شود و محدودیت زمان و تلاش در سمت سرور اعمال می‌شود.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً آزمون فصل دوم ریاضی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div></div>
-<div id="tab-results" class="tabpane"><h3>بازخورد و تصحیح</h3><div id="teacherResultPanel" class="notice">پس از ثبت پاسخ‌های واقعی دانش‌آموزان در Supabase، نتایج اینجا نمایش داده می‌شوند.</div></div><div id="tab-reports" class="tabpane"><h3>📊 تحلیل عملکرد کلاس</h3><div id="reportsConnectionNotice" class="notice"><b>آمادهٔ اتصال به گزارش آنلاین</b><br>بعد از نصب جداول و توابع Supabase، این بخش اطلاعات واقعی کلاس را نشان می‌دهد؛ پیش از آن هیچ نمره یا دانش‌آموز ساختگی نمایش داده نمی‌شود.</div><div class="grid3"><div class="metric"><span class="muted">دانش‌آموزان ثبت‌شده</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">میانگین نمرات</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">نیازمند تمرین بیشتر</span><strong>پس از اتصال</strong></div></div><h4>تحلیل خطاها بر اساس فصل و مهارت</h4><p class="muted">پس از اتصال، این بخش درصد پاسخ صحیح هر فصل، سؤال‌های دارای بیشترین خطا و دانش‌آموزانی را که به تمرین تکمیلی نیاز دارند نمایش می‌دهد.</p><div class="grid"><label class="field">فیلتر فصل<select id="reportChapterFilter"><option value="all">همه فصل‌ها</option><option>اعداد و الگوها</option><option>کسر</option><option>ضرب و تقسیم</option><option>اندازه‌گیری</option><option>عدد مخلوط و عدد اعشاری</option><option>شکل‌های هندسی</option><option>آمار و احتمال</option></select></label><label class="field">بازه گزارش<select id="reportDateRange"><option>تمام مدت</option><option>۷ روز اخیر</option><option>۳۰ روز اخیر</option></select></label></div><button id="exportReportCsv" class="outline" type="button">خروجی CSV داده‌های موجود</button><div id="teacherReportStatus" class="notice" role="status">هنوز دادهٔ آنلاین برای گزارش وجود ندارد.</div></div>
+</div><div id="tab-assignments" class="tabpane"><h3>🧩 آزمون‌ساز و سازندهٔ تمرین</h3><p class="muted">نوع فعالیت، فصل یا نوبت، تعداد سؤال، زمان و تعداد تلاش را تعیین کن. با ذخیره، فعالیت برای کلاس منتشر می‌شود و محدودیت زمان و تلاش در سمت سرور اعمال می‌شود.</p><label class="field" for="actSubject">کتاب موردنظر</label><select id="actSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" for="actLesson">درس موردنظر</label><select id="actLesson"></select><p class="muted">سؤال‌های فعالیت فقط از بانک همین کتاب و درس انتخاب می‌شوند. برای ریاضی می‌توانی از انتخاب فصل یا نوبت استفاده کنی.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً تمرین درس سوم فارسی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div></div>
+<div id="tab-results" class="tabpane"><h3>بازخورد، نمرات و تصحیح بر اساس کتاب و درس</h3><div class="grid"><label class="field" for="gradeSubjectFilter">کتاب<select id="gradeSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="gradeLessonFilter">درس<select id="gradeLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label></div><button id="refreshGradebook" type="button" class="outline">به‌روزرسانی نمره‌ها</button><div id="teacherResultPanel" class="notice">پس از ورود معلم، نمرات و بازخوردها بر اساس کتاب و درس انتخاب‌شده نمایش داده می‌شوند.</div></div><div id="tab-reports" class="tabpane"><h3>📊 تحلیل عملکرد کلاس</h3><div id="reportsConnectionNotice" class="notice"><b>آمادهٔ اتصال به گزارش آنلاین</b><br>بعد از نصب جداول و توابع Supabase، این بخش اطلاعات واقعی کلاس را نشان می‌دهد؛ پیش از آن هیچ نمره یا دانش‌آموز ساختگی نمایش داده نمی‌شود.</div><div class="grid3"><div class="metric"><span class="muted">دانش‌آموزان ثبت‌شده</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">میانگین نمرات</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">نیازمند تمرین بیشتر</span><strong>پس از اتصال</strong></div></div><h4>تحلیل خطاها بر اساس فصل و مهارت</h4><p class="muted">پس از اتصال، این بخش درصد پاسخ صحیح هر فصل، سؤال‌های دارای بیشترین خطا و دانش‌آموزانی را که به تمرین تکمیلی نیاز دارند نمایش می‌دهد.</p><div class="grid"><label class="field" for="reportSubjectFilter">کتاب مورد گزارش<select id="reportSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="reportLessonFilter">درس مورد گزارش<select id="reportLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label><label class="field" for="reportDateRange">بازهٔ گزارش<select id="reportDateRange"><option>تمام مدت</option><option>۷ روز اخیر</option><option>۳۰ روز اخیر</option></select></label></div><button id="exportReportCsv" class="outline" type="button">خروجی CSV داده‌های موجود</button><div id="teacherReportStatus" class="notice" role="status">هنوز دادهٔ آنلاین برای گزارش وجود ندارد.</div></div>
 <div id="tab-students" class="tabpane">
   <h3>👩‍🎓 مدیریت حساب دانش‌آموزان</h3>
   <p class="muted">از این بخش حساب بساز و نام کاربری و رمز اولیه را در فهرست ببین. برای حساب‌هایی که قبلاً ساخته شده‌اند و رمز ثبت‌شده ندارند، از «تعیین رمز» استفاده کن. رمزهای این فهرست فقط در پنل معلم نمایش داده می‌شوند؛ آن‌ها را محرمانه نگه دار.</p>
@@ -687,13 +697,28 @@ a{color:#d7ff76}
   <div id="studentPresenceStatus" class="notice" role="status">برای دیدن حضور امروز، این بخش را تازه‌سازی کن.</div>
   <div id="studentPresenceList" class="student-accounts-list"><p class="muted">هنوز وضعیت حضور بارگذاری نشده است.</p></div>
 </div>
-<div id="tab-settings" class="tabpane"><h3>تنظیمات آزمون و حریم خصوصی</h3><label class="option"><input type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input type="checkbox" checked> محدودیت زمانی برای امتحان</label><label class="option"><input type="checkbox" checked> جلوگیری از تلاش مجدد در امتحان</label><label class="option"><input type="checkbox" checked> نمایش ندادن نمره سایر دانش‌آموزان</label><p class="muted">این گزینه‌ها در نسخه فعلی نمایشی‌اند؛ اجرای قطعی زمان و تلاش مجاز باید سمت سرور انجام شود.</p><hr class="soft-rule"><h3>☁️ راه‌اندازی نسخه آنلاین</h3><div class="notice"><b>وضعیت: اتصال پایگاه داده برقرار است</b><br>پروژهٔ Supabase متصل است؛ بانک سؤال و ثبت پاسخ‌های تمرین/یادآوری آنلاین فعال شده‌اند. ساخت و انتشار آزمون‌های اختصاصی و بارگذاری رسانه‌ها هنوز نیازمند تکمیل رابط است.</div><ol><li>فایل SQL اسکیمای پایگاه داده را در SQL Editor پروژه Supabase اجرا کن.</li><li>حساب معلم و کلاس را ایجاد کن.</li><li>رابط را با URL و کلید عمومی پروژه متصل کن؛ کلید محرمانهٔ service-role را هرگز در HTML قرار نده.</li><li>برنامه را روی یک میزبان HTTPS منتشر کن و دسترسی معلم/دانش‌آموز را با حساب آزمایشی بررسی کن.</li></ol><p class="muted">راهنمای کامل و فایل SQL در بسته همراه برنامه قرار دارند. از کد ملی واقعی دانش‌آموزان برای آزمایش استفاده نکن.</p><div id="cloudSetupStatus" class="notice">بانک ۷۰۰ سؤالی و توابع ثبت پاسخ در Supabase نصب شده‌اند. ورود واقعی و جریان آزمون باید با حساب آزمایشی نهایی بررسی شوند.</div></div>
+<div id="tab-settings" class="tabpane">
+<h3>⚙️ مرکز تنظیمات کتاب‌ها و مدیریت دسترسی دانش‌آموزان</h3>
+<p class="muted">هر کتاب تنظیمات مستقل دارد. می‌توانی کتاب را غیرفعال کنی، تمرین یا امتحان را روشن/خاموش کنی و تک‌تک درس‌ها را قفل، باز یا زمان‌بندی کنی. محدودیت دسترسی از سرور بررسی می‌شود، نه فقط از ظاهر صفحه.</p>
+<div class="grid"><label class="field" for="settingSubject">کتاب مورد تنظیم<select id="settingSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="settingCourseTitle">عنوان نمایشی کتاب<input id="settingCourseTitle" maxlength="160" placeholder="مثلاً فارسی و نگارش پایه چهارم"></label></div>
+<div class="grid"><label class="option"><input id="settingCourseEnabled" type="checkbox" checked> فعال بودن کتاب برای دانش‌آموزان</label><label class="option"><input id="settingDefaultLocked" type="checkbox"> قفل بودن درس‌هایی که جداگانه تنظیم نشده‌اند</label><label class="option"><input id="settingAllowPractice" type="checkbox" checked> اجازهٔ تمرین این کتاب</label><label class="option"><input id="settingAllowExam" type="checkbox" checked> اجازهٔ امتحان این کتاب</label></div>
+<div class="grid"><label class="field" for="settingReleaseMode">روش باز شدن کتاب<select id="settingReleaseMode"><option value="manual">باز/قفل به انتخاب معلم</option><option value="scheduled">باز شدن طبق تاریخ و ساعت</option></select></label><label class="field" for="settingReleaseAt">تاریخ باز شدن کل کتاب (اختیاری)<input id="settingReleaseAt" type="datetime-local"></label><label class="field" for="settingMaxAttempts">تعداد تلاش پیش‌فرض<input id="settingMaxAttempts" type="number" min="1" max="100" value="3"></label><label class="field" for="settingFeedbackMode">زمان نمایش بازخورد<select id="settingFeedbackMode"><option value="immediate">پس از هر سؤال</option><option value="after-submit">پس از تحویل فعالیت</option><option value="hidden">عدم نمایش به دانش‌آموز</option></select></label></div>
+<h4>🔐 مدیریت جداگانهٔ درس‌ها</h4>
+<p class="muted">برای هر درس می‌توانی زمان بازشدن و در صورت نیاز زمان بسته‌شدن را تعیین کنی. اگر «قفل بودن درس‌های تنظیم‌نشده» فعال باشد، فقط درس‌هایی که اینجا باز کرده‌ای قابل دسترسی خواهند بود.</p>
+<div id="settingLessonList" class="course-lesson-settings"></div>
+<div class="grid"><button id="saveCourseSettings" type="button">💾 ذخیره تنظیمات این کتاب</button><button id="reloadCourseSettings" type="button" class="outline">دریافت دوباره تنظیمات از سرور</button></div>
+<div id="courseSettingsStatus" class="notice" role="status">برای ویرایش تنظیمات، با حساب معلم وارد شو.</div>
+<hr class="soft-rule">
+<h4>🧪 تنظیمات پیش‌فرض فعالیت</h4>
+<div class="grid"><label class="option"><input id="settingDefaultRandomQuestions" type="checkbox" checked> جابه‌جایی ترتیب سؤال‌ها</label><label class="option"><input id="settingDefaultRandomOptions" type="checkbox" checked> جابه‌جایی ترتیب گزینه‌ها</label><label class="option"><input id="settingDefaultHideScores" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label><label class="option"><input id="settingDefaultFeedback" type="checkbox" checked> نمایش تحلیل اختصاصی پاسخ</label></div>
+<p class="muted">تنظیمات پیش‌فرض فعالیت در همین کتاب اعمال می‌شوند. مدت و تعداد تلاش هر آزمون نیز در بخش ساخت تمرین/آزمون قابل تعیین است.</p>
+</div>
 </div></section>
 <div class="footer">چهارمی ها · محیط یادگیری چنددرس پایهٔ چهارم</div>
 </main>
 <script>
 const subjects=[['➗','ریاضی','یادآوری، کتاب، تمرین و امتحان']];
-let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual';
+let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},courseSettingsBySubject={},courseBookObjectUrls={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual';
 const $=id=>document.getElementById(id);
 function show(id){['home','student','teacherGate','teacher'].forEach(x=>$(x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
 $('studentEnter').onclick=()=>show('student');$('teacherEnter').onclick=()=>show('teacherGate');$('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');$('demoTeacherLogin').onclick=()=>{alert('ورود امن معلم هنوز به Supabase متصل نشده است. برای جلوگیری از دسترسی غیرمجاز، پنل معلم در این نسخهٔ نمایشی باز نمی‌شود.')};
@@ -865,19 +890,20 @@ async function loadBookPdfFromLegacy(){
   try{return await embeddedBookLoadPromise}catch(error){embeddedBookLoadPromise=null;throw error}
 }
 async function renderStudentBook(){
-  const custom=bookUrls.math||bookUrls['ریاضی'];
-  $('studentBookStatus').textContent=custom?'در حال آماده‌سازی فایل بارگذاری‌شده…':'در حال آماده‌سازی کتاب ریاضی چهارم…';
+  let url=bookUrls.math||bookUrls['ریاضی'];const settings=courseSettingsBySubject.math||{};
+  $('studentBookStatus').textContent=url?'در حال آماده‌سازی فایل بارگذاری‌شده…':'در حال آماده‌سازی کتاب ریاضی چهارم…';
   try{
-    const url=custom||await loadBookPdfFromLegacy();
-    const label=custom?(bookNames.math||bookNames['ریاضی']||'فایل بارگذاری‌شده'):'کتاب ریاضی چهارم دبستان';
-    $('studentBookStatus').textContent=label+' آماده‌ی مشاهده است.';
+    if(!url&&settings.bookFilePath&&cloudSession?.access_token){const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.math=url}
+    url=url||await loadBookPdfFromLegacy();
+    const label=(settings.bookFileName)||(bookNames.math||bookNames['ریاضی'])||'کتاب ریاضی چهارم دبستان';
+    $('studentBookStatus').textContent=label+' آمادهٔ مشاهده است.';
     $('studentPdfFrame').innerHTML='<iframe class="pdfview" title="کتاب ریاضی چهارم دبستان" src="'+url+'#view=FitH"></iframe>';
-  }catch(error){$('studentBookStatus').textContent='نمایش کتاب انجام نشد: '+(error?.message||'خطای دریافت فایل');}
+  }catch(error){$('studentBookStatus').textContent='نمایش کتاب انجام نشد: '+(error?.message||'خطای دریافت فایل')}
 }
  const chapters = [{"id":1,"title":"اعداد و الگوها","summary":"عددنویسی و ارزش مکانی، الگوهای عددی و هندسی، ماشین ورودی ـ خروجی و معرفی میلیون","intro":"در این فصل یاد می‌گیری عددهای بزرگ را بخوانی و بنویسی، ارزش هر رقم را پیدا کنی و از روی رابطه‌ی بین عددها یا شکل‌ها، الگو را ادامه دهی. مهم این است که فقط جواب را حدس نزنی؛ باید بتوانی قانون الگو یا کار ماشین را با زبان خودت توضیح بدهی.","goals":["عدد را به رقم، حروف و شکل گسترده نمایش بدهم.","ارزش هر رقم را با توجه به جایگاهش تشخیص بدهم.","قانون الگوی عددی یا هندسی را پیدا و توضیح بدهم.","قانون ماشین ورودی ـ خروجی را اجرا کنم.","عدد یک میلیون را در جدول ارزش مکانی نشان بدهم."],"sections":[{"title":"۱. عددنویسی و ارزش مکانی","explain":"در عددنویسی، جای هر رقم مهم است. از سمت راست، جایگاه‌ها به ترتیب یکان، دهگان، صدگان، یکان هزار، دهگان هزار، صدگان هزار و سپس میلیون هستند. هر مرتبه نسبت به مرتبه‌ی سمت راست خود ۱۰ برابر است. صفر گاهی نشان می‌دهد که در یک مرتبه چیزی نداریم؛ حذف کردن آن می‌تواند ارزش عدد را عوض کند. برای خواندن عددهای چندرقمی، رقم‌ها را از سمت راست در دسته‌های سه‌تایی جدا کن و دسته‌ها را از بزرگ به کوچک بخوان.","steps":["عدد ۳۴۵٬۲۱۸ را در جدول ارزش مکانی قرار بده.","شکل گسترده‌ی آن را بنویس: ۳۰۰٬۰۰۰ + ۴۰٬۰۰۰ + ۵٬۰۰۰ + ۲۰۰ + ۱۰ + ۸.","از ارزش هر رقم کمک بگیر تا عدد را با حروف بنویسی و دوباره آن را کنترل کنی."],"example":"در عدد ۴۰۷٬۰۳۲، رقم ۴ ارزش ۴۰۰٬۰۰۰ دارد؛ رقم ۷ ارزش ۷٬۰۰۰ دارد؛ صفرهای میان عدد جای خالی مرتبه‌ها را نشان می‌دهند.","key":["رقم با ارزش آن یکی نیست؛ ارزش رقم به جایگاهش وابسته است.","برای مقایسه‌ی دو عدد چندرقمی، از چپ و از بزرگ‌ترین مرتبه شروع کن.","در شکل گسترده، هر رقم را در ارزش مکانی خودش بنویس."],"mistake":"صفرهای میانی عدد را حذف نکن؛ ۴۰۷٬۰۳۲ با ۴۷٬۰۳۲ برابر نیست.","check":"در عدد ۵۲۶٬۰۴۱، رقم ۲ چه ارزشی دارد؟","answer":"رقم ۲ در مرتبه‌ی ده‌هزارگان است؛ بنابراین ارزش آن ۲۰٬۰۰۰ است."},{"title":"۲. الگوهای عددی","explain":"الگو یعنی ترتیب منظمی از عددها که طبق یک قانون ساخته شده‌اند. برای کشف قانون، اختلاف عددهای پیاپی را بررسی کن: شاید هر بار مقدار ثابتی اضافه یا کم شود؛ گاهی هم هر عدد چند برابر عدد قبلی است. اگر اختلاف‌ها یکسان نبود، به رابطه‌های دیگری مثل ضرب در یک عدد یا انجام دو عمل پشت سر هم فکر کن. قانون را با چند گام امتحان کن تا مطمئن شوی.","steps":["عددهای پیاپی را کنار هم بنویس.","بررسی کن برای رفتن از هر عدد به عدد بعدی چه کاری انجام شده است.","همان قانون را روی عدد آخر اجرا کن و جواب را با الگو بسنج."],"example":"در الگوی ۱، ۴، ۷، ۱۰، هر بار ۳ واحد اضافه می‌شود؛ پس دو عدد بعدی ۱۳ و ۱۶ هستند. در الگوی ۲، ۴، ۸، ۱۶ هر عدد دو برابر قبلی است؛ عدد بعدی ۳۲ می‌شود.","key":["قانون را فقط از یک جفت عدد نتیجه‌گیری نکن؛ چند گام را بررسی کن.","در الگوی هندسی، تعداد شکل‌های کوچک مثل مربع، دایره یا چوب‌کبریت را در هر مرحله بشمار.","گاهی می‌توان به‌جای رسم همه‌ی شکل‌ها، تعداد اجزا را به یک الگوی عددی تبدیل کرد."],"mistake":"الگوی +۳ با الگوی ×۳ فرق دارد. یک عدد ثابت به عدد قبلی اضافه کردن، با ضرب کردن آن یکسان نیست.","check":"قانون الگوی ۱۰۰، ۲۰۰، ۳۰۰ چیست و دو عدد بعدی کدام‌اند؟","answer":"هر بار ۱۰۰ واحد اضافه می‌شود؛ دو عدد بعدی ۴۰۰ و ۵۰۰ هستند."},{"title":"۳. الگوهای هندسی و رسم شکل","explain":"در الگوی هندسی، شکل‌ها مرحله به مرحله تغییر می‌کنند؛ ممکن است در هر مرحله چند مربع، مثلث، دایره یا چوب‌کبریت اضافه شود. به جای توجه تنها به ظاهر کلی شکل، جزءهای تکرارشونده را پیدا کن و تعداد آن‌ها را در هر مرحله بنویس. سپس رابطه‌ی عددی را توضیح بده. این کار به تو کمک می‌کند شکل‌های دورتر، مثل شکل ششم یا هفتم، را بدون رسم تک‌تک شکل‌ها پیدا کنی.","steps":["شکل اول، دوم و سوم را مقایسه کن.","بشمار در هر مرحله چند جزء به شکل قبلی اضافه می‌شود.","یک جدول «شماره‌ی شکل / تعداد اجزا» بساز.","قانون را برای شماره‌ی شکل خواسته‌شده به کار ببر و نتیجه را بررسی کن."],"example":"اگر تعداد مربع‌ها در سه شکل اول ۲، ۴ و ۶ باشد، هر مرحله ۲ مربع اضافه شده است؛ بنابراین تعداد مربع‌های شکل چهارم ۸ است.","key":["جزءهای مشترک را یک بار بشمار؛ جزءهای اضافه‌شده را جداگانه پیدا کن.","اگر شکل‌ها پیچیده‌اند، با خط‌کشی یا رنگ کردن، دسته‌های تکراری را مشخص کن.","راه‌حل باید هم جواب و هم دلیل رسیدن به جواب را نشان بدهد."],"mistake":"از روی ظاهر شکل، تعداد را حدس نزن. تعداد اجزا را منظم بشمار و قانون را روی چند شکل امتحان کن.","check":"در یک الگو هر بار ۴ چوب‌کبریت اضافه می‌شود. اگر شکل اول ۵ چوب‌کبریت داشته باشد، شکل سوم چند چوب‌کبریت دارد؟","answer":"اگر شکل اول ۵ چوب‌کبریت داشته باشد و هر مرحله ۴ تا اضافه شود، شکل دوم ۹ و شکل سوم ۱۳ چوب‌کبریت دارد."},{"title":"۴. ماشین ورودی ـ خروجی","explain":"ماشین ورودی ـ خروجی یک قانون دارد. عدد وارد ماشین می‌شود و طبق یک یا چند عمل، به خروجی تبدیل می‌شود. نمونه‌های کتاب از قانون‌هایی مثل ضرب کردن برای به‌دست آوردن محیط شکل‌های هم‌ضلع استفاده می‌کنند. اگر دو عمل پشت سر هم نوشته شده باشد، ترتیب فلش‌ها را دنبال کن: اول عمل نخست و بعد عمل دوم را انجام بده. برای کشف قانون، چند ورودی و خروجی را با هم مقایسه کن.","steps":["عدد ورودی را بخوان.","عمل اول ماشین را روی آن اجرا کن.","اگر عمل دوم وجود دارد، آن را روی نتیجه‌ی مرحله‌ی قبل اجرا کن.","خروجی را با قانون و نمونه‌های دیگر کنترل کن."],"example":"اگر قانون ماشین «×۲ سپس +۳» باشد و ورودی ۴ باشد: ۴×۲=۸ و ۸+۳=۱۱؛ پس خروجی ۱۱ است. محیط مربع با ضلع ۵ نیز با ماشین «×۴» برابر ۲۰ واحد می‌شود.","key":["ترتیب عمل‌ها مهم است.","ماشین را برای هر ورودی از ابتدا اجرا کن.","اگر ورودی و خروجی چند نمونه داده شده‌اند، قانونی پیدا کن که با همه‌ی نمونه‌ها جور دربیاید."],"mistake":"در ماشین «×۲ سپس +۳»، ابتدا ۳ را اضافه نکن؛ ترتیب قانون را از روی فلش‌ها دنبال کن.","check":"ورودی ۶ است و قانون ماشین «+۴ سپس ×۲» است. خروجی چیست؟","answer":"اول ۶+۴=۱۰ را حساب می‌کنیم و سپس ۱۰×۲=۲۰؛ پس خروجی ۲۰ است."},{"title":"۵. معرفی میلیون و مقایسه‌ی عددهای بزرگ","explain":"ده تا صد‌هزار برابر یک میلیون است؛ همچنین یک میلیون، هزار تا هزار است. با اضافه شدن مرتبه‌ی میلیون، جدول ارزش مکانی یک ستون جدید پیدا می‌کند. برای نوشتن یا مقایسه‌ی عددهای بزرگ از جدول ارزش مکانی استفاده کن و بین دسته‌ها فاصله یا جداکننده بگذار تا خواندن ساده‌تر شود.","steps":["عدد را در ستون‌های یکان تا میلیون قرار بده.","تعداد هر مرتبه را مشخص کن؛ مثلاً ۲ تا صد‌هزار یعنی ۲۰۰٬۰۰۰.","برای مقایسه، رقم‌های دو عدد را از مرتبه‌ی بزرگ‌تر به کوچک‌تر بررسی کن."],"example":"۱٬۰۰۰٬۰۰۰ یک میلیون است. عدد ۱٬۲۵۰٬۰۰۰ از ۹۸۰٬۰۰۰ بزرگ‌تر است، چون در مرتبه‌ی میلیون یک واحد دارد و عدد دوم ندارد.","key":["۱۰ تا ۱۰۰٬۰۰۰ = ۱٬۰۰۰٬۰۰۰.","در مقایسه‌ی عددها، ابتدا تعداد رقم‌ها و سپس ارزش مکانی رقم‌های متناظر را بررسی کن.","عددهای بزرگ را با حروف هم تمرین کن تا دسته‌های هزار و میلیون را اشتباه نخوانی."],"mistake":"فقط به رقم‌های آخر نگاه نکن؛ در عددهای بزرگ، مرتبه‌های سمت چپ اهمیت بیشتری دارند.","check":"عدد ۷۰۰٬۰۰۰ چند تا صد‌هزار دارد؟","answer":"۷۰۰٬۰۰۰ برابر با ۷ تا صد‌هزار است."}]},{"id":2,"title":"کسر","summary":"شناخت کسر، نمایش کسر با شکل و محور، جمع و تفریق کسرها، کسرهای مساوی و ضرب عدد در کسر","intro":"در این فصل کسر را به عنوان بخشی از یک کلِ تقسیم‌شده به قسمت‌های مساوی می‌شناسی. شکل، نوار کاغذی و محور عدد به درک اندازه‌ی کسر کمک می‌کنند. هر وقت کسرها را مقایسه یا با هم جمع می‌کنی، اول بررسی کن کل یا واحد مورد نظر چیست و قسمت‌ها چگونه تقسیم شده‌اند.","goals":["صورت و مخرج را تشخیص بدهم و کسر را با شکل نشان بدهم.","کسرها را روی محور یا با توجه به واحد مقایسه کنم.","کسرهایی با مخرج یکسان را جمع و تفریق کنم.","کسرهای مساوی بسازم و دلیل مساوی بودنشان را توضیح بدهم.","ضرب یک عدد طبیعی در کسر را با جمع تکراری یا شکل بفهمم."],"sections":[{"title":"۱. شناخت کسر و واحد کامل","explain":"کسر زمانی معنی دارد که یک کل یا واحد را به قسمت‌های مساوی تقسیم کنیم. مخرج می‌گوید کل به چند قسمت مساوی تقسیم شده و صورت می‌گوید چند قسمت را در نظر گرفته‌ایم. در کسر ۳/۵، کل به ۵ قسمت برابر تقسیم شده و ۳ قسمت انتخاب شده است. اگر قسمت‌ها مساوی نباشند، شمارش آن‌ها به تنهایی کسر درست را نشان نمی‌دهد. واحد را هم همیشه مشخص کن؛ مثلاً یک‌دوم یک نان با یک‌دوم دو نان یک مقدار نیست.","steps":["ابتدا کل را مشخص کن: یک نوار، یک شکل، یک لیتر یا یک مجموعه.","کل را به تعداد قسمت‌های برابرِ نوشته‌شده در مخرج تقسیم کن.","به تعداد صورت، قسمت‌ها را رنگ کن یا بشمار.","اگر سؤال درباره‌ی مجموعه‌ای از اشیاست، تعداد کل اشیا را به گروه‌های برابر تقسیم کن."],"example":"اگر ۳ قسمت از ۸ قسمت مساوی یک شکل رنگ شده باشد، کسر قسمت رنگی ۳/۸ است. در ۳/۸، عدد ۳ صورت و عدد ۸ مخرج است.","key":["صورت بالای خط کسر است؛ مخرج پایین خط کسر است.","هر چه مخرج بزرگ‌تر باشد، اگر صورت برابر و واحد یکسان باشد، قسمت‌ها کوچک‌ترند.","کسر می‌تواند بخشی از یک شکل یا بخشی از یک مجموعه را توصیف کند."],"mistake":"مخرج را تعداد قسمت‌های رنگ‌شده ندان؛ مخرج تعداد کل قسمت‌های مساوی است.","check":"در کسر ۴/۷، کل به چند قسمت مساوی تقسیم شده و چند قسمت انتخاب شده است؟","answer":"کل به ۷ قسمت مساوی تقسیم شده و ۴ قسمت انتخاب شده است؛ پس ۴/۷."},{"title":"۲. جمع و تفریق کسرها","explain":"وقتی مخرج دو کسر برابر است، اندازه‌ی قسمت‌های آن‌ها یکسان است؛ بنابراین برای جمع، صورت‌ها را جمع می‌کنیم و مخرج ثابت می‌ماند. برای تفریق هم صورت‌ها را از هم کم می‌کنیم و مخرج ثابت می‌ماند. شکل و محور عدد نشان می‌دهند که جمع یعنی کنار هم گذاشتن قسمت‌ها و تفریق یعنی کم کردن بخشی از مقدار. اگر حاصل به یک واحد کامل برسد یا از آن بیشتر شود، آن را با شکل یا محور بررسی کن.","steps":["بررسی کن دو کسر یک مخرج دارند.","صورت‌ها را جمع یا تفریق کن.","مخرج را همان عدد نگه دار.","اگر نتیجه غیرمنتظره شد، آن را با شکل یا محور عدد کنترل کن."],"example":"۲/۷ + ۳/۷ = ۵/۷، چون هر دو کسر هفتم هستند. همچنین ۶/۹ − ۲/۹ = ۴/۹.","key":["در این روش، مخرج‌ها با هم جمع نمی‌شوند.","هم‌مخرج بودن یعنی اندازه‌ی هر قسمت یکی است.","در مسئله‌ی کلامی، اول مشخص کن چه مقدارهایی با هم جمع یا از هم کم می‌شوند."],"mistake":"۲/۷ + ۳/۷ برابر ۵/۱۴ نیست؛ مخرج ۷ می‌ماند.","check":"۵/۸ − ۲/۸ چند می‌شود؟","answer":"۵/۸ − ۲/۸ = ۳/۸؛ مخرج ۸ باقی می‌ماند و صورت‌ها کم می‌شوند."},{"title":"۳. کسرهای مساوی","explain":"کسرهای مساوی ظاهر عددی متفاوت ولی اندازه‌ی یکسان دارند. مثلاً نصف یک نوار با دو چهارم همان نوار برابر است. اگر صورت و مخرج یک کسر را در یک عدد طبیعی یکسان ضرب کنیم، مقدار کسر تغییر نمی‌کند؛ فقط قسمت‌ها ریزتر و تعدادشان بیشتر می‌شود. شکل‌های هم‌اندازه و محور عدد کمک می‌کنند این برابری را ببینی.","steps":["کسر را با شکل یا نوار نمایش بده.","هر قسمت را به چند قسمت مساوی کوچک‌تر تقسیم کن.","تعداد قسمت‌های انتخاب‌شده و تعداد کل قسمت‌ها را دوباره بشمار.","صورت و مخرج جدید را مقایسه کن؛ مقدار باید همان باشد."],"example":"۱/۲ = ۲/۴ = ۳/۶. برای ساختن کسری مساوی با ۲/۵، صورت و مخرج را در ۳ ضرب می‌کنیم: ۶/۱۵.","key":["برای ساختن کسر مساوی، صورت و مخرج را در یک عدد یکسان ضرب کن.","اگر صورت و مخرج هر دو یکسان تغییر نکنند، لزوماً کسر مساوی به دست نمی‌آید.","برابری کسرها به اندازه‌ی سهم از همان واحد وابسته است."],"mistake":"در ۲/۵، فقط صورت را در ۳ ضرب نکن؛ مخرج هم باید در ۳ ضرب شود.","check":"یک کسر مساوی با ۳/۴ بنویس که مخرج آن ۸ باشد.","answer":"برای مساوی ماندن کسر، صورت و مخرج ۳/۴ را در ۲ ضرب می‌کنیم: ۶/۸."},{"title":"۴. ضرب عدد طبیعی در کسر","explain":"ضرب عدد طبیعی در کسر یعنی همان کسر را چند بار با هم جمع کنیم. سه بار ۲/۷ یعنی ۲/۷ + ۲/۷ + ۲/۷ که برابر ۶/۷ می‌شود. پس می‌توان عدد طبیعی را در صورت ضرب کرد و مخرج را نگه داشت. برای درک بهتر، ابتدا کسرهای تکراری را روی محور یا با قطعه‌های مساوی نمایش بده.","steps":["عدد طبیعی را به تعداد دفعات تکرار در نظر بگیر.","صورت کسر را در آن عدد ضرب کن.","مخرج را نگه دار.","جواب را با جمع تکراری یا شکل بررسی کن."],"example":"۳ × ۲/۷ = ۶/۷؛ چون ۲/۷ + ۲/۷ + ۲/۷ = ۶/۷.","key":["ضرب عدد طبیعی در کسر با جمع تکراری همان کسر ارتباط دارد.","در این سطح، اول با شکل و جمع تکراری مفهوم را بفهم؛ سپس از روش کوتاه استفاده کن.","اگر حاصل از یک واحد بیشتر شد، به اندازه‌ی چند کل و چه مقدار باقی‌مانده توجه کن."],"mistake":"عدد طبیعی را هم‌زمان در صورت و مخرج ضرب نکن؛ آن کار شکل دیگری از ساختن کسر مساوی است.","check":"۲ × ۳/۸ را ابتدا به صورت جمع تکراری بنویس و سپس حساب کن.","answer":"۲×۳/۸ یعنی ۳/۸+۳/۸ = ۶/۸."}]},{"id":3,"title":"ضرب و تقسیم","summary":"ضرب دو عدد دورقمی، حاصل‌ضرب عددهای بزرگ، محاسبه‌ی تقریبی، بخش‌پذیری و تقسیم یک‌رقمی و دورقمی","intro":"این فصل چهار عمل را در مسئله‌های روزمره به کار می‌گیرد، اما تمرکز اصلی آن روی ضرب و تقسیم عددهای بزرگ‌تر است. در ضرب، ارزش مکانی و تجزیه‌ی عددها به دهگان و یکان کمک می‌کند. در تقسیم، باید خارج‌قسمت و باقی‌مانده را معنا کنی و جواب را با ضرب کنترل کنی.","goals":["ضرب دورقمی را با تجزیه‌ی عددها یا روش ستونی انجام بدهم.","حاصل ضرب‌های دارای دهگان، صدگان و هزارگان را حساب کنم.","پیش از محاسبه، جواب تقریبی بسازم و معقول بودن پاسخ را بررسی کنم.","رابطه‌ی مقسوم، مقسوم‌علیه، خارج‌قسمت و باقی‌مانده را توضیح بدهم.","تقسیم بر عدد یک‌رقمی و دورقمی را با تخمین خارج‌قسمت حل کنم."],"sections":[{"title":"۱. ضرب دو عدد دورقمی","explain":"برای ضرب، می‌توان یک عدد را به دهگان و یکان تجزیه کرد و هر بخش را جداگانه ضرب زد؛ سپس حاصل‌ها را جمع کرد. این روش به خاصیت توزیع کمک می‌کند: مثلاً ۲۳×۴ یعنی ۲۰×۴ به‌علاوه‌ی ۳×۴. در ضرب دو عدد دورقمی، دو عدد را می‌توان به دهگان و یکان شکست و حاصل چهار ضرب کوچک‌تر را جمع کرد. روش ستونی خلاصه‌ی همین فکر است.","steps":["عددها را به دهگان و یکان تجزیه کن.","هر بخش را در بخش یا عدد مورد نظر ضرب کن.","حاصل‌های جزئی را با توجه به ارزش مکانی کنار هم قرار بده.","جمع کن و جواب را با تقریب کنترل کن."],"example":"۲۳×۱۴ = ۲۳×(۱۰+۴) = ۲۳۰+۹۲ = ۳۲۲.","key":["دهگان را با ارزش واقعی‌اش در نظر بگیر: ۲ در ۲۳ یعنی ۲۰.","در روش ستونی، ردیف دوم مربوط به دهگان یک جایگاه ارزش مکانی دارد.","راه‌حل گسترده برای فهمیدن دلیل روش ستونی مفید است."],"mistake":"در ردیف دهگان ضرب ستونی، ارزش دهگان را فراموش نکن؛ ضرب در ۱۰ مثل ضرب در ۱ نیست.","check":"۲۱×۱۳ را با تجزیه‌ی ۱۳ به ۱۰ و ۳ حل کن.","answer":"۲۱×۱۳ = ۲۱×۱۰ + ۲۱×۳ = ۲۱۰ + ۶۳ = ۲۷۳."},{"title":"۲. محاسبه‌ی حاصل‌ضرب و ضرب در ۱۰، ۱۰۰ و ۱۰۰۰","explain":"برای ضرب عددهای بزرگ، می‌توان از تجزیه‌ی عدد به صدگان، دهگان و یکان استفاده کرد یا روش ستونی را به کار برد. ضرب عددهای طبیعی در ۱۰، ۱۰۰ و ۱۰۰۰ ارزش مکانی رقم‌ها را به سمت چپ می‌برد؛ به همین دلیل در نوشتار معمول، در پایان عدد به‌ترتیب یک، دو یا سه صفر اضافه می‌شود، البته برای عددهای طبیعی صحیحی که صفرهای انتهایی ندارند این توضیح ساده‌تر دیده می‌شود.","steps":["برای ضرب‌های بزرگ، عدد را به صدگان، دهگان و یکان بشکن.","حاصل هر بخش را جداگانه حساب کن.","در ضرب در ۱۰، ۱۰۰ یا ۱۰۰۰، ارزش مکانی رقم‌ها را بررسی کن.","عدد نهایی را با تخمین اندازه‌یابی کن."],"example":"۴۵۳×۲۳ = ۴۵۳×(۲۰+۳) = ۹۰۶۰+۱۳۵۹ = ۱۰۴۱۹. همچنین ۷۴۸×۱۰۰ = ۷۴٬۸۰۰.","key":["عددهای جزئی باید درست زیر مرتبه‌ی خود قرار گیرند.","ضرب در ۱۰۰۰ عدد را هزار برابر می‌کند؛ تنها به تعداد صفرها فکر نکن، ارزش عدد را هم بخوان.","با جمع حاصل‌های جزئی، همان حاصل‌ضرب اصلی به دست می‌آید."],"mistake":"در ضرب عددهای چندرقمی، صفرهای نماینده‌ی دهگان یا صدگان را جا نینداز.","check":"۵۲۸×۱۰۰ را حساب کن و توضیح بده ارزش مکانی رقم‌ها چه تغییری کرده است.","answer":"۵۲۸×۱۰۰ = ۵۲٬۸۰۰؛ ضرب در ۱۰۰ ارزش مکانی را دو مرتبه جابه‌جا می‌کند."},{"title":"۳. محاسبه‌های تقریبی و برآورد","explain":"تقریب یعنی عدد را به یک عدد ساده‌تر و نزدیک تبدیل کنیم تا بتوانیم نتیجه را سریع تخمین بزنیم. برای تقریب به دهگان، رقم یکان را بررسی می‌کنیم؛ برای تقریب به صدگان، رقم دهگان را بررسی می‌کنیم. اگر رقم بعد از مرتبه‌ی مورد نظر ۵ یا بیشتر باشد، آن مرتبه یک واحد بالا می‌رود؛ اگر کمتر از ۵ باشد، همان می‌ماند. جواب تقریبی جای جواب دقیق را نمی‌گیرد؛ برای بررسی معقول بودن جواب به کار می‌رود.","steps":["بخوان که تقریب به دهگان، صدگان یا هزارگان خواسته شده است.","رقم سمت راست مرتبه‌ی مورد نظر را نگاه کن.","عدد را به نزدیک‌ترین مقدار مناسب گرد کن.","عمل را با عددهای گرد شده انجام بده و جواب دقیق را در صورت نیاز جدا حساب کن."],"example":"۴۷ با تقریب دهگان ۵۰ می‌شود. برای ۴۸×۱۹ می‌توان ۵۰×۲۰ را حساب کرد؛ بنابراین حاصل تقریباً ۱۰۰۰ است.","key":["واحد تقریب را حتماً مشخص کن.","تقریب به دهگان و تقریب به صدگان ممکن است جواب‌های متفاوتی بدهد.","اگر جواب دقیق بسیار دور از برآورد باشد، احتمال خطا را بررسی کن."],"mistake":"تقریب را با جواب دقیق یکی ندان؛ ۴۷ به نزدیک‌ترین دهگان ۵۰ است، اما خود عدد ۴۷ است.","check":"عدد ۳۷۸۱ به نزدیک‌ترین صدگان تقریباً چند است؟","answer":"۳۷۸۱ به نزدیک‌ترین صدگان ۳۸۰۰ است؛ رقم دهگان ۸ است، بنابراین رقم صدگان یک واحد افزایش می‌یابد."},{"title":"۴. تقسیم و بخش‌پذیری","explain":"تقسیم دو معنای روزمره دارد: تقسیم مساوی بین چند نفر، یا پیدا کردن تعداد گروه‌های هم‌اندازه. در تقسیم با باقی‌مانده، بخشی از مقدار پس از تشکیل گروه‌های کامل می‌ماند. رابطه‌ی اصلی این است: مقسوم = مقسوم‌علیه × خارج‌قسمت + باقی‌مانده. باقی‌مانده همیشه باید از مقسوم‌علیه کوچک‌تر باشد. وقتی باقی‌مانده صفر است، عدد بر مقسوم‌علیه بخش‌پذیر است.","steps":["مشخص کن چه چیزی تقسیم می‌شود و اندازه یا تعداد گروه‌ها چیست.","خارج‌قسمت را پیدا کن.","باقی‌مانده را بنویس و بررسی کن از مقسوم‌علیه کوچک‌تر باشد.","رابطه‌ی تقسیم را با ضرب و جمع باقی‌مانده کنترل کن."],"example":"۲۲ شکلات را اگر در بسته‌های ۴تایی بگذاریم، ۵ بسته‌ی کامل درست می‌شود و ۲ شکلات باقی می‌ماند؛ ۲۲ = ۴×۵ + ۲.","key":["باقی‌مانده صفر یعنی تقسیم دقیق است.","هرگز باقی‌مانده را برابر یا بزرگ‌تر از مقسوم‌علیه نگذار.","قانون‌های ساده‌ی بخش‌پذیری که در تمرین به کار می‌آیند: بر ۲ اگر رقم یکان زوج باشد؛ بر ۵ اگر یکان ۰ یا ۵ باشد؛ بر ۳ اگر مجموع رقم‌ها بر ۳ بخش‌پذیر باشد. بر ۱ همه‌ی عددهای طبیعی بخش‌پذیرند."],"mistake":"اگر باقی‌مانده ۶ و مقسوم‌علیه ۴ باشد، جواب درست نیست؛ می‌توان یک گروه ۴تایی دیگر ساخت.","check":"آیا ۴۲ بر ۵ بخش‌پذیر است؟ از رقم یکان دلیل بیاور.","answer":"خیر. رقم یکان ۴۲ عدد ۲ است؛ عددی بر ۵ بخش‌پذیر است که رقم یکان آن ۰ یا ۵ باشد."},{"title":"۵. تقسیم بر عدد یک‌رقمی","explain":"در تقسیم ستونی، از بزرگ‌ترین مرتبه‌ی مقسوم شروع می‌کنیم. هر بار می‌پرسیم مقسوم‌علیه چند بار در آن مقدار جا می‌شود، عدد مناسب را در خارج‌قسمت می‌نویسیم و حاصل ضرب را کم می‌کنیم. سپس ارزش مکانی بعدی را پایین می‌آوریم و ادامه می‌دهیم. اگر رقم مرتبه‌ی بعد از خارج‌قسمت صفر باشد، آن صفر ممکن است برای حفظ ارزش مکانی لازم باشد.","steps":["از بزرگ‌ترین مرتبه‌ی مقسوم شروع کن.","بزرگ‌ترین تعداد گروه کامل را پیدا کن که از آن مقدار بیشتر نشود.","مضرب را کم کن و رقم بعدی مقسوم را پایین بیاور.","تا پایان رقم‌ها ادامه بده و باقی‌مانده را بررسی کن."],"example":"۸۴÷۴ = ۲۱؛ چون ۸ ده‌تایی ÷۴ برابر ۲ ده‌تایی است و ۴ یکان ÷۴ برابر ۱ یکان.","key":["هر رقم خارج‌قسمت به مرتبه‌ی خودش مربوط است.","برای کنترل، خارج‌قسمت را در مقسوم‌علیه ضرب کن و باقی‌مانده را اضافه کن.","باقی‌مانده باید از عدد تقسیم‌کننده کوچک‌تر باشد."],"mistake":"در تقسیم، رقم بعدی را بی‌جا ننداز یا صفرهای لازم خارج‌قسمت را حذف نکن؛ ارزش مکانی را نگه دار.","check":"۷۲÷۳ را با توجه به ۷ ده‌تایی و ۲ یکان مرحله‌به‌مرحله حل کن.","answer":"۷۲÷۳=۲۴. چون ۷ ده‌تایی را به ۳ گروه تقسیم می‌کنیم، ۲ ده‌تایی به هر گروه می‌رسد و یک ده‌تایی با ۲ یکان ۱۲ یکان می‌شود؛ هر گروه ۴ یکان دیگر می‌گیرد."},{"title":"۶. تقسیم بر عدد دورقمی","explain":"وقتی مقسوم‌علیه دورقمی است، تخمین خارج‌قسمت اهمیت زیادی دارد. ابتدا فکر کن چند ده‌تایی از مقسوم‌علیه در مقسوم جا می‌شود؛ سپس با ضرب و کم کردن، خارج‌قسمت را اصلاح کن. لازم نیست اولین حدس دقیق باشد، اما باید با ضرب کنترل شود تا حاصل از مقدار باقی‌مانده بیشتر نشود.","steps":["خارج‌قسمت را حدودی حدس بزن؛ معمولاً ابتدا دهگان‌های آن را در نظر بگیر.","حدس را در مقسوم‌علیه ضرب کن.","اگر حاصل از مقسوم بیشتر شد، حدس را کمتر کن؛ اگر خیلی کوچک بود، آن را بیشتر کن.","حاصل را کم کن، رقم‌های باقی‌مانده را پایین بیاور و ادامه بده."],"example":"۶۷۵÷۲۱: چون ۲۱×۳۰=۶۳۰، ابتدا ۳۰ ردیف یا گروه را در نظر می‌گیریم؛ ۶۷۵−۶۳۰=۴۵ و ۲۱ دو بار در ۴۵ جا می‌شود. پس خارج‌قسمت ۳۲ و باقی‌مانده ۳ است.","key":["ضربِ حدس خارج‌قسمت باید از مقدار در حال تقسیم بیشتر نشود.","در هر مرحله ضرب و تفریق به هم پیوسته‌اند.","در پایان رابطه‌ی تقسیم را کنترل کن: مقسوم‌علیه×خارج‌قسمت+باقی‌مانده."],"mistake":"خارج‌قسمت را فقط حدس نزن؛ هر رقم آن را با ضرب کردن مقسوم‌علیه بررسی کن.","check":"برای ۱۴۴÷۱۲، چه ضربی کمک می‌کند خارج‌قسمت را سریع پیدا کنی؟","answer":"۱۴۴÷۱۲=۱۲، چون ۱۲×۱۲=۱۴۴."}]},{"id":4,"title":"اندازه‌گیری","summary":"شناخت زاویه، مقایسه و اندازه‌گیری زاویه، محاسبه‌ی زمان و اندازه‌گیری طول","intro":"در این فصل یاد می‌گیری اندازه‌ها را با واحد مناسب توصیف کنی. در زاویه، مقدار بازشدگی مهم است؛ در زمان، فاصله‌ی میان شروع و پایان را حساب می‌کنی؛ و در طول، باید واحد مناسب را انتخاب و در صورت نیاز تبدیل کنی. رسم و استفاده از ابزارهایی مثل گونیا، نقاله و خط‌کش در این فصل مهم است.","goals":["رأس و ضلع‌های زاویه را شناسایی و زاویه‌ها را مقایسه کنم.","زاویه‌ی تند، راست و باز را تشخیص بدهم و با نقاله اندازه بگیرم.","مدت زمان و زمان پایان یک فعالیت را محاسبه کنم.","واحدهای طول را متناسب با موضوع انتخاب و تبدیل کنم.","طول‌های ترکیبی یا بخش‌های هم‌پوشان را محاسبه کنم."],"sections":[{"title":"۱. مفهوم زاویه و انواع آن","explain":"زاویه از دو نیم‌خط تشکیل می‌شود که از یک نقطه شروع می‌شوند. نقطه‌ی مشترک رأس و دو نیم‌خط ضلع‌های زاویه‌اند. اندازه‌ی زاویه به مقدار بازشدن دو ضلع وابسته است، نه به بلند یا کوتاه بودن ضلع‌ها. زاویه‌ی راست ۹۰ درجه است؛ زاویه‌ی تند از زاویه‌ی راست کوچک‌تر است؛ زاویه‌ی باز از زاویه‌ی راست بزرگ‌تر ولی از ۱۸۰ درجه کوچک‌تر است. نیم‌صفحه یا زاویه‌ی مستقیم ۱۸۰ درجه است.","steps":["رأس و دو ضلع زاویه را پیدا کن.","با گونیا یک زاویه‌ی راست را به‌عنوان مرجع مقایسه کن.","اگر بازشدگی کمتر از ۹۰ درجه باشد، زاویه تند است؛ اگر ۹۰ باشد راست؛ و اگر میان ۹۰ و ۱۸۰ باشد باز است."],"example":"زاویه‌ی ۴۰ درجه تند است؛ زاویه‌ی ۹۰ درجه راست؛ و زاویه‌ی ۱۲۰ درجه باز است.","key":["اندازه‌ی زاویه به میزان بازشدگی مربوط است، نه طول ضلع‌ها.","مجموع یک نیم‌صفحه ۱۸۰ درجه است.","برای تشخیص زاویه‌ی راست می‌توان از گوشه‌ی گونیا کمک گرفت."],"mistake":"دو زاویه با ضلع‌های بلندتر لزوماً بزرگ‌تر نیستند؛ بازشدگی را مقایسه کن.","check":"زاویه‌ی ۸۵ درجه تند است یا باز؟ چرا؟","answer":"تند است؛ چون ۸۵ درجه از ۹۰ درجه کمتر است."},{"title":"۲. مقایسه و اندازه‌گیری زاویه با نقاله","explain":"برای مقایسه‌ی دقیق، می‌توان زاویه‌ها را روی کاغذ شفاف رسم و روی هم قرار داد یا از نقاله استفاده کرد. مرکز نقاله باید دقیقاً روی رأس زاویه باشد و خط صفر نقاله روی یکی از ضلع‌ها قرار بگیرد. سپس جایی را بخوان که ضلع دیگر به درجه‌بندی می‌رسد. نقاله معمولاً دو ردیف عدد دارد؛ از ردیفی بخوان که صفر آن روی ضلع انتخاب‌شده قرار دارد.","steps":["مرکز نقاله را روی رأس بگذار.","خط صفر را با یکی از ضلع‌های زاویه هم‌راستا کن.","از همان صفر شروع کن و درجه‌ی محل برخورد ضلع دیگر را بخوان.","اندازه را با نوع زاویه مقایسه کن تا اشتباه واضح شناسایی شود."],"example":"اگر ضلع دوم از صفر تا علامت ۶۰ درجه برسد، زاویه ۶۰ درجه است؛ چون ۶۰ کمتر از ۹۰ است، زاویه تند است.","key":["مرکز نقاله باید روی رأس باشد.","از صفر درست شروع کن؛ خواندن از ردیف اشتباه ممکن است مکمل زاویه را بدهد.","بعد از اندازه‌گیری، بررسی کن که نوع زاویه با عدد خوانده‌شده سازگار باشد."],"mistake":"قرار دادن لبه‌ی نقاله روی رأس کافی نیست؛ نقطه‌ی مرکز نقاله باید روی رأس قرار بگیرد.","check":"برای اندازه‌گیری زاویه، کدام نقطه‌ی نقاله باید روی رأس قرار بگیرد؟","answer":"مرکز نقاله را باید دقیقاً روی رأس زاویه قرار داد و خط صفر را با یکی از ضلع‌ها هم‌راستا کرد."},{"title":"۳. اندازه‌گیری زمان و محاسبه‌ی مدت","explain":"زمان را با ساعت، دقیقه و ثانیه اندازه می‌گیریم. هر ساعت ۶۰ دقیقه و هر دقیقه ۶۰ ثانیه است. مدت زمان یعنی فاصله‌ی بین شروع و پایان. برای پیدا کردن پایان، زمان شروع را به اندازه‌ی دقیقه‌ها و ساعت‌های گذشته جلو می‌بریم. برای پیدا کردن مدت، می‌توان ابتدا تا یک ساعت کامل، سپس ساعت‌های کامل و در پایان دقیقه‌های باقی‌مانده را حساب کرد.","steps":["زمان شروع و زمان پایان را مشخص کن.","برای پیدا کردن پایان، دقیقه‌ها را به زمان شروع اضافه کن و اگر از ۶۰ گذشت، یک ساعت کامل تبدیل کن.","برای مدت، از زمان شروع تا ساعت کامل بعدی، سپس تا زمان پایان را جداگانه حساب کن.","در پایان مدت را به دقیقه یا ساعت و دقیقه بنویس؛ واحد خواسته‌شده را فراموش نکن."],"example":"از ساعت ۸:۴۰ اگر ۳۰ دقیقه بگذرد، ۲۰ دقیقه تا ۹:۰۰ و ۱۰ دقیقه‌ی دیگر تا ۹:۱۰ می‌گذرد؛ پس پایان ۹:۱۰ است.","key":["۱ ساعت = ۶۰ دقیقه؛ ۱ دقیقه = ۶۰ ثانیه.","برای مدت زمان، اختلاف زمان پایان و شروع را پیدا کن.","زمان روز ممکن است از ساعت ۱۲ عبور کند؛ در این حالت زمان را مرحله‌به‌مرحله بشمار."],"mistake":"۳۰ دقیقه را با ۰٫۳۰ ساعت یکی ندان؛ ساعت و دقیقه دستگاه شمارش ۶۰تایی دارند.","check":"از ساعت ۱۱:۱۰ تا ۱۲:۲۰ چند ساعت و چند دقیقه است؟","answer":"از ۱۱:۱۰ تا ۱۲:۰۰ پنجاه دقیقه و از ۱۲:۰۰ تا ۱۲:۲۰ بیست دقیقه است؛ در مجموع ۷۰ دقیقه، یعنی ۱ ساعت و ۱۰ دقیقه."},{"title":"۴. اندازه‌گیری طول و تبدیل واحد","explain":"برای هر اندازه باید واحد مناسب انتخاب کرد: میلی‌متر برای اندازه‌های کوچک، سانتی‌متر برای وسایل کوچک، متر برای طول اتاق و کیلومتر برای فاصله‌های طولانی. یک سانتی‌متر ۱۰ میلی‌متر، یک متر ۱۰۰ سانتی‌متر و یک کیلومتر ۱۰۰۰ متر است. گاهی طولی از چند قطعه تشکیل شده یا دو روبان هنگام اتصال روی هم می‌افتند؛ در این حالت فقط جمع ساده کافی نیست و باید بخش تکراری را کم کرد.","steps":["واحد داده‌شده و واحد خواسته‌شده را بخوان.","برای تبدیل به واحد کوچک‌تر، تعداد واحدها بیشتر می‌شود؛ برای تبدیل به واحد بزرگ‌تر، تعداد کمتر می‌شود.","طول بخش‌ها را جمع کن؛ اگر قسمتی روی قسمت دیگر افتاده است، مقدار هم‌پوشانی را کم کن.","واحد را کنار پاسخ بنویس."],"example":"۳ متر = ۳۰۰ سانتی‌متر. اگر روبان‌های ۱۱۰ و ۹۰ سانتی‌متری را طوری وصل کنیم که طول نهایی ۱۸۵ سانتی‌متر باشد، بخش هم‌پوشان ۱۱۰+۹۰−۱۸۵=۱۵ سانتی‌متر است.","key":["۱ متر = ۱۰۰ سانتی‌متر = ۱۰۰۰ میلی‌متر.","۱ کیلومتر = ۱۰۰۰ متر.","عدد بدون واحد، پاسخ کامل اندازه‌گیری نیست.","برای اندازه‌های ترکیبی، واحدها را یکسان کن و بعد محاسبه را انجام بده."],"mistake":"برای تبدیل متر به سانتی‌متر، در ۱۰۰ ضرب کن؛ تقسیم بر ۱۰۰ پاسخ را کوچک‌تر می‌کند و جهت تبدیل را برعکس می‌کند.","check":"۲ متر و ۳۵ سانتی‌متر چند سانتی‌متر است؟","answer":"۲ متر = ۲۰۰ سانتی‌متر؛ ۲۰۰+۳۵=۲۳۵ سانتی‌متر."}]},{"id":5,"title":"عدد مخلوط و عدد اعشاری","summary":"عدد مخلوط، نمایش اعشاری کسرهای ده‌تایی، جمع و تفریق اعشاری و ارزش مکانی دهم‌ها","intro":"این فصل پیوند میان کسر، اندازه‌گیری و عدد اعشاری را نشان می‌دهد. یک مقدار می‌تواند به شکل عدد مخلوط، کسر یا عدد اعشاری نمایش داده شود. وقتی اندازه‌ی طول یا مایع را می‌خوانی، باید بفهمی چه مقدار واحد کامل و چه مقدار از یک واحد وجود دارد.","goals":["عدد مخلوط را از شکل یا محور عدد بخوانم.","کسرهایی با مخرج ۱۰ را به شکل اعشاری بنویسم.","ارزش یکان و دهم را در عدد اعشاری تشخیص بدهم.","عددهای اعشاری را مقایسه و جمع و تفریق کنم.","جواب اعشاری را با شکل، محور یا ارزش مکانی بررسی کنم."],"sections":[{"title":"۱. عدد مخلوط و نمایش روی محور","explain":"عدد مخلوط از یک عدد صحیح و یک کسر تشکیل می‌شود؛ مثلاً ۲ و ۳/۵ یعنی دو واحد کامل به‌علاوه‌ی سه پنجم واحد دیگر. برای نمایش عدد مخلوط، فاصله‌ی بین دو عدد صحیح روی محور را به قسمت‌های مساوی تقسیم کن. مخرج تعداد قسمت‌های مساوی و صورت تعداد قسمت‌هایی است که از عدد صحیح شروع شده‌ایم.","steps":["واحد کامل را مشخص کن.","هر واحد را به تعداد قسمت‌های برابرِ مخرج تقسیم کن.","به تعداد صورت، قسمت‌ها را بعد از عدد صحیح جلو برو.","عدد صحیح و کسر باقی‌مانده را کنار هم بنویس."],"example":"۱ و ۲/۵ روی محور، بین ۱ و ۲ قرار دارد؛ یک واحد کامل و دو قسمت از پنج قسمت مساوی پس از ۱.","key":["عدد صحیح نشان می‌دهد چند واحد کامل داریم.","کسر نشان‌دهنده‌ی بخشی از واحد بعدی است.","در اندازه‌گیری، واحد را دقیق بخوان و اگر لازم است مقدارها را به واحد مشترک تبدیل کن."],"mistake":"صورت و مخرج را جابه‌جا نکن؛ در ۲ و ۳/۵، سه قسمت از پنج قسمت یک واحد گرفته شده است.","check":"عدد ۳ و ۱/۴ بین کدام دو عدد صحیح قرار دارد؟","answer":"بین ۳ و ۴ است؛ چون یک واحد کامل به‌علاوه‌ی بخشی از واحد بعدی داریم."},{"title":"۲. عدد اعشاری و دهم‌ها","explain":"اگر یک واحد را به ۱۰ قسمت مساوی تقسیم کنیم، هر قسمت یک‌دهم واحد است. سه قسمت از این ده قسمت برابر ۳/۱۰ یا ۰٫۳ است. ممیز بخش صحیح را از بخش اعشاری جدا می‌کند. در این فصل، دهم‌ها با شکل‌هایی مانند یک لیتر تقسیم‌شده به ده قسمت یا نوار اندازه‌گیری نشان داده می‌شوند. عددی مانند ۲٫۳ یعنی دو واحد کامل و سه دهم.","steps":["ببین واحد به چند قسمت مساوی تقسیم شده است.","اگر ۱۰ قسمت باشد، هر قسمت یک‌دهم است.","تعداد واحدهای کامل را در سمت چپ ممیز و دهم‌ها را در سمت راست ممیز بنویس.","برای بررسی، عدد را با کسر دهمی یا شکل مقایسه کن."],"example":"۳/۱۰ = ۰٫۳؛ و ۲ واحد و ۳ دهم = ۲٫۳.","key":["رقم نخست سمت راست ممیز، دهم‌ها را نشان می‌دهد.","۰٫۷ یعنی هفت دهم، نه هفت صدم.","کسر با مخرج ۱۰ به‌راحتی به عدد اعشاری با یک رقم پس از ممیز تبدیل می‌شود."],"mistake":"۰٫۵ را با ۵ اشتباه نکن؛ ۰٫۵ یعنی نصف یک واحد.","check":"کسر ۶/۱۰ را به صورت عدد اعشاری بنویس.","answer":"۶/۱۰ یعنی شش دهم، پس به شکل اعشاری ۰٫۶ نوشته می‌شود."},{"title":"۳. جمع و تفریق عددهای اعشاری","explain":"برای جمع و تفریق اعشاری، ارزش‌های هم‌جایگاه باید زیر هم قرار گیرند: یکان زیر یکان و دهم زیر دهم. ممیزها را زیر هم بنویس. اگر جمع دهم‌ها به یک واحد کامل برسد، آن واحد به ستون یکان منتقل می‌شود؛ در تفریق نیز ممکن است لازم باشد یک واحد را به ده دهم تبدیل کنیم. محور عدد و شکل اندازه‌گیری کمک می‌کند جواب را بفهمی.","steps":["عددها را طوری بنویس که ممیزها در یک ستون باشند.","از سمت راست، دهم‌ها و سپس یکان را حساب کن.","در صورت نیاز، انتقال یا تبدیل یک واحد به ده دهم را انجام بده.","ممیز را در پاسخ زیر ستون ممیزها قرار بده و جواب را بررسی کن."],"example":"۱٫۴ + ۲٫۳ = ۳٫۷؛ چون ۴ دهم + ۳ دهم = ۷ دهم و ۱+۲=۳. همچنین ۲٫۷ − ۰٫۵ = ۲٫۲.","key":["ممیزها باید زیر هم باشند.","می‌توان در صورت نیاز صفر انتهایی افزود: ۲٫۵ و ۲٫۵۰ یک مقدارند.","تخمین جواب به فهمیدن اشتباه‌های محاسباتی کمک می‌کند."],"mistake":"عددها را فقط از سمت راست هم‌ردیف نکن؛ جایگاه ممیز را معیار قرار بده.","check":"۰٫۶ + ۰٫۷ برابر چند است؟ توضیح بده چرا ممکن است حاصل از یک واحد بیشتر شود.","answer":"۰٫۶+۰٫۷=۱٫۳؛ شش دهم به‌علاوه‌ی هفت دهم برابر سیزده دهم است، یعنی یک واحد و سه دهم."},{"title":"۴. ارزش مکانی، مقایسه و ارتباط کسر و اعشار","explain":"در عدد اعشاری، رقم سمت چپ ممیز یکان و رقم نخست سمت راست ممیز دهم است. ارزش رقم با جایگاهش تعیین می‌شود؛ در ۴٫۷، رقم ۷ برابر هفت دهم است. برای مقایسه‌ی عددهای اعشاری، ابتدا بخش صحیح را مقایسه کن؛ اگر برابر بود، رقم دهم‌ها را مقایسه کن. صفر در سمت چپ ممیز می‌تواند نشان دهد که عدد از یک واحد کوچک‌تر است.","steps":["بخش صحیح دو عدد را مقایسه کن.","اگر برابر بود، رقم دهم‌ها را مقایسه کن.","اگر باز برابر بود، صدم‌ها و جایگاه‌های بعدی را بررسی کن.","برای نظم دادن به جایگاه‌ها، می‌توان صفر انتهایی افزود؛ مثلاً ۰٫۷ = ۰٫۷۰."],"example":"۰٫۸ از ۰٫۷ بزرگ‌تر است، چون هر دو صفر یکان دارند اما ۸ دهم از ۷ دهم بیشتر است. در ۵٫۷، رقم ۷ ارزش ۷ دهم دارد.","key":["برای مقایسه از سمت چپ عدد شروع کن.","اگر بخش صحیح برابر بود، رقم دهم‌ها را مقایسه کن.","عدد اعشاری ۳٫۶ از ۳ بزرگ‌تر و از ۴ کوچک‌تر است."],"mistake":"فقط به تعداد رقم‌های پس از ممیز نگاه نکن؛ مقدار هر جایگاه را مقایسه کن.","check":"کدام بزرگ‌تر است: ۲٫۵ یا ۲٫۸؟ دلیل را با دهم‌ها بیان کن.","answer":"۲٫۸ بزرگ‌تر است؛ بخش صحیح هر دو ۲ است و ۸ دهم از ۵ دهم بیشتر است."}]},{"id":6,"title":"شکل‌های هندسی","summary":"خط‌های عمود و موازی، ویژگی‌های چهارضلعی‌ها، قاعده و ارتفاع، مساحت و محیط","intro":"این فصل با ابزار و مشاهده‌ی شکل‌ها پیش می‌رود. از گونیا برای تشخیص زاویه‌ی راست و رسم خط عمود کمک می‌گیری؛ سپس ویژگی ضلع‌ها و زاویه‌ها را برای شناخت چهارضلعی‌ها بررسی می‌کنی. در بخش مساحت، قاعده و ارتفاع را با دقت تشخیص بده و همیشه بین محیطِ دور شکل و مساحتِ سطح آن فرق بگذار.","goals":["خط‌های عمود و موازی را تشخیص بدهم و با گونیا بررسی کنم.","چهارضلعی‌ها را با توجه به ضلع‌های موازی، طول ضلع‌ها و زاویه‌ها دسته‌بندی کنم.","قاعده و ارتفاع را در متوازی‌الاضلاع و مثلث تشخیص بدهم.","مساحت متوازی‌الاضلاع و مثلث را حساب کنم.","محیط و مساحت شکل‌ها را با واحد مناسب محاسبه کنم."],"sections":[{"title":"۱. خط‌های عمود و موازی","explain":"دو خط عمود همدیگر را با زاویه‌ی راست، یعنی ۹۰ درجه، قطع می‌کنند. برای تشخیص آن‌ها از گونیا استفاده کن. دو خط موازی در یک صفحه هرگز همدیگر را قطع نمی‌کنند و فاصله‌ی آن‌ها ثابت می‌ماند. برای بررسی موازی بودن، می‌توان از گونیا و خط‌کش کمک گرفت و جهت خط‌ها را بدون تغییر فاصله دنبال کرد.","steps":["برای عمود بودن، گوشه‌ی راست گونیا را روی محل برخورد دو خط قرار بده.","اگر هر خط با یکی از لبه‌های گونیا منطبق شد، دو خط عمودند.","برای موازی بودن، جهت خط‌ها و فاصله‌ی ثابت بین آن‌ها را بررسی کن.","خط عمود را می‌توان از یک نقطه به یک خط رسم کرد؛ خط جدید باید با خط داده‌شده زاویه‌ی راست بسازد."],"example":"دو ضلع مجاور مستطیل بر هم عمودند؛ دو ضلع روبه‌روی مستطیل موازی‌اند.","key":["عمود بودن درباره‌ی زاویه‌ی راست است.","موازی بودن درباره‌ی جهت و فاصله‌ی ثابت خطوط است.","گونیا ابزار مناسب برای تشخیص و رسم زاویه‌ی راست است."],"mistake":"هر دو خطی که همدیگر را قطع می‌کنند عمود نیستند؛ باید زاویه‌ی محل برخورد راست باشد.","check":"آیا دو خطی که با زاویه‌ی ۶۰ درجه یکدیگر را قطع می‌کنند، عمودند؟","answer":"خیر. زاویه‌ی ۶۰ درجه راست نیست؛ زاویه‌ی راست ۹۰ درجه است."},{"title":"۲. چهارضلعی‌ها و ویژگی‌های آن‌ها","explain":"چهارضلعی شکلی بسته با چهار ضلع است. شکل‌ها را فقط از روی ظاهر نام‌گذاری نکن؛ ویژگی‌ها را بررسی کن: کدام ضلع‌ها موازی‌اند؟ کدام ضلع‌ها برابرند؟ آیا زاویه‌ی راست دارند؟ مربع چهار ضلع برابر و چهار زاویه‌ی راست دارد. مستطیل چهار زاویه‌ی راست و ضلع‌های روبه‌روی برابر و موازی دارد. متوازی‌الاضلاع ضلع‌های روبه‌رو موازی و برابر دارد. ذوزنقه در این کتاب با داشتن یک جفت ضلع موازی شناخته می‌شود.","steps":["چهار ضلع و چهار رأس شکل را پیدا کن.","با خط‌کش طول ضلع‌ها را مقایسه کن.","با گونیا زاویه‌های راست را بررسی کن.","ضلع‌های موازی و ضلع‌های روبه‌رو را مشخص کن؛ سپس نام شکل را با ویژگی‌ها تطبیق بده."],"example":"اگر شکلی چهار ضلع برابر و چهار زاویه‌ی راست داشته باشد، مربع است. هر مربع مستطیل هم هست، چون چهار زاویه‌ی راست دارد؛ اما هر مستطیل مربع نیست، چون لازم نیست هر چهار ضلع آن برابر باشند.","key":["ویژگی‌ها از نام شکل مهم‌ترند.","در مستطیل، ضلع‌های روبه‌رو برابر و موازی‌اند.","در متوازی‌الاضلاع، ضلع‌های روبه‌رو موازی و برابرند.","در ذوزنقه، یک جفت ضلع موازی وجود دارد."],"mistake":"مربع و مستطیل را کاملاً جدا از هم در نظر نگیر؛ مربع ویژگی‌های مستطیل را هم دارد.","check":"چرا هر مربع مستطیل است، ولی هر مستطیل مربع نیست؟","answer":"مربع چهار زاویه‌ی راست دارد، پس ویژگی مستطیل را دارد. اما مستطیل لازم نیست چهار ضلع برابر داشته باشد، پس هر مستطیل مربع نیست."},{"title":"۳. قاعده و ارتفاع","explain":"ارتفاع پاره‌خطی است که از یک رأس بر ضلع مقابل یا امتداد آن عمود رسم می‌شود. قاعده ضلعی است که ارتفاع نسبت به آن در نظر گرفته شده است. در متوازی‌الاضلاع، ارتفاع همیشه همان ضلع کناری نیست؛ ارتفاع باید عمود بر قاعده باشد و ممکن است داخل یا با رسم امتداد ضلع مشخص شود. در مثلث نیز می‌توان از رأس به قاعده یا امتداد قاعده عمود رسم کرد.","steps":["قاعده‌ی مورد نظر را انتخاب کن.","از رأس مناسب، خطی عمود بر قاعده یا امتداد آن رسم کن.","پاره‌خط عمود شده همان ارتفاع است.","پیش از محاسبه‌ی مساحت، مطمئن شو اندازه‌ی ارتفاع عمود است، نه طول ضلع مورب."],"example":"اگر قاعده‌ی متوازی‌الاضلاع ۶ سانتی‌متر و ارتفاع عمود بر آن ۴ سانتی‌متر باشد، این دو عدد برای یافتن مساحت به کار می‌روند؛ ضلع مورب جای ارتفاع را نمی‌گیرد.","key":["قاعده و ارتفاع نسبت به هم انتخاب می‌شوند.","علامت زاویه‌ی راست، عمود بودن ارتفاع را نشان می‌دهد.","ارتفاع لزوماً با ضلع جانبی برابر نیست."],"mistake":"برای مساحت متوازی‌الاضلاع، طول ضلع مورب را به جای ارتفاع قرار نده.","check":"اگر خطی از رأس به قاعده عمود نباشد، آیا می‌توان آن را ارتفاع نامید؟","answer":"خیر؛ ارتفاع باید بر قاعده یا امتداد آن عمود باشد."},{"title":"۴. مساحت متوازی‌الاضلاع و مثلث","explain":"مساحت مقدار سطح داخل شکل است و با واحدهای مربعی مثل سانتی‌متر مربع یا متر مربع بیان می‌شود. با بریدن و جابه‌جا کردن یک مثلث از یک طرف متوازی‌الاضلاع، می‌توان مستطیلی هم‌مساحت ساخت؛ به همین دلیل مساحت متوازی‌الاضلاع برابر قاعده ضرب در ارتفاع است. دو مثلث هم‌اندازه می‌توانند یک متوازی‌الاضلاع بسازند؛ پس مساحت مثلث نصف حاصل‌ضرب قاعده در ارتفاع است.","steps":["قاعده را اندازه بگیر.","ارتفاع عمود بر همان قاعده را اندازه بگیر.","برای متوازی‌الاضلاع، قاعده × ارتفاع را انجام بده.","برای مثلث، قاعده × ارتفاع را حساب کن و نصف کن.","واحد مساحت را مربعی بنویس."],"example":"قاعده ۶ و ارتفاع ۴: مساحت متوازی‌الاضلاع ۶×۴=۲۴ واحد مربع است. مثلثی با همان قاعده و ارتفاع مساحت ۲۴÷۲=۱۲ واحد مربع دارد.","key":["مساحت به قاعده و ارتفاع عمود وابسته است.","در مثلث، حتماً حاصل ضرب قاعده و ارتفاع را نصف کن.","واحد مساحت با واحد طول فرق دارد: سانتی‌متر در برابر سانتی‌متر مربع."],"mistake":"مساحت مثلث را قاعده × ارتفاع ننویس؛ نصف حاصل‌ضرب است.","check":"قاعده‌ی مثلث ۸ سانتی‌متر و ارتفاع آن ۳ سانتی‌متر است. مساحت چقدر است؟","answer":"مساحت مثلث نصف ۸×۳ است؛ ۲۴÷۲=۱۲ سانتی‌متر مربع."},{"title":"۵. محیط و مساحت","explain":"محیط اندازه‌ی دور تا دور شکل است؛ برای به‌دست آوردنش طول ضلع‌ها را جمع می‌کنیم. مساحت اندازه‌ی سطح داخلی شکل است و از شمارش مربع‌های واحد یا فرمول مناسب به دست می‌آید. واحد محیط واحد طولی مانند سانتی‌متر یا متر است، اما واحد مساحت مربع واحد طول است. شکل‌های پیچیده را می‌توان به مستطیل‌ها و مثلث‌های کوچک‌تر تقسیم کرد و مساحت قسمت‌ها را جمع زد.","steps":["اگر محیط خواسته شده، طول همه‌ی ضلع‌های مرزی را جمع کن.","اگر مساحت خواسته شده، شکل را با مربع‌های واحد یا به شکل‌های ساده‌تر تقسیم کن.","برای مستطیل از طول × عرض و برای مربع از ضلع × ضلع کمک بگیر.","اگر شکل از چند قسمت ساخته شده، مساحت قسمت‌ها را جمع کن؛ قسمت‌های مشترک را دوبار نشمار."],"example":"مستطیلی به طول ۵ و عرض ۳: محیط ۵+۳+۵+۳=۱۶ واحد طول؛ مساحت ۵×۳=۱۵ واحد مربع.","key":["محیط دور شکل است؛ مساحت داخل شکل.","دو شکل ممکن است محیط برابر ولی مساحت متفاوت داشته باشند.","واحد مناسب را همراه عدد بنویس.","در ترکیب شکل‌ها، قسمت‌های هم‌پوشان را دوبار حساب نکن."],"mistake":"برای محیط مستطیل، طول × عرض را انجام نده؛ این محاسبه مساحت است.","check":"مربع ضلع ۴ سانتی‌متری چه محیط و چه مساحتی دارد؟ واحد هر پاسخ چیست؟","answer":"محیط مربع ۴+۴+۴+۴=۱۶ سانتی‌متر است و مساحت آن ۴×۴=۱۶ سانتی‌متر مربع."}]},{"id":7,"title":"آمار و احتمال","summary":"ساختن و خواندن نمودار خط شکسته، بررسی تغییر داده‌ها و توصیف احتمال رخدادها","intro":"در این فصل یاد می‌گیری داده‌های یک جدول را به نمودار خط شکسته تبدیل کنی و تغییر مقدارها را ببینی. سپس با واژه‌هایی مثل حتمی، غیرممکن، به احتمال بیشتر، کمتر یا برابر درباره‌ی اتفاق‌ها صحبت می‌کنی. پیش‌بینی باید بر اساس داده‌ها یا شرایط آزمایش باشد؛ قرار نیست هر نتیجه‌ی احتمالی حتماً رخ دهد.","goals":["محور افقی و عمودی نمودار را بخوانم.","داده‌ها را در محل درست علامت بزنم و نقطه‌ها را به ترتیب وصل کنم.","بالا رفتن، پایین آمدن یا ثابت ماندن مقدارها را توضیح بدهم.","احتمال را با توجه به تعداد حالت‌های ممکن با واژه‌های مناسب بیان کنم.","فرق پیش‌بینی و نتیجه‌ی قطعی را بفهمم."],"sections":[{"title":"۱. نمودار خط شکسته","explain":"نمودار خط شکسته برای نشان دادن تغییرات مقدارها در طول زمان یا در یک ترتیب مشخص مناسب است؛ مانند دما در ساعت‌های مختلف یا قیمت در هفته‌های مختلف. معمولاً محور افقی زمان یا دسته‌ها و محور عمودی مقدار اندازه‌گیری‌شده را نشان می‌دهد. برای رسم، مقیاس محور را بخوان، هر داده را به نقطه تبدیل کن و نقطه‌ها را به ترتیب درست با خط وصل کن.","steps":["عنوان نمودار و برچسب دو محور را بخوان.","مقیاس و فاصله‌ی هر درجه روی محور عمودی را بررسی کن.","برای هر ردیف جدول، نقطه‌ای در محل درست بگذار.","نقطه‌ها را به ترتیب زمان یا دسته‌ها به هم وصل کن.","نمودار را دوباره با جدول مقایسه کن."],"example":"اگر مقدار دما از ۱۸ درجه در ساعت ۸ به ۲۲ درجه در ساعت ۱۰ برسد، خط در این قسمت رو به بالا می‌رود؛ یعنی مقدار افزایش یافته است.","key":["برچسب محور و واحد اندازه‌گیری ضروری‌اند.","مقیاس محور عمودی ممکن است با ۰ شروع نشود؛ به اعداد محور دقت کن.","هر نقطه باید دقیقاً با مقدار جدول هماهنگ باشد.","نمودار خط شکسته برای مشاهده‌ی تغییرات پی‌درپی مناسب است."],"mistake":"نقطه‌ها را صرفاً با فاصله‌های مساوی رسم نکن؛ جای هر نقطه را مقدار واقعی داده تعیین می‌کند.","check":"اگر مقدارهای نمودار از ۱۲ به ۱۷ برسند، خط در این بخش بالا می‌رود یا پایین؟","answer":"خط رو به بالا می‌رود، چون مقدار از ۱۲ به ۱۷ افزایش یافته است."},{"title":"۲. خواندن و تفسیر تغییرات","explain":"پس از رسم نمودار، فقط به شکل خط نگاه نکن؛ مقدارها را از روی محور بخوان و با هم مقایسه کن. خط رو به بالا افزایش، خط رو به پایین کاهش و خط افقی ثابت ماندن مقدار را نشان می‌دهد. بالاترین نقطه معمولاً بیشترین مقدار را نشان می‌دهد، اما باید اعداد محور عمودی را بخوانی. گاهی فاصله‌ی بین خطوط یا مقیاس محور به‌گونه‌ای انتخاب شده که تغییرات کوچک بهتر دیده شوند؛ بنابراین بازه‌ی محور را بررسی کن.","steps":["بیشترین و کمترین نقطه را پیدا کن.","نقطه‌های دو زمان یا دسته‌ی مورد نظر را با هم مقایسه کن.","مقدار افزایش یا کاهش را با تفریق حساب کن.","نتیجه را در یک جمله با عدد و واحد بیان کن."],"example":"اگر مقدار از ۱۰۲ به ۱۱۰ برسد، افزایش ۸ واحد است. برای توضیح کامل، هم مقدار شروع و پایان را می‌خوانیم و هم اختلافشان را حساب می‌کنیم.","key":["روند کلی با مقدار یک نقطه فرق دارد.","برای پیدا کردن اختلاف، مقدار بزرگ‌تر منهای مقدار کوچک‌تر می‌شود.","اگر محور عمودی از صفر شروع نشده باشد، برای درک اندازه‌ی تغییرات باید مقیاس را دقیق‌تر بخوانی."],"mistake":"بلندتر بودن خط روی صفحه را به‌تنهایی معیار اختلاف عددی ندان؛ برچسب و مقیاس محور را بخوان.","check":"اگر مقدار در هفته‌ی اول ۱۰۵ و در هفته‌ی دوم ۱۱۲ باشد، چقدر افزایش داشته است؟","answer":"۱۱۲−۱۰۵=۷؛ مقدار ۷ واحد افزایش یافته است."},{"title":"۳. احتمال و پیش‌بینی","explain":"احتمال درباره‌ی امکان رخ دادن یک اتفاق است. اگر اتفاق اصلاً نمی‌تواند رخ دهد، غیرممکن است؛ اگر در شرایط گفته‌شده حتماً رخ می‌دهد، حتمی است. برای رخدادهای دیگر از عبارت‌هایی مانند «به احتمال بیشتر»، «به احتمال کمتر» یا «به احتمال برابر» استفاده می‌کنیم. برای مقایسه، به تعداد حالت‌های مطلوب نسبت به همه‌ی حالت‌های ممکن توجه کن. در آزمایش‌هایی مانند انداختن سکه، نتیجه‌ی هر بار قطعی نیست، حتی اگر رو و پشت شانس برابر داشته باشند.","steps":["همه‌ی نتیجه‌های ممکن را مشخص کن.","بشمار چند نتیجه با اتفاق مورد نظر سازگار است.","اگر همه‌ی نتیجه‌ها آن اتفاق را نشان دهند، احتمال آن حتمی است؛ اگر هیچ‌کدام نشان ندهند، غیرممکن است.","برای مقایسه‌ی بیشتر و کمتر، تعداد حالت‌های مناسب را در شرایط یکسان مقایسه کن."],"example":"اگر در کیسه فقط مهره‌های سبز باشد، بیرون آوردن مهره‌ی سبز حتمی و بیرون آوردن مهره‌ی آبی غیرممکن است. اگر سکه سالمی را بیندازیم، رو و پشت دو نتیجه‌ی هم‌شانس‌اند.","key":["حتمی یعنی در شرایط گفته‌شده حتماً رخ می‌دهد؛ غیرممکن یعنی رخ نمی‌دهد.","به احتمال برابر یعنی دو رخداد در شرایط مورد نظر شانس یکسانی دارند.","نتیجه‌ی یک آزمایش به تنهایی شانس کلی را تغییر نمی‌دهد؛ در دفعات آزمایش ممکن است تعداد رو و پشت دقیقاً برابر نشود."],"mistake":"در ۲۰ بار انداختن سکه تضمینی نیست دقیقاً ۱۰ بار رو بیاید و ۱۰ بار پشت؛ این فقط یک پیش‌بینی مبتنی بر شانس برابر است.","check":"کیسه‌ای ۷ مهره‌ی سبز و ۳ مهره‌ی قرمز دارد. بدون نگاه کردن، کدام رنگ به احتمال بیشتر انتخاب می‌شود؟ چرا؟","answer":"رنگ سبز به احتمال بیشتر انتخاب می‌شود، چون ۷ مهره‌ی سبز و فقط ۳ مهره‌ی قرمز وجود دارد."}]}];
 const practiceBank={1:[],2:[],3:[],4:[],5:[],6:[],7:[]};
 
-function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}function updatePracticeTopicOptions(){const sel=$('bookPracticeTopic');const previous=sel.value;sel.innerHTML=chapters.map(c=>`<option value="${c.id}">فصل ${c.id}: ${escapeHtml(c.title)}</option>`).join('');sel.value=chapters.some(c=>String(c.id)===previous)?previous:String(activeChapter)}function renderChapterPicker(){const box=$('chapterPicker');box.innerHTML=chapters.map(c=>`<div class="chapter-card"><button data-chapter="${c.id}" class="${c.id===activeChapter?'active':''}"><strong>فصل ${c.id}: ${escapeHtml(c.title)}</strong><small>${escapeHtml(c.summary)}</small><small>برای دیدن آموزش و نکته‌ها بزن 👆</small></button></div>`).join('');box.querySelectorAll('[data-chapter]').forEach(b=>b.onclick=()=>renderChapter(Number(b.dataset.chapter)));}function renderTeacherChapterList(){const box=$('teacherChapterList');if(!box)return;box.innerHTML=chapters.map(c=>`<div class="teacher-chapter-row"><b>فصل ${c.id}: ${escapeHtml(c.title)}</b><span class="muted">${escapeHtml(c.summary)}</span></div>`).join('')}
+function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}function updatePracticeTopicOptions(){const sel=$('bookPracticeTopic');const previous=sel.value;sel.innerHTML=chapters.map(c=>`<option value="${c.id}">فصل ${c.id}: ${escapeHtml(c.title)}</option>`).join('');sel.value=chapters.some(c=>String(c.id)===previous)?previous:String(activeChapter)}function renderChapterPicker(){const box=$('chapterPicker');box.innerHTML=chapters.map(c=>{const open=isCourseLessonOpen('math',c.id);return `<div class="chapter-card"><button data-chapter="${c.id}" class="${c.id===activeChapter?'active':''}" ${open?'':'disabled'}><strong>${open?'':'🔒 '}فصل ${c.id}: ${escapeHtml(c.title)}</strong><small>${escapeHtml(c.summary)}</small><small>${open?'برای دیدن آموزش و نکته‌ها بزن 👆':'این فصل هنوز توسط معلم باز نشده است.'}</small></button></div>`}).join('');box.querySelectorAll('[data-chapter]').forEach(b=>b.onclick=()=>{if(!isCourseLessonOpen('math',Number(b.dataset.chapter)))return;renderChapter(Number(b.dataset.chapter))});}function renderTeacherChapterList(){const box=$('teacherChapterList');if(!box)return;box.innerHTML=chapters.map(c=>`<div class="teacher-chapter-row"><b>فصل ${c.id}: ${escapeHtml(c.title)}</b><span class="muted">${escapeHtml(c.summary)}</span></div>`).join('')}
 function renderChapter(id){
  activeChapter=id;const c=chapters.find(x=>x.id===id);if(!c)return;
  $('chapterLesson').classList.remove('hidden');
@@ -930,14 +956,136 @@ const bookSubjectCatalog=[
  {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',asset:'./assets/books/social-fourth.pdf',assetLabel:'assets/books/social-fourth.pdf'},
  {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
 ];
-const BOOK_FILES_DB='chahromiha-book-files-v1',BOOK_FILES_STORE='books';
+const COURSE_NAMES={math:'ریاضی',persian:'فارسی و نگارش',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
+function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
+function courseLessonCatalog(subject){
+ if(subject==='math')return chapters.map(c=>({id:Number(c.id),title:'فصل '+fa(c.id)+' · '+c.title}));
+ if(subject==='persian'||subject==='dictation')return (typeof persianLessons!=='undefined'?persianLessons:[]).map(l=>({id:Number(l.id),title:(subject==='dictation'?'املای درس ':'درس ')+fa(l.id)+' · '+l.title}));
+ const item=(typeof otherSubjectData!=='undefined'?otherSubjectData:[]).find(s=>s.id===subject);
+ return (item?.lessons||[]).map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title}));
+}
+function isCourseLessonOpen(subject,lessonId){
+ const settings=courseSettingsBySubject[subject]||{};
+ if(settings.courseEnabled===false)return false;
+ if(settings.releaseMode==='scheduled'&&settings.releaseAt&&Date.parse(settings.releaseAt)>Date.now())return false;
+ const list=Array.isArray(settings.lessons)?settings.lessons:[];
+ const item=list.find(x=>Number(x.id)===Number(lessonId));
+ if(!item)return settings.defaultLocked!==true;
+ if(item.isUnlocked!==true)return false;
+ if(item.availableFrom&&Date.parse(item.availableFrom)>Date.now())return false;
+ if(item.availableUntil&&Date.parse(item.availableUntil)<Date.now())return false;
+ return true;
+}
+function courseLessonTitle(subject,lessonId){
+ const item=courseLessonCatalog(subject).find(l=>Number(l.id)===Number(lessonId));
+ return item?.title||('درس '+fa(lessonId));
+}
+function localDateInput(value){
+ if(!value)return '';
+ const d=new Date(value);if(Number.isNaN(d.getTime()))return '';
+ return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+}
+function isoFromDateInput(value){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:d.toISOString()}
+function renderCourseSettingsForm(){
+ const subject=$('settingSubject')?.value||'math',settings=courseSettingsBySubject[subject]||{};
+ if($('settingCourseTitle'))$('settingCourseTitle').value=settings.courseTitle||courseName(subject);
+ $('settingCourseEnabled').checked=settings.courseEnabled!==false;
+ $('settingDefaultLocked').checked=settings.defaultLocked===true;
+ $('settingAllowPractice').checked=settings.allowPractice!==false;
+ $('settingAllowExam').checked=settings.allowExam!==false;
+ $('settingReleaseMode').value=settings.releaseMode||'manual';
+ $('settingReleaseAt').value=localDateInput(settings.releaseAt);
+ $('settingMaxAttempts').value=String(settings.maxAttempts||3);
+ $('settingFeedbackMode').value=settings.feedbackMode||'immediate';
+ const saved=new Map((Array.isArray(settings.lessons)?settings.lessons:[]).map(l=>[Number(l.id),l]));
+ $('settingLessonList').innerHTML=courseLessonCatalog(subject).map((l,i)=>{
+   const row=saved.get(Number(l.id));
+   const open=row?row.isUnlocked===true:settings.defaultLocked!==true;
+   return '<div class="course-lesson-row" data-course-lesson="'+l.id+'"><div class="course-lesson-label"><b>'+escapeHtml(l.title)+'</b><small>'+ (open?'فعلاً باز':'قفل/منتظر زمان بازشدن')+'</small></div><label class="option"><input type="checkbox" class="course-lesson-unlocked" '+(open?'checked':'')+'> اجازهٔ دسترسی</label><label class="field">باز شدن<input type="datetime-local" class="course-lesson-from" value="'+localDateInput(row?.availableFrom)+'"></label><label class="field">بسته شدن<input type="datetime-local" class="course-lesson-until" value="'+localDateInput(row?.availableUntil)+'"></label></div>';
+ }).join('')||'<div class="notice">فهرست درس‌های این کتاب در حال حاضر در برنامه ثبت نشده است.</div>';
+}
+async function loadCourseSettings(silent=false){
+ if(!cloudSession?.access_token){if(!silent&&$('courseSettingsStatus'))$('courseSettingsStatus').textContent='ابتدا با حساب معلم یا دانش‌آموز وارد شو.';return {}}
+ try{
+   const data=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'list'}});
+   courseSettingsBySubject=data?.settings&&typeof data.settings==='object'?data.settings:{};
+   if($('settingSubject'))renderCourseSettingsForm();
+   if($('reportSubjectFilter'))populateLessonFilter('reportSubjectFilter','reportLessonFilter');
+   if($('gradeSubjectFilter'))populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');
+   if($('teacherBankSubject'))populateTeacherBankLessons($('teacherBankChapter')?.value);
+   if($('actSubject'))populateAssignmentLessons($('actLesson')?.value);
+   if(!silent&&$('courseSettingsStatus'))$('courseSettingsStatus').textContent='تنظیمات شش کتاب از سرور دریافت شد.';
+   return courseSettingsBySubject;
+ }catch(error){
+   if(!silent&&$('courseSettingsStatus'))$('courseSettingsStatus').textContent='خواندن تنظیمات آنلاین ناموفق بود: '+cloudMessage(error);
+   return {};
+ }
+}
+function populateLessonFilter(subjectSelectId,lessonSelectId){
+ const subject=$ (subjectSelectId);const lesson=$ (lessonSelectId);if(!subject||!lesson)return;
+ const current=lesson.value;const id=subject.value;
+ const lessons=id==='all'?[{id:'all',title:'همهٔ درس‌ها'}]:[{id:'all',title:'همهٔ درس‌ها'},...courseLessonCatalog(id)];
+ lesson.innerHTML=lessons.map(l=>'<option value="'+l.id+'">'+escapeHtml(l.title)+'</option>').join('');
+ if(lessons.some(l=>String(l.id)===String(current)))lesson.value=current;else lesson.value='all';
+}
+function populateTeacherBankLessons(preferred){
+ const subj=$('teacherBankSubject')?.value||'math',sel=$('teacherBankChapter');if(!sel)return;
+ const previous=preferred??sel.value;const lessons=courseLessonCatalog(subj);
+ sel.innerHTML=lessons.map(l=>'<option value="'+l.id+'">'+escapeHtml(l.title)+'</option>').join('');
+ if(lessons.some(l=>String(l.id)===String(previous)))sel.value=String(previous);
+ if(typeof renderCloudQuestionList==='function')renderCloudQuestionList();
+}
+function populateAssignmentLessons(preferred){
+ const subj=$('actSubject')?.value||'math',sel=$('actLesson');if(!sel)return;
+ const previous=preferred??sel.value;const lessons=courseLessonCatalog(subj);
+ sel.innerHTML=lessons.map(l=>'<option value="'+l.id+'">'+escapeHtml(l.title)+'</option>').join('');
+ if(lessons.some(l=>String(l.id)===String(previous)))sel.value=String(previous);
+}
+function renderTeacherGradebook(){
+ const panel=$('teacherResultPanel');if(!panel)return;
+ const subject=$('gradeSubjectFilter')?.value||'all',lesson=$('gradeLessonFilter')?.value||'all';
+ const rows=getCourseReportRows().filter(r=>(subject==='all'||r.subject===subject)&&(lesson==='all'||Number(r.lesson_id)===Number(lesson)));
+ if(!rows.length){panel.textContent='برای این کتاب و درس هنوز نمره یا بازخوردی ثبت نشده است.';return}
+ const names=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));
+ panel.innerHTML='<p class="muted">'+fa(rows.length)+' نتیجه در فیلتر انتخاب‌شده.</p><div style="overflow-x:auto"><table class="math-matrix" style="min-width:900px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>تحلیل/بازخورد</th><th>زمان</th></tr></thead><tbody>'+rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(names.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||r.activity_type||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+ (r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('')+'</tbody></table></div>';
+}
+$('settingSubject')?.addEventListener('change',renderCourseSettingsForm);
+$('reloadCourseSettings')?.addEventListener('click',()=>loadCourseSettings());
+$('saveCourseSettings')?.addEventListener('click',async()=>{
+ if(!cloudSession||cloudSession.role!=='teacher'){ $('courseSettingsStatus').textContent='برای ذخیره تنظیمات باید با حساب معلم وارد شوی.';return}
+ const subject=$('settingSubject').value;
+ const lessons=[...$('settingLessonList').querySelectorAll('.course-lesson-row')].map((row,index)=>({
+   id:Number(row.dataset.courseLesson),title:row.querySelector('.course-lesson-label b')?.textContent||('درس '+(index+1)),
+   isUnlocked:row.querySelector('.course-lesson-unlocked')?.checked===true,
+   availableFrom:isoFromDateInput(row.querySelector('.course-lesson-from')?.value||''),
+   availableUntil:isoFromDateInput(row.querySelector('.course-lesson-until')?.value||''),
+   sortOrder:index+1
+ }));
+ const releaseMode=$('settingReleaseMode').value,releaseAt=isoFromDateInput($('settingReleaseAt').value);
+ if(releaseMode==='scheduled'&&!releaseAt){$('courseSettingsStatus').textContent='برای روش زمان‌بندی، زمان بازشدن کتاب را تعیین کن.';return}
+ const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode,releaseAt,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
+ const btn=$('saveCourseSettings');setBusy(btn,true,'در حال ذخیره…');$('courseSettingsStatus').textContent='در حال ذخیره تنظیمات کتاب و قفل درس‌ها…';
+ try{
+   const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});
+   courseSettingsBySubject[subject]=result.setting.settings;
+   $('courseSettingsStatus').textContent='تنظیمات «'+courseName(subject)+'» در سرور ذخیره شد. وضعیت درس‌ها برای دسترسی دانش‌آموزان به‌روزرسانی شد.';
+   renderCourseSettingsForm();renderStudentSubjectHub?.();renderOtherSubjectPicker?.();renderTeacherGradebook();
+ }catch(error){$('courseSettingsStatus').textContent='ذخیره ناموفق بود: '+cloudMessage(error)}
+ finally{setBusy(btn,false)}
+});
+$('reportSubjectFilter')?.addEventListener('change',()=>{populateLessonFilter('reportSubjectFilter','reportLessonFilter');renderTeacherReport()});
+$('reportLessonFilter')?.addEventListener('change',renderTeacherReport);
+$('gradeSubjectFilter')?.addEventListener('change',()=>{populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');renderTeacherGradebook()});
+$('gradeLessonFilter')?.addEventListener('change',renderTeacherGradebook);
+$('refreshGradebook')?.addEventListener('click',()=>{loadTeacherReport();renderTeacherGradebook()});
+
 function openBookFilesDB(){return new Promise((resolve,reject)=>{if(!('indexedDB' in window)){reject(new Error('ذخیره‌سازی مرورگر در دسترس نیست.'));return}const req=indexedDB.open(BOOK_FILES_DB,1);req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(BOOK_FILES_STORE))db.createObjectStore(BOOK_FILES_STORE,{keyPath:'id'})};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error)})}
 async function saveBookFileToDevice(id,file){const db=await openBookFilesDB();return new Promise((resolve,reject)=>{const tx=db.transaction(BOOK_FILES_STORE,'readwrite');tx.objectStore(BOOK_FILES_STORE).put({id,name:file.name,type:file.type||'application/pdf',size:file.size,blob:file,savedAt:new Date().toISOString()});tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{const error=tx.error;db.close();reject(error)}})}
 async function readBookFilesFromDevice(){const db=await openBookFilesDB();return new Promise((resolve,reject)=>{const tx=db.transaction(BOOK_FILES_STORE,'readonly');const req=tx.objectStore(BOOK_FILES_STORE).getAll();req.onsuccess=()=>{db.close();resolve(req.result||[])};req.onerror=()=>{const error=req.error;db.close();reject(error)}})}
 async function restoreBookFilesFromDevice(){try{const records=await readBookFilesFromDevice();for(const record of records){if(bookUrls[record.id])URL.revokeObjectURL(bookUrls[record.id]);bookUrls[record.id]=URL.createObjectURL(record.blob);bookNames[record.id]=record.name}}catch(error){console.warn('Book file restore failed',error)}renderTeacherBookLibrary()}
 function renderTeacherBookLibrary(){
  const box=$('teacherBookLibrary');if(!box)return;
- box.innerHTML=bookSubjectCatalog.map(s=>{const loaded=!!bookUrls[s.id];return '<article class="book-library-card"><div class="book-library-heading"><span>'+s.icon+'</span><div><b>'+escapeHtml(s.name)+'</b><small>'+(loaded?'PDF ذخیره‌شده روی همین دستگاه':'فایل برای این کتاب هنوز اضافه نشده')+'</small></div></div><button type="button" class="outline" data-preview-teacher-book="'+s.id+'">پیش‌نمایش</button><button type="button" class="outline" data-select-teacher-book="'+s.id+'">انتخاب برای افزودن فایل</button></article>'}).join('');
+ box.innerHTML=bookSubjectCatalog.map(s=>{const loaded=!!bookUrls[s.id]||!!courseSettingsBySubject[s.id]?.bookFilePath;return '<article class="book-library-card"><div class="book-library-heading"><span>'+s.icon+'</span><div><b>'+escapeHtml(s.name)+'</b><small>'+(courseSettingsBySubject[s.id]?.bookFilePath?'PDF مشترک این کلاس':loaded?'PDF ذخیره‌شده روی همین دستگاه':'فایل برای این کتاب هنوز اضافه نشده')+'</small></div></div><button type="button" class="outline" data-preview-teacher-book="'+s.id+'">پیش‌نمایش</button><button type="button" class="outline" data-select-teacher-book="'+s.id+'">انتخاب برای افزودن فایل</button></article>'}).join('');
  box.querySelectorAll('[data-preview-teacher-book]').forEach(b=>b.onclick=()=>previewTeacherBook(b.dataset.previewTeacherBook));
  box.querySelectorAll('[data-select-teacher-book]').forEach(b=>b.onclick=()=>{$('bookSubject').value=b.dataset.selectTeacherBook;$('teacherBookStatus').textContent='کتاب «'+(bookSubjectCatalog.find(s=>s.id===b.dataset.selectTeacherBook)?.name||'')+'» انتخاب شد. فایل PDF آن را اضافه کن.';$('bookPdf').value=''});
 }
@@ -945,7 +1093,10 @@ async function assetExists(path){try{const response=await fetch(path,{method:'HE
 async function previewTeacherBook(id){
  const subject=bookSubjectCatalog.find(s=>s.id===id);if(!subject)return;
  const target=$('teacherBookPreview');target.innerHTML='';
- let url=bookUrls[id];if(!url&&await assetExists(subject.asset))url=subject.asset;
+ let url=bookUrls[id]||courseBookObjectUrls[id];
+ const config=courseSettingsBySubject[id]||{};
+ if(!url&&config.bookFilePath&&cloudSession?.access_token){try{const blob=await fetchClassMaterial(config.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[id]=url}catch(error){console.warn('Shared book preview unavailable',error)}}
+ if(!url&&await assetExists(subject.asset))url=subject.asset;
  if(!url){target.innerHTML='<div class="notice">برای «'+escapeHtml(subject.name)+'» هنوز PDF قابل پیش‌نمایش وجود ندارد. از بخش بالا فایل آن را اضافه کن یا PDF عمومی را در مسیر <code>'+escapeHtml(subject.assetLabel)+'</code> در مخزن سایت قرار بده.</div>';return}
  target.innerHTML='<div class="item"><div class="row"><h4>'+subject.icon+' پیش‌نمایش '+escapeHtml(subject.name)+'</h4><button type="button" class="outline" id="closeTeacherBookPreview">بستن پیش‌نمایش</button></div><iframe class="pdfview" title="پیش‌نمایش '+escapeHtml(subject.name)+'" src="'+url+'#view=FitH"></iframe></div>';
  $('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};
@@ -957,31 +1108,29 @@ $('attachBook').onclick=async()=>{
  if(!subject){$('teacherBookStatus').textContent='ابتدا کتاب موردنظر را انتخاب کن.';return}
  if(!file){$('teacherBookStatus').textContent='ابتدا فایل PDF کتاب «'+subject.name+'» را انتخاب کن.';return}
  if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){$('teacherBookStatus').textContent='لطفاً فایل PDF انتخاب کن.';return}
+ if(!cloudSession||cloudSession.role!=='teacher'){$('teacherBookStatus').textContent='برای انتشار مشترک کتاب، ابتدا با حساب معلم وارد شو.';return}
+ const btn=$('attachBook');setBusy(btn,true,'در حال بارگذاری در فضای کلاس…');
+ const classId=cloudSession.profile?.class_id;
+ if(!classId){$('teacherBookStatus').textContent='کلاس معلم پیدا نشد.';setBusy(btn,false);return}
+ const safeName=String(file.name||'book.pdf').replace(/[^\p{L}\p{N}._-]+/gu,'_').slice(-100)||'book.pdf';
+ const path=classId+'/books/'+id+'/'+crypto.randomUUID()+'-'+safeName;
+ let uploaded=false;
  try{
-   await saveBookFileToDevice(id,file);
-   if(bookUrls[id])URL.revokeObjectURL(bookUrls[id]);
-   bookUrls[id]=URL.createObjectURL(file);bookNames[id]=file.name;
-   $('teacherBookStatus').textContent='فایل «'+file.name+'» برای «'+subject.name+'» روی همین دستگاه ذخیره شد. برای انتشار به همهٔ دانش‌آموزان، آن را در مسیر عمومی '+subject.assetLabel+' قرار بده.';
+   const response=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':'application/pdf','x-upsert':'false'},body:file,cache:'no-store'});
+   if(!response.ok)throw new Error('بارگذاری فایل در فضای مشترک ناموفق بود ('+response.status+').');
+   uploaded=true;
+   const saved=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'set_book_file',subject:id,file_path:path,file_name:file.name}});
+   courseSettingsBySubject[id]={...(courseSettingsBySubject[id]||{}),bookFilePath:saved.bookFilePath||path,bookFileName:file.name};
+   if(bookUrls[id])URL.revokeObjectURL(bookUrls[id]);bookUrls[id]=URL.createObjectURL(file);bookNames[id]=file.name;
+   $('teacherBookStatus').textContent='فایل «'+file.name+'» در فضای مشترک کلاس ذخیره شد؛ همهٔ دانش‌آموزان این کلاس می‌توانند از صفحهٔ درس آن را ببینند.';
    $('bookPdf').value='';renderTeacherBookLibrary();await previewTeacherBook(id);
+   if(courseBookObjectUrls[id]){URL.revokeObjectURL(courseBookObjectUrls[id]);delete courseBookObjectUrls[id]}
    if(id==='math')renderStudentBook();
- }catch(error){$('teacherBookStatus').textContent='ذخیره فایل انجام نشد: '+(error?.message||'خطای مرورگر');}
+ }catch(error){
+   if(uploaded)fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'DELETE',headers:cloudHeaders(cloudSession.access_token)}).catch(()=>{});
+   $('teacherBookStatus').textContent='ذخیره کتاب انجام نشد: '+cloudMessage(error);
+ }finally{setBusy(btn,false)}
 };
-restoreBookFilesFromDevice();
-
-function renderAccessList(){$('subjectAccessList').innerHTML=`<div class="accessrow"><span>➗ <b>ریاضی</b></span><button class="success" disabled>مجاز برای دانش‌آموز</button></div>`}
-$('addTeacherChapter').onclick=()=>{
- const title=$('newChapterTitle').value.trim(),summary=$('newChapterSummary').value.trim(),notes=$('newChapterNotes').value.trim(),example=$('newChapterExample').value.trim(),question=$('newChapterQuestion').value.trim();
- if(!title||!summary||!notes){$('teacherChapterStatus').textContent='لطفاً نام فصل، توضیح کوتاه و آموزش/نکته‌های آن را وارد کن.';return}
- const nextId=Math.max(0,...chapters.map(c=>Number(c.id)||0))+1;
- chapters.push({id:nextId,title,summary,sections:[[title,notes,example||'برای یادگیری بهتر، یک مثال مشابه با عددهای تازه حل کن.']]});
- practiceBank[nextId]=[];
- if(question){const opts=[0,1,2,3].map(i=>$(`newChapterOpt${i}`).value.trim());if(opts.some(x=>!x)) {chapters.pop();delete practiceBank[nextId];$('teacherChapterStatus').textContent='برای ثبت سؤال چهارگزینه‌ای، هر چهار گزینه را کامل کن؛ یا متن سؤال را پاک کن تا فقط فصل ایجاد شود.';return}
- practiceBank[nextId].push({skill:title,q:question,opts,a:Number($('newChapterCorrect').value),why:$('newChapterWhy').value.trim()||'برای اطمینان، نکته‌های آموزشی فصل را دوباره مرور کن.'});}
- renderChapterPicker();renderTeacherChapterList();updatePracticeTopicOptions();
- $('teacherChapterStatus').textContent=`فصل «${title}» با موفقیت به فهرست این پیش‌نمایش اضافه شد.${question?' نمونه‌سؤال آن هم برای بخش تمرین ثبت شد.':' برای افزودن تمرین آن، دفعه‌ی بعد یک نمونه‌سؤال چهارگزینه‌ای هم وارد کن.'}`;
- ['newChapterTitle','newChapterSummary','newChapterNotes','newChapterExample','newChapterQuestion','newChapterOpt0','newChapterOpt1','newChapterOpt2','newChapterOpt3','newChapterWhy'].forEach(id=>$(id).value='');
-};
-$('attachBook').onclick=()=>{const file=$('bookPdf').files[0];if(!file){$('teacherBookStatus').textContent='ابتدا فایل PDF کتاب ریاضی را انتخاب کن.';return}if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){$('teacherBookStatus').textContent='لطفاً فایل PDF انتخاب کن.';return}if(bookUrls['ریاضی'])URL.revokeObjectURL(bookUrls['ریاضی']);bookUrls['ریاضی']=URL.createObjectURL(file);bookNames['ریاضی']=file.name;$('teacherBookStatus').textContent=`فایل «${file.name}» در این پیش‌نمایش و همین مرورگر آماده است. برای دسترسی از گوشی‌های دیگر، اتصال سرور و فضای ذخیره‌سازی لازم است.`;renderStudentBook()};
 document.querySelectorAll('[data-book-tab]').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x===b));
  document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-'+b.dataset.bookTab));
@@ -1025,6 +1174,7 @@ function buildTermQuestionSet(mode){
 
 function startBookExam(mode='annual'){
  examMode=mode;
+ if(courseSettingsBySubject.math?.allowExam===false){$('examResult').classList.remove('hidden');$('examResult').textContent='امتحان ریاضی فعلاً توسط معلم غیرفعال شده است.';$('examQuestionBox').classList.add('hidden');$('examSubmit').classList.add('hidden');return}
  $('examAnswer').disabled=false;
  let chosen=[];
  if(mode==='annual'){
@@ -1034,6 +1184,8 @@ function startBookExam(mode='annual'){
   const rest=shuffledCopy(byChapter.flatMap(g=>g.items.filter(q=>!used.has(q.q)).map(q=>({...q,chapter:g.chapter}))));
   chosen=shuffledCopy([...chosen,...rest.slice(0,Math.max(0,20-chosen.length))]).slice(0,20);
  }else if(mode==='term1'||mode==='term2'){chosen=buildTermQuestionSet(mode)}else if(String(mode).startsWith('chapter:')){const cid=Number(String(mode).split(':')[1]||1);chosen=shuffledCopy((practiceBank[cid]||[])).slice(0,20).map(q=>({...q,chapter:cid}))}
+ chosen=chosen.filter(q=>isCourseLessonOpen('math',Number(q.chapter||1)));
+ if(!chosen.length){$('examResult').classList.remove('hidden');$('examResult').textContent='درسی برای آزمون هنوز باز نشده یا سؤال آماده‌ای ندارد.';$('examQuestionBox').classList.add('hidden');$('examSubmit').classList.add('hidden');return}
  examItems=chosen.map(shuffledQuestion);examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;
  $('examResult').classList.add('hidden');$('examQuestionBox').classList.remove('hidden');$('examSubmit').classList.remove('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ';
  $('examAnswer').value='';$('examAnswer').disabled=false;
@@ -1074,7 +1226,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   // Do not offer the learner a difficulty selector: the full bank is shuffled together.
   const difficultyFilter=$('practiceDifficultyFilter');
   if(difficultyFilter){difficultyFilter.value='all';const cell=difficultyFilter.parentElement;if(cell)cell.style.display='none';const parent=cell?.parentElement;if(parent)parent.style.gridTemplateColumns='1fr'}
-  getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>type==='all'||(q.type||'mc')===type)}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
+  getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(courseSettingsBySubject.math?.allowPractice===false||!isCourseLessonOpen('math',Number($('bookPracticeTopic')?.value||1)))return [];if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>isCourseLessonOpen('math',Number(q.chapter||1))&&(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
   newBookPractice=function(){
     const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;
     $('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';
@@ -1319,6 +1471,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   const CLOUD_SESSION_KEY = 'yare-math-auth-v1';
   let cloudSession = null;
   let cloudTeacherAttempts = [];
+  let cloudAssignmentScores = [];
   let cloudStudentProfiles = [];
   let cloudSubjectProgress = [];
   let currentCloudAttemptGroup = null;
@@ -1409,17 +1562,20 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   async function loadStudentQuestionBank(){
     if(!cloudSession?.access_token)throw new Error('نشست دانش‌آموز معتبر نیست. دوباره وارد شو.');
     const classPart=cloudSession.profile?.class_id?`,class_id.eq.${cloudSession.profile.class_id}`:'';
-    const query=`?select=id,class_id,chapter_id,skill,prompt,question_type,options,difficulty,sort_order,is_active,pdf_sample_set&is_active=eq.true&or=(class_id.is.null${classPart})&order=chapter_id.asc,sort_order.asc&limit=1500`;
+    const query=`?select=id,class_id,chapter_id,subject,lesson_id,skill,prompt,question_type,options,difficulty,sort_order,is_active,pdf_sample_set&is_active=eq.true&or=(class_id.is.null${classPart})&order=subject.asc,lesson_id.asc,chapter_id.asc,sort_order.asc&limit=5000`;
     const rows=await cloudFetch('/rest/v1/yare_question_bank'+query,{method:'GET'});
-    if(!Array.isArray(rows)||rows.length===0)throw new Error('بانک سؤال آنلاین خالی است. فایل supabase/seed_question_bank.sql را پس از schema.sql اجرا کن.');
+    if(!Array.isArray(rows)||rows.length===0)throw new Error('بانک سؤال آنلاین خالی است. از پنل معلم سؤال اضافه کن یا seed بانک سؤال را نصب کن.');
+    // فقط سؤال‌های ریاضی وارد بانک تمرین ریاضی می‌شوند؛ درس‌های دیگر هرکدام بانک مستقل دارند.
+    const mathRows=rows.filter(row=>(row.subject||'math')==='math');
     for(let c=1;c<=7;c++)practiceBank[c]=[];
-    rows.forEach(row=>{
-      const c=Number(row.chapter_id);if(c<1||c>7)return;
+    mathRows.forEach(row=>{
+      const c=Number(row.lesson_id??row.chapter_id);if(c<1||c>7)return;
+      if(!isCourseLessonOpen('math',c))return;
       practiceBank[c].push({id:row.id,chapter:c,skill:row.skill||'تمرین ریاضی',q:row.prompt,type:row.question_type||'mc',opts:Array.isArray(row.options)?row.options:[],difficulty:row.difficulty||'medium',pdfSampleSet:row.pdf_sample_set||null,why:''});
     });
-    cloudBankRows=rows;
+    cloudBankRows=mathRows;
     window.__termPracticeCache={};practiceSeen.clear();updatePracticeTopicOptions();updatePracticeStats();
-    $('teacherBankTotal').textContent=fa(rows.length)+' سؤال آنلاین';
+    $('teacherBankTotal').textContent=fa(mathRows.length)+' سؤال ریاضی آنلاین';
   }
   async function refreshStudentProgressFromCloud(){
     if(!cloudSession?.user?.id)return;
@@ -1475,7 +1631,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user:auth.user,role:'teacher',profile};saveCloudSession();
       $('teacherPassword').value='';show('teacher');
       setCloudStatus('ورود معلم تأیید شد. اطلاعات گزارش از پایگاه دادهٔ Supabase خوانده می‌شود.');
-      await loadTeacherReport();await loadTeacherQuestionBank();
+      await loadCourseSettings(true);await loadTeacherReport();await loadTeacherQuestionBank();populateAssignmentLessons();
     }catch(e){clearCloudSession(false);alert('ورود معلم انجام نشد: '+friendlyAuthError(e))}
     finally{cloudBusy=false;setBusy($('demoTeacherLogin'),false)}
   }
@@ -1486,7 +1642,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     activeStudentName=cloudSession.profile?.display_name||'معلم';
     activeUsername='teacher-preview';
     show('student');
-    try{await loadStudentQuestionBank();}catch(e){console.warn('Student preview question load:',e)}
+    try{await loadCourseSettings(true);await loadStudentQuestionBank();}catch(e){console.warn('Student preview question load:',e)}
     try{await renderStudentDashboard();}catch(e){console.warn('Student preview dashboard:',e)}
     try{loadStudentAssignments();}catch(e){console.warn('Student preview assignments:',e)}
   };
@@ -1710,8 +1866,28 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         if(!Array.isArray(page))throw new Error('ساختار پیشرفت درس‌های دیگر نامعتبر است.');
         allSubjectProgress.push(...page);if(page.length<1000)break;
       }
+      const allAssignments=[];
+      for(let offset=0;offset<10000;offset+=1000){
+        const page=await cloudFetch(`/rest/v1/yare_assignments?select=id,class_id,title,subject,lesson_ids,chapter_ids,activity_type,created_at&class_id=eq.${encodeURIComponent(cloudSession.profile.class_id)}&order=created_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
+        if(!Array.isArray(page))throw new Error('ساختار فهرست آزمون‌ها نامعتبر است.');
+        allAssignments.push(...page);if(page.length<1000)break;
+      }
+      const allAssignmentAttempts=[];
+      for(let offset=0;offset<50000;offset+=1000){
+        const page=await cloudFetch(`/rest/v1/yare_assignment_attempts?select=id,assignment_id,student_id,class_id,attempt_number,status,score,total_points,started_at,submitted_at,created_at&class_id=eq.${encodeURIComponent(cloudSession.profile.class_id)}&order=created_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
+        if(!Array.isArray(page))throw new Error('ساختار نمره‌های آزمون‌ها نامعتبر است.');
+        allAssignmentAttempts.push(...page);if(page.length<1000)break;
+      }
+      const assignmentById=new Map(allAssignments.map(a=>[a.id,a]));
+      cloudAssignmentScores=allAssignmentAttempts.map(attempt=>{
+        const assignment=assignmentById.get(attempt.assignment_id);if(!assignment)return null;
+        const subject=assignment.subject||'math';
+        const lessonIds=Array.isArray(assignment.lesson_ids)&&assignment.lesson_ids.length?assignment.lesson_ids:(assignment.chapter_ids||[1]);
+        const score=attempt.score,total=attempt.total_points;
+        return {...attempt,subject,lesson_id:Number(lessonIds[0]||1),source:assignment.title,question_text:'نتیجهٔ فعالیت: '+assignment.title,submitted_answer:score==null?'—':String(score)+' / '+String(total??'—'),is_correct:null,resultLabel:score==null?'تحویل نشده':('نمرهٔ '+String(score)+' از '+String(total??'—')),explanation:'نوع فعالیت: '+String(assignment.activity_type||'تمرین')+' · وضعیت: '+String(attempt.status||'—'),created_at:attempt.submitted_at||attempt.started_at||attempt.created_at};
+      }).filter(Boolean);
       cloudTeacherAttempts=allAttempts;cloudStudentProfiles=allProfiles;cloudSubjectProgress=allSubjectProgress;
-      renderTeacherReport();renderTeacherOverviewPapers();renderTeacherSubjectPracticeReport();
+      populateLessonFilter('reportSubjectFilter','reportLessonFilter');populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');renderTeacherReport();renderTeacherOverviewPapers();renderTeacherSubjectPracticeReport();renderTeacherGradebook();
       const overview=$('tab-overview');const metric=overview?.querySelectorAll('.metric strong');
       if(metric&&metric.length>=3){const students=new Set(cloudTeacherAttempts.map(x=>x.student_id));metric[0].textContent=String(students.size);metric[1].textContent=String(cloudTeacherAttempts.length);metric[2].textContent=cloudTeacherAttempts.length?Math.round(cloudTeacherAttempts.filter(x=>x.is_correct).length/cloudTeacherAttempts.length*100)+'٪':'—';const labels=overview.querySelectorAll('.metric .muted');if(labels.length>=3){labels[0].textContent='دانش‌آموزان فعال';labels[1].textContent='پاسخ‌های ثبت‌شده';labels[2].textContent='درستی پاسخ‌ها'}}
       const overviewStatus=$('teacherOverviewStatus');if(overviewStatus)overviewStatus.textContent='آمار بر اساس داده‌های قابل‌دسترسی در Supabase بارگذاری شد.';
@@ -1773,27 +1949,34 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   $('teacherOverviewStudentFilter')?.addEventListener('change',renderTeacherOverviewPapers);
   function csvSafe(value){let s=String(value??'');if(/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
-  function filteredReportRows(){
-    let rows=[...cloudTeacherAttempts];
-    const selector=$('reportChapterFilter')?.value||'all';
-    if(selector!=='all'){
-      const titles={'اعداد و الگوها':1,'کسر':2,'ضرب و تقسیم':3,'اندازه‌گیری':4,'عدد مخلوط و عدد اعشاری':5,'شکل‌های هندسی':6,'آمار و احتمال':7};
-      const c=Number(selector)||titles[selector];if(c)rows=rows.filter(r=>Number(r.chapter_id)===c);
-    }
-    const range=$('reportDateRange')?.value||'تمام مدت';const days=range==='۷ روز اخیر'?7:range==='۳۰ روز اخیر'?30:0;
-    if(days){const cutoff=Date.now()-days*86400000;rows=rows.filter(r=>{const timestamp=Date.parse(r.created_at);return Number.isFinite(timestamp)&&timestamp>=cutoff})}
-    return rows;
-  }
-  function renderTeacherReport(){
-    const tab=$('tab-reports');if(!tab)return;let status=$('teacherReportStatus');if(!status){status=document.createElement('div');status.id='teacherReportStatus';status.className='notice';tab.prepend(status)}
-    const nameById=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));const rows=filteredReportRows();
-    status.textContent=`${rows.length.toLocaleString('fa-IR')} پاسخ ثبت‌شده از Supabase؛ نمره‌گذاری در سمت سرور انجام شده است.`;
-    let panel=$('cloudTeacherReportTable');if(!panel){panel=document.createElement('div');panel.id='cloudTeacherReportTable';panel.className='item';tab.appendChild(panel)}
-    if(!rows.length){panel.textContent='هنوز پاسخی برای این فیلتر ثبت نشده است.';return}
-    const body=rows.slice(0,500).map(r=>`<tr><td>${escapeHtml(nameById.get(r.student_id)||r.student_id)}</td><td>${escapeHtml(r.source)}</td><td>${escapeHtml(String(r.chapter_id??''))}</td><td>${escapeHtml(r.question_text)}</td><td>${escapeHtml(JSON.stringify(r.submitted_answer??''))}</td><td>${r.is_correct?'درست':'نادرست'}</td><td>${escapeHtml(new Date(r.created_at).toLocaleString('fa-IR'))}</td></tr>`).join('');
-    panel.innerHTML=`<div style="overflow-x:auto"><table class="math-matrix" style="min-width:800px"><thead><tr><th>دانش‌آموز</th><th>فعالیت</th><th>فصل</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>زمان</th></tr></thead><tbody>${body}</tbody></table></div><p class="muted">نمایش ${Math.min(rows.length,500)} ردیف از ${rows.length}. برای خروجی کامل از CSV استفاده کن.</p>`;
-  }
-
+  function getCourseReportRows(){
+ const math=(cloudTeacherAttempts||[]).map(r=>({...r,subject:'math',lesson_id:Number(r.chapter_id)||1,source:r.source||'تمرین ریاضی',explanation:r.explanation||''}));
+ const others=(cloudSubjectProgress||[]).map(r=>{
+  const meta=r.metadata&&typeof r.metadata==='object'?r.metadata:{};
+  return {...r,subject:r.subject||'persian',lesson_id:Number(r.lesson_id)||1,source:r.activity_type||r.activity_key||'تمرین',submitted_answer:meta.selected_text??r.selected_answer,explanation:r.explanation||'',resultLabel:r.is_correct===true?'پاسخ صحیح':r.is_correct===false?'نیاز به تمرین':'—',created_at:r.updated_at||r.created_at};
+ });
+ const grades=cloudAssignmentScores||[];
+ return [...math,...others,...grades].sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0));
+}
+function filteredReportRows(){
+ let rows=getCourseReportRows();
+ const subject=$('reportSubjectFilter')?.value||'all',lesson=$('reportLessonFilter')?.value||'all';
+ if(subject!=='all')rows=rows.filter(r=>r.subject===subject);
+ if(lesson!=='all')rows=rows.filter(r=>Number(r.lesson_id)===Number(lesson));
+ const range=$('reportDateRange')?.value||'تمام مدت';const days=range==='۷ روز اخیر'?7:range==='۳۰ روز اخیر'?30:0;
+ if(days){const cutoff=Date.now()-days*86400000;rows=rows.filter(r=>{const timestamp=Date.parse(r.created_at);return Number.isFinite(timestamp)&&timestamp>=cutoff})}
+ return rows;
+}
+function renderTeacherReport(){
+ const tab=$('tab-reports');if(!tab)return;let status=$('teacherReportStatus');if(!status){status=document.createElement('div');status.id='teacherReportStatus';status.className='notice';tab.prepend(status)}
+ const nameById=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));const rows=filteredReportRows();
+ status.textContent=rows.length.toLocaleString('fa-IR')+' پاسخ از کتاب/درس انتخاب‌شده؛ گزارش‌های ریاضی و درس‌های دیگر در این جدول یکپارچه شده‌اند.';
+ let panel=$('cloudTeacherReportTable');if(!panel){panel=document.createElement('div');panel.id='cloudTeacherReportTable';panel.className='item';tab.appendChild(panel)}
+ if(!rows.length){panel.textContent='هنوز پاسخی برای این کتاب و درس ثبت نشده است.';renderTeacherGradebook();return}
+ const body=rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+(r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('');
+ panel.innerHTML='<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1000px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ</th><th>نتیجه</th><th>بازخورد/تحلیل</th><th>زمان</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'.</p>';
+ renderTeacherGradebook();
+}
   const subjectPracticeNames={science:'علوم تجربی',persian:'فارسی و نگارش',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی',dictation:'املای فارسی'};
   function renderTeacherSubjectPracticeReport(){
     const tab=$('tab-reports');if(!tab)return;
@@ -1840,73 +2023,107 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
 
   // Remote teacher question manager; keys are requested only after teacher authorization.
   async function loadTeacherQuestionBank(){
-    if(!cloudSession||cloudSession.role!=='teacher')return;
-    try{
-      const classPart=cloudSession.profile?.class_id?`,class_id.eq.${cloudSession.profile.class_id}`:'';
-      const rows=await cloudFetch(`/rest/v1/yare_question_bank?select=id,class_id,chapter_id,skill,prompt,question_type,options,difficulty,sort_order,is_active&or=(class_id.is.null${classPart})&order=chapter_id.asc,sort_order.asc&limit=2000`,{method:'GET'});
-      cloudBankRows=Array.isArray(rows)?rows:[];$('teacherBankTotal').textContent=fa(cloudBankRows.length)+' سؤال آنلاین';renderCloudQuestionList();
-    }catch(e){$('teacherBankCounts').textContent='بانک سؤال آنلاین خوانده نشد: '+cloudMessage(e)}
-  }
-  function renderCloudQuestionList(){
-    const chapter=Number($('teacherBankChapter')?.value||1);const query=normalizeAnswer($('teacherQuestionSearch')?.value||'');
-    const rows=cloudBankRows.filter(q=>Number(q.chapter_id)===chapter&&(!query||normalizeAnswer(q.prompt+' '+q.skill).includes(query)));
-    $('teacherBankCounts').textContent=`فصل ${fa(chapter)}: ${fa(rows.length)} سؤال آنلاین؛ سؤال مشترک با ویرایش، برای کلاس چهارم اختصاصی می‌شود.`;
-    $('teacherQuestionList').innerHTML=rows.map((q,i)=>`<div class="teacher-question-row"><div><b>${fa(i+1)}. ${escapeHtml(q.prompt)}</b><small>${escapeHtml(q.skill||'بدون مبحث')} · ${({mc:'چهارگزینه‌ای',input:'پاسخ کوتاه',tf:'درست/نادرست',multi:'چندپاسخی'})[q.question_type]||''} · ${({easy:'آسان',medium:'متوسط',hard:'سخت'})[q.difficulty]||''}</small></div>${(!q.class_id||q.class_id===cloudSession.profile?.class_id)?`<button class="outline" type="button" data-edit-cloud-question="${q.id}">✏️ ویرایش</button>`:'<button class="outline" type="button" disabled title="این سؤال متعلق به کلاس دیگری است.">🔒 کلاس دیگر</button>'}</div>`).join('')||'<p class="muted">سؤالی با این عبارت پیدا نشد.</p>';
-  }
-  $('teacherBankChapter').innerHTML=chapters.filter(c=>c.id<=7).map(c=>`<option value="${c.id}">فصل ${fa(c.id)}: ${escapeHtml(c.title)}</option>`).join('');
-  $('teacherBankChapter').onchange=renderCloudQuestionList;$('teacherQuestionSearch').oninput=renderCloudQuestionList;
-  function resetCloudQuestionEditor(){
-    $('teacherEditingIndex').value='-1';$('teacherQuestionEditorTitle').textContent='سؤال جدید';
-    for(const id of ['teacherEditorSkill','teacherEditorPrompt','teacherEditorAnswer','teacherEditorWhy','teacherEditorOpt0','teacherEditorOpt1','teacherEditorOpt2','teacherEditorOpt3'])$(id).value='';
-    $('teacherEditorType').value='mc';$('teacherEditorDifficulty').value='medium';$('teacherEditorMessage').classList.add('hidden');
-    $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorOptionsGrid').classList.remove('hidden');
-  }
-  $('teacherAddQuestion').onclick=()=>resetCloudQuestionEditor();
-  $('teacherCancelQuestionEdit').onclick=()=>{$('teacherQuestionEditor').classList.add('hidden')};
-  $('teacherResetQuestion').onclick=()=>resetCloudQuestionEditor();
-  $('teacherQuestionList').addEventListener('click',async e=>{
-    const button=e.target.closest('[data-edit-cloud-question]');if(!button)return;
-    try{
-      const result=await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:{action:'get',id:button.dataset.editCloudQuestion}});
-      const q=result.question,key=result.answer_key;$('teacherEditingIndex').value=q.id;$('teacherQuestionEditorTitle').textContent='ویرایش سؤال آنلاین';
-      $('teacherBankChapter').value=String(q.chapter_id);$('teacherEditorSkill').value=q.skill||'';$('teacherEditorPrompt').value=q.prompt||'';$('teacherEditorType').value=q.question_type;$('teacherEditorDifficulty').value=q.difficulty||'medium';$('teacherEditorWhy').value=key.explanation||'';
-      for(let i=0;i<4;i++)$(`teacherEditorOpt${i}`).value=(q.options||[])[i]||'';
-      if(q.question_type==='input'){$('teacherEditorAnswer').value=(key.accepted||[]).join(' یا ');$('teacherEditorOptionsGrid').classList.add('hidden')}
-      else{$('teacherEditorOptionsGrid').classList.remove('hidden');const indices=(key.accepted||[]).map(a=>(q.options||[]).indexOf(a)+1).filter(n=>n>0);$('teacherEditorAnswer').value=indices.join('، ')}
-      $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorMessage').classList.add('hidden');
-    }catch(err){alert('خواندن سؤال از پایگاه داده انجام نشد: '+friendlyAuthError(err))}
-  });
-  $('teacherEditorType').addEventListener('change',()=>{$('teacherEditorOptionsGrid').classList.toggle('hidden',$('teacherEditorType').value==='input')});
-  $('teacherSaveQuestion').onclick=async()=>{
-    if(!cloudSession||cloudSession.role!=='teacher'){alert('برای ذخیره بانک سؤال وارد حساب معلم شو.');return}
-    const type=$('teacherEditorType').value,prompt=$('teacherEditorPrompt').value.trim(),skill=$('teacherEditorSkill').value.trim(),explanation=$('teacherEditorWhy').value.trim(),difficulty=$('teacherEditorDifficulty').value;
-    let options=[],accepted=[];
-    if(type==='input'){accepted=$('teacherEditorAnswer').value.split(/\s*(?:یا|\||;|\n)\s*/).map(x=>x.trim()).filter(Boolean)}
-    else{
-      const count=type==='tf'?2:4;options=Array.from({length:count},(_,i)=>$(`teacherEditorOpt${i}`).value.trim());
-      const nums=$('teacherEditorAnswer').value.split(/[,،\s]+/).filter(Boolean).map(x=>Number(normalizeAnswer(x)));
-      accepted=[...new Set(nums)].filter(n=>Number.isInteger(n)&&n>=1&&n<=options.length).map(n=>options[n-1]);
-    }
-    const message=$('teacherEditorMessage');message.classList.remove('hidden');
-    if(!prompt||!skill||!accepted.length||options.some(x=>!x&&type!=='input')){message.textContent='متن سؤال، مبحث، گزینه‌ها و پاسخ صحیح را کامل کن.';return}
-    const payload={action:'save',id:$('teacherEditingIndex').value==='-1'?null:$('teacherEditingIndex').value,chapter_id:Number($('teacherBankChapter').value||1),skill,prompt,question_type:type,options,accepted,explanation,difficulty};
-    setBusy($('teacherSaveQuestion'),true,'در حال ذخیره…');
-    try{await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:payload});message.textContent='سؤال و پاسخ‌نامه با موفقیت در Supabase ذخیره شد.';$('teacherQuestionEditor').classList.add('hidden');await loadTeacherQuestionBank()}
-    catch(e){message.textContent='ذخیره ناموفق بود: '+cloudMessage(e)}
-    finally{setBusy($('teacherSaveQuestion'),false)}
-  };
-
+ if(!cloudSession||cloudSession.role!=='teacher')return;
+ try{
+  const classPart=cloudSession.profile?.class_id?',class_id.eq.'+cloudSession.profile.class_id:'';
+  const rows=await cloudFetch('/rest/v1/yare_question_bank?select=id,class_id,chapter_id,subject,lesson_id,skill,prompt,question_type,options,difficulty,sort_order,is_active&or=(class_id.is.null'+classPart+')&order=subject.asc,lesson_id.asc,sort_order.asc&limit=5000',{method:'GET'});
+  cloudBankRows=Array.isArray(rows)?rows:[];
+  $('teacherBankTotal').textContent=fa(cloudBankRows.length)+' سؤال آنلاین';
+  populateTeacherBankLessons($('teacherBankChapter')?.value);
+  renderCloudQuestionList();
+ }catch(e){$('teacherBankCounts').textContent='بانک سؤال آنلاین خوانده نشد: '+cloudMessage(e)}
+}
+function renderCloudQuestionList(){
+ const subject=$('teacherBankSubject')?.value||'math';
+ const lesson=Number($('teacherBankChapter')?.value||1);
+ const query=normalizeAnswer($('teacherQuestionSearch')?.value||'');
+ const rows=cloudBankRows.filter(q=>(q.subject||'math')===subject&&Number(q.lesson_id??q.chapter_id)===lesson&&(!query||normalizeAnswer(q.prompt+' '+q.skill).includes(query)));
+ $('teacherBankCounts').textContent=courseName(subject)+' · '+courseLessonTitle(subject,lesson)+' · '+fa(rows.length)+' سؤال آنلاین؛ این فهرست فقط به همین کتاب و درس مربوط است.';
+ $('teacherQuestionList').innerHTML=rows.map((q,i)=>'<div class="teacher-question-row"><div><b>'+fa(i+1)+'. '+escapeHtml(q.prompt)+'</b><small>'+escapeHtml(q.skill||'بدون مبحث')+' · '+({mc:'چهارگزینه‌ای',input:'پاسخ کوتاه',tf:'درست/نادرست',multi:'چندپاسخی'})[q.question_type]+' · '+({easy:'آسان',medium:'متوسط',hard:'سخت'})[q.difficulty]+'</small></div>'+((!q.class_id||q.class_id===cloudSession.profile?.class_id)?'<button class="outline" type="button" data-edit-cloud-question="'+q.id+'">✏️ ویرایش</button>':'<button class="outline" type="button" disabled title="این سؤال متعلق به کلاس دیگری است.">🔒 کلاس دیگر</button>')+'</div>').join('')||'<p class="muted">در این کتاب و درس سؤالی پیدا نشد.</p>';
+}
+$('teacherBankChapter').innerHTML=chapters.filter(c=>c.id<=7).map(c=>'<option value="'+c.id+'">فصل '+fa(c.id)+': '+escapeHtml(c.title)+'</option>').join('');
+$('teacherBankSubject').onchange=()=>populateTeacherBankLessons();
+$('teacherBankChapter').onchange=renderCloudQuestionList;
+$('teacherQuestionSearch').oninput=renderCloudQuestionList;
+function resetCloudQuestionEditor(){
+ $('teacherEditingIndex').value='-1';$('teacherQuestionEditorTitle').textContent='سؤال جدید';
+ for(const id of ['teacherEditorSkill','teacherEditorPrompt','teacherEditorAnswer','teacherEditorWhy','teacherEditorOpt0','teacherEditorOpt1','teacherEditorOpt2','teacherEditorOpt3'])$(id).value='';
+ $('teacherEditorType').value='mc';$('teacherEditorDifficulty').value='medium';$('teacherEditorMessage').classList.add('hidden');
+ $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorOptionsGrid').classList.remove('hidden');
+}
+$('teacherAddQuestion').onclick=()=>resetCloudQuestionEditor();
+$('teacherCancelQuestionEdit').onclick=()=>{$('teacherQuestionEditor').classList.add('hidden')};
+$('teacherResetQuestion').onclick=()=>resetCloudQuestionEditor();
+$('teacherQuestionList').addEventListener('click',async e=>{
+ const button=e.target.closest('[data-edit-cloud-question]');if(!button)return;
+ try{
+  const result=await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:{action:'get',id:button.dataset.editCloudQuestion}});
+  const q=result.question,key=result.answer_key;const subject=q.subject||'math',lessonId=Number(q.lesson_id??q.chapter_id);
+  $('teacherEditingIndex').value=q.id;$('teacherQuestionEditorTitle').textContent='ویرایش سؤال آنلاین';
+  $('teacherBankSubject').value=subject;populateTeacherBankLessons(lessonId);$('teacherBankChapter').value=String(lessonId);
+  $('teacherEditorSkill').value=q.skill||'';$('teacherEditorPrompt').value=q.prompt||'';$('teacherEditorType').value=q.question_type;$('teacherEditorDifficulty').value=q.difficulty||'medium';$('teacherEditorWhy').value=key.explanation||'';
+  for(let i=0;i<4;i++)$('teacherEditorOpt'+i).value=(q.options||[])[i]||'';
+  if(q.question_type==='input'){$('teacherEditorAnswer').value=(key.accepted||[]).join(' یا ');$('teacherEditorOptionsGrid').classList.add('hidden')}
+  else{$('teacherEditorOptionsGrid').classList.remove('hidden');const indices=(key.accepted||[]).map(a=>(q.options||[]).indexOf(a)+1).filter(n=>n>0);$('teacherEditorAnswer').value=indices.join('، ')}
+  $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorMessage').classList.add('hidden');
+ }catch(err){alert('خواندن سؤال از پایگاه داده انجام نشد: '+friendlyAuthError(err))}
+});
+$('teacherEditorType').addEventListener('change',()=>{$('teacherEditorOptionsGrid').classList.toggle('hidden',$('teacherEditorType').value==='input')});
+$('teacherSaveQuestion').onclick=async()=>{
+ if(!cloudSession||cloudSession.role!=='teacher'){alert('برای ذخیره بانک سؤال وارد حساب معلم شو.');return}
+ const subject=$('teacherBankSubject').value||'math',lessonId=Number($('teacherBankChapter').value||1);
+ const type=$('teacherEditorType').value,prompt=$('teacherEditorPrompt').value.trim(),skill=$('teacherEditorSkill').value.trim(),explanation=$('teacherEditorWhy').value.trim(),difficulty=$('teacherEditorDifficulty').value;
+ let options=[],accepted=[];
+ if(type==='input')accepted=$('teacherEditorAnswer').value.split(/\s*(?:یا|\||;|\n)\s*/).map(x=>x.trim()).filter(Boolean);
+ else{
+  const count=type==='tf'?2:4;options=Array.from({length:count},(_,i)=>$('teacherEditorOpt'+i).value.trim());
+  const nums=$('teacherEditorAnswer').value.split(/[,،\s]+/).filter(Boolean).map(x=>Number(normalizeAnswer(x)));
+  accepted=[...new Set(nums)].filter(n=>Number.isInteger(n)&&n>=1&&n<=options.length).map(n=>options[n-1]);
+ }
+ const message=$('teacherEditorMessage');message.classList.remove('hidden');
+ if(!prompt||!skill||!accepted.length||options.some(x=>!x&&type!=='input')){message.textContent='متن سؤال، مبحث، گزینه‌ها و پاسخ صحیح را کامل کن.';return}
+ const payload={action:'save',id:$('teacherEditingIndex').value==='-1'?null:$('teacherEditingIndex').value,subject,lesson_id:lessonId,chapter_id:subject==='math'?lessonId:Math.min(7,lessonId),skill,prompt,question_type:type,options,accepted,explanation,difficulty};
+ setBusy($('teacherSaveQuestion'),true,'در حال ذخیره…');
+ try{await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:payload});message.textContent='سؤال برای «'+courseName(subject)+' / '+courseLessonTitle(subject,lessonId)+'» ذخیره شد.';$('teacherQuestionEditor').classList.add('hidden');await loadTeacherQuestionBank()}
+ catch(e){message.textContent='ذخیره ناموفق بود: '+cloudMessage(e)}
+ finally{setBusy($('teacherSaveQuestion'),false)}
+};
 
   let studentAssignmentState=null;
-  async function loadTeacherAssignments(){if(!cloudSession||cloudSession.role!=='teacher')return;try{const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'list'}});$('teacherAssignmentsOnline').innerHTML=(r.assignments||[]).map(a=>'<div class="item"><b>'+escapeHtml(a.title)+'</b><p class="muted">'+fa(a.question_count)+' سؤال · '+(a.duration_minutes?fa(a.duration_minutes)+' دقیقه':'بدون محدودیت')+' · '+fa(a.max_attempts)+' تلاش · منتشرشده</p></div>').join('')||'هنوز فعالیتی منتشر نشده است.'}catch(e){$('teacherAssignmentsOnline').textContent='خواندن فعالیت‌ها ناموفق بود: '+cloudMessage(e)}}
-  $('saveDemoActivity').onclick=async()=>{if(!cloudSession||cloudSession.role!=='teacher'){alert('ابتدا با حساب معلم وارد شو.');return}const title=$('actTitle').value.trim(),count=Number($('actQuestionCount').value),duration=Number($('actDuration').value)||0,scope=$('actScope').value,chapter=Number($('actChapter').value);if(!title||!Number.isInteger(count)||count<1||count>200){alert('عنوان و تعداد سؤال را بررسی کن.');return}const chapters=scope==='midterm'?[1,2,3]:(scope==='final'||scope==='all')?[1,2,3,4,5,6,7]:[chapter];const types={'تمرین':'practice','امتحان فصل':'exam','نوبت اول':'term1','نوبت دوم':'term2'};const attempts=$('actAttempts').value==='unlimited'?10:Number($('actAttempts').value);const btn=$('saveDemoActivity');setBusy(btn,true,'در حال انتشار…');try{const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'create',title,activity_type:types[$('actType').value]||'practice',scope,chapter_ids:chapters,question_count:count,duration_minutes:duration,max_attempts:attempts,random_questions:$('actRandomQuestions').checked,random_options:$('actRandomOptions').checked,show_feedback:$('actShowFeedback').checked,hide_score_from_peers:$('actHideScore').checked}});$('actTitle').value='';$('demoActivityList').textContent='فعالیت «'+title+'» منتشر شد؛ '+fa(r.question_count)+' سؤال انتخاب شد.';await loadTeacherAssignments()}catch(e){$('demoActivityList').textContent='انتشار ناموفق بود: '+cloudMessage(e)}finally{setBusy(btn,false)}};
-  async function loadStudentAssignments(){const el=$('studentAssignmentList');if(!cloudSession||!(cloudSession.role==='student'||(cloudSession.role==='teacher'&&cloudSession.studentViewAsTeacher))){el.textContent='برای دیدن فعالیت‌ها ابتدا وارد حساب دانش‌آموز شو.';return}el.textContent='در حال دریافت فعالیت‌ها…';try{const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'list',view_as_student:cloudSession.profile?.role==='teacher'&&cloudSession.studentViewAsTeacher}});el.innerHTML=(r.assignments||[]).map(a=>{const used=(a.attempts||[]).length,active=(a.attempts||[]).some(t=>t.status==='in_progress'),done=used>=a.max_attempts&&!active;return '<div class="item"><b>'+escapeHtml(a.title)+'</b><p class="muted">'+fa(a.question_count)+' سؤال · '+(a.duration_minutes?fa(a.duration_minutes)+' دقیقه':'بدون محدودیت')+' · تلاش‌های استفاده‌شده '+fa(used)+'</p><button type="button" data-start-assignment="'+a.id+'" '+(done?'disabled':'')+'>'+(active?'ادامه فعالیت':done?'تلاش مجاز تمام شده':'شروع فعالیت')+'</button></div>'}).join('')||'هنوز فعالیتی برای کلاس منتشر نشده است.';el.querySelectorAll('[data-start-assignment]').forEach(b=>b.onclick=()=>startStudentAssignment(b.dataset.startAssignment))}catch(e){el.textContent='دریافت فعالیت‌ها ناموفق بود: '+cloudMessage(e)}}
-  $('refreshStudentAssignments').onclick=loadStudentAssignments;
-  async function startStudentAssignment(id){const el=$('studentAssignmentList');el.textContent='در حال آماده‌سازی فعالیت…';try{const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'start',assignment_id:id}});studentAssignmentState={assignment:r.assignment,attempt:r.attempt,questions:(r.questions||[]).filter(q=>!(r.answers||[]).some(a=>a.question_id===q.id)),index:0};$('studentAssignmentRunner').classList.remove('hidden');$('studentAssignmentTitle').textContent=r.assignment.title;if(!studentAssignmentState.questions.length){await finishStudentAssignment();return}renderStudentAssignmentQuestion()}catch(e){el.textContent='شروع فعالیت ناموفق بود: '+cloudMessage(e);await loadStudentAssignments()}}
-  function renderStudentAssignmentQuestion(){const st=studentAssignmentState;if(!st)return;const q=st.questions[st.index];if(!q){finishStudentAssignment();return}$('studentAssignmentProgress').textContent='سؤال '+fa(st.index+1)+' از '+fa(st.questions.length)+(st.attempt.deadline_at?' · مهلت تا '+new Date(st.attempt.deadline_at).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'}):'');let html='<p><b>'+escapeHtml(q.prompt)+'</b></p>';if(q.question_type==='input')html+='<label class="field">پاسخ <input id="assignmentAnswerInput" autocomplete="off"></label>';else html+=(q.options||[]).map(opt=>'<label class="option"><input type="'+(q.question_type==='multi'?'checkbox':'radio')+'" name="assignmentOption" value="'+escapeHtml(opt)+'"> '+escapeHtml(opt)+'</label>').join('');$('studentAssignmentQuestion').innerHTML=html;$('studentAssignmentFeedback').classList.add('hidden');$('studentAssignmentSubmit').classList.remove('hidden');$('studentAssignmentSubmit').disabled=false;$('studentAssignmentNext').classList.add('hidden')}
-  $('studentAssignmentSubmit').onclick=async()=>{const st=studentAssignmentState;if(!st)return;const q=st.questions[st.index];let answer;if(q.question_type==='input')answer=$('assignmentAnswerInput')?.value.trim()||'';else{const got=[...$('studentAssignmentQuestion').querySelectorAll('input[name="assignmentOption"]:checked')].map(x=>x.value);answer=q.question_type==='multi'?got:(got[0]||'')}if(!answer||(Array.isArray(answer)&&!answer.length)){alert('ابتدا پاسخ را وارد یا انتخاب کن.');return}const btn=$('studentAssignmentSubmit');setBusy(btn,true,'در حال ثبت…');try{const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'answer',attempt_id:st.attempt.id,question_id:q.id,submitted_answer:answer}});const f=$('studentAssignmentFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,r.correct===true,r.correct_answer||'',r.explanation||'');f.style.background='transparent';f.style.color=r.correct?'#63e5ad':'#ffcc7a';btn.classList.add('hidden');$('studentAssignmentNext').classList.remove('hidden');$('studentAssignmentNext').textContent=st.index===st.questions.length-1?'تحویل فعالیت':'سؤال بعدی'}catch(e){$('studentAssignmentFeedback').classList.remove('hidden');$('studentAssignmentFeedback').textContent='ثبت پاسخ ناموفق بود: '+cloudMessage(e)}finally{setBusy(btn,false)}};
-  $('studentAssignmentNext').onclick=async()=>{const st=studentAssignmentState;if(!st)return;if(st.index>=st.questions.length-1){await finishStudentAssignment();return}st.index++;renderStudentAssignmentQuestion()};
-  async function finishStudentAssignment(){const st=studentAssignmentState;if(!st)return;try{const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'finish',attempt_id:st.attempt.id}});$('studentAssignmentQuestion').innerHTML='<h3>فعالیت به پایان رسید</h3><p>پاسخ‌های ثبت‌شده: '+fa(r.answered)+' از '+fa(r.total)+'</p><p>نمره: '+fa(r.score)+' از '+fa(r.total)+(r.grade_out_of_20!==null?' · معادل '+fa(r.grade_out_of_20)+' از ۲۰':'')+'</p>';$('studentAssignmentProgress').textContent=r.status==='expired'?'مهلت تمام شده است.':'فعالیت تحویل شد.';$('studentAssignmentSubmit').classList.add('hidden');$('studentAssignmentNext').classList.add('hidden');$('studentAssignmentFeedback').classList.add('hidden');studentAssignmentState=null;await loadStudentAssignments()}catch(e){$('studentAssignmentFeedback').classList.remove('hidden');$('studentAssignmentFeedback').textContent='تحویل فعالیت ناموفق بود: '+cloudMessage(e)}}
+  async function loadTeacherAssignments(){
+ if(!cloudSession||cloudSession.role!=='teacher')return;
+ try{
+  const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'list'}});
+  $('teacherAssignmentsOnline').innerHTML=(r.assignments||[]).map(a=>'<div class="item"><b>'+escapeHtml(a.title)+'</b><p class="muted">'+escapeHtml(courseName(a.subject||'math'))+' · '+escapeHtml((a.lesson_ids||a.chapter_ids||[]).map(id=>courseLessonTitle(a.subject||'math',id)).join('، '))+' · '+fa(a.question_count)+' سؤال · '+(a.duration_minutes?fa(a.duration_minutes)+' دقیقه':'بدون محدودیت')+' · '+fa(a.max_attempts)+' تلاش · '+(a.is_published?'منتشرشده':'پیش‌نویس')+'</p></div>').join('')||'هنوز فعالیتی منتشر نشده است.';
+ }catch(e){$('teacherAssignmentsOnline').textContent='خواندن فعالیت‌ها ناموفق بود: '+cloudMessage(e)}
+}
+$('actSubject').onchange=()=>{
+ populateAssignmentLessons();
+ const cfg=courseSettingsBySubject[$('actSubject').value]||{};
+ $('actRandomQuestions').checked=cfg.defaultRandomQuestions!==false;
+ $('actRandomOptions').checked=cfg.defaultRandomOptions!==false;
+ $('actHideScore').checked=cfg.defaultHideScores!==false;
+ $('actShowFeedback').checked=cfg.defaultFeedback!==false;
+ if(cfg.allowPractice===false&&$('actType').value==='تمرین')$('actType').value='امتحان فصل';
+};
+$('actLesson').innerHTML=chapters.filter(c=>c.id<=7).map(c=>'<option value="'+c.id+'">فصل '+fa(c.id)+': '+escapeHtml(c.title)+'</option>').join('');
+$('saveDemoActivity').onclick=async()=>{
+ if(!cloudSession||cloudSession.role!=='teacher'){alert('ابتدا با حساب معلم وارد شو.');return}
+ const subject=$('actSubject').value||'math',lessonId=Number($('actLesson').value||1);
+ const title=$('actTitle').value.trim(),count=Number($('actQuestionCount').value),duration=Number($('actDuration').value)||0,scope=$('actScope').value,chapter=Number($('actChapter').value);
+ if(!title||!Number.isInteger(count)||count<1||count>200){alert('عنوان و تعداد سؤال را بررسی کن.');return}
+ const chapters=subject!=='math'?[Math.min(lessonId,7)]:scope==='midterm'?[1,2,3]:(scope==='final'||scope==='all')?[1,2,3,4,5,6,7]:[chapter];
+ const lessonIds=subject!=='math'?[lessonId]:chapters;
+ const types={'تمرین':'practice','امتحان فصل':'exam','نوبت اول':'term1','نوبت دوم':'term2'};
+ const attempts=$('actAttempts').value==='unlimited'?Number(courseSettingsBySubject[subject]?.maxAttempts||100):Number($('actAttempts').value);
+ const btn=$('saveDemoActivity');setBusy(btn,true,'در حال انتشار…');
+ try{
+  const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'create',title,subject,lesson_ids:lessonIds,activity_type:types[$('actType').value]||'practice',scope,chapter_ids:chapters,question_count:count,duration_minutes:duration,max_attempts:attempts,random_questions:$('actRandomQuestions').checked,random_options:$('actRandomOptions').checked,show_feedback:$('actShowFeedback').checked,hide_score_from_peers:$('actHideScore').checked}});
+  $('actTitle').value='';$('demoActivityList').textContent='فعالیت «'+title+'» برای '+courseName(subject)+' / '+courseLessonTitle(subject,lessonId)+' منتشر شد؛ '+fa(r.question_count)+' سؤال انتخاب شد.';await loadTeacherAssignments();
+ }catch(e){$('demoActivityList').textContent='انتشار ناموفق بود: '+cloudMessage(e)}
+ finally{setBusy(btn,false)}
+};
+
   $('teacherNav').querySelector('[data-tab="assignments"]')?.addEventListener('click',loadTeacherAssignments);
 
 
@@ -1959,7 +2176,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       cloudSession={...prior,user,profile};saveCloudSession();
       if(profile.role==='student'){
         activeUsername=String(prior.username||profile.display_name||'');activeStudentName=activeUsername;activeProfile={...readProfile(activeUsername),name:profile.display_name||activeUsername,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);
-        await loadStudentQuestionBank();await refreshStudentProgressFromCloud();try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress restore failed',e)}startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
+        await loadStudentQuestionBank();await loadCourseSettings(true);await refreshStudentProgressFromCloud();try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress restore failed',e)}startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
       }else if(profile.role==='teacher'){show('teacher');await loadTeacherReport();await loadTeacherQuestionBank()}
     }catch(e){clearCloudSession(false);console.info('No reusable Supabase session',e)}
   })();
@@ -2040,6 +2257,83 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   });
   otherSubjectData.find(s=>s.id==='persian').lessons=persianLessons;
   otherSubjectData.find(s=>s.id==='dictation').lessons=persianLessons.map(l=>({...l,dictationOnly:true}));
+
+// واژه‌ها از دو فایل بارگذاری‌شدهٔ معلم: فهرست املا و جزوهٔ هم‌معنی/متضاد/هم‌خانواده.
+const persianSourceLexicon={
+1:{spelling:['نقاشی','نقاش','هنرمند','تصمیم','داوری','پذیرفت','منظره','طبیعت','بهار','تابستان','پاییز','زمستان','گلگون','شکوفه','درخت','شاخه','بادام','هلو','بلبل','پرستو','نرگس','بنفشه','کاج','سرو','جنگل','رودخانه','دریاچه','مزرعه','گندم','خوشه‌های طلایی','ناپدید','بلور','نقش‌ونگار','چیره‌دست'],meanings:[['انبوه','زیاد'],['جلا','برّاق کردن'],['اثر','علامت'],['آویخت','آویزان کرد'],['پوشش','لباس'],['پهن کرد','گسترد'],['غوک','قورباغه'],['چیره‌دست','ماهر'],['ضخیم','کلفت'],['معرفت','شناخت']],synonyms:[['دل‌انگیز','زیبا، جالب، دلفریب'],['جهان‌افروز','روشن‌کنندهٔ جهان'],['نشانید','گذاشت، فرو نشانید'],['نیلی','رنگ آبی تیره'],['رمه','گلهٔ گوسفند'],['تپید','حرکت کرد، بی‌قرار شد'],['پراکند','پخش کرد'],['داوری','قضاوت']],opposites:[['روشنایی','تاریکی'],['تیره','روشن'],['دشوار','آسان'],['بهتر','بدتر'],['داغ','سرد'],['نیکی','بدی'],['ناپدید','پیدا'],['بی‌حوصله','با‌حوصله']],families:[['صبح','صبحگاه، صبحی'],['اطراف','طرف، طرفی'],['طبیعت','طبیعی، طبایع'],['معرفت','معروف، تعریف'],['روشن','روشنایی، روشنی'],['تصویر','تصاویر، مصوّر'],['نقاش','نقش، نقشه'],['مهاجر','مهاجرت']]},
+2:{spelling:['پرستوها','پرندگان','جوجه‌ها','لانه','شاخه','پرواز','کوچ','سفر','زمستان','بهار','تابستان','معتدل','حشرات','پرندگان شکاری','چنگال','خطر','طولانی','مسیر','راه‌یابی','اشتباه','بازگشت','شگفتی','آفرینش','پند','باغبان','دانه','گیاه'],meanings:[['جامه','لباس'],['آسودگی','آرامش'],['عهده','مسئولیت، وظیفه'],['کوچ','مهاجرت'],['پی‌درپی','پیوسته، پشت سرهم'],['ناچار','مجبور، ناگزیر'],['دشواری','سختی'],['می‌ربایند','می‌دزدند']],synonyms:[['راه‌یابی','پیدا کردن مسیر'],['بی‌پروا','نترس، شجاع، بی‌باک'],['راه و رسم','روش'],['هیجان','شور و شوق'],['لازم','واجب'],['اصلاً','ابداً، به هیچ وجه'],['اوقات','وقت‌ها، زمان‌ها'],['معتدل','نه زیاد سرد و نه زیاد گرم']],opposites:[['اوایل','اواخر'],['طولانی','کوتاه'],['جوان','پیر'],['قوی','ضعیف'],['دوست','دشمن'],['دور','نزدیک'],['آغاز','پایان'],['دانا','نادان']],families:[['لطیف','لطف، لطافت'],['معلوم','علم، عالم، معلم'],['طولانی','طول، طویل'],['تعجب','عجب، عجیب'],['اعتراض','معترض'],['غرور','مغرور'],['تعهد','عهد، عهده'],['جمع','مجموع، جامع']]},
+3:{spelling:['نشانه','آسیاب','کیسه','گندم','الاغ','قهوه‌خانه','چشم','راست','چپ','لنگیدن','تعجب','حدس','قضاوت','بارندگی','حیاط','حیات','خار','خوار','خورد','خرد','خواست','خاست'],meanings:[['معذرت‌خواهی','عذرخواهی'],['گر','اگر'],['می‌لنگید','لنگ‌لنگان راه می‌رفت'],['آسیاب','دستگاهی برای آرد کردن گندم'],['زاغک','زاغ کوچک'],['قالب','قطعه، تکه'],['برگرفت','برداشت'],['حیلت‌ساز','حیله‌گر، مکّار']],synonyms:[['مرغان','پرندگان'],['اندیشیدم','فکر کردم'],['حیات','زندگی'],['ردپا','جای پا'],['اثاث','وسایل، ابزار'],['قضا','سرنوشت، تقدیر'],['خشمگین','عصبانی'],['حدس زدم','گمان کردم']],opposites:[['کور','بینا'],['راست','چپ'],['خوشحال','غمگین'],['درست','نادرست'],['خوب','بد'],['کمتر','بیشتر'],['گود','برآمدگی'],['خشمگین','آرام']],families:[['حاکم','حکومت، حکمرانی'],['معذرت','عذر، عذرخواهی'],['فریب','فریبنده، فریبا'],['حیلت','حیله، حیله‌گر'],['فهم','فهمیده، فهماندن'],['گود','گودال']]},
+4:{spelling:['حکیم','دانش','سفر','کشتی','بادبان','حرکت','ادامه','طوفان','ناخدا','امواج','مسافران','تکه‌پاره','ساحلی','ماهیگیر','تعجب','امیر','فرمان','آگاهی','اندوختن','قلم','جوهر','تراشید','سرمایه','ماسه','صخره','گفت‌وگو'],meanings:[['حکیم','دانشمند، فیلسوف'],['قصد','اراده کردن، نیت'],['اندوخت','جمع کرد'],['قضا','تقدیر، سرنوشت'],['تخته‌پاره','تکه چوب'],['برافراشته','بالا برده'],['افزوده می‌شد','اضافه می‌شد'],['تعلیم','آموزش دادن، یاد دادن']],synonyms:[['نیک‌نامی','معروف بودن به خوبی'],['سرمایه','اندوخته'],['چیزی نگذشت','مدت زیادی نگذشت'],['شادمان','خوشحال'],['شهرت','آوازه'],['امیر','فرمانروا'],['آگاهی داشتن','باخبر بودن'],['فرمان','دستور']],opposites:[['قدیم','جدید'],['سوار','پیاده'],['زندگی','مرگ'],['نیک‌نامی','بدنامی'],['افزوده می‌شد','کم می‌شد'],['از هوش رفت','به هوش آمد'],['شادمان','غمگین']],families:[['قصد','مقصود'],['قدیم','قدمت، قدیمی'],['فکر','افکار، متفکر'],['موج','امواج'],['تعلیم','علم، معلم'],['حاضر','حضور، محضر'],['حال','احوال، حالت'],['حرکت','تحرک، متحرک']]},
+5:{spelling:['بازرگان','ثروتمند','طوطی','شیرین','سخن','تصمیم','هندوستان','غلام','هدیه','سوغات','گران‌بها','ارمغان','پیغام','طوطیان','سلام','قفس','مشتاق','ساکت','ناگهان','پشیمان','تجارت','شادکام','مردن'],meanings:[['بازرگان','تاجر'],['دلتنگ','غمگین'],['شیرین‌زبان','شیرین‌گفتار'],['گران‌بها','باارزش'],['غلام','نوکر، خدمتکار'],['خطه','سرزمین'],['بو برد','پی برد'],['ارمغان','هدیه، سوغات']],synonyms:[['حبس','زندان، بازداشت'],['شادکام','خوشحال'],['کنیزک','خدمتکار'],['نشان','علامت، نشانه'],['دریافت','دانست، فهمید'],['گریستن','گریه کردن'],['سوغاتی','هدیه، ارمغان'],['تجارت','بازرگانی، دادوستد']],opposites:[['ثروتمند','فقیر'],['رهایی','اسارت'],['اسیر','آزاد'],['پرسش','پاسخ'],['خام','پخته'],['گران‌بها','ارزان']],families:[['لذیذ','لذت'],['حبس','محبوس'],['شگفت‌زده','شگفت‌انگیز'],['مشتاق','شوق، اشتیاق'],['سکوت','ساکت'],['وقت','اوقات'],['حال','احوال'],['تجارت','تاجر، تجار']]},
+6:{spelling:['نبرد','طولانی','سپاه','خسته‌کننده','نگران','فرماندهی','افراسیاب','توران','ایرانیان','پایداری','شکست','اندوهگین','ناامید','بردباری','پیشنهاد','آشتی','پهلوان','تیر','کمان','تیرانداز','پرتاب','خاور','مرز','دماوند','نیرومند','استوار','قله','شجاعت','فداکاری','سربلندی'],meanings:[['نبرد','جنگ'],['آشتی','صلح و دوستی'],['گهر','گوهر، مروارید'],['استوار','پابرجا، پایدار'],['فرود آید','پایین بیاید'],['چاره','راه‌حل، تدبیر'],['سرپنجه','نیرومند، توانا'],['تناور','تنومند، قوی']],synonyms:[['نقص','عیب، کمی و کاستی'],['کمان','ابزار تیراندازی'],['سامان دادن','منظم کردن'],['پولادین','ساخته‌شده از پولاد'],['دیرین','قدیمی'],['چست','چالاک و چابک'],['برّان','برنده، تیز'],['پهن','گسترده، پهناور']],opposites:[['پیروزی','شکست'],['ناامید','امیدوار'],['سختی','آسانی'],['آشتی','قهر'],['خاور','باختر'],['محکم','سست'],['نهان','آشکار'],['نازک','ضخیم']],families:[['تحقیر','حقارت، حقیر'],['ماهر','مهارت'],['مشکل','اشکال'],['منتظر','انتظار'],['توانا','توان'],['نقص','ناقص'],['رشید','رشادت'],['عیب','عیوب']]},
+7:{spelling:['مهمان','عزیز','بزرگی','حضور','آماده','استقبال','شادی','نشاط','چهره','جمعیت','انبوه','انتظار','نشاط‌انگیز','گنجشکان','سرود','صدا و سیما','استقرار','مسئولان','بامدادی','نسیم','خنک','لطیف','همهمه','هماهنگ','منظم','خودباور','خودبین','خوددار'],meanings:[['حضور','حاضر بودن، وجود'],['تپش','تپیدن، جنبش'],['نشاط','شادی، شوق'],['هیجان','شور و شوق'],['بالاخره','سرانجام'],['مشتاق','آرزومند'],['نسیم','باد ملایم'],['استقبال','پیشواز']],synonyms:[['رخسار','چهره'],['خروشان','پرسروصدا'],['همهمه','سروصدا'],['انبوه','بسیار زیاد'],['پرتوان','با قدرت، با نیرو'],['غوغا','سروصدا'],['مشام','بینی'],['فعالیت','کوشش، تلاش']],opposites:[['طلوع','غروب'],['آغاز','پایان'],['همهمه','سکوت'],['شادی','غم'],['تشنه','سیراب'],['جدا','متصل'],['خواب','بیداری']],families:[['مشتاق','شوق، اشتیاق'],['متوجه','توجه'],['صبر','صبور، صابر'],['مرخص','ترخیص، مرخصی'],['انتظار','منتظر'],['حرکت','تحرک، متحرک'],['اشعار','شعر، شاعر'],['ضخامت','ضخیم']]},
+8:{spelling:[],meanings:[],synonyms:[],opposites:[],families:[]},
+9:{spelling:[],meanings:[],synonyms:[],opposites:[],families:[]},
+10:{spelling:['باغچه‌بان','کودکی','فعال','کنجکاو','شعر','کودکانه','تصویر','کاغذپاره','نقاشی','جنگل','کوه','دوردست','اندیشه','مکتب','شاگردی','استاد','بنایی','قنادی','خانواده','توان','تلاش','اراده','پشتکار','علاقه','ناشنوا','نابینا','الفبا','ابداع','استعداد','پرورش','آموزش','اعتماد','توکل','خدمت','تبریز'],meanings:[['طاق','سقف'],['مکتب','محل درس خواندن در گذشته'],['رونق داشتن','خوب بودن وضع کسب‌وکار'],['برگزیده شدن','انتخاب شدن'],['جویا','کنجکاو'],['اقامت گزیدم','در جایی ساکن شدم، ماندم'],['پشتکار','تلاش برای انجام کاری'],['مدارا','با نرمی و مهربانی رفتار کردن']],synonyms:[['خشنود','راضی، خوشحال'],['عاجز','ناتوان'],['ابداع','نوآوری'],['لبریز','پر، لبالب'],['سرمشق','الگو، نمونه'],['بام','پشت‌بام'],['دل‌سوز','مهربان'],['بردباری','شکیبایی']],opposites:[['باسواد','بی‌سواد'],['جدید','قدیم'],['قبول','رد، مردود'],['ابتدا','انتها'],['توانا','ناتوان'],['اسیر','آزاد'],['گدا','ثروتمند'],['مسکین','ثروتمند']],families:[['صبر','صابر، صبور'],['فعال','فعالیت'],['رحمت','رحیم، رحم'],['مقصود','قصد، قاصد'],['قبول','قابل، مقبول'],['کتاب','کاتب، مکتوب'],['مکتب','کتاب، مکتوب'],['کرم','کریم، کرامت']]},
+11:{spelling:['جبهه','خانواده','دلتنگی','دیدار','قصه','ناتمام','عروسک','پلاستیکی','رزمندگان','شهدا','خرمشهر','متجاوزان','اشغال','آزادی','مقاومت','تکبیر','بالگرد','فرماندهان','میدان نبرد','خستگی‌ناپذیر','شور و شوق','تسخیرناپذیر','دژ','دلاوران','وصف‌ناپذیر'],meanings:[['دلتنگ','غمگین'],['مانع','سد، جلوگیری'],['محور','اساس، مبنا'],['مقابله','رویارویی'],['مسئولیت','سرپرستی یک کار مهم'],['اعتقاد','باور'],['به شدت','زیاده از حد، بسیار زیاد'],['محتاج','نیازمند']],synonyms:[['سقوط','افتادن'],['تسخیرناپذیر','چیزی که به آسانی به دست نیاید'],['دم','لحظه'],['شوق','میل و علاقهٔ فراوان'],['وصف‌ناپذیر','غیرقابل توصیف'],['نفوذناپذیر','غیرقابل نفوذ'],['بی‌وقفه','بی‌درنگ، بدون توقف'],['گذرگاه','محل عبور، جای گذر']],opposites:[['مظلوم','ظالم'],['پنهان','آشکار'],['خاموش','روشن'],['دوردست','نزدیک'],['اشغال','آزاد'],['پاک','ناپاک'],['محتاج','بی‌نیاز'],['سبک','سنگین']],families:[['منتظر','انتظار'],['اعتقاد','عقیده'],['مانع','منع'],['مرخصی','ترخیص'],['محتاج','احتیاج'],['نیازمند','بی‌نیاز'],['مسئولیت','مسئول'],['وصف','توصیف']]},
+12:{spelling:['باران','شیشه','نوشته','نامه','مادر','جنوب','جبهه','سایه','خدا','آرام','بی‌صدا','قطره','دفتر','برگ','شبنم','تگرگ','اتفاق','ساده','شدت','ناراحتی','گریه','خبر','مهربان','زرنگ'],meanings:[['حسرت خوردن','افسوس خوردن'],['حسرت','اندوه'],['شوق','خوشحالی، شادی'],['حومه','اطراف'],['مختصر','کم، کوتاه'],['پاسبانی','نگهبانی، پاسداری، مراقبت'],['مثل','مانند'],['گمان','خیال']],synonyms:[['سطر','یک خط از نوشته'],['سرایت کند','منتقل شود']],opposites:[['جنوب','شمال'],['خندید','گریه کرد'],['مختصر','طولانی'],['راضی','ناراضی'],['ناپسند','پسندیده'],['زنده','مرده'],['ساده','سخت'],['آخر','اول']],families:[['مثل','مثال، امثال'],['شوق','رغبت، اشتیاق'],['تولد','متولد'],['حفظ','حافظ، محفوظ'],['توصیف','وصف'],['ظلم','ظالم، مظلوم'],['انتخاب','منتخب']]},
+13:{spelling:['موسی','مادر','نیل','جلیل','حسرت','بی‌گناه','فراموش','لطف','کشتی','باطل','منزل','عشق','مهر','شیوه','گهواره','دایه','سیلاب','موج','طوفان','فرمان','ناخدا','مکتب','گرداگرد','لبالب','سراسر','دمادم'],meanings:[['کاین','که این'],['اینک','اکنون، حالا'],['اندر','در'],['صالح','شایسته، مصلحت'],['شهباز','نوعی پرندهٔ شکاری'],['زه','چلهٔ کمان'],['بگسست','پاره شد'],['حی داور','پروردگار']],synonyms:[['در فکند','انداخت، رها کرد'],['رب جلیل','خدای بلندمرتبه و بزرگ'],['پرّان','پرنده، در حال پرواز'],['خرد','کم‌سن‌وسال، کودک'],['اجل','پایان زندگی'],['حسرت','اندوه، افسوس'],['کمان','ابزار تیراندازی'],['ناخدا','صاحب کشتی']],opposites:[['بی‌گناه','گناهکار'],['کهنسال','جوان'],['خندان','گریان'],['باطل','صحیح، درست'],['عدل','ظلم، ستم'],['مرگ','زندگی'],['شاد','ناراحت']],families:[['عشق','عاشق، معشوق'],['جلیل','جلال'],['عدل','عدالت، عادل'],['صیاد','صید'],['صالح','صلح، مصلحت'],['نگون‌اقبال','خوشبخت'],['لطف','لطیف، لطافت'],['باطل','ابطال، بطلان']]},
+14:{spelling:['رنج','بیهوده','سعی','عالم','نادان','عمل','زنبور','عسل','ادب','بی‌ادب','پرهیز','ادیبان','گمان','عطار','هنرنمایی','طبل','خاموش','بلندآواز','تهی','داناست','گلستان'],meanings:[['اندوخت','جمع کرد، گردآوری کرد'],['چندان','هر مقدار، هر اندازه'],['طبله','صندوقچه'],['غازی','جنگجو'],['پرهیز کردن','دوری کردن، خودداری کردن']],synonyms:[['مشک','مادهٔ روغنی خوشبو'],['آموخت','یاد گرفت، یاد داد'],['عطار','عطرفروش'],['ناپسند','بد و نامناسب'],['رنج','درد'],['غازی','جنگجو'],['ایشان','آن‌ها'],['طبل غازی','طبل جنگی']],opposites:[['رنج','آرامش، راحتی'],['علم','جهل'],['ناپسند','پسندیده'],['تهی','پر'],['اندوخت','نیاندوخت'],['عالم','علم، علوم'],['فایده','بی‌فایده']],families:[['ناپسند','ناشایست'],['بلندآواز','با صدای بلند'],['تهی','خالی'],['خاموش','ساکت'],['هنرنما','کسی که هنری را نشان دهد'],['قاضی','دادرس'],['طالب','مطلوب'],['بلندآواز','خاموش']]},
+15:{spelling:['بیشه','شیر','موش','خواب','بیدار','رفتار','گوش','بیچاره','هراس','التماس','بزرگی','خطاکار','امید','فرصت','رحم','رها','دام','شکار','صیاد','دندان','بند','جان','خلاص','چاره'],meanings:[['بیشه','جنگل'],['سحر','جادو'],['خفته','خوابیده'],['درعوض','به جای'],['متغیر','خشمگین'],['صید','شکار'],['لابه','التماس'],['تحمل','صبر']],synonyms:[['بازیگوش','کسی که بیشتر به فکر بازی است'],['حاصل کرد','به دست آورد'],['یک غازی','بی‌ارزش، ناچیز'],['بشتافت','شتابان رفت'],['هراس','ترس'],['حدس زدم','گمان کردم، فکر کردم'],['فاش','آشکار، ظاهر'],['قطعات','قطعه‌ها، تکه‌ها']],opposites:[['سخت','آسان'],['خفته','بیدار'],['خواب','بیدار'],['حقیقت','دروغ'],['موفقیت','شکست'],['گریه','خنده'],['تشویق','تنبیه'],['رهایی','اسارت']],families:[['متغیر','تغییر'],['وحوش','وحشی'],['مغفرت','استغفار'],['رحم','رحیم'],['صید','صیاد'],['عوض','تعویض'],['حاصل','محصول'],['تکلیف','مکلف']]},
+16:{spelling:['پرسشگری','علامت سؤال','موجودات','جهان','زمین','آسمان','می‌چرخد','هزاران','پاسخ','پژوهشگر','دانشمند','ابوریحان بیرونی','فیلسوف','دانا','یادگیری','علاقه','ناشناخته','توجه','تسلط','مسئله','نادانسته','جاهل','بیماری','پژوهش'],meanings:[['معلق','آویزان'],['فلان','اشاره به شخص نامعلوم'],['دانش‌اندوزی','علم‌آموزی'],['فیلسوفان','دانشمندان'],['درگذرم','بمیرم'],['فزای','اضافه کن'],['رامش','آرامش، آزادگی'],['میاسای','دست از تلاش برندار']],synonyms:[['عجیب','شگفت‌آور'],['واپسین','آخرین، پایانی'],['گسترش','پهن‌شدگی، گستردگی'],['همواره','همیشه، پیوسته'],['گریزان','در حال فرار'],['بالین','کنار'],['گویی','مثل اینکه'],['سپری شد','گذشت']],opposites:[['بیماری','سلامتی'],['دانا','نادان'],['برنا','پیر'],['جاهل','دانا'],['توانا','ناتوان'],['پیر','جوان']],families:[['شبیه','شباهت'],['منتظر','انتظار'],['کشف','کاشف'],['جهل','جاهل'],['سؤال','سؤالات']]},
+17:{spelling:['نم‌نم','باران','نسیم','خنک','بهاری','لذت','مشتاق','مدرسه','حیاط','پرچم','ایران','دبستان','معرفت','دانش‌آموز','تخته','هوشمند','صفحه','لمسی','گچ','رایانه','نرم‌افزار','آموزشی','پیامک','اینترنت','مجازی','کتابخانه','پیشرفت','فناوری','علمی','پرگار','زاویه','خط‌کش','دایره','رنگی','هدیه'],meanings:[['لمسی','قابل لمس'],['نمایان','آشکار'],['طعم','مزه'],['کامران','پیروز، موفق'],['بنگری','نگاه کنی'],['کژ','کج، خمیده'],['حامی','نگهبان'],['ثنا','ستایش، ستودن']],synonyms:[['لفظ','زبان'],['الها','خدایا'],['دلنشین','جذاب و قشنگ'],['رحمت','مهربانی'],['یکنواخت','یک جور، هماهنگ'],['استقبال','پیشواز'],['تلف کردن','نابود کردن، تباه کردن'],['برّاق','درخشان']],opposites:[['مجازی','واقعی'],['حاضر','غایب'],['اولین','آخرین'],['تندتند','آرام‌آرام'],['عمیق','کم‌عمق'],['نمایان شد','پنهان شد'],['وارد','خارج'],['آغاز','پایان']],families:[['لذت','لذیذ'],['نفس','تنفس'],['حاضر','حضور'],['معرفت','عرف'],['عمیق','عمق'],['قسمت','تقسیم'],['معذور','عذر'],['انصاف','منصف']]}
+};
+persianLessons.forEach(l=>{
+ const data=persianSourceLexicon[l.id];
+ if(!data)return;
+ l.spellingWords=data.spelling;
+ l.meanings=data.meanings;
+ l.synonyms=data.synonyms;
+ l.opposites=data.opposites;
+ l.families=data.families.map(([root,related])=>({root,words:related.split(/،|,/).map(x=>x.trim()).filter(Boolean)}));
+ l.extendedVocabulary=[];
+});
+function vocabKey(value){return String(value||'').normalize('NFC').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[\s‌‍]+/g,' ').trim().toLowerCase()}
+function cleanSourceVocabPair(row){
+ let text=String(row||'').replace(/[▪•◦]/g,'').replace(/\s+/g,' ').trim();
+ const split=text.indexOf(':');if(split<1)return null;
+ let left=text.slice(0,split).trim(),right=text.slice(split+1).trim();
+ const corrections={'جال':'جلا','عالمت':'علامت','طوالنی':'طولانی','پوالدین':'پولادین','باألخره':'بالاخره','مقدیم':'قدیم','عاجر':'عاجز','فالن':'فلان','بذبخت':'بدبخت','نبدی':'نبودی'};
+ left=corrections[left]||left;
+ right=right.replace(/بودن ی جهان/g,'جهان').replace(/جذّاب ف/g,'جذاب و').replace(/جذاب ف/g,'جذاب و').replace(/\s{2,}/g,' ').replace(/[،,]{2,}/g,'،').trim();
+ if(left==='جهان افروز')right='روشن‌کنندهٔ جهان';
+ if(left==='مغفرت'&&right.includes('بدترین'))right='استغفار';
+ if(!left||!right||left.length>55||right.length>180)return null;
+ if(/^(?:صفحه|درس|کتاب|عنوان)$/i.test(left)||right===':')return null;
+ return [left,right];
+}
+function mergeSourcePairs(existing,sourceRows){
+ const out=Array.isArray(existing)?existing.map(x=>Array.isArray(x)?[String(x[0]),String(x[1])]:x):[];
+ const seen=new Set(out.filter(Array.isArray).map(x=>vocabKey(x[0])+'|'+vocabKey(x[1])));
+ for(const row of sourceRows||[]){
+  const pair=cleanSourceVocabPair(row);if(!pair)continue;
+  const key=vocabKey(pair[0])+'|'+vocabKey(pair[1]);if(seen.has(key))continue;
+  seen.add(key);out.push(pair);
+ }
+ return out;
+}
+async function loadExpandedPersianVocabulary(){
+ try{
+  const response=await fetch('./assets/persian-vocabulary.json.gz.b64',{cache:'force-cache'});
+  if(!response.ok)throw new Error('فایل مرجع واژگان در سایت پیدا نشد.');
+  const encoded=(await response.text()).trim();if(!encoded)throw new Error('فایل مرجع واژگان خالی است.');
+  const binary=atob(encoded),bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  if(!('DecompressionStream' in window))throw new Error('مرورگر این دستگاه از فشرده‌گشایی فایل واژگان پشتیبانی نمی‌کند.');
+  const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+  const source=JSON.parse(await new Response(stream).text());
+  for(const lesson of persianLessons){
+   const rows=source[String(lesson.id)];if(!rows||lesson.isFreeLesson)continue;
+   lesson.meanings=mergeSourcePairs(lesson.meanings,rows.meanings);
+   lesson.synonyms=mergeSourcePairs(lesson.synonyms,rows.synonyms);
+   lesson.opposites=mergeSourcePairs(lesson.opposites,rows.opposites);
+   const existing=(lesson.families||[]).map(item=>[item.root,(item.words||[]).join('، ')]);
+   lesson.families=mergeSourcePairs(existing,rows.families).map(([root,related])=>({root,words:related.split(/،|,|؛/).map(x=>x.trim()).filter(Boolean)}));
+  }
+  if(selectedOtherSubject&&['persian','dictation'].includes(selectedOtherSubject.id)&&selectedOtherLesson)renderOtherLesson(selectedOtherLesson.id);
+  console.info('Expanded Persian vocabulary loaded from teacher PDFs.');
+ }catch(error){console.warn('Using the built-in Persian vocabulary fallback:',error)}
+}
+loadExpandedPersianVocabulary();
 
   let selectedOtherSubject = null;
   let selectedOtherLesson = null;
@@ -2145,7 +2439,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'کتاب و مهارت‌های پایه'},
       ...otherSubjectData.map(s=>({id:s.id,name:s.name,icon:s.icon,description:s.id==='persian'?'املا، معنی واژه، هم‌خانواده، متضاد و دانش زبانی':s.id==='dictation'?'املای واژه‌ها و تمرین دقت نوشتاری':s.id==='science'?'آموزش و تمرین علوم تجربی':s.id==='social'?'مفاهیم و تمرین مطالعات اجتماعی':'آموزش و تمرین هدیه‌های آسمانی',count:fa(s.lessons.length)+' مبحث آغازین'}))
     ];
-    box.innerHTML=subjects.map(s=>'<button type="button" class="subject" data-student-subject="'+s.id+'"><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(s.name)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+escapeHtml(s.count)+'</small></button>').join('');
+    box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=cfg.courseTitle||s.name;const total=courseLessonCatalog(s.id).length;const openCount=courseLessonCatalog(s.id).filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled&&openCount?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
     box.querySelectorAll('[data-student-subject]').forEach(b=>b.onclick=()=>{
       const id=b.dataset.studentSubject;
       if(id==='math'){
@@ -2159,17 +2453,17 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
-    box.innerHTML=otherSubjectData.map(s=>{const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'"><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(s.name)+'</b><small>'+fa(s.lessons.length)+' مبحث آغازین · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
+    box.innerHTML=otherSubjectData.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;const open=s.lessons.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(cfg.courseEnabled!==false&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(s.lessons.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
   function openOtherSubject(id){
-    selectedOtherSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!selectedOtherSubject)return;
+    selectedOtherSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!selectedOtherSubject)return;if(courseSettingsBySubject[id]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
     activeStudentSubject=selectedOtherSubject.id;$('otherSubjectPicker').classList.add('hidden');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
     $('otherSubjectTitle').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     const progress=readOtherProgress();const box=$('otherSubjectLessonPicker');
-    box.innerHTML=selectedOtherSubject.lessons.map(l=>'<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'"><strong>'+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ همهٔ تمرین‌ها درست پاسخ داده شد':'واژه‌آموزی · دانش زبانی · املا')+'</small></button></div>').join('');
+    box.innerHTML=selectedOtherSubject.lessons.map(l=>{const open=isCourseLessonOpen(selectedOtherSubject.id,l.id);return '<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'" '+(open?'':'disabled')+'><strong>'+(open?'':'🔒 ')+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(open?(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ تمرین‌ها تکمیل شده':'برای بازکردن محتوا بزن'):'این درس هنوز از طرف معلم باز نشده است')+'</small></button></div>'}).join('');
     box.querySelectorAll('[data-other-lesson]').forEach(b=>b.onclick=()=>renderOtherLesson(b.dataset.otherLesson));
     $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(l=>progress[selectedOtherSubject.id+'-'+l.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
   }
@@ -2217,38 +2511,38 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function lessonImagePath(page){return './assets/book-pages/persian/page-'+String(page).padStart(3,'0')+'.webp'}
   async function loadLessonBookSection(subjectId,lesson){
     const mount=$('lessonBookSection');if(!mount)return;
-    mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب</h4><p class="muted">در حال بررسی فایل صفحات کتاب…</p></section>';
-    const subject=bookSubjectCatalog.find(s=>s.id===subjectId);
+    const displayId=subjectId==='dictation'&&!courseSettingsBySubject.dictation?.bookFilePath?'persian':subjectId;
+    const subject=bookSubjectCatalog.find(s=>s.id===displayId)||bookSubjectCatalog.find(s=>s.id===subjectId);
     if(!subject){mount.innerHTML='';return}
-    const localUrl=bookUrls[subjectId]||((subjectId==='dictation')?bookUrls.persian:null);
+    mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">در حال بارگذاری صفحات اصلی کتاب…</p></section>';
     const info=(subjectId==='persian'||subjectId==='dictation')?persianBookPageMap[Number(lesson.id)]:null;
-    if((subjectId==='persian'||subjectId==='dictation')&&info){
+    if(info){
       const imagePages=[];for(let p=info.start;p<=info.end;p++)imagePages.push(p);
-      const hasImages=await assetExists(lessonImagePath(info.start));
-      if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
-      if(hasImages){
-        mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب فارسی</h4><p>برای دیدن تصویر هر صفحه، عنوان همان صفحه را باز کن.</p>'+imagePages.map((p,i)=>'<details class="book-page-item" '+(i===0?'open':'')+'><summary>صفحهٔ '+fa(p)+'</summary><img loading="'+(i===0?'eager':'lazy')+'" src="'+lessonImagePath(p)+'" alt="تصویر صفحهٔ '+fa(p)+' از کتاب فارسی چهارم"></details>').join('')+'</section>';
-        return;
-      }
-      let pdfUrl=localUrl,page=info.start;
-      const localName=bookNames[subjectId]||(subjectId==='dictation'?bookNames.persian:'')||'';
-      if(!pdfUrl&&await assetExists(subject.asset)){pdfUrl=subject.asset;page=info.pdfStart}
-      else if(pdfUrl&&/persian-pages\.pdf/i.test(localName)){page=info.pdfStart}
-      if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
-      if(pdfUrl){
-        mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب فارسی</h4><p class="muted">این نمایشگر از صفحهٔ '+fa(info.start)+' کتاب شروع می‌شود؛ برای دیدن صفحه‌های بعدی، در خود نمایشگر حرکت کن.</p><a class="book-open-link" href="'+pdfUrl+'#page='+page+'&view=FitH" target="_blank" rel="noopener">باز کردن صفحات کتاب در صفحهٔ جداگانه</a><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب فارسی چهارم" src="'+pdfUrl+'#page='+page+'&view=FitH"></iframe></section>';
-      }else{
-        mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب</h4><p>برای نمایش تصویرهای این درس، فایل صفحات کتاب را در مسیر <code>assets/books/persian-pages.pdf</code> در مخزن سایت قرار بده. بستهٔ آمادهٔ صفحات همراه این اصلاح آماده شده است. می‌توانی پوشهٔ تصویرهای جداگانه را نیز در <code>assets/book-pages/persian/</code> قرار بدهی.</p><a class="book-open-link" href="https://github.com/mahdinezami123411-a11y/riazi4-online/tree/main/assets/books" target="_blank" rel="noopener">باز کردن پوشهٔ کتاب‌ها در GitHub</a></section>';
-      }
-      return;
+      const pathFor=p=>'./assets/book-pages/persian/page-'+String(p).padStart(3,'0')+'.webp';
+      try{
+        const hasImages=await assetExists(pathFor(info.start));
+        if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
+        if(hasImages){
+          mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب فارسی</h4>'+imagePages.map((p,i)=>'<details class="book-page-item" '+(i===0?'open':'')+'><summary>صفحهٔ '+fa(p)+'</summary><img loading="'+(i===0?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب فارسی چهارم"></details>').join('')+'</section>';
+          return;
+        }
+      }catch{}
     }
-    let pdfUrl=localUrl;
-    if(!pdfUrl&&await assetExists(subject.asset))pdfUrl=subject.asset;
+    let url=courseBookObjectUrls[displayId]||bookUrls[displayId];
+    const settings=courseSettingsBySubject[displayId]||{};
+    if(!url&&settings.bookFilePath&&cloudSession?.access_token){
+      try{const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[displayId]=url}catch(error){console.warn('Course PDF could not be loaded',error)}
+    }
+    if(!url&&displayId==='dictation'&&courseSettingsBySubject.persian?.bookFilePath){
+      try{const blob=await fetchClassMaterial(courseSettingsBySubject.persian.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.persian=url}catch(error){console.warn('Persian PDF could not be loaded',error)}
+    }
+    if(!url&&await assetExists(subject.asset))url=subject.asset;
     if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
-    if(pdfUrl){
-      mount.innerHTML='<section class="lesson-book-pages"><h4>'+subject.icon+' فایل کتاب '+escapeHtml(subject.name)+'</h4><a class="book-open-link" href="'+pdfUrl+'#page=1&view=FitH" target="_blank" rel="noopener">باز کردن فایل کتاب</a><iframe class="pdfview lesson-book-pdf" title="'+escapeHtml(subject.name)+'" src="'+pdfUrl+'#page=1&view=FitH"></iframe></section>';
+    if(url){
+      const page=info?.pdfStart||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
+      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">نمایش مستقیم صفحات مربوط به همین درس از فایل کتاب.</p><iframe class="pdfview lesson-book-pdf" title="صفحات واقعی '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe><a class="book-open-link" href="'+url+'#page='+page+'&view=FitH" target="_blank" rel="noopener">باز کردن صفحات در نمایشگر کتاب</a></section>';
     }else{
-      mount.innerHTML='<section class="lesson-book-pages"><h4>'+subject.icon+' فایل کتاب '+escapeHtml(subject.name)+'</h4><p>هنوز PDF عمومی برای این کتاب منتشر نشده است. از پنل معلم می‌توانی فایل را روی این دستگاه اضافه کنی؛ برای دسترسی روی دستگاه‌های دیگر، فایل را در مسیر <code>'+escapeHtml(subject.assetLabel)+'</code> در مخزن سایت قرار بده.</p></section>';
+      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب '+escapeHtml(courseName(displayId))+'</h4><p>هنوز فایل صفحات این کتاب در فضای مشترک کلاس بارگذاری نشده است. معلم می‌تواند از پنل «مدیریت کتاب‌ها» فایل PDF را یک بار بارگذاری کند تا همهٔ دانش‌آموزان همین صفحات را در اینجا ببینند.</p></section>';
     }
   }
   function renderPersianLesson(l){
@@ -2262,25 +2556,27 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const wordTopic=isDictationOnly?{title:'فهرست املای همین درس',source:l.isFreeLesson?'متن انتخابی کلاس':'کتاب',explain:l.isFreeLesson?'این درس آزاد است؛ واژه‌های املا باید از متن انتخابی کلاس استخراج شوند.':'این فهرست برای تمرین املای واژه‌های درس تنظیم شده است؛ املای دقیق را با متن کتاب مقایسه کن.',examples:[]}:(l.wordTopic||{title:'واژه‌آموزی',source:'تکمیلی',explain:'واژه‌ها را از متن درس استخراج کن.',examples:[]});
     const langTopic=l.languageTopic||{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های متن درس برای تمرین استفاده کن.',examples:[]};
     const quizzes=isDictationOnly?(l.isFreeLesson?buildPersianLessonQuizzes(l):[{kind:'املای واژه',...l.spellingCheck}]):buildPersianLessonQuizzes(l);
-    content.innerHTML=
-      '<div id="lessonBookSection"></div><section class="lesson-note lesson-text-section"><h4>📖 خلاصهٔ درس</h4><div class="persian-source-note"><b>خلاصهٔ محتوای درس:</b> کتاب فارسی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ · '+(l.page?'صفحهٔ '+escapeForHtmlText(l.page):'')+'<p class="lesson-main-text">'+escapeForHtmlText(l.content||'این درس آزاد است؛ متن انتخابی کلاس باید در این بخش وارد شود.')+'</p><p class="muted">'+(l.isFreeLesson?'این درس آزاد است؛ متن ثابت کتاب ندارد و باید متن انتخاب‌شدهٔ کلاس وارد شود.':isDictationOnly?'این بخش خلاصهٔ محتوای درس را نشان می‌دهد؛ واژه‌های املا در بخش بعد آمده‌اند.':'فهرست املا، هم‌معنی، هم‌خانواده و متضاد در بخش‌های بعدی آمده‌اند؛ این فهرست‌ها لزوماً جدول آمادهٔ خود کتاب نیستند.')+'</p></div></section>'+
+    const practiceAllowed=courseSettingsBySubject[progressPrefix]?.allowPractice!==false;
+    if(!practiceAllowed)quizzes.length=0;
+    content.innerHTML='<div id="lessonBookSection"></div>'+
       '<div class="lesson-note"><h4>'+(isDictationOnly?'✍️ املای واژه‌های درس':'📖 واژه‌آموزی · '+escapeForHtmlText(wordTopic.title))+' '+sourceBadge(wordTopic.source,isDictationOnly?'تمرین املای درس':'بخش واژه‌آموزی کتاب')+'</h4><p>'+escapeForHtmlText(wordTopic.explain)+'</p><ul>'+(wordTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>'+
       (isDictationOnly?
         '<div class="lesson-note"><h4>📝 فهرست واژه‌ها برای املا</h4><p class="muted">ابتدا واژه‌ها را با صدای بلند بخوان، سپس بدون نگاه کردن بنویس و در پایان با کتاب مقایسه کن.</p>'+chips(l.spellingWords)+'</div>':
         '<div class="persian-vocab-grid">'+
           '<div class="lesson-note"><h4>✍️ واژه‌های املا</h4><p class="muted">واژه‌های پیشنهادی برای تمرین نوشتن و بازبینی املاء.</p>'+chips(l.spellingWords)+'</div>'+
-          '<div class="lesson-note"><h4>🔁 هم‌معنی‌ها</h4><p class="muted">معنی نزدیک؛ جایگزینی را با توجه به جمله بررسی کن.</p>'+pairs(l.synonyms)+'</div>'+
+          '<div class="lesson-note"><h4>📘 معنی واژه‌ها</h4><p class="muted">معنی‌های این بخش از جزوهٔ واژگان بارگذاری‌شده آمده‌اند.</p>'+pairs(l.meanings)+'</div>'+
+          '<div class="lesson-note"><h4>🔁 هم‌معنی‌ها</h4><p class="muted">هم‌معنی‌های استخراج‌شده از جزوهٔ فارسی چهارم.</p>'+pairs(l.synonyms)+'</div>'+
           '<div class="lesson-note"><h4>🧩 هم‌خانواده‌ها</h4><p class="muted">واژه‌های دارای ریشه و ارتباط معنایی مشترک.</p>'+families(l.families)+'</div>'+
           '<div class="lesson-note"><h4>↔️ متضادها</h4><p class="muted">واژه‌هایی با معنی مخالف.</p>'+pairs(l.opposites)+'</div>'+
         '</div>'+
         '<div class="lesson-note"><h4>🧠 دانش زبانی · '+escapeForHtmlText(langTopic.title)+' '+sourceBadge(langTopic.source,'بخش دانش زبانی کتاب')+'</h4><p>'+escapeForHtmlText(langTopic.explain)+'</p><ul>'+(langTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>')+
       (l.isFreeLesson?'<div class="notice"><b>مهم:</b> این درس در کتاب «درس آزاد» است و متن ثابتی ندارد. برای ساخت املا و واژه‌نامهٔ دقیق، متن انتخاب‌شدهٔ کلاس باید در برنامه وارد شود؛ بنابراین واژه‌های ساختگی به کتاب نسبت داده نشده‌اند.</div>':'')+
-      ((!isDictationOnly&&(l.extendedVocabulary||[]).length)?'<div class="lesson-note"><h4>🌟 دایرهٔ واژگان گسترده‌تر</h4><p class="muted">واژه‌های تکمیلی مرتبط با محتوای درس؛ معنی و اولویت نهایی را با فهرست واژه‌های معلم تکمیل می‌کنیم.</p>'+chips(l.extendedVocabulary)+'</div>':'')+
-      '<h4 style="margin:16px 0 8px">'+(isDictationOnly?'📝 تمرین املای درس':'🎯 تمرین‌های همین درس')+'</h4><p class="muted">هر سؤال تحلیل جداگانه دارد و هنگام بررسی، پاسخ صحیح نمایش داده می‌شود.</p>'+
+
+      (practiceAllowed?'<h4 style="margin:16px 0 8px">'+(isDictationOnly?'📝 تمرین املای درس':'🎯 تمرین‌های همین درس')+'</h4><p class="muted">هر سؤال تحلیل جداگانه دارد و هنگام بررسی، پاسخ صحیح نمایش داده می‌شود.</p>'+
       '<div class="persian-quiz-grid">'+quizzes.map((q,i)=>{
         const choices=q.options.map((o,j)=>'<label class="other-answer" data-persian-option="'+j+'"><input type="radio" name="persianQuiz'+l.id+'-'+i+'" value="'+j+'"><span>'+escapeForHtmlText(o)+'</span></label>').join('');
         return '<section class="persian-quiz-card" data-persian-quiz="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind)+'</b><span class="pill">تمرین '+(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+choices+'<button type="button" data-persian-quiz-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button><div class="notice persian-quiz-feedback hidden" aria-live="polite"></div></section>';
-      }).join('')+'</div>';
+      }).join('')+'</div>':'<div class="notice">تمرین و آزمون این کتاب فعلاً از طرف معلم غیرفعال شده است.</div>');
     content.querySelectorAll('[data-persian-quiz-check]').forEach(button=>{
       button.onclick=async()=>{
         const i=Number(button.dataset.persianQuizCheck),q=quizzes[i],card=button.closest('.persian-quiz-card');
@@ -2334,6 +2630,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     selectedOtherLesson=subject?.lessons.find(l=>String(l.id)===String(id));
     if(!selectedOtherLesson){console.warn('Requested lesson was not found',{subject:subject?.id,id});return}
     const l=selectedOtherLesson;
+    if(!isCourseLessonOpen(subject.id,l.id)){$('otherSubjectLessonBody').classList.add('hidden');$('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonPicker').insertAdjacentHTML('afterbegin','<div class="notice">این درس هنوز برای دانش‌آموزان باز نشده است.</div>');return}
     // On mobile, replace the long lesson list with the selected lesson.
     $('otherSubjectLessons').classList.add('hidden');
     $('otherSubjectLessonBody').classList.remove('hidden');
@@ -2344,12 +2641,13 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         renderPersianLesson(l);
       }else{
         $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
-        $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div><section class="lesson-note lesson-text-section"><h4>📖 متن درس</h4><p>'+escapeHtml(l.content||'متن این درس هنوز ثبت نشده است.')+'</p></section><div class="lesson-example"><b>مثال</b><p>'+escapeHtml(l.example||'برای این درس هنوز مثالی ثبت نشده است.')+'</p></div>';
+        $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div>';
         $('otherLessonQuestion').textContent=l.question||'پرسش این درس هنوز ثبت نشده است.';
         const options=Array.isArray(l.options)?l.options:[];
         $('otherLessonOptions').innerHTML=options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
         $('otherLessonFeedback').classList.add('hidden');$('checkOtherLessonAnswer').disabled=false;
         $('otherLessonOptions').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{$('otherLessonOptions').querySelectorAll('.other-answer').forEach(x=>x.classList.toggle('selected',x.querySelector('input').checked))});
+        if(courseSettingsBySubject[subject.id]?.allowPractice===false)$('otherLessonQuestion').closest('.lesson-note').classList.add('hidden');
       }
     }catch(error){
       console.error('Could not render lesson',error);
