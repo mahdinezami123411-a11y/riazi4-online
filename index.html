@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v18-20261016-all-student-feedback">
+<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v19-20261016-space-arcade-feedback-wrap">
 <title>پایگاه فضایی ریاضی‌دان‌ها | ریاضی چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -409,6 +409,14 @@ option{background:#111a32!important;color:#f1f5ff!important}
 .pdfview{border-color:#40547a!important;background:#11182c!important}
 @media(max-width:560px){.wrap{padding:8px 8px 25px!important}.hero{padding:20px 15px 17px!important;border-radius:23px!important}.hero h1{font-size:22px!important}.hero:after{font-size:60px!important;left:4px!important;bottom:-10px!important}.logo{width:55px!important;height:55px!important;font-size:28px!important;border-radius:17px!important}.card{padding:13px!important;border-radius:20px!important}.mission-strip{grid-template-columns:1fr!important}.mission-chip{grid-template-columns:35px 1fr!important;padding:9px 10px!important}.grid3{grid-template-columns:1fr!important}.visual-step-path{grid-template-columns:1fr!important}.visual-step-card{display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;column-gap:8px!important;align-items:start!important}.visual-step-card>span{grid-row:1/span 2!important;margin:0!important}.visual-step-card p{grid-column:2!important}.visual-place-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.visual-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-statusline{font-size:10px!important}.hero-mini-badge{font-size:8px!important}}
 @media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
+
+/* خوانایی قطعی پاسخ صحیح و تحلیل‌های طولانی روی صفحهٔ گوشی */
+.visual-answer-summary{align-items:flex-start!important;flex-wrap:wrap!important}
+.visual-answer-summary span{flex:0 0 auto!important;max-width:100%!important}
+.visual-answer-summary strong{display:block!important;max-width:100%!important;min-width:0!important;white-space:normal!important;overflow-wrap:anywhere!important;word-break:break-word!important;direction:auto!important;unicode-bidi:plaintext!important;text-align:start!important;font-size:clamp(16px,3.8vw,22px)!important;line-height:1.8!important}
+.question-analysis-specific p,.visual-text-details p,.visual-step-card p{overflow-wrap:anywhere!important;word-break:normal!important}
+#bookPracticeFeedback,#examFeedback,#studentAssignmentFeedback{overflow:visible!important}
 
 </style></head>
 <body data-build="yare-math-v16-20261016-visual-math-templates"><main class="wrap">
