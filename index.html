@@ -1860,6 +1860,26 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         if(!Array.isArray(page))throw new Error('ساختار پیشرفت درس‌های دیگر نامعتبر است.');
         allSubjectProgress.push(...page);if(page.length<1000)break;
       }
+      const allAssignments=[];
+      for(let offset=0;offset<10000;offset+=1000){
+        const page=await cloudFetch(`/rest/v1/yare_assignments?select=id,class_id,title,subject,lesson_ids,chapter_ids,activity_type,created_at&class_id=eq.${encodeURIComponent(cloudSession.profile.class_id)}&order=created_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
+        if(!Array.isArray(page))throw new Error('ساختار فهرست آزمون‌ها نامعتبر است.');
+        allAssignments.push(...page);if(page.length<1000)break;
+      }
+      const allAssignmentAttempts=[];
+      for(let offset=0;offset<50000;offset+=1000){
+        const page=await cloudFetch(`/rest/v1/yare_assignment_attempts?select=id,assignment_id,student_id,class_id,attempt_number,status,score,total_points,started_at,submitted_at,created_at&class_id=eq.${encodeURIComponent(cloudSession.profile.class_id)}&order=created_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
+        if(!Array.isArray(page))throw new Error('ساختار نمره‌های آزمون‌ها نامعتبر است.');
+        allAssignmentAttempts.push(...page);if(page.length<1000)break;
+      }
+      const assignmentById=new Map(allAssignments.map(a=>[a.id,a]));
+      cloudAssignmentScores=allAssignmentAttempts.map(attempt=>{
+        const assignment=assignmentById.get(attempt.assignment_id);if(!assignment)return null;
+        const subject=assignment.subject||'math';
+        const lessonIds=Array.isArray(assignment.lesson_ids)&&assignment.lesson_ids.length?assignment.lesson_ids:(assignment.chapter_ids||[1]);
+        const score=attempt.score,total=attempt.total_points;
+        return {...attempt,subject,lesson_id:Number(lessonIds[0]||1),source:assignment.title,question_text:'نتیجهٔ فعالیت: '+assignment.title,submitted_answer:score==null?'—':String(score)+' / '+String(total??'—'),is_correct:null,resultLabel:score==null?'تحویل نشده':('نمرهٔ '+String(score)+' از '+String(total??'—')),explanation:'نوع فعالیت: '+String(assignment.activity_type||'تمرین')+' · وضعیت: '+String(attempt.status||'—'),created_at:attempt.submitted_at||attempt.started_at||attempt.created_at};
+      }).filter(Boolean);
       cloudTeacherAttempts=allAttempts;cloudStudentProfiles=allProfiles;cloudSubjectProgress=allSubjectProgress;
       populateLessonFilter('reportSubjectFilter','reportLessonFilter');populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');renderTeacherReport();renderTeacherOverviewPapers();renderTeacherSubjectPracticeReport();renderTeacherGradebook();
       const overview=$('tab-overview');const metric=overview?.querySelectorAll('.metric strong');
