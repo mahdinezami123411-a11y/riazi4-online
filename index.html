@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1456b8"><meta name="app-build" content="yare-math-v5-20261015-student-accounts">
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1456b8"><meta name="app-build" content="yare-math-v6-20261015-attendance">
 <title>یار یادگیری ریاضی چهارم ابتدایی</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -205,7 +205,19 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 .student-accounts-heading{margin:18px 0 8px;flex-wrap:wrap}
 .student-accounts-heading h3{margin:0}
 .student-accounts-list{overflow-x:auto;border:1px solid #d7e6f7;border-radius:14px;background:#fff;padding:8px}
-.student-accounts-table{width:100%;border-collapse:collapse;min-width:390px;font-size:13px}
+.student-accounts-table{width:100%;border-collapse:collapse;min-width:760px;font-size:13px}
+.student-accounts-table th.row-number,.student-accounts-table td.row-number{text-align:center;width:52px}
+.student-accounts-table td.password-cell{direction:ltr;text-align:left;font-family:Arial,sans-serif;white-space:nowrap}
+.presence-table{width:100%;border-collapse:collapse;min-width:620px;font-size:13px}
+.presence-table th,.presence-table td{text-align:right;padding:9px 10px;border-bottom:1px solid #e4edf8}
+.presence-table th{background:#eaf3ff;color:#164b88}
+.presence-table tr:last-child td{border-bottom:0}
+.presence-table td.row-number{text-align:center;width:52px}
+.presence-table td.username{direction:ltr;text-align:left;font-family:Arial,sans-serif;font-weight:700;color:#1854a3}
+.presence-status{font-weight:800;white-space:nowrap}
+.presence-status.online{color:#08774e}
+.presence-status.today{color:#986300}
+.presence-status.offline{color:#778399}
 .student-accounts-table th,.student-accounts-table td{text-align:right;padding:9px 10px;border-bottom:1px solid #e4edf8}
 .student-accounts-table th{background:#eaf3ff;color:#164b88}
 .student-accounts-table tr:last-child td{border-bottom:0}
@@ -213,7 +225,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 @media(max-width:700px){.student-account-fields{grid-template-columns:1fr}.student-account-form{padding:11px}.student-accounts-heading{align-items:flex-start}}
 
 </style></head>
-<body data-build="yare-math-v5-20261015-student-accounts"><main class="wrap">
+<body data-build="yare-math-v6-20261015-attendance"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🚀</div><div><h1>🚀 مأموریت ریاضی چهارم</h1><p>باشگاه قهرمانان عددها، الگوها و مسئله‌ها</p></div></div><div style="margin-top:13px"><span class="pill" style="background:#ffffff24;color:#fff">نسخهٔ آمادهٔ اتصال به Supabase</span></div></header>
 <section class="card" id="home"><h2>🌟 سلام قهرمان ریاضی! آماده‌ی شروعی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">اینجا هر تمرین یک مأموریت تازه است؛ یاد بگیر، راه‌حل پیدا کن و مرحله‌به‌مرحله به قهرمان ریاضی تبدیل شو!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -277,7 +289,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 </section>
 </section>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
-<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
+<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🟢 حضور امروز</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
 <div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس فعال</span><strong>۱</strong></div><div class="metric"><span class="muted">سؤال‌های بانک تمرین</span><strong>۷۰۰+</strong></div><div class="metric"><span class="muted">فصل‌های کتاب</span><strong>۷</strong></div></div><h3 style="margin-top:16px">درس فعال</h3><p class="muted">ریاضی پایه چهارم: جدول ضرب، مفهوم ضرب و تقسیم، حل مسئله و آزمون</p><div id="teacherOverviewStatus" class="notice">پس از راه‌اندازی جداول و توابع Supabase، تعداد دانش‌آموزان، پاسخ‌ها و درصد پاسخ‌های صحیح در این صفحه نمایش داده می‌شوند.</div></div>
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
@@ -317,7 +329,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 <div id="tab-results" class="tabpane"><h3>بازخورد و تصحیح</h3><div id="teacherResultPanel" class="notice">پس از ثبت پاسخ‌های واقعی دانش‌آموزان در Supabase، نتایج اینجا نمایش داده می‌شوند.</div></div><div id="tab-reports" class="tabpane"><h3>📊 تحلیل عملکرد کلاس</h3><div id="reportsConnectionNotice" class="notice"><b>آمادهٔ اتصال به گزارش آنلاین</b><br>بعد از نصب جداول و توابع Supabase، این بخش اطلاعات واقعی کلاس را نشان می‌دهد؛ پیش از آن هیچ نمره یا دانش‌آموز ساختگی نمایش داده نمی‌شود.</div><div class="grid3"><div class="metric"><span class="muted">دانش‌آموزان ثبت‌شده</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">میانگین نمرات</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">نیازمند تمرین بیشتر</span><strong>پس از اتصال</strong></div></div><h4>تحلیل خطاها بر اساس فصل و مهارت</h4><p class="muted">پس از اتصال، این بخش درصد پاسخ صحیح هر فصل، سؤال‌های دارای بیشترین خطا و دانش‌آموزانی را که به تمرین تکمیلی نیاز دارند نمایش می‌دهد.</p><div class="grid"><label class="field">فیلتر فصل<select id="reportChapterFilter"><option value="all">همه فصل‌ها</option><option>اعداد و الگوها</option><option>کسر</option><option>ضرب و تقسیم</option><option>اندازه‌گیری</option><option>عدد مخلوط و عدد اعشاری</option><option>شکل‌های هندسی</option><option>آمار و احتمال</option></select></label><label class="field">بازه گزارش<select id="reportDateRange"><option>تمام مدت</option><option>۷ روز اخیر</option><option>۳۰ روز اخیر</option></select></label></div><button id="exportReportCsv" class="outline" type="button">خروجی CSV داده‌های موجود</button><div id="teacherReportStatus" class="notice" role="status">هنوز دادهٔ آنلاین برای گزارش وجود ندارد.</div></div>
 <div id="tab-students" class="tabpane">
   <h3>👩‍🎓 مدیریت حساب دانش‌آموزان</h3>
-  <p class="muted">از این بخش برای هر دانش‌آموز حساب ورود بساز. نام کاربری و رمز تعیین‌شده را به دانش‌آموز بده. رمز عبور برای امنیت ذخیره نمی‌شود و بعداً از فهرست قابل مشاهده نیست.</p>
+  <p class="muted">از این بخش حساب بساز و نام کاربری و رمز اولیه را در فهرست ببین. برای حساب‌هایی که قبلاً ساخته شده‌اند و رمز ثبت‌شده ندارند، از «تعیین رمز» استفاده کن. رمزهای این فهرست فقط در پنل معلم نمایش داده می‌شوند؛ آن‌ها را محرمانه نگه دار.</p>
   <form id="studentAccountForm" class="student-account-form">
     <div class="student-account-fields">
       <div><label class="field" for="studentAccountName">نام و نام خانوادگی دانش‌آموز</label><input id="studentAccountName" type="text" required minlength="2" maxlength="80" autocomplete="off" placeholder="مثلاً مهدی آل عیدانی"></div>
@@ -329,6 +341,16 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
   <div id="studentAccountsStatus" class="notice" role="status" aria-live="polite">برای دیدن حساب‌های این کلاس، وارد این بخش شو.</div>
   <div class="row student-accounts-heading"><h3>📋 فهرست حساب‌های کلاس</h3><button id="refreshStudentAccounts" type="button" class="outline">🔄 تازه‌سازی فهرست</button></div>
   <div id="studentAccountsList" class="student-accounts-list"><p class="muted">هنوز فهرست بارگذاری نشده است.</p></div>
+</div>
+<div id="tab-presence" class="tabpane">
+  <div class="row" style="flex-wrap:wrap;align-items:flex-start"><div><h3>🟢 حضور دانش‌آموزان</h3><p class="muted">«آنلاین» یعنی در دو دقیقهٔ اخیر از سامانه فعالیت ثبت شده است. «امروز وارد شده» یعنی آخرین فعالیت دانش‌آموز مربوط به امروز است.</p></div><button id="refreshStudentPresence" type="button" class="outline">🔄 به‌روزرسانی حضور</button></div>
+  <div class="grid3 presence-summary" style="margin:12px 0">
+    <div class="metric"><span class="muted">تعداد دانش‌آموزان</span><strong id="studentPresenceTotal">—</strong></div>
+    <div class="metric"><span class="muted">آنلاین در همین لحظه</span><strong id="studentPresenceOnline">—</strong></div>
+    <div class="metric"><span class="muted">فعال در امروز</span><strong id="studentPresenceToday">—</strong></div>
+  </div>
+  <div id="studentPresenceStatus" class="notice" role="status">برای دیدن حضور امروز، این بخش را تازه‌سازی کن.</div>
+  <div id="studentPresenceList" class="student-accounts-list"><p class="muted">هنوز وضعیت حضور بارگذاری نشده است.</p></div>
 </div>
 <div id="tab-settings" class="tabpane"><h3>تنظیمات آزمون و حریم خصوصی</h3><label class="option"><input type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input type="checkbox" checked> محدودیت زمانی برای امتحان</label><label class="option"><input type="checkbox" checked> جلوگیری از تلاش مجدد در امتحان</label><label class="option"><input type="checkbox" checked> نمایش ندادن نمره سایر دانش‌آموزان</label><p class="muted">این گزینه‌ها در نسخه فعلی نمایشی‌اند؛ اجرای قطعی زمان و تلاش مجاز باید سمت سرور انجام شود.</p><hr class="soft-rule"><h3>☁️ راه‌اندازی نسخه آنلاین</h3><div class="notice"><b>وضعیت: اتصال پایگاه داده برقرار است</b><br>پروژهٔ Supabase متصل است؛ بانک سؤال و ثبت پاسخ‌های تمرین/یادآوری آنلاین فعال شده‌اند. ساخت و انتشار آزمون‌های اختصاصی و بارگذاری رسانه‌ها هنوز نیازمند تکمیل رابط است.</div><ol><li>فایل SQL اسکیمای پایگاه داده را در SQL Editor پروژه Supabase اجرا کن.</li><li>حساب معلم و کلاس را ایجاد کن.</li><li>رابط را با URL و کلید عمومی پروژه متصل کن؛ کلید محرمانهٔ service-role را هرگز در HTML قرار نده.</li><li>برنامه را روی یک میزبان HTTPS منتشر کن و دسترسی معلم/دانش‌آموز را با حساب آزمایشی بررسی کن.</li></ol><p class="muted">راهنمای کامل و فایل SQL در بسته همراه برنامه قرار دارند. از کد ملی واقعی دانش‌آموزان برای آزمایش استفاده نکن.</p><div id="cloudSetupStatus" class="notice">بانک ۷۰۰ سؤالی و توابع ثبت پاسخ در Supabase نصب شده‌اند. ورود واقعی و جریان آزمون باید با حساب آزمایشی نهایی بررسی شوند.</div></div>
 </div></section>
@@ -789,6 +811,20 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     return data;
   }
   function saveCloudSession(){if(!cloudSession)return;try{sessionStorage.setItem(CLOUD_SESSION_KEY,JSON.stringify(cloudSession))}catch{}}
+  let studentPresenceTimer=null,studentPresenceListenersReady=false;
+  async function pingStudentPresence(){
+    if(!cloudSession||cloudSession.role!=='student'||cloudSession.studentViewAsTeacher||document.visibilityState==='hidden')return;
+    try{await cloudFetch('/functions/v1/student-presence',{method:'POST',body:{action:'heartbeat'}})}catch(e){console.debug('Student presence ping failed',e)}
+  }
+  function startStudentPresenceHeartbeat(){
+    if(!studentPresenceListenersReady){
+      studentPresenceListenersReady=true;
+      document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pingStudentPresence()});
+      window.addEventListener('focus',()=>pingStudentPresence());
+      studentPresenceTimer=setInterval(pingStudentPresence,45000);
+    }
+    pingStudentPresence();
+  }
   function clearCloudSession(returnHome=true){
     cloudSession=null;try{sessionStorage.removeItem(CLOUD_SESSION_KEY)}catch{}
     activeStudentName='';activeUsername='';activeProfile={};studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
@@ -878,7 +914,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       try{await refreshStudentProgressFromCloud()}catch(e){console.warn('Cloud progress read failed',e);studentProgress=loadStudentProgress(username);renderStudentDashboard()}
       const oldCard=document.querySelector('.student-identity-card');if(oldCard)oldCard.classList.remove('hidden');
       setCloudStatus('ورود دانش‌آموز تأیید شد؛ بانک سؤال آنلاین بارگذاری شد و پاسخ‌ها پس از ثبت سمت سرور ذخیره می‌شوند.');
-      show('student');showStudentAppView('home');
+      startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
     }catch(e){clearCloudSession(false);err.textContent=friendlyAuthError(e);err.classList.remove('hidden')}
     finally{cloudBusy=false;setBusy($('studentLoginConfirm'),false)}
   }
@@ -921,7 +957,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       status.textContent='برای مدیریت حساب‌ها ابتدا با حساب معلم وارد شو.';
       return;
     }
-    status.textContent='در حال بارگذاری حساب‌های این کلاس…';
+    status.textContent='در حال بارگذاری فهرست حساب‌های این کلاس…';
     try{
       const result=await cloudFetch('/functions/v1/manage-student-accounts',{method:'POST',body:{action:'list'}});
       const students=Array.isArray(result?.students)?result.students:[];
@@ -931,24 +967,102 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       }else{
         const table=document.createElement('table');table.className='student-accounts-table';
         const thead=document.createElement('thead'),headRow=document.createElement('tr');
-        ['نام دانش‌آموز','نام کاربری','تاریخ ایجاد'].forEach(label=>{const th=document.createElement('th');th.textContent=label;headRow.appendChild(th)});
+        [
+          ['ردیف','row-number'],['نام و نام خانوادگی',''],['نام کاربری',''],['رمز عبور',''],['تاریخ ثبت','']
+        ].forEach(([label,cls])=>{const th=document.createElement('th');th.textContent=label;if(cls)th.className=cls;headRow.appendChild(th)});
         thead.appendChild(headRow);table.appendChild(thead);
         const tbody=document.createElement('tbody');
-        students.forEach(student=>{
+        students.forEach((student,index)=>{
           const tr=document.createElement('tr');
+          const number=document.createElement('td');number.className='row-number';number.textContent=(index+1).toLocaleString('fa-IR');tr.appendChild(number);
           const name=document.createElement('td');name.textContent=student.display_name||'—';tr.appendChild(name);
           const username=document.createElement('td');username.className='username';username.textContent=student.student_code||'—';tr.appendChild(username);
+          const password=document.createElement('td');password.className='password-cell';
+          if(student.initial_password){
+            password.textContent=student.initial_password;
+          }else{
+            password.textContent='ثبت نشده ';
+            const reset=document.createElement('button');reset.type='button';reset.className='outline';reset.style.marginInlineStart='8px';reset.textContent='تعیین رمز';
+            reset.onclick=async()=>{
+              const newPassword=window.prompt('رمز جدید برای «'+(student.display_name||student.student_code)+'» را وارد کن (حداقل ۶ نویسه):');
+              if(newPassword===null)return;
+              if(newPassword.length<6||newPassword.length>128){alert('رمز باید حداقل ۶ و حداکثر ۱۲۸ نویسه داشته باشد.');return}
+              reset.disabled=true;
+              try{
+                await cloudFetch('/functions/v1/manage-student-accounts',{method:'POST',body:{action:'set_password',student_id:student.id,password:newPassword}});
+                status.textContent='رمز حساب «'+(student.display_name||student.student_code)+'» تغییر کرد و در فهرست ذخیره شد.';
+                await loadStudentAccounts();
+              }catch(e){status.textContent='تغییر رمز ناموفق بود: '+cloudMessage(e);reset.disabled=false}
+            };
+            password.appendChild(reset);
+          }
+          tr.appendChild(password);
           const created=document.createElement('td');created.textContent=student.created_at?new Date(student.created_at).toLocaleDateString('fa-IR'):'—';tr.appendChild(created);
           tbody.appendChild(tr);
         });
         table.appendChild(tbody);list.appendChild(table);
       }
-      status.textContent='تعداد حساب‌های ثبت‌شده در کلاس: '+students.length.toLocaleString('fa-IR')+' نفر. رمز عبورها ذخیره یا نمایش داده نمی‌شوند.';
+      status.textContent='جمع حساب‌های این کلاس: '+students.length.toLocaleString('fa-IR')+' نفر. برای حساب‌های قدیمی، رمز قبلی قابل بازیابی نیست؛ با «تعیین رمز» رمز جدید تعیین کن.';
+      status.style.color='';
     }catch(e){
       status.textContent='بارگذاری فهرست ناموفق بود: '+cloudMessage(e);
+      status.style.color='#a62638';
     }
   }
 
+  function formatPresenceTime(value){
+    if(!value)return 'هنوز وارد نشده';
+    const d=new Date(value);if(Number.isNaN(d.getTime()))return '—';
+    return d.toLocaleString('fa-IR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  }
+
+  async function loadStudentPresence(silent=false){
+    const list=$('studentPresenceList'),status=$('studentPresenceStatus');
+    if(!list||!status)return;
+    if(!cloudSession||cloudSession.role!=='teacher'){
+      status.textContent='برای مشاهدهٔ حضور، ابتدا با حساب معلم وارد شو.';
+      return;
+    }
+    if(!silent)status.textContent='در حال بررسی آخرین فعالیت دانش‌آموزان…';
+    try{
+      const result=await cloudFetch('/functions/v1/student-presence',{method:'POST',body:{action:'list'}});
+      const students=Array.isArray(result?.students)?result.students:[];
+      const now=Date.now(),todayStart=new Date();todayStart.setHours(0,0,0,0);
+      let onlineCount=0,todayCount=0;
+      list.replaceChildren();
+      if(!students.length){
+        const p=document.createElement('p');p.className='muted';p.textContent='هنوز دانش‌آموزی در این کلاس ثبت نشده است.';list.appendChild(p);
+      }else{
+        const table=document.createElement('table');table.className='presence-table';
+        const thead=document.createElement('thead'),headRow=document.createElement('tr');
+        ['ردیف','نام دانش‌آموز','نام کاربری','آخرین فعالیت','وضعیت امروز'].forEach(label=>{const th=document.createElement('th');th.textContent=label;headRow.appendChild(th)});
+        thead.appendChild(headRow);table.appendChild(thead);
+        const tbody=document.createElement('tbody');
+        students.forEach((student,index)=>{
+          const tr=document.createElement('tr'),last=student.last_seen_at?Date.parse(student.last_seen_at):NaN;
+          const valid=Number.isFinite(last),isToday=valid&&last>=todayStart.getTime(),isOnline=valid&&(now-last)<=120000&&(now-last)>=-15000;
+          if(isOnline)onlineCount++;
+          if(isToday)todayCount++;
+          const number=document.createElement('td');number.className='row-number';number.textContent=(index+1).toLocaleString('fa-IR');tr.appendChild(number);
+          const name=document.createElement('td');name.textContent=student.display_name||'—';tr.appendChild(name);
+          const username=document.createElement('td');username.className='username';username.textContent=student.student_code||'—';tr.appendChild(username);
+          const seen=document.createElement('td');seen.textContent=valid?formatPresenceTime(student.last_seen_at):'—';tr.appendChild(seen);
+          const state=document.createElement('td');state.className='presence-status '+(isOnline?'online':isToday?'today':'offline');
+          state.textContent=isOnline?'🟢 آنلاین':isToday?'🟡 امروز وارد شده':valid?'⚪ امروز وارد نشده':'— هنوز وارد نشده';
+          tr.appendChild(state);tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);list.appendChild(table);
+      }
+      $('studentPresenceTotal').textContent=students.length.toLocaleString('fa-IR');
+      $('studentPresenceOnline').textContent=onlineCount.toLocaleString('fa-IR');
+      $('studentPresenceToday').textContent=todayCount.toLocaleString('fa-IR');
+      status.textContent='آخرین به‌روزرسانی: '+new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})+' — وضعیت آنلاین بر اساس فعالیت ثبت‌شده در دو دقیقهٔ اخیر محاسبه می‌شود.';
+      status.style.color='';
+    }catch(e){
+      status.textContent='بارگذاری وضعیت حضور ناموفق بود: '+cloudMessage(e);
+      status.style.color='#a62638';
+    }
+  }
   $('studentAccountForm').addEventListener('submit',async event=>{
     event.preventDefault();
     const name=$('studentAccountName').value.trim().replace(/\s+/g,' ');
@@ -962,7 +1076,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const result=await cloudFetch('/functions/v1/manage-student-accounts',{method:'POST',body:{action:'create',display_name:name,username,password}});
       $('studentAccountPassword').value='';
       await loadStudentAccounts();
-      status.textContent='حساب «'+(result?.student?.display_name||name)+'» ساخته شد. نام کاربری: '+(result?.student?.student_code||username)+' — رمز همان رمزی است که وارد کردی؛ آن را اکنون یادداشت کن.';
+      status.textContent='حساب «'+(result?.student?.display_name||name)+'» ساخته شد. نام کاربری و رمز در فهرست حساب‌های کلاس ثبت شده‌اند.';
       status.style.color='#08774e';
     }catch(e){
       status.textContent='ساخت حساب انجام نشد: '+cloudMessage(e);
@@ -972,7 +1086,12 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     }
   });
   $('refreshStudentAccounts').onclick=loadStudentAccounts;
+  $('refreshStudentPresence').onclick=()=>loadStudentPresence();
   document.querySelectorAll('#teacherNav [data-tab="students"]').forEach(button=>button.addEventListener('click',()=>loadStudentAccounts()));
+  document.querySelectorAll('#teacherNav [data-tab="presence"]').forEach(button=>button.addEventListener('click',()=>loadStudentPresence()));
+  setInterval(()=>{
+    if(cloudSession?.role==='teacher'&&$('tab-presence')?.classList.contains('active')&&document.visibilityState==='visible')loadStudentPresence(true);
+  },30000);
 
   function answerForServer(q,response){
     if((q?.type||'mc')==='input')return String(response??'').trim();
@@ -1219,7 +1338,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       cloudSession={...prior,user,profile};saveCloudSession();
       if(profile.role==='student'){
         activeUsername=String(prior.username||profile.display_name||'');activeStudentName=activeUsername;activeProfile={...readProfile(activeUsername),name:profile.display_name||activeUsername,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);
-        await loadStudentQuestionBank();await refreshStudentProgressFromCloud();show('student');showStudentAppView('home');
+        await loadStudentQuestionBank();await refreshStudentProgressFromCloud();startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
       }else if(profile.role==='teacher'){show('teacher');await loadTeacherReport();await loadTeacherQuestionBank()}
     }catch(e){clearCloudSession(false);console.info('No reusable Supabase session',e)}
   })();
