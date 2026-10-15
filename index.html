@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v7-20261015-pdfbank">
+<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v8-20261015-sample-exams">
 <title>یار یادگیری ریاضی چهارم ابتدایی</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -232,7 +232,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 @media(max-width:700px){.student-account-fields{grid-template-columns:1fr}.student-account-form{padding:11px}.student-accounts-heading{align-items:flex-start}}
 
 </style></head>
-<body data-build="yare-math-v7-20261015-pdfbank"><main class="wrap">
+<body data-build="yare-math-v8-20261015-sample-exams"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🚀</div><div><h1>🚀 مأموریت ریاضی چهارم</h1><p>باشگاه قهرمانان عددها، الگوها و مسئله‌ها</p></div></div><div style="margin-top:13px"><span class="pill" style="background:#ffffff24;color:#fff">نسخهٔ آمادهٔ اتصال به Supabase</span></div></header>
 <section class="card" id="home"><h2>🌟 سلام قهرمان ریاضی! آماده‌ی شروعی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">اینجا هر تمرین یک مأموریت تازه است؛ یاد بگیر، راه‌حل پیدا کن و مرحله‌به‌مرحله به قهرمان ریاضی تبدیل شو!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -291,7 +291,17 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 <div id="booktab-chapters" class="tabpane"><h3>آموزش فصل‌های کتاب ریاضی چهارم</h3><p class="muted">روی هر فصل بزن تا آموزش ساده، نکته‌های مهم و مثال‌های همان فصل را ببینی. عنوان‌ها و ترتیب فصل‌ها از فهرست کتاب ریاضی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ برداشته شده‌اند.</p><div class="chapter-grid" id="chapterPicker"></div><div id="chapterLesson" class="item hidden" aria-live="polite"><div class="row"><h3 id="chapterLessonTitle">آموزش فصل</h3><span class="pill" id="chapterLessonTag">یاد بگیر</span></div><div id="chapterLessonBody"></div><button class="outline" id="chapterToPractice" style="width:100%;margin-top:10px">✏️ تمرین همین فصل</button></div></div>
 <div id="booktab-practice" class="tabpane"><h3>🎯 میدان تمرین فصل‌به‌فصل</h3><p class="muted" id="practiceDescription">یک فصل را انتخاب کن و سؤال‌های متنوع همان فصل را تمرین کن؛ یا بانک ۵۰ سؤالی نوبت اول و دوم را به‌صورت تک‌سؤال تمرین کن.</p><label class="field" for="practiceSetMode">نوع تمرین</label><select id="practiceSetMode"><option value="chapter">تمرین یک فصل</option><option value="term1">تمرین نوبت اول · ۵۰ سؤال</option><option value="term2">تمرین نوبت دوم · ۵۰ سؤال</option></select>
 <div id="practiceChapterSelector"><label class="field" for="bookPracticeTopic">انتخاب فصل</label><select id="bookPracticeTopic"><option value="1">فصل ۱: اعداد و الگوها</option><option value="2">فصل ۲: کسر</option><option value="3">فصل ۳: ضرب و تقسیم</option><option value="4">فصل ۴: اندازه‌گیری</option><option value="5">فصل ۵: عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶: شکل‌های هندسی</option><option value="7">فصل ۷: آمار و احتمال</option></select></div><div class="grid" id="practiceFilters" style="margin-top:8px"><div><label class="field" for="practiceTypeFilter">نوع سؤال</label><select id="practiceTypeFilter"><option value="all">همه نوع‌ها</option><option value="mc">چهارگزینه‌ای</option><option value="input">پاسخ کوتاه</option><option value="tf">درست / نادرست</option><option value="multi">انتخاب چند پاسخ</option></select></div><div><label class="field" for="practiceDifficultyFilter">سطح دشواری</label><select id="practiceDifficultyFilter"><option value="all">همه سطح‌ها</option><option value="easy">آسان</option><option value="medium">متوسط</option><option value="hard">چالشی</option></select></div></div><div class="practice-stats"><div class="practice-stat"><b id="practicePoolCount">۱۰۰</b><span>سؤال این فیلتر</span></div><div class="practice-stat"><b id="practiceAskedCount">۰</b><span>تلاش‌ها</span></div><div class="practice-stat"><b id="practiceCorrectCount">۰</b><span>پاسخ درست</span></div></div><button id="newBookPractice" style="width:100%;margin-top:4px">🎯 شروع مأموریت / سؤال جدید</button><div id="bookPracticeBox" class="item hidden"><p class="muted" id="bookPracticeSkill"></p><p id="bookPracticeQuestion" class="big-math"></p><div id="bookPracticeOptions"></div><input id="bookPracticeAnswer" inputmode="text" placeholder="پاسخت را بنویس" class="hidden"><button id="checkBookPractice" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="bookPracticeFeedback" class="notice hidden"></div><button class="outline" id="nextBookPractice" style="width:100%;margin-top:8px">⏭ سؤال بعدی</button></div></div>
-<div id="booktab-exam" class="tabpane"><h3>امتحان ریاضی چهارم</h3><p class="muted">می‌توانی آزمون نوبت اول یا دوم (هرکدام ۵۰ سؤال)، آزمون مستقل هر فصل (۲۰ سؤال)، یا آزمون ترکیبی ۲۰ سؤالی را انتخاب کنی. ترتیب سؤال‌ها و گزینه‌ها تغییر می‌کند؛ پاسخ هر سؤال به‌صورت سمت‌سروری بررسی و برای گزارش معلم در Supabase ثبت می‌شود؛ پاسخ‌نامه داخل فایل HTML قرار ندارد.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0"><div class="item" style="margin:0"><h4 style="margin-top:0">📝 نوبت اول</h4><p class="muted">۵۰ سؤال از مطالب کتاب تا صفحهٔ چاپی ۸۲؛ فصل‌های ۱ تا ۳ و مطالب آغاز فصل اندازه‌گیری دربارهٔ زمان و زاویه.</p><button id="startTerm1Exam" style="width:100%">شروع آزمون نوبت اول</button></div><div class="item" style="margin:0"><h4 style="margin-top:0">🏆 نوبت دوم</h4><p class="muted">۵۰ سؤال از کل کتاب ریاضی چهارم، فصل‌های ۱ تا ۷.</p><button id="startTerm2Exam" style="width:100%">شروع آزمون نوبت دوم</button></div></div><div class="item" style="margin:12px 0"><h4 style="margin-top:0">📚 آزمون یک فصل</h4><p class="muted">یک فصل را انتخاب کن و در آزمون مستقل ۲۰ سؤالی همان فصل شرکت کن.</p><label class="field" for="examChapterSelect">فصل موردنظر</label><select id="examChapterSelect"></select><button id="startChapterExam" style="width:100%;margin-top:8px">شروع آزمون این فصل</button></div><p class="muted">آزمون ۲۰ سؤالی ترکیبی هم باقی می‌ماند.</p><div class="metric"><span class="muted">سؤال</span><strong id="examProgress">۰ از ۲۰</strong></div><div id="examQuestionBox" class="item"><p id="examQuestion" class="big-math">برای شروع امتحان دکمه را بزن.</p><div id="examOptions"></div><input id="examAnswer" class="hidden" inputmode="text" placeholder="پاسخ را وارد کن"><button id="examSubmit" style="width:100%;margin-top:8px">ثبت پاسخ</button><div id="examFeedback" class="notice hidden"></div></div><button id="startBookExam" style="width:100%">🚀 شروع آزمون ۲۰ سؤالی</button><div id="examResult" class="notice hidden"></div></div>
+<div id="booktab-exam" class="tabpane"><h3>امتحان ریاضی چهارم</h3><p class="muted">می‌توانی آزمون نوبت اول یا دوم (هرکدام ۵۰ سؤال)، آزمون مستقل هر فصل (۲۰ سؤال)، یا آزمون ترکیبی ۲۰ سؤالی را انتخاب کنی. ترتیب سؤال‌ها و گزینه‌ها تغییر می‌کند؛ پاسخ هر سؤال به‌صورت سمت‌سروری بررسی و برای گزارش معلم در Supabase ثبت می‌شود؛ پاسخ‌نامه داخل فایل HTML قرار ندارد.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0"><div class="item" style="margin:0"><h4 style="margin-top:0">📝 نوبت اول</h4><p class="muted">۵۰ سؤال از مطالب کتاب تا صفحهٔ چاپی ۸۲؛ فصل‌های ۱ تا ۳ و مطالب آغاز فصل اندازه‌گیری دربارهٔ زمان و زاویه.</p><button id="startTerm1Exam" style="width:100%">شروع آزمون نوبت اول</button></div><div class="item" style="margin:0"><h4 style="margin-top:0">🏆 نوبت دوم</h4><p class="muted">۵۰ سؤال از کل کتاب ریاضی چهارم، فصل‌های ۱ تا ۷.</p><button id="startTerm2Exam" style="width:100%">شروع آزمون نوبت دوم</button></div></div>
+<div class="item" style="margin:12px 0">
+<h4 style="margin-top:0">📄 آزمون‌های نمونهٔ فایل PDF</h4>
+<p class="muted">سه آزمون مستقل مطابق فایل نمونه؛ هر آزمون ۱۰ سؤال دارد. بانک سؤال فصل‌به‌فصل و آزمون‌های قبلی نیز باقی می‌مانند.</p>
+<div class="grid3">
+<button id="startPdfTerm1Exam" style="width:100%">📝 نمونه نوبت اول</button>
+<button id="startPdfTerm2Exam" style="width:100%">🏆 نمونه نوبت دوم</button>
+<button id="startPdfComprehensiveExam" style="width:100%">📚 نمونه جامع</button>
+</div>
+</div>
+<div class="item" style="margin:12px 0"><h4 style="margin-top:0">📚 آزمون یک فصل</h4><p class="muted">یک فصل را انتخاب کن و در آزمون مستقل ۲۰ سؤالی همان فصل شرکت کن.</p><label class="field" for="examChapterSelect">فصل موردنظر</label><select id="examChapterSelect"></select><button id="startChapterExam" style="width:100%;margin-top:8px">شروع آزمون این فصل</button></div><p class="muted">آزمون ۲۰ سؤالی ترکیبی هم باقی می‌ماند.</p><div class="metric"><span class="muted">سؤال</span><strong id="examProgress">۰ از ۲۰</strong></div><div id="examQuestionBox" class="item"><p id="examQuestion" class="big-math">برای شروع امتحان دکمه را بزن.</p><div id="examOptions"></div><input id="examAnswer" class="hidden" inputmode="text" placeholder="پاسخ را وارد کن"><button id="examSubmit" style="width:100%;margin-top:8px">ثبت پاسخ</button><div id="examFeedback" class="notice hidden"></div></div><button id="startBookExam" style="width:100%">🚀 شروع آزمون ۲۰ سؤالی</button><div id="examResult" class="notice hidden"></div></div>
 </div>
 </section>
 </section>
@@ -509,6 +519,46 @@ function buildTermQuestionSet(mode){
  }
  return shuffledCopy(chosen);
 }
+
+const pdfSampleSets = {
+  pdfTerm1: [
+    {chapter:1,skill:'ارزش مکانی',type:'mc',q:'ارزش رقم ۳ در عدد ۶۳۸٬۲۱۴ چیست؟',opts:['۳۰۰','۳٬۰۰۰','۳۰٬۰۰۰','۳۰۰٬۰۰۰'],a:2},
+    {chapter:1,skill:'الگوهای عددی',type:'input',q:'الگو را ادامه بده: ۱۵، ۲۲، ۲۹، ۳۶، ؟',answers:['43','۴۳']},
+    {chapter:1,skill:'ماشین ورودی و خروجی',type:'input',q:'ماشین «سه برابر کن و ۲ کم کن» ورودی ۸ را به چه عددی تبدیل می‌کند؟',answers:['22','۲۲']},
+    {chapter:1,skill:'شکل گسترده',type:'input',q:'عدد ۴۰۶٬۰۷۵ را به شکل گسترده بنویس.',answers:['400000+6000+70+5','۴۰۰۰۰۰+۶۰۰۰+۷۰+۵','5+70+6000+400000','۵+۷۰+۶۰۰۰+۴۰۰۰۰۰']},
+    {chapter:3,skill:'ضرب',type:'input',q:'حاصل ۱۳ × ۲۴ را به دست آور.',answers:['312','۳۱۲']},
+    {chapter:3,skill:'تقسیم',type:'input',q:'حاصل ۳۶۰ ÷ ۹ چیست؟',answers:['40','۴۰']},
+    {chapter:3,skill:'باقی‌ماندهٔ تقسیم',type:'input',q:'باقی‌ماندهٔ تقسیم ۵۸ بر ۶ چیست؟',answers:['4','۴']},
+    {chapter:4,skill:'زاویه‌ها',type:'mc',q:'زاویه‌ای کوچک‌تر از زاویهٔ راست چه نام دارد؟',opts:['تند','راست','باز','نیم‌صفحه'],a:0},
+    {chapter:3,skill:'تقریب و گرد کردن',type:'input',q:'حاصل تقریبی ۳۰۲ + ۴۹۸ با گرد کردن هر عدد به صدگان چیست؟',answers:['800','۸۰۰']},
+    {chapter:4,skill:'زاویه‌ها',type:'mc',q:'درست یا نادرست: زاویهٔ باز از ۹۰ درجه بزرگ‌تر و از ۱۸۰ درجه کوچک‌تر است.',opts:['درست','نادرست'],a:0}
+  ],
+  pdfTerm2: [
+    {chapter:4,skill:'تبدیل زمان',type:'input',q:'۳ ساعت و ۲۵ دقیقه چند دقیقه است؟',answers:['205','۲۰۵']},
+    {chapter:4,skill:'تبدیل طول',type:'input',q:'۲ متر و ۳۵ سانتی‌متر چند سانتی‌متر است؟',answers:['235','۲۳۵']},
+    {chapter:5,skill:'عدد مخلوط و کسر',type:'input',q:'عدد مخلوط ۲ و ۳/۵ را به کسر تبدیل کن.',answers:['13/5','۱۳/۵']},
+    {chapter:5,skill:'مقایسهٔ اعداد اعشاری',type:'mc',q:'کدام عدد اعشاری بزرگ‌تر است؟',opts:['۳٫۴','۳٫۰۹','۳٫۴۰۵','۳٫۳۹'],a:2},
+    {chapter:5,skill:'جمع اعشاری',type:'input',q:'حاصل ۳٫۷ + ۱۲٫۶ چیست؟',answers:['16.3','۱۶٫۳','16٫3']},
+    {chapter:5,skill:'ارزش مکانی اعشاری',type:'mc',q:'در عدد ۷٫۰۴ رقم ۴ در چه مرتبه‌ای است؟',opts:['یکان','دهم','صدم','هزارم'],a:2},
+    {chapter:6,skill:'خطوط موازی',type:'mc',q:'دو خط که یکدیگر را قطع نمی‌کنند و فاصله‌شان ثابت است چه نام دارند؟',opts:['عمود','موازی','متقاطع','منحنی'],a:1},
+    {chapter:6,skill:'مساحت متوازی‌الاضلاع',type:'input',q:'مساحت متوازی‌الاضلاع با قاعدهٔ ۸ و ارتفاع ۵ سانتی‌متر چقدر است؟ (عدد را بنویس)',answers:['40','۴۰','40 سانتی متر مربع','۴۰ سانتی‌متر مربع']},
+    {chapter:6,skill:'محیط مستطیل',type:'input',q:'محیط مستطیل با طول ۹ و عرض ۴ سانتی‌متر چقدر است؟ (عدد را بنویس)',answers:['26','۲۶','26 سانتی متر','۲۶ سانتی‌متر']},
+    {chapter:7,skill:'احتمال',type:'input',q:'در کیسه‌ای ۳ مهرهٔ قرمز و ۷ مهرهٔ آبی است؛ کدام رنگ محتمل‌تر است؟',answers:['آبی','رنگ آبی','آبی رنگ']}
+  ],
+  pdfComprehensive: [
+    {chapter:1,skill:'شکل گسترده',type:'input',q:'عدد ۷۰۵٬۰۳۲ را به شکل گسترده بنویس.',answers:['700000+5000+30+2','۷۰۰۰۰۰+۵۰۰۰+۳۰+۲','2+30+5000+700000','۲+۳۰+۵۰۰۰+۷۰۰۰۰۰']},
+    {chapter:1,skill:'الگوهای عددی',type:'input',q:'الگو را ادامه بده: ۴، ۹، ۱۴، ۱۹، ؟',answers:['24','۲۴']},
+    {chapter:3,skill:'ضرب',type:'input',q:'حاصل ۲۵ × ۳۶ چیست؟',answers:['900','۹۰۰']},
+    {chapter:3,skill:'تقسیم',type:'input',q:'حاصل ۷۲۸ ÷ ۸ چیست؟',answers:['91','۹۱']},
+    {chapter:2,skill:'ساده کردن کسر',type:'input',q:'کسر ۶/۸ را ساده کن.',answers:['3/4','۳/۴']},
+    {chapter:2,skill:'جمع کسرهای هم‌مخرج',type:'input',q:'حاصل ۳/۷ + ۲/۷ چیست؟',answers:['5/7','۵/۷']},
+    {chapter:4,skill:'تبدیل طول',type:'input',q:'۴ کیلومتر و ۲۵۰ متر چند متر است؟',answers:['4250','۴۲۵۰']},
+    {chapter:5,skill:'تفریق اعشاری',type:'input',q:'حاصل ۵٫۸ − ۲٫۴ چیست؟',answers:['3.4','۳٫۴']},
+    {chapter:6,skill:'مساحت مثلث',type:'input',q:'مثلثی با قاعدهٔ ۱۰ و ارتفاع ۶ سانتی‌متر چه مساحتی دارد؟ (عدد را بنویس)',answers:['30','۳۰','30 سانتی متر مربع','۳۰ سانتی‌متر مربع']},
+    {chapter:7,skill:'احتمال',type:'mc',q:'درست یا نادرست: مجموع احتمال همهٔ حالت‌های ممکن برابر ۱ است.',opts:['درست','نادرست'],a:0}
+  ]
+};
+
 function startBookExam(mode='annual'){
  examMode=mode;
  $('examAnswer').disabled=false;
@@ -519,7 +569,7 @@ function startBookExam(mode='annual'){
   const used=new Set(chosen.map(q=>q.q));
   const rest=shuffledCopy(byChapter.flatMap(g=>g.items.filter(q=>!used.has(q.q)).map(q=>({...q,chapter:g.chapter}))));
   chosen=shuffledCopy([...chosen,...rest.slice(0,Math.max(0,20-chosen.length))]).slice(0,20);
- }else if(mode==='term1'||mode==='term2'){chosen=buildTermQuestionSet(mode)}else if(String(mode).startsWith('chapter:')){const cid=Number(String(mode).split(':')[1]||1);chosen=shuffledCopy((practiceBank[cid]||[]).slice(0,100)).slice(0,20).map(q=>({...q,chapter:cid}))}
+ }else if(mode==='term1'||mode==='term2'){chosen=buildTermQuestionSet(mode)}else if(pdfSampleSets[mode]){chosen=pdfSampleSets[mode].map(q=>({...q}))}else if(String(mode).startsWith('chapter:')){const cid=Number(String(mode).split(':')[1]||1);chosen=shuffledCopy((practiceBank[cid]||[]).slice(0,100)).slice(0,20).map(q=>({...q,chapter:cid}))}
  examItems=chosen.map(shuffledQuestion);examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;
  $('examResult').classList.add('hidden');$('examQuestionBox').classList.remove('hidden');$('examSubmit').classList.remove('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ';
  $('examAnswer').value='';$('examAnswer').disabled=false;
@@ -529,10 +579,13 @@ function startBookExam(mode='annual'){
  paintExamQuestion();
 }
 function paintExamQuestion(){examSelectedAnswer=null;examAnswered=false;const q=examItems[examIndex];if(!q){finishBookExam();return}$('examProgress').textContent=`${(examIndex+1).toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent=`فصل ${q.chapter} · ${questionTypeLabel(q)} · ${q.q}`;$('examAnswer').value='';$('examAnswer').disabled=false;renderAnswerControls(q,'examOptions','examAnswer','examChoice',v=>examSelectedAnswer=v);$('examFeedback').classList.add('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ'}
-function finishBookExam(){const score=Math.round((examScore/Math.max(1,examItems.length))*20);const level=score>=17?'خیلی خوب':score>=13?'خوب':score>=10?'قابل قبول':'نیاز به تلاش';$('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent='🏁 آزمون به پایان رسید!';$('examOptions').innerHTML='';$('examAnswer').classList.add('hidden');$('examFeedback').classList.add('hidden');$('examSubmit').classList.add('hidden');$('examResult').classList.remove('hidden');const examName=examMode==='term1'?'نوبت اول':examMode==='term2'?'نوبت دوم':String(examMode).startsWith('chapter:')?`آزمون فصل ${faDigits(String(examMode).split(':')[1])}`:'آزمون تمرینی سالانه';$('examResult').innerHTML=`<b>${examName} به پایان رسید.</b><p>پاسخ درست: <strong>${examScore.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}</strong></p><p>نمرهٔ معادل از ۲۰: <strong>${score.toLocaleString('fa-IR')} از ۲۰</strong></p><p>سطح عملکرد: <strong>${level}</strong></p><p>برای تقویت مهارت‌ها، از بخش آموزش و تمرین فصل‌هایی را که نیاز به مرور دارند دوباره انجام بده.</p>`;$('examQuestionBox').classList.remove('hidden')}
+function finishBookExam(){const score=Math.round((examScore/Math.max(1,examItems.length))*20);const level=score>=17?'خیلی خوب':score>=13?'خوب':score>=10?'قابل قبول':'نیاز به تلاش';$('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent='🏁 آزمون به پایان رسید!';$('examOptions').innerHTML='';$('examAnswer').classList.add('hidden');$('examFeedback').classList.add('hidden');$('examSubmit').classList.add('hidden');$('examResult').classList.remove('hidden');const examName=examMode==='term1'?'نوبت اول':examMode==='term2'?'نوبت دوم':examMode==='pdfTerm1'?'آزمون نمونه نوبت اول':examMode==='pdfTerm2'?'آزمون نمونه نوبت دوم':examMode==='pdfComprehensive'?'آزمون نمونه جامع':String(examMode).startsWith('chapter:')?`آزمون فصل ${faDigits(String(examMode).split(':')[1])}`:'آزمون تمرینی سالانه';$('examResult').innerHTML=`<b>${examName} به پایان رسید.</b><p>پاسخ درست: <strong>${examScore.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}</strong></p><p>نمرهٔ معادل از ۲۰: <strong>${score.toLocaleString('fa-IR')} از ۲۰</strong></p><p>سطح عملکرد: <strong>${level}</strong></p><p>برای تقویت مهارت‌ها، از بخش آموزش و تمرین فصل‌هایی را که نیاز به مرور دارند دوباره انجام بده.</p>`;$('examQuestionBox').classList.remove('hidden')}
 $('startBookExam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('annual')};
 $('startTerm1Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term1')};
 $('startTerm2Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term2')};
+$('startPdfTerm1Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('pdfTerm1')};
+$('startPdfTerm2Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('pdfTerm2')};
+$('startPdfComprehensiveExam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('pdfComprehensive')};
 $('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}if(!examAnswered){const q=examItems[examIndex],response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}const correct=isQuestionCorrect(q,response);if(correct)examScore++;const f=$('examFeedback');f.classList.remove('hidden');f.textContent=correct?'پاسخ ثبت شد. آفرین!':'پاسخ ثبت شد. بعد از آزمون، بخش آموزشی این مبحث را مرور کن.';f.style.background=correct?'#e8fbf2':'#fff8e7';f.style.color=correct?'#126a49':'#72541a';$('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;examAnswered=true;$('examSubmit').textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';return}if(examIndex<examItems.length-1){examIndex++;$('examAnswer').disabled=false;paintExamQuestion()}else{finishBookExam()}};
 
 
