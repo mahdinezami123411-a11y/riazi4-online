@@ -985,6 +985,7 @@ function localDateInput(value){
  const d=new Date(value);if(Number.isNaN(d.getTime()))return '';
  return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);
 }
+function isoFromDateInput(value){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:d.toISOString()}
 function renderCourseSettingsForm(){
  const subject=$('settingSubject')?.value||'math',settings=courseSettingsBySubject[subject]||{};
  if($('settingCourseTitle'))$('settingCourseTitle').value=settings.courseTitle||courseName(subject);
@@ -1056,11 +1057,11 @@ $('saveCourseSettings')?.addEventListener('click',async()=>{
  const lessons=[...$('settingLessonList').querySelectorAll('.course-lesson-row')].map((row,index)=>({
    id:Number(row.dataset.courseLesson),title:row.querySelector('.course-lesson-label b')?.textContent||('درس '+(index+1)),
    isUnlocked:row.querySelector('.course-lesson-unlocked')?.checked===true,
-   availableFrom:row.querySelector('.course-lesson-from')?.value||null,
-   availableUntil:row.querySelector('.course-lesson-until')?.value||null,
+   availableFrom:isoFromDateInput(row.querySelector('.course-lesson-from')?.value||''),
+   availableUntil:isoFromDateInput(row.querySelector('.course-lesson-until')?.value||''),
    sortOrder:index+1
  }));
- const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode:$('settingReleaseMode').value,releaseAt:$('settingReleaseAt').value||null,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
+ const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode:$('settingReleaseMode').value,releaseAt:isoFromDateInput($('settingReleaseAt').value),maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
  const btn=$('saveCourseSettings');setBusy(btn,true,'در حال ذخیره…');$('courseSettingsStatus').textContent='در حال ذخیره تنظیمات کتاب و قفل درس‌ها…';
  try{
    const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});
@@ -1090,7 +1091,10 @@ async function assetExists(path){try{const response=await fetch(path,{method:'HE
 async function previewTeacherBook(id){
  const subject=bookSubjectCatalog.find(s=>s.id===id);if(!subject)return;
  const target=$('teacherBookPreview');target.innerHTML='';
- let url=bookUrls[id];if(!url&&await assetExists(subject.asset))url=subject.asset;
+ let url=bookUrls[id]||courseBookObjectUrls[id];
+ const config=courseSettingsBySubject[id]||{};
+ if(!url&&config.bookFilePath&&cloudSession?.access_token){try{const blob=await fetchClassMaterial(config.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[id]=url}catch(error){console.warn('Shared book preview unavailable',error)}}
+ if(!url&&await assetExists(subject.asset))url=subject.asset;
  if(!url){target.innerHTML='<div class="notice">برای «'+escapeHtml(subject.name)+'» هنوز PDF قابل پیش‌نمایش وجود ندارد. از بخش بالا فایل آن را اضافه کن یا PDF عمومی را در مسیر <code>'+escapeHtml(subject.assetLabel)+'</code> در مخزن سایت قرار بده.</div>';return}
  target.innerHTML='<div class="item"><div class="row"><h4>'+subject.icon+' پیش‌نمایش '+escapeHtml(subject.name)+'</h4><button type="button" class="outline" id="closeTeacherBookPreview">بستن پیش‌نمایش</button></div><iframe class="pdfview" title="پیش‌نمایش '+escapeHtml(subject.name)+'" src="'+url+'#view=FitH"></iframe></div>';
  $('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};
@@ -1220,7 +1224,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   // Do not offer the learner a difficulty selector: the full bank is shuffled together.
   const difficultyFilter=$('practiceDifficultyFilter');
   if(difficultyFilter){difficultyFilter.value='all';const cell=difficultyFilter.parentElement;if(cell)cell.style.display='none';const parent=cell?.parentElement;if(parent)parent.style.gridTemplateColumns='1fr'}
-  getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(!isCourseLessonOpen('math',Number($('bookPracticeTopic')?.value||1)))return [];if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>isCourseLessonOpen('math',Number(q.chapter||1))&&(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
+  getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(courseSettingsBySubject.math?.allowPractice===false||!isCourseLessonOpen('math',Number($('bookPracticeTopic')?.value||1)))return [];if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>isCourseLessonOpen('math',Number(q.chapter||1))&&(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
   newBookPractice=function(){
     const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;
     $('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';
