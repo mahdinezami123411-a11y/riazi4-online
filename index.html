@@ -951,7 +951,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
 
   $('studentAccountForm').addEventListener('submit',async event=>{
     event.preventDefault();
-    const name=$('studentAccountName').value.trim().replace(/\\s+/g,' ');
+    const name=$('studentAccountName').value.trim().replace(/\s+/g,' ');
     const username=$('studentAccountUsername').value.trim().toLowerCase();
     const password=$('studentAccountPassword').value;
     const status=$('studentAccountsStatus'),button=$('createStudentAccountBtn');
