@@ -2288,6 +2288,52 @@ persianLessons.forEach(l=>{
  l.families=data.families.map(([root,related])=>({root,words:related.split(/،|,/).map(x=>x.trim()).filter(Boolean)}));
  l.extendedVocabulary=[];
 });
+function vocabKey(value){return String(value||'').normalize('NFC').replace(/[\u064B-\u065F\u0670]/g,'').replace(/[\s‌‍]+/g,' ').trim().toLowerCase()}
+function cleanSourceVocabPair(row){
+ let text=String(row||'').replace(/[▪•◦]/g,'').replace(/\s+/g,' ').trim();
+ const split=text.indexOf(':');if(split<1)return null;
+ let left=text.slice(0,split).trim(),right=text.slice(split+1).trim();
+ const corrections={'جال':'جلا','عالمت':'علامت','طوالنی':'طولانی','پوالدین':'پولادین','باألخره':'بالاخره','مقدیم':'قدیم','عاجر':'عاجز','فالن':'فلان','بذبخت':'بدبخت','نبدی':'نبودی'};
+ left=corrections[left]||left;
+ right=right.replace(/بودن ی جهان/g,'جهان').replace(/جذّاب ف/g,'جذاب و').replace(/جذاب ف/g,'جذاب و').replace(/\s{2,}/g,' ').replace(/[،,]{2,}/g,'،').trim();
+ if(left==='جهان افروز')right='روشن‌کنندهٔ جهان';
+ if(left==='مغفرت'&&right.includes('بدترین'))right='استغفار';
+ if(!left||!right||left.length>55||right.length>180)return null;
+ if(/^(?:صفحه|درس|کتاب|عنوان)$/i.test(left)||right===':')return null;
+ return [left,right];
+}
+function mergeSourcePairs(existing,sourceRows){
+ const out=Array.isArray(existing)?existing.map(x=>Array.isArray(x)?[String(x[0]),String(x[1])]:x):[];
+ const seen=new Set(out.filter(Array.isArray).map(x=>vocabKey(x[0])+'|'+vocabKey(x[1])));
+ for(const row of sourceRows||[]){
+  const pair=cleanSourceVocabPair(row);if(!pair)continue;
+  const key=vocabKey(pair[0])+'|'+vocabKey(pair[1]);if(seen.has(key))continue;
+  seen.add(key);out.push(pair);
+ }
+ return out;
+}
+async function loadExpandedPersianVocabulary(){
+ try{
+  const response=await fetch('./assets/persian-vocabulary.json.gz.b64',{cache:'force-cache'});
+  if(!response.ok)throw new Error('فایل مرجع واژگان در سایت پیدا نشد.');
+  const encoded=(await response.text()).trim();if(!encoded)throw new Error('فایل مرجع واژگان خالی است.');
+  const binary=atob(encoded),bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+  if(!('DecompressionStream' in window))throw new Error('مرورگر این دستگاه از فشرده‌گشایی فایل واژگان پشتیبانی نمی‌کند.');
+  const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+  const source=JSON.parse(await new Response(stream).text());
+  for(const lesson of persianLessons){
+   const rows=source[String(lesson.id)];if(!rows||lesson.isFreeLesson)continue;
+   lesson.meanings=mergeSourcePairs(lesson.meanings,rows.meanings);
+   lesson.synonyms=mergeSourcePairs(lesson.synonyms,rows.synonyms);
+   lesson.opposites=mergeSourcePairs(lesson.opposites,rows.opposites);
+   const existing=(lesson.families||[]).map(item=>[item.root,(item.words||[]).join('، ')]);
+   lesson.families=mergeSourcePairs(existing,rows.families).map(([root,related])=>({root,words:related.split(/،|,|؛/).map(x=>x.trim()).filter(Boolean)}));
+  }
+  if(selectedOtherSubject&&['persian','dictation'].includes(selectedOtherSubject.id)&&selectedOtherLesson)renderOtherLesson(selectedOtherLesson.id);
+  console.info('Expanded Persian vocabulary loaded from teacher PDFs.');
+ }catch(error){console.warn('Using the built-in Persian vocabulary fallback:',error)}
+}
+loadExpandedPersianVocabulary();
 
   let selectedOtherSubject = null;
   let selectedOtherLesson = null;
