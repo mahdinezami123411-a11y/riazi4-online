@@ -1,14 +1,14 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b1020">
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#100e1b">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icons/app-icon.svg">
 <link rel="apple-touch-icon" href="./icons/app-icon.svg">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v19-20261016-space-arcade-feedback-wrap">
+<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v20-20261016-neon-theme-specific-analysis">
 <title>پایگاه فضایی ریاضی‌دان‌ها | ریاضی چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -418,6 +418,75 @@ option{background:#111a32!important;color:#f1f5ff!important}
 .question-analysis-specific p,.visual-text-details p,.visual-step-card p{overflow-wrap:anywhere!important;word-break:normal!important}
 #bookPracticeFeedback,#examFeedback,#studentAssignmentFeedback{overflow:visible!important}
 
+
+
+/* نسخهٔ تازه: تم کاملاً جدید «آرکید نئونی»؛ جایگزین تم آبی قبلی */
+:root{color-scheme:dark;--blue:#b7ff42;--blue2:#d5ff75;--navy:#17142c;--ink:#f6f1ff;--muted:#b4adc9;--bg:#100e1b;--card:#1b172b;--line:#3d3456;--green:#9eff55;--red:#ff6688;--gold:#ffd166;--purple:#c79bff;--cyan:#6cecff;--orange:#ffad66}
+html{background:#100e1b}
+body{background:radial-gradient(ellipse at 10% 0%,#46236a 0,transparent 33%),radial-gradient(ellipse at 95% 18%,#173c4c 0,transparent 30%),linear-gradient(160deg,#100e1b 0%,#171326 55%,#0b1620 100%);color:#f6f1ff}
+.wrap{max-width:1120px;padding:16px 14px 30px}
+.hero{background:linear-gradient(125deg,#231538 0%,#3c205a 50%,#123b46 100%);border:1px solid #a98aff;border-radius:25px;box-shadow:0 0 0 4px #a98aff13,0 16px 38px #0008;padding:25px}
+.hero:before{content:"✦  ◈  ✦  ◇  ✦";color:#d8ff74;letter-spacing:9px}
+.hero:after{content:"🕹️";opacity:.28;transform:rotate(-8deg)}
+.hero h1{color:#e8ff9d;text-shadow:none;font-size:clamp(23px,4vw,32px);font-weight:900}
+.hero p{color:#e5d9ff}
+.logo{background:#d7ff76;color:#211638;border:3px solid #fff0a8;box-shadow:0 0 0 5px #d7ff7620,0 5px 0 #64892a;border-radius:18px}
+.card,.login-page{background:linear-gradient(145deg,#211b32,#191625 78%);border:1px solid #413655;border-radius:20px;box-shadow:0 8px 0 #0b0913,0 14px 28px #0003;color:#f6f1ff}
+.card h2,.card h3{color:#d7ff76}
+button{background:linear-gradient(135deg,#c5ff55,#86e34c);color:#1d1830;border:1px solid #e9ffb9;border-radius:13px;box-shadow:0 4px 0 #4f7e2c,0 7px 15px #0003;font-weight:900}
+button:hover{filter:brightness(1.08);transform:translateY(-2px)}
+button:active{box-shadow:0 2px 0 #4f7e2c}
+button:disabled{opacity:.4}
+.outline,.nav button,.book-tabs button{background:#282139;color:#e4d8ff;border:1px solid #55466f;box-shadow:0 3px 0 #100d19}
+.nav button.active,.book-tabs button.active{background:linear-gradient(135deg,#baff53,#e5ff8c);color:#21172f;border-color:#e5ff8c;box-shadow:0 4px 0 #537d2d}
+input,select,textarea{background:#120f1e;color:#fff5ff;border:1px solid #57486f;border-radius:12px}
+input:focus,select:focus,textarea:focus{border-color:#d0ff65;box-shadow:0 0 0 3px #d0ff6526}
+.field{color:#ded2f6}
+.muted,.hero .muted{color:#b4adc9}
+.pill,.hero .pill{background:#342746;color:#d9ff8a;border:1px solid #67527e}
+.notice{background:#30243a;color:#ffe6a1;border:1px solid #80613f}
+.metric,.item,.subject,.mode,.chapter-card,.concept-box,.chapter-manager,.teacher-chapter-row,.lesson-note,.lesson-sub,.chapter-intro,.chapter-goals{background:#211b30;color:#f6f1ff;border-color:#463958;box-shadow:none}
+.metric strong,.progress-summary b{color:#d7ff76}
+.subject{border-radius:16px;box-shadow:inset 0 -3px #100e1b}
+.subject:before{background:#d7ff76}
+.subject:nth-child(2):before{background:#ff7cbd}.subject:nth-child(3):before{background:#6cecff}.subject:nth-child(4):before{background:#c79bff}
+.subject.active,.mode.active,.chapter-card button.active{background:#302440;border-color:#d7ff76;box-shadow:inset 0 0 0 1px #d7ff76}
+.subject b,.mode b,.chapter-card button strong,.chapter-goals h4,.lesson-note h4,.lesson-sub>b{color:#e2ff9b}
+.subject small,.mode span,.chapter-card button small{color:#b4adc9}
+.option,.practice-option,.exam-option,.accessrow{background:#171323;color:#f6f1ff;border-color:#493a5d}
+.practice-option.selected,.exam-option.selected{background:#2d2639;border-color:#d7ff76;box-shadow:inset -4px 0 #d7ff76}
+#studentEnter{background:linear-gradient(135deg,#baff53,#e5ff8c);color:#20172d;box-shadow:0 4px 0 #537d2d}
+#teacherEnter{background:linear-gradient(135deg,#ff9bcf,#ffc3e3);color:#37182d;box-shadow:0 4px 0 #a44779;border-color:#ffd9eb}
+.login-art{background:linear-gradient(120deg,#4b276a,#813a80,#185a60);color:#fff;border:1px solid #9b7ab9}
+.login-error{background:#421d30;color:#ffb4c7;border-color:#a94b6b}
+.progress-dashboard{background:linear-gradient(145deg,#272039,#191625);border-color:#4b3a61}
+.level-emblem{background:#3b2d23;border-color:#ffd166}
+.progress-summary>div,.chapter-progress-map .progress-chapter{background:#211b30;border-color:#463958}
+.times-poster,.times-column,.math-matrix td,.math-matrix th,.stack-sum{background:#211b30;color:#f6f1ff;border-color:#55466f}
+.times-column li,.math-matrix td{color:#f6f1ff}
+.times-column h4,.math-matrix th,.math-matrix .axis{background:#3a2c4e;color:#e2ff9b}
+.stack-sum{color:#e2ff9b}.stack-rule{border-color:#a895c7}
+.lesson-example{background:#1b342c;border-color:#39694e;color:#e8fff0}.lesson-example>b{color:#aaffc1}
+.lesson-mistake{background:#382b1d;border-color:#72552e;color:#fff0c9}.lesson-mistake>b{color:#ffd166}
+.lesson-check{background:#2c2340;border-color:#5c477f;color:#eee4ff}.lesson-check>b{color:#d2b5ff}
+.footer{color:#b4adc9;border-color:#493a5d}
+.visual-solution,.question-analysis-specific,.visual-text-details{background:#201a2e!important;border-color:#514063!important;color:#f7f0ff!important}
+.visual-solution-heading,.question-analysis-title{color:#e2ff9b!important}
+.visual-answer-summary{background:#2d2638!important;border-color:#6b8b3c!important;color:#fff!important}
+.visual-answer-summary strong{color:#d7ff76!important}
+.visual-step-card,.visual-fraction-card{background:#292139!important;border-color:#514063!important;color:#f6f1ff!important}
+.visual-step-card p,.visual-bottom-note,.visual-fraction-card small{color:#d1c6e7!important}
+.visual-fraction-cell{background:#3c304e!important;border-color:#6a587f!important}
+.visual-fraction-cell.filled{background:#d7ff76!important}
+.visual-pattern-number{background:#332746!important;color:#e2ff9b!important;border-color:#8e70b3!important}
+.visual-feedback-head.is-correct{background:#18372b!important;border-color:#57995e!important;color:#eaffef!important}
+.visual-feedback-head.needs-review{background:#3a2531!important;border-color:#a85676!important;color:#fff0f5!important}
+.visual-feedback-status{background:#332746!important;color:#e2ff9b!important}
+#bookPracticeFeedback,#examFeedback,#studentAssignmentFeedback{color:#f6f1ff}
+details summary{color:#d7ff76;cursor:pointer}
+a{color:#d7ff76}
+@media(max-width:560px){.hero{padding:18px;border-radius:20px}.card{border-radius:17px}.mission-chip{background:#ffffff0d;border-color:#ffffff24}}
+
 </style></head>
 <body data-build="yare-math-v16-20261016-visual-math-templates"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🪐</div><div><h1>🪐 پایگاه فضایی ریاضی‌دان‌ها</h1><p>هر جواب، یک مأموریت تازه؛ آمادهٔ پرتاب به مرحلهٔ بعدی؟</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>ایستگاه آموزش و تمرین پایهٔ چهارم</span><span class="hero-mini-badge">MISSION MODE</span></div></header>
@@ -603,10 +672,45 @@ function renderQuestionVisualAnalysis(q,rightAnswer,explanation){
  const skill=String(q?.skill||q?.topic||'مهارت این تمرین');
  return '<div class="visual-solution visual-generic" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🗺️</span><b>نقشهٔ حل همین سؤال</b><span class="visual-step-badge">۳ گام</span></div><div class="visual-step-path"><div class="visual-step-card"><span>🔎</span><b>۱. داده‌های سؤال</b><p>'+escapeHtml(prompt||'سؤال را کامل بخوان و خواسته‌اش را پیدا کن.')+'</p></div><div class="visual-step-card"><span>🧠</span><b>۲. نکتهٔ موردنیاز</b><p>'+escapeHtml(pieces[0]||('در مبحث «'+skill+'» قانون مناسب را پیدا کن.'))+'</p></div><div class="visual-step-card"><span>✅</span><b>۳. کنترل نتیجه</b><p>'+escapeHtml(pieces[1]||'جواب را با اطلاعات مسئله بررسی کن.')+'</p></div></div></div>';
 }
+function buildQuestionSpecificExplanation(q,rightAnswer,providedExplanation){
+ const prompt=String(q?.q||q?.prompt||q?.question_text||q?.question||'').trim();
+ const normalized=prompt.replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[×✕]/g,'*').replace(/[−–]/g,'-');
+ const ans=String(rightAnswer??'').trim();
+ const nums=(normalized.match(/-?\d+(?:\.\d+)?/g)||[]).map(Number).filter(Number.isFinite);
+ const fa=n=>Number(n).toLocaleString('fa-IR');
+ const clean=String(providedExplanation||q?.why||q?.explanation||'').trim();
+ if(clean.length>35 && normalizeAnswer(clean)!==normalizeAnswer(prompt) && !/^(پاسخ|جواب)\s*(صحیح|درست)?\s*(این سؤال)?\s*[:：.]?$/i.test(clean)) return clean;
+ const arithmetic=normalized.match(/(-?\d+)\s*(\+|-|\*|\/|÷)\s*(-?\d+)/);
+ if(arithmetic){
+  const a=Number(arithmetic[1]),op=arithmetic[2],b=Number(arithmetic[3]);
+  if(op==='+'||op==='-'){const result=op==='+'?a+b:a-b;return op==='+'?'عدد '+fa(a)+' را با '+fa(b)+' جمع می‌کنیم؛ ابتدا یکان‌ها و سپس دهگان‌ها را حساب می‌کنیم. '+fa(a)+' + '+fa(b)+' = '+fa(result)+'. بررسی: '+fa(result)+' − '+fa(b)+' = '+fa(a)+'.':'از '+fa(a)+' مقدار '+fa(b)+' را کم می‌کنیم؛ اگر رقم بالا کوچک‌تر باشد از مرتبهٔ بعدی قرض می‌گیریم. '+fa(a)+' − '+fa(b)+' = '+fa(result)+'. بررسی: '+fa(result)+' + '+fa(b)+' = '+fa(a)+'.'}
+  if(op==='*')return 'ضرب یعنی '+fa(b)+' گروهِ '+fa(a)+'تایی. جمع تکراری '+Array.from({length:Math.min(b,12)},()=>fa(a)).join(' + ')+' برابر '+fa(a*b)+' است؛ پس '+fa(a)+' × '+fa(b)+' = '+fa(a*b)+'.';
+  if(op==='/'||op==='÷')return 'باید '+fa(a)+' را به '+fa(b)+' گروه مساوی تقسیم کنیم. سهم هر گروه '+fa(a/b)+' است؛ بررسی معکوس: '+fa(a/b)+' × '+fa(b)+' = '+fa(a)+'.';
+ }
+ if(/الگو|دنباله|عدد بعدی|ادامه بده/.test(prompt)&&nums.length>=3){const diffs=nums.slice(1).map((n,i)=>n-nums[i]),same=diffs.every(d=>d===diffs[0]);if(same)return 'اختلاف عددهای پشت‌سرهم برابر است با '+diffs.slice(0,4).map(fa).join('، ')+'. هر بار '+fa(diffs[0])+' واحد تغییر می‌کنیم؛ بنابراین بعد از '+fa(nums[nums.length-1])+' عدد '+fa(nums[nums.length-1]+diffs[0])+' می‌آید.';return 'فاصلهٔ عددهای پیاپی را مقایسه کن؛ چون اختلاف‌ها یکسان نیستند، باید دنبال قانون تکرارشونده یا الگوی ضربی بگردیم. دنبالهٔ داده‌شده: '+nums.slice(0,6).map(fa).join('، ')+'. پاسخ این پرسش: '+ans+'.'}
+ if(/محیط/.test(prompt)&&nums.length>=2)return 'محیط یعنی جمع طول همهٔ ضلع‌های دور شکل. اگر شکل مستطیل باشد، طول و عرض را جمع و حاصل را در ۲ ضرب می‌کنیم؛ برای شکل چندضلعی، همهٔ ضلع‌ها را جمع می‌کنیم. عددهای سؤال: '+nums.slice(0,4).map(fa).join('، ')+'. پاسخ: '+ans+' (با واحد طول).';
+ if(/مساحت/.test(prompt)&&nums.length>=2)return 'مساحت اندازهٔ سطح داخل شکل است. برای مستطیل، طول × عرض را حساب می‌کنیم: '+fa(nums[0])+' × '+fa(nums[1])+' = '+ans+'. یادت باشد واحد مساحت، واحد مربع است.';
+ if(/کسر|صورت|مخرج|نصف|ربع|یک.?چهارم|یک.?سوم/.test(prompt)){const fr=[...normalized.matchAll(/(\d+)\s*\/\s*(\d+)/g)];if(fr.length){const n=Number(fr[0][1]),d=Number(fr[0][2]);return 'در کسر '+fa(n)+'/'+fa(d)+'، مخرج '+fa(d)+' تعداد قسمت‌های مساوی کل را می‌گوید و صورت '+fa(n)+' تعداد قسمت‌های انتخاب‌شده را. پس '+fa(n)+' قسمت از '+fa(d)+' قسمت مساوی در نظر گرفته می‌شود. پاسخ درست: '+ans+'.'}return 'ابتدا کل شکل یا مقدار را به قسمت‌های مساوی تقسیم کن؛ مخرج تعداد همهٔ قسمت‌ها و صورت تعداد قسمت‌های خواسته‌شده است. در متن این سؤال باید همین دو مقدار را پیدا و با هم مقایسه کنی. پاسخ درست: '+ans+'.'}
+ if(/ارزش مکانی|رقم|دهگان|یکان|صدگان|هزارگان/.test(prompt)&&nums.length)return 'برای حل این سؤال، رقم را از جایگاهش جدا نکن: یکان ارزش ۱، دهگان ارزش ۱۰، صدگان ارزش ۱۰۰ و هزارگان ارزش ۱۰۰۰ دارد. عددهای مطرح‌شده '+nums.slice(0,5).map(fa).join('، ')+' هستند؛ رقم خواسته‌شده را در جایگاه درست قرار بده. پاسخ: '+ans+'.';
+ if(/تقریب|گرد کردن|نزدیک‌ترین/.test(prompt)&&nums.length)return 'برای گرد کردن '+fa(nums[0])+'، به رقم سمت راستِ مرتبهٔ موردنظر نگاه می‌کنیم. اگر ۵ تا ۹ باشد، رقم موردنظر یکی زیاد می‌شود؛ اگر ۰ تا ۴ باشد، ثابت می‌ماند و رقم‌های سمت راست صفر می‌شوند. پاسخ این سؤال '+ans+' است.';
+ if(/باقی.?مانده|چند.*(باقی|می‌ماند|ماند)/.test(prompt)&&nums.length>=2)return 'گروه‌های کامل را تشکیل می‌دهیم و مقدار استفاده‌شده را از کل کم می‌کنیم. باقی‌مانده باید از اندازهٔ هر گروه کوچک‌تر باشد. با عددهای '+nums.slice(0,4).map(fa).join('، ')+' این شرط را بررسی می‌کنیم؛ پاسخ درست '+ans+' است.';
+ if(/جمعاً|در مجموع|روی هم|در کل|همه.*چند|اضافه/.test(prompt)&&nums.length>=2)return 'چون سؤال تعداد کل را می‌خواهد، مقدارهای جداگانه را با هم جمع می‌کنیم. عددهای داده‌شده '+nums.slice(0,5).map(fa).join('، ')+' هستند؛ آن‌ها را مرحله‌به‌مرحله جمع کن و حاصل را با متن مسئله بسنج. پاسخ: '+ans+'.';
+ if(/هر کدام|هر نفر|هر جعبه|هر بسته|در هر گروه|به طور مساوی|تقسیم/.test(prompt)&&nums.length>=2)return 'عبارت «'+((prompt.match(/هر کدام|هر نفر|هر جعبه|هر بسته|در هر گروه|به طور مساوی|تقسیم/)||['گروه‌های مساوی'])[0])+'» به گروه‌بندی یا تقسیم مساوی اشاره می‌کند. با عددهای '+nums.slice(0,4).map(fa).join('، ')+' مشخص می‌کنیم تعداد گروه‌ها خواسته شده یا سهم هر گروه؛ سپس عمل تقسیم را انجام می‌دهیم. پاسخ: '+ans+'.';
+ if(/ضرب|چند برابر|ردیف|ستون/.test(prompt)&&nums.length>=2)return 'برای پیدا کردن تعداد کلِ ردیف‌ها و ستون‌ها، تعداد ردیف‌ها را در تعداد هر ردیف ضرب می‌کنیم. عددهای سؤال '+nums.slice(0,4).map(fa).join('، ')+' هستند؛ حاصل ضرب با خواستهٔ مسئله تطبیق داده می‌شود. پاسخ: '+ans+'.';
+ if(/ساعت|دقیقه|زمان/.test(prompt)&&nums.length)return 'در تبدیل زمان، هر ساعت ۶۰ دقیقه است؛ بنابراین هنگام جمع یا کم کردن دقیقه‌ها از ۶۰ استفاده می‌کنیم، نه ۱۰۰. زمان‌های مطرح‌شده '+nums.slice(0,5).map(fa).join('، ')+' هستند. پاسخ درست: '+ans+'.';
+ if(/بزرگ‌تر|کوچک‌تر|بیشتر|کمتر|مقایسه|ترتیب صعودی|ترتیب نزولی/.test(prompt)&&nums.length>=2)return 'برای مقایسه از رقم سمت چپ شروع می‌کنیم؛ هر عددی که در اولین مرتبهٔ متفاوت رقم بزرگ‌تری داشته باشد، بزرگ‌تر است. عددهای مورد مقایسه '+nums.slice(0,5).map(fa).join('، ')+' هستند. طبق ترتیب خواسته‌شده پاسخ درست '+ans+' است.';
+ const skill=String(q?.skill||q?.topic||q?.chapter_title||'این مبحث'),opts=Array.isArray(q?.opts)?q.opts:[];
+ const keyOption=Number.isInteger(q?.a)?opts[q.a]:'';
+ return 'این سؤال از مبحث «'+skill+'» است. خواستهٔ دقیق آن این است: «'+prompt+'». اول اطلاعات لازم را از متن جدا کن، بعد قانون مربوط به '+skill+' را به کار ببر و در پایان نتیجه را دوباره با خواستهٔ سؤال بسنج. '+(nums.length?'عددهای مهم: '+nums.slice(0,5).map(fa).join('، ')+'. ':'')+(opts.length?'گزینهٔ درست «'+String(keyOption||ans)+'» است. ':'')+'پاسخ صحیح: '+ans+'.';
+}
 function renderQuestionFeedback(q,correct,rightAnswer,explanation){
- const answer=String(rightAnswer===undefined||rightAnswer===null||rightAnswer===''?'پاسخ صحیح در پاسخ‌نامه ثبت نشده است':rightAnswer);
- const uniqueExplanation=String(explanation||q?.why||q?.explanation||'برای این سؤال هنوز تحلیل اختصاصی نوشته نشده است. از معلم بخواه توضیح حل را در پاسخ‌نامه تکمیل کند.').trim();
- return '<div class="visual-feedback-head '+(correct?'is-correct':'needs-review')+'"><span class="visual-feedback-mascot">'+(correct?'🏆':'🧩')+'</span><div><strong>'+(correct?'آفرین، درست جواب دادی!':'اشکالی ندارد؛ با هم یاد می‌گیریم!')+'</strong><small>'+(correct?'روش حل را هم مرور کن تا یادگیری کامل شود.':'پاسخ درست را ببین و دلیلش را یاد بگیر؛ تمرین بعدی فرصت تازه‌ای است.')+'</small></div><span class="visual-feedback-status">'+(correct?'✓ درست':'↻ مرور')+'</span></div><div class="visual-answer-summary"><span>✅ پاسخ صحیح این سؤال</span><strong>'+escapeHtml(answer)+'</strong></div><section class="question-analysis-specific" dir="rtl"><div class="question-analysis-title"><span>🧠</span><b>تحلیل اختصاصی همین سؤال</b><em>ویژهٔ این پرسش</em></div><p>'+escapeHtml(uniqueExplanation)+'</p></section>'+renderQuestionVisualAnalysis(q,answer,uniqueExplanation);
+ let answer=String(rightAnswer??'').trim();
+ if(!answer && typeof correctAnswerText==='function')answer=String(correctAnswerText(q)||'').trim();
+ if(!answer && q?.answer!==undefined)answer=String(q.answer);
+ if(!answer && Array.isArray(q?.options)&&Number.isInteger(q?.correct_index))answer=String(q.options[q.correct_index]||'');
+ if(!answer)answer='کلید پاسخ این سؤال در داده‌های دریافتی پیدا نشد و باید بررسی شود.';
+ const uniqueExplanation=buildQuestionSpecificExplanation(q,answer,explanation);
+ return '<div class="visual-feedback-head '+(correct?'is-correct':'needs-review')+'"><span class="visual-feedback-mascot">'+(correct?'🏆':'🧩')+'</span><div><strong>'+(correct?'آفرین، درست جواب دادی!':'اشکالی ندارد؛ با هم یاد می‌گیریم!')+'</strong><small>'+(correct?'روش حل را هم مرور کن تا یادگیری کامل شود.':'پاسخ درست را ببین و دلیلش را یاد بگیر؛ تمرین بعدی فرصت تازه‌ای است.')+'</small></div><span class="visual-feedback-status">'+(correct?'✓ درست':'↻ مرور')+'</span></div><div class="visual-answer-summary"><span>✅ پاسخ صحیح این سؤال</span><strong>'+escapeHtml(answer)+'</strong></div><section class="question-analysis-specific" dir="rtl"><div class="question-analysis-title"><span>🧠</span><b>تحلیل اختصاصی همین سؤال</b><em>ویژهٔ این پرسش</em></div><p>'+escapeHtml(uniqueExplanation)+'</p></section>'+renderQuestionVisualAnalysis(q,answer,uniqueExplanation)+'<details class="visual-text-details"><summary>📘 توضیح مرحله‌به‌مرحله</summary><p>'+escapeHtml(uniqueExplanation)+'</p></details>';
 }
 function explainArithmetic(kind,a,b,answer){
  const fa=n=>Number(n).toLocaleString('fa-IR');
