@@ -1046,7 +1046,7 @@ function renderTeacherGradebook(){
  const rows=getCourseReportRows().filter(r=>(subject==='all'||r.subject===subject)&&(lesson==='all'||Number(r.lesson_id)===Number(lesson)));
  if(!rows.length){panel.textContent='برای این کتاب و درس هنوز نمره یا بازخوردی ثبت نشده است.';return}
  const names=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));
- panel.innerHTML='<p class="muted">'+fa(rows.length)+' نتیجه در فیلتر انتخاب‌شده.</p><div style="overflow-x:auto"><table class="math-matrix" style="min-width:900px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>تحلیل/بازخورد</th><th>زمان</th></tr></thead><tbody>'+rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(names.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||r.activity_type||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+ (r.is_correct?'درست':'نیاز به بررسی')+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('')+'</tbody></table></div>';
+ panel.innerHTML='<p class="muted">'+fa(rows.length)+' نتیجه در فیلتر انتخاب‌شده.</p><div style="overflow-x:auto"><table class="math-matrix" style="min-width:900px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>تحلیل/بازخورد</th><th>زمان</th></tr></thead><tbody>'+rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(names.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||r.activity_type||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+ (r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('')+'</tbody></table></div>';
 }
 $('settingSubject')?.addEventListener('change',renderCourseSettingsForm);
 $('reloadCourseSettings')?.addEventListener('click',()=>loadCourseSettings());
@@ -1947,9 +1947,10 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
  const math=(cloudTeacherAttempts||[]).map(r=>({...r,subject:'math',lesson_id:Number(r.chapter_id)||1,source:r.source||'تمرین ریاضی',explanation:r.explanation||''}));
  const others=(cloudSubjectProgress||[]).map(r=>{
   const meta=r.metadata&&typeof r.metadata==='object'?r.metadata:{};
-  return {...r,subject:r.subject||'persian',lesson_id:Number(r.lesson_id)||1,source:r.activity_type||r.activity_key||'تمرین',submitted_answer:meta.selected_text??r.selected_answer,explanation:r.explanation||'',created_at:r.updated_at||r.created_at};
+  return {...r,subject:r.subject||'persian',lesson_id:Number(r.lesson_id)||1,source:r.activity_type||r.activity_key||'تمرین',submitted_answer:meta.selected_text??r.selected_answer,explanation:r.explanation||'',resultLabel:r.is_correct===true?'پاسخ صحیح':r.is_correct===false?'نیاز به تمرین':'—',created_at:r.updated_at||r.created_at};
  });
- return [...math,...others].sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0));
+ const grades=cloudAssignmentScores||[];
+ return [...math,...others,...grades].sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0));
 }
 function filteredReportRows(){
  let rows=getCourseReportRows();
@@ -1966,7 +1967,7 @@ function renderTeacherReport(){
  status.textContent=rows.length.toLocaleString('fa-IR')+' پاسخ از کتاب/درس انتخاب‌شده؛ گزارش‌های ریاضی و درس‌های دیگر در این جدول یکپارچه شده‌اند.';
  let panel=$('cloudTeacherReportTable');if(!panel){panel=document.createElement('div');panel.id='cloudTeacherReportTable';panel.className='item';tab.appendChild(panel)}
  if(!rows.length){panel.textContent='هنوز پاسخی برای این کتاب و درس ثبت نشده است.';renderTeacherGradebook();return}
- const body=rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+(r.is_correct?'درست':'نیاز به تمرین')+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('');
+ const body=rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+(r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('');
  panel.innerHTML='<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1000px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ</th><th>نتیجه</th><th>بازخورد/تحلیل</th><th>زمان</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'.</p>';
  renderTeacherGradebook();
 }
