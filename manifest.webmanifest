@@ -1,17 +1,19 @@
 {
   "id": "./",
-  "name": "مأموریت ریاضی چهارم",
-  "short_name": "ریاضی چهارم",
-  "description": "برنامه آموزشی تعاملی ریاضی پایه چهارم ابتدایی",
+  "name": "پایگاه فضایی ریاضی‌دان‌ها",
+  "short_name": "ریاضی‌لند",
+  "description": "باشگاه تعاملی ریاضی چهارم با تمرین تصویری، پاسخ صحیح و تحلیل اختصاصی هر سؤال",
   "lang": "fa",
   "dir": "rtl",
-  "start_url": "./?source=pwa",
+  "start_url": "./?source=pwa&v=20261016-space-arcade",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#edf6ff",
-  "theme_color": "#1456b8",
-  "categories": ["education"],
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "categories": [
+    "education"
+  ],
   "icons": [
     {
       "src": "./icons/app-icon.svg",
