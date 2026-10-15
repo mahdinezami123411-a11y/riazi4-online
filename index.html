@@ -1886,7 +1886,11 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b> ':'<b>این پاسخ درست نیست.</b> ')+
       '<p><b>پاسخ صحیح:</b> '+escapeHtml(l.options[l.answer])+'</p><p><b>تحلیل اختصاصی این سؤال:</b> '+escapeHtml(l.analysis)+'</p>';
     const progress=readOtherProgress();progress[selectedOtherSubject.id+'-'+l.id]={correct:ok,selected:Number(picked.value),updatedAt:new Date().toISOString()};writeOtherProgress(progress);
-    $('checkOtherLessonAnswer').disabled=true;openOtherSubject(selectedOtherSubject.id);renderOtherSubjectPicker();
+    $('checkOtherLessonAnswer').disabled=true;
+    $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(x=>readOtherProgress()[selectedOtherSubject.id+'-'+x.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
+    const lessonButton=$('otherSubjectLessonPicker').querySelector('[data-other-lesson="'+l.id+'"]');
+    if(lessonButton){const small=lessonButton.querySelector('small');if(small)small.textContent=ok?'✅ پاسخ درست ثبت شده':'پاسخ ثبت شد؛ دوباره تمرین کن'}
+    renderOtherSubjectPicker();
   };
   $('subjectsBackHome').onclick=()=>showStudentAppView('home');
 
