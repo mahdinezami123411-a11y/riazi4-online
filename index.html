@@ -487,6 +487,31 @@ details summary{color:#d7ff76;cursor:pointer}
 a{color:#d7ff76}
 @media(max-width:560px){.hero{padding:18px;border-radius:20px}.card{border-radius:17px}.mission-chip{background:#ffffff0d;border-color:#ffffff24}}
 
+
+/* درس‌های چندگانه */
+#otherSubjectsView .subject{cursor:pointer}
+#otherSubjectsView .subject:focus-visible{outline:3px solid #3278ff;outline-offset:2px}
+.other-answer{display:flex;align-items:flex-start;gap:9px;border:1px solid #d5e7fa;background:#f8fbff;border-radius:12px;padding:10px;margin:7px 0;cursor:pointer}
+.other-answer input{width:auto;margin-top:7px;flex:0 0 auto}
+.other-answer.selected{border-color:#438ce0;background:#eaf4ff}
+.other-answer.correct{border-color:#14966b;background:#e8fbf2}
+.other-answer.wrong{border-color:#c83d52;background:#fff0f2}
+/* بخش جامع فارسی و تمرین‌های تعاملی */
+.persian-source-note{background:#eef7ff;border:1px solid #cfe4f8;border-radius:14px;padding:12px;margin:10px 0}
+.persian-source-note p{margin:6px 0;line-height:1.9}
+.persian-vocab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.persian-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.persian-word-chip{display:inline-block;border:1px solid #cbdcf4;background:#f7fbff;border-radius:999px;padding:4px 9px;font-size:12px}
+.persian-pair-list{display:grid;gap:6px;margin-top:8px}
+.persian-pair{display:flex;flex-wrap:wrap;align-items:center;gap:7px;background:#f8fbff;border:1px solid #e0eaf8;border-radius:10px;padding:7px 9px;font-size:13px}
+.persian-pair b{color:#174b97}
+.persian-quiz-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.persian-quiz-card{background:#fff;border:1px solid #d7e5f7;border-radius:15px;padding:12px}
+.persian-quiz-card>p{font-weight:700;line-height:1.9;margin:9px 0}
+.persian-quiz-card .other-answer.correct{background:#e8fbf2;border-color:#14966b}
+.persian-quiz-card .other-answer.wrong{background:#fff0f2;border-color:#c83d52}
+.persian-quiz-feedback{white-space:normal}
+@media(max-width:560px){.persian-vocab-grid{grid-template-columns:1fr}.persian-source-note,.persian-quiz-card{padding:10px}}
 </style></head>
 <body data-build="yare-math-v20-20261016-neon-theme-specific-analysis"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🪐</div><div><h1>🪐 پایگاه فضایی ریاضی‌دان‌ها</h1><p>هر جواب، یک مأموریت تازه؛ آمادهٔ پرتاب به مرحلهٔ بعدی؟</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>ایستگاه آموزش و تمرین پایهٔ چهارم</span><span class="hero-mini-badge">MISSION MODE</span></div></header>
@@ -533,7 +558,23 @@ a{color:#d7ff76}
 </div>
 </div>
 <div id="studentHomeView" class="student-screen">
-<div class="card"><h2>🧭 از کجا شروع کنیم؟</h2><p class="muted">اول مهارت‌های پایه را در بخش «یادآوری» مرور کن؛ بعد وارد فصل‌های کتاب ریاضی چهارم شو.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div></div>
+<div class="card"><h2>🧭 از کجا شروع کنیم؟</h2><p class="muted">اول مهارت‌های پایه را در بخش «یادآوری» مرور کن؛ بعد وارد فصل‌های کتاب ریاضی چهارم شو.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div><button class="outline" data-student-view="subjects" style="width:100%;margin-top:10px">📚 سایر درس‌های چهارم <small style="display:block;font-weight:400">علوم، فارسی، مطالعات، هدیه‌ها و املا</small></button></div>
+<div id="otherSubjectsView" class="card hidden">
+  <div class="row"><h2>📚 درس‌های دیگر پایه چهارم</h2><button class="outline" id="subjectsBackHome">بازگشت</button></div>
+  <p class="muted">درس را انتخاب کن، سپس مبحث آموزشی را بخوان و به پرسش آن پاسخ بده. پاسخ درست و دلیل آموزشی هر سؤال جداگانه نمایش داده می‌شود.</p>
+  <div id="otherSubjectPicker" class="subjects"></div>
+  <div id="otherSubjectLessons" class="hidden">
+    <div class="row" style="margin-top:14px"><h3 id="otherSubjectTitle">درس</h3><span class="pill" id="otherSubjectProgress">۰ پاسخ</span></div>
+    <div id="otherSubjectLessonPicker" class="chapter-grid"></div>
+  </div>
+  <div id="otherSubjectLessonBody" class="item hidden" aria-live="polite">
+    <div class="row"><h3 id="otherLessonTitle">آموزش مبحث</h3><span class="pill">یاد بگیر و تمرین کن</span></div>
+    <div id="otherLessonContent"></div>
+    <div class="lesson-note"><h4>🎯 پرسش این مبحث</h4><p id="otherLessonQuestion"></p><div id="otherLessonOptions"></div><button id="checkOtherLessonAnswer" style="width:100%;margin-top:9px">بررسی پاسخ</button><div id="otherLessonFeedback" class="notice hidden" aria-live="polite"></div></div>
+  </div>
+  <p class="muted" style="margin-top:12px">توجه: این بخش، زیرساخت درس‌های چندگانه و نمونه‌های آغازین است. برای تکمیل دقیق همه فصل‌ها و درس‌های چاپ جاری، محتوای رسمی هر کتاب باید با نسخهٔ همان سال تطبیق داده شود.</p>
+</div>
+</div>
 <div id="remindersView" class="card hidden">
 <div class="row"><h2>🧠 یادآوری ریاضی</h2><span class="pill">مهارت‌های پایه</span></div>
 <section class="learn-section item"><h3>۱. جدول کامل ضرب از ۱ تا ۱۰</h3><p class="muted">همه جدول‌ها یک‌جا نمایش داده شده‌اند. عدد سطر را در عدد ستون ضرب کن؛ جواب در خانه‌ی برخورد آن‌هاست.</p><div class="times-poster" style="overflow-x:auto"><div id="fullTimesTable"></div></div><p class="muted">برای نمونه، سطر ۴ و ستون ۷ برابر ۲۸ است؛ یعنی ۴ × ۷ = ۲۸.</p></section>
@@ -1137,10 +1178,11 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(tab==='exam')$('examResult').classList.add('hidden');
   }
   function showStudentAppView(view){
-    const targets={home:'studentHomeView',reminders:'remindersView',learn:'bookView',practice:'bookView',exam:'bookView',assignments:'assignmentsStudentView',profile:'profileView'};
-    ['studentHomeView','remindersView','bookView','assignmentsStudentView','profileView'].forEach(id=>$(id)?.classList.add('hidden'));
+    const targets={home:'studentHomeView',reminders:'remindersView',learn:'bookView',practice:'bookView',exam:'bookView',subjects:'otherSubjectsView',assignments:'assignmentsStudentView',profile:'profileView'};
+    ['studentHomeView','remindersView','bookView','otherSubjectsView','assignmentsStudentView','profileView'].forEach(id=>$(id)?.classList.add('hidden'));
     const target=targets[view]||'studentHomeView';$(target)?.classList.remove('hidden');
     document.querySelectorAll('#studentAppNav [data-app-view]').forEach(b=>b.classList.toggle('active',b.dataset.appView===view));
+    if(view==='subjects')renderOtherSubjectPicker();
     if(view==='learn')setBookTab('chapters');
     if(view==='practice'){setBookTab('practice');syncPracticeModeUI();updatePracticeStats()}
     if(view==='exam'){setBookTab('exam');populateChapterExamSelect()}
@@ -1187,6 +1229,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   let cloudSession = null;
   let cloudTeacherAttempts = [];
   let cloudStudentProfiles = [];
+  let cloudSubjectProgress = [];
   let currentCloudAttemptGroup = null;
   let cloudBankRows = [];
   let cloudBusy = false;
@@ -1236,7 +1279,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     activeStudentName='';activeUsername='';activeProfile={};studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
     practiceAsked=0;practiceCorrect=0;practiceSeen.clear();currentPractice=null;selectedPracticeAnswer=null;practiceWasChecked=false;
     examItems=[];examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;currentCloudAttemptGroup=null;
-    cloudTeacherAttempts=[];cloudStudentProfiles=[];cloudBankRows=[];
+    cloudTeacherAttempts=[];cloudStudentProfiles=[];cloudSubjectProgress=[];cloudBankRows=[];
     const report=$('cloudTeacherReportTable');if(report)report.replaceChildren();
     const questionList=$('teacherQuestionList');if(questionList)questionList.replaceChildren();
     const editor=$('teacherQuestionEditor');if(editor)editor.classList.add('hidden');
@@ -1318,6 +1361,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       $('studentPasswordInput').value='';
       await loadStudentQuestionBank();
       try{await refreshStudentProgressFromCloud()}catch(e){console.warn('Cloud progress read failed',e);studentProgress=loadStudentProgress(username);renderStudentDashboard()}
+      try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress read failed',e)}
       const oldCard=document.querySelector('.student-identity-card');if(oldCard)oldCard.classList.remove('hidden');
       setCloudStatus('ورود دانش‌آموز تأیید شد؛ بانک سؤال آنلاین بارگذاری شد و پاسخ‌ها پس از ثبت سمت سرور ذخیره می‌شوند.');
       startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
@@ -1569,8 +1613,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         if(!Array.isArray(page))throw new Error('ساختار پاسخ پروفایل‌ها نامعتبر است.');
         allProfiles.push(...page);if(page.length<1000)break;
       }
-      cloudTeacherAttempts=allAttempts;cloudStudentProfiles=allProfiles;
-      renderTeacherReport();renderTeacherOverviewPapers();
+      const allSubjectProgress=[];
+      for(let offset=0;offset<50000;offset+=1000){
+        const page=await cloudFetch(`/rest/v1/yare_subject_practice_progress?select=id,student_id,class_id,subject,lesson_id,activity_key,activity_type,selected_answer,correct_answer,is_correct,attempt_count,question_text,explanation,metadata,updated_at,created_at&order=updated_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
+        if(!Array.isArray(page))throw new Error('ساختار پیشرفت درس‌های دیگر نامعتبر است.');
+        allSubjectProgress.push(...page);if(page.length<1000)break;
+      }
+      cloudTeacherAttempts=allAttempts;cloudStudentProfiles=allProfiles;cloudSubjectProgress=allSubjectProgress;
+      renderTeacherReport();renderTeacherOverviewPapers();renderTeacherSubjectPracticeReport();
       const overview=$('tab-overview');const metric=overview?.querySelectorAll('.metric strong');
       if(metric&&metric.length>=3){const students=new Set(cloudTeacherAttempts.map(x=>x.student_id));metric[0].textContent=String(students.size);metric[1].textContent=String(cloudTeacherAttempts.length);metric[2].textContent=cloudTeacherAttempts.length?Math.round(cloudTeacherAttempts.filter(x=>x.is_correct).length/cloudTeacherAttempts.length*100)+'٪':'—';const labels=overview.querySelectorAll('.metric .muted');if(labels.length>=3){labels[0].textContent='دانش‌آموزان فعال';labels[1].textContent='پاسخ‌های ثبت‌شده';labels[2].textContent='درستی پاسخ‌ها'}}
       const overviewStatus=$('teacherOverviewStatus');if(overviewStatus)overviewStatus.textContent='آمار بر اساس داده‌های قابل‌دسترسی در Supabase بارگذاری شد.';
@@ -1652,6 +1702,39 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const body=rows.slice(0,500).map(r=>`<tr><td>${escapeHtml(nameById.get(r.student_id)||r.student_id)}</td><td>${escapeHtml(r.source)}</td><td>${escapeHtml(String(r.chapter_id??''))}</td><td>${escapeHtml(r.question_text)}</td><td>${escapeHtml(JSON.stringify(r.submitted_answer??''))}</td><td>${r.is_correct?'درست':'نادرست'}</td><td>${escapeHtml(new Date(r.created_at).toLocaleString('fa-IR'))}</td></tr>`).join('');
     panel.innerHTML=`<div style="overflow-x:auto"><table class="math-matrix" style="min-width:800px"><thead><tr><th>دانش‌آموز</th><th>فعالیت</th><th>فصل</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>زمان</th></tr></thead><tbody>${body}</tbody></table></div><p class="muted">نمایش ${Math.min(rows.length,500)} ردیف از ${rows.length}. برای خروجی کامل از CSV استفاده کن.</p>`;
   }
+
+  const subjectPracticeNames={science:'علوم تجربی',persian:'فارسی و نگارش',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی',dictation:'املای فارسی'};
+  function renderTeacherSubjectPracticeReport(){
+    const tab=$('tab-reports');if(!tab)return;
+    let panel=$('cloudSubjectPracticeReport');if(!panel){panel=document.createElement('div');panel.id='cloudSubjectPracticeReport';panel.className='item';tab.appendChild(panel)}
+    const rows=[...cloudSubjectProgress].sort((a,b)=>Date.parse(b.updated_at)-Date.parse(a.updated_at));
+    const nameById=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));
+    const correct=rows.filter(r=>r.is_correct===true).length;
+    const percent=rows.length?Math.round(correct/rows.length*100):0;
+    const tableRows=rows.slice(0,500).map(r=>{
+      const meta=r.metadata&&typeof r.metadata==='object'?r.metadata:{};
+      const answer=meta.selected_text??(r.selected_answer==null?'—':String(r.selected_answer+1));
+      const expected=meta.correct_text??(r.correct_answer==null?'—':String(r.correct_answer+1));
+      const at=Date.parse(r.updated_at||r.created_at);
+      const time=Number.isFinite(at)?new Date(at).toLocaleString('fa-IR'):'—';
+      return '<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(subjectPracticeNames[r.subject]||r.subject)+'</td><td>'+escapeHtml(fa(r.lesson_id))+'</td><td>'+escapeHtml(r.activity_type||r.activity_key)+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(answer)+'</td><td>'+escapeHtml(expected)+'</td><td style="font-weight:700;color:'+(r.is_correct?'#16804a':'#b7791f')+'">'+(r.is_correct?'درست':'نیاز به تمرین')+'</td><td>'+escapeHtml(fa(r.attempt_count||1))+'</td><td>'+escapeHtml(time)+'</td><td><details><summary>تحلیل</summary><p>'+escapeHtml(r.explanation||'تحلیلی برای این فعالیت ثبت نشده است.')+'</p></details></td></tr>';
+    }).join('');
+    panel.innerHTML='<div class="row" style="flex-wrap:wrap;align-items:center"><div><h3>📚 گزارش پیشرفت درس‌های دیگر</h3><p class="muted">آخرین پاسخ هر فعالیت؛ جدا از نمره‌های رسمی ریاضی. '+fa(rows.length)+' فعالیت · '+fa(correct)+' پاسخ صحیح ('+fa(percent)+'٪)</p></div><button type="button" class="outline" id="exportSubjectPracticeCsv">خروجی CSV درس‌های دیگر</button></div>'+
+      (rows.length?'<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1120px"><thead><tr><th>دانش‌آموز</th><th>درس</th><th>شماره مبحث</th><th>نوع فعالیت</th><th>پرسش</th><th>پاسخ دانش‌آموز</th><th>پاسخ صحیح</th><th>نتیجه</th><th>تلاش</th><th>آخرین ثبت</th><th>تحلیل</th></tr></thead><tbody>'+tableRows+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'. نتیجه‌ها مربوط به تمرین خودکار هستند و جایگزین نمرهٔ رسمی امتحان نیستند.</p>':'<div class="notice">هنوز پاسخ تمرینی از بخش درس‌های دیگر به Supabase نرسیده است. پس از پاسخ دادن دانش‌آموز، گزارش اینجا ثبت می‌شود.</div>');
+    const exportButton=$('exportSubjectPracticeCsv');
+    if(exportButton)exportButton.onclick=()=>{
+      if(!cloudSession||cloudSession.role!=='teacher'){alert('ابتدا با حساب معلم وارد شو.');return}
+      const head=['نام دانش‌آموز','شناسه دانش‌آموز','درس','شماره مبحث','نوع فعالیت','پرسش','پاسخ دانش‌آموز','پاسخ صحیح','درست','تعداد تلاش','تحلیل','آخرین ثبت'];
+      const lines=[head.map(csvSafe).join(',')];
+      rows.forEach(r=>{
+        const meta=r.metadata&&typeof r.metadata==='object'?r.metadata:{};
+        lines.push([nameById.get(r.student_id)||r.student_id,r.student_id,subjectPracticeNames[r.subject]||r.subject,r.lesson_id,r.activity_type||r.activity_key,r.question_text,meta.selected_text??r.selected_answer,meta.correct_text??r.correct_answer,r.is_correct?'بله':'خیر',r.attempt_count,r.explanation,r.updated_at||r.created_at].map(csvSafe).join(','));
+      });
+      const blob=new Blob(['\\ufeff'+lines.join('\\r\\n')],{type:'text/csv;charset=utf-8;'});
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='yare-subject-practice-report.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    };
+  }
+
   const reportButton=$('exportReportCsv');if(reportButton)reportButton.onclick=()=>{
     if(!cloudSession||cloudSession.role!=='teacher'){alert('ابتدا با حساب معلم وارد شو.');return}
     const rows=filteredReportRows();const names=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));
@@ -1785,10 +1868,334 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       cloudSession={...prior,user,profile};saveCloudSession();
       if(profile.role==='student'){
         activeUsername=String(prior.username||profile.display_name||'');activeStudentName=activeUsername;activeProfile={...readProfile(activeUsername),name:profile.display_name||activeUsername,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);
-        await loadStudentQuestionBank();await refreshStudentProgressFromCloud();startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
+        await loadStudentQuestionBank();await refreshStudentProgressFromCloud();try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress restore failed',e)}startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
       }else if(profile.role==='teacher'){show('teacher');await loadTeacherReport();await loadTeacherQuestionBank()}
     }catch(e){clearCloudSession(false);console.info('No reusable Supabase session',e)}
   })();
+
+
+  /* ===== هاب درس‌های دیگر پایه چهارم؛ مستقل از بانک و نمره‌های ریاضی ===== */
+  const otherSubjectData = [
+    {id:'science',name:'علوم تجربی',icon:'🔬',color:'#14966b',lessons:[
+      {id:1,title:'زنگ علوم: مشاهده و پرسش',content:'در علوم، ابتدا با دقت مشاهده می‌کنیم، سپس پرسش می‌سازیم و برای پاسخ، شواهد جمع می‌کنیم. مشاهده با حدس فرق دارد؛ مشاهده چیزی است که با حواس یا ابزار ثبت می‌کنیم.',example:'مثال: اگر دو گیاه را در شرایط متفاوت نگهداری کنیم، باید هر بار مقدار آب و نور را ثبت کنیم تا مقایسه منصفانه باشد.',question:'کدام گزینه یک مشاهده است؟',options:['گیاه حتماً فردا بلندتر می‌شود.','ارتفاع گیاه امروز ۱۲ سانتی‌متر است.','این گیاه از همه بهتر است.','شاید نور کافی نبوده باشد.'],answer:1,analysis:'گزینهٔ دوم مشاهده است؛ ارتفاع ۱۲ سانتی‌متر اندازه‌گیری و قابل ثبت است. گزینه‌های دیگر پیش‌بینی، قضاوت یا حدس دربارهٔ علت‌اند.'},
+      {id:2,title:'مخلوط‌ها در زندگی',content:'مخلوط از کنار هم قرار گرفتن دو یا چند ماده ساخته می‌شود. در بعضی مخلوط‌ها اجزا دیده می‌شوند و در بعضی دیگر، مانند آب‌نمک پس از حل شدن نمک، اجزا به‌آسانی دیده نمی‌شوند.',example:'برای جدا کردن شن از آب می‌توان از صاف‌کردن استفاده کرد؛ برای به‌دست‌آوردن نمک از آب‌نمک، تبخیر آب مناسب است.',question:'برای جدا کردن شن از آب کدام روش مناسب‌تر است؟',options:['صاف‌کردن با صافی','آهن‌ربا در همهٔ حالت‌ها','منجمد کردن شن','اضافه کردن شکر'],answer:0,analysis:'شن در آب حل نمی‌شود و ذره‌های آن از صافی عبور نمی‌کنند؛ بنابراین صاف‌کردن، شن را از آب جدا می‌کند.'},
+      {id:3,title:'انرژی و کاربردهای آن',content:'برای حرکت، روشنایی، صدا و گرم شدن به انرژی نیاز داریم. انرژی می‌تواند از شکلی به شکل دیگر تبدیل شود؛ مثلاً چراغ، انرژی الکتریکی را به نور و گرما تبدیل می‌کند.',example:'در پنکه، انرژی الکتریکی به حرکت پره‌ها تبدیل می‌شود و مقداری صدا و گرما هم تولید می‌شود.',question:'در یک چراغ روشن، انرژی الکتریکی بیشتر به چه شکل‌هایی تبدیل می‌شود؟',options:['نور و گرما','فقط صدا','فقط ماده','آب و خاک'],answer:0,analysis:'چراغ هنگام کار نور تولید می‌کند و بخشی از انرژی آن نیز به گرما تبدیل می‌شود؛ پس پاسخ «نور و گرما» درست است.'}
+    ]},
+    {id:'persian',name:'فارسی و نگارش',icon:'📖',color:'#3278ff',lessons:[
+      {id:1,title:'درک مفهوم متن',content:'برای فهمیدن متن، فقط خواندن واژه‌ها کافی نیست. باید موضوع اصلی، پیام نویسنده و جزئیات مهم را پیدا کنیم. می‌توانیم پس از هر بند از خود بپرسیم: این بخش دربارهٔ چیست؟',example:'اگر متنی دربارهٔ کمک به همسایه باشد، پیام آن می‌تواند همکاری و مهربانی باشد؛ اما پاسخ دقیق باید با جمله‌های متن هماهنگ باشد.',question:'برای پیدا کردن پیام اصلی یک متن، کدام کار بهتر است؟',options:['فقط آخرین واژه را بخوانیم.','موضوع و جمله‌های مهم متن را بررسی کنیم.','یک پاسخ دلخواه بنویسیم.','عنوان را نادیده بگیریم.'],answer:1,analysis:'پیام اصلی از موضوع و جمله‌های مهم متن به دست می‌آید. پاسخ باید با شواهد متن سازگار باشد، نه بر پایهٔ حدس دلخواه.'},
+      {id:2,title:'واژه و هم‌معنی',content:'هم‌معنی واژه‌ای است که معنایی نزدیک به واژهٔ دیگر دارد. هنگام انتخاب هم‌معنی باید به جمله توجه کنیم، چون یک واژه ممکن است در موقعیت‌های مختلف معنای متفاوتی داشته باشد.',example:'«شاد» و «خوشحال» در بسیاری از جمله‌ها هم‌معنی‌اند.',question:'کدام واژه در بیشتر جمله‌ها هم‌معنی «شاد» است؟',options:['اندوهگین','خوشحال','خسته','خاموش'],answer:1,analysis:'«خوشحال» معنایی نزدیک به «شاد» دارد. «اندوهگین» تقریباً معنای مخالف دارد و دو گزینهٔ دیگر هم‌معنی نیستند.'},
+      {id:3,title:'نگارش یک بند منسجم',content:'یک بند خوب معمولاً یک موضوع اصلی دارد. جمله‌ها باید به همان موضوع مربوط باشند و با ترتیب منطقی کنار هم قرار بگیرند. استفاده از نشانه‌گذاری و بازخوانی متن، نوشته را روشن‌تر می‌کند.',example:'برای نوشتن دربارهٔ «کتابخانهٔ کلاس»، می‌توان از معرفی کتابخانه شروع کرد، سپس دربارهٔ کتاب‌ها و در پایان دربارهٔ شیوهٔ امانت گرفتن نوشت.',question:'کدام ویژگی به منسجم بودن یک بند کمک می‌کند؟',options:['جمله‌های نامرتبط','تغییر موضوع در هر جمله','ارتباط جمله‌ها با یک موضوع اصلی','حذف همهٔ نشانه‌ها'],answer:2,analysis:'وقتی جمله‌ها به یک موضوع اصلی مربوط باشند، خواننده مسیر نوشته را دنبال می‌کند و بند منسجم می‌شود.'}
+    ]},
+    {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',color:'#c58a18',lessons:[
+      {id:1,title:'زندگی گروهی و همکاری',content:'زندگی در خانواده، مدرسه و محله به همکاری نیاز دارد. هر فرد می‌تواند مسئولیتی متناسب با توانایی خود انجام دهد و به حقوق دیگران احترام بگذارد.',example:'رعایت نوبت، مراقبت از وسایل مشترک و گوش دادن به نظر هم‌کلاسی‌ها نمونه‌هایی از همکاری‌اند.',question:'کدام رفتار به همکاری در کلاس کمک می‌کند؟',options:['قطع کردن حرف دیگران','رعایت نوبت و تقسیم مسئولیت','استفادهٔ انحصاری از وسایل مشترک','نادیده گرفتن قوانین'],answer:1,analysis:'رعایت نوبت و تقسیم مسئولیت باعث می‌شود همه فرصت مشارکت داشته باشند و کار گروهی بهتر پیش برود.'},
+      {id:2,title:'نقشه و نشانه‌ها',content:'نقشه تصویری ساده‌شده از یک مکان است. عنوان نقشه موضوع آن را نشان می‌دهد و راهنما معنی نشانه‌ها را توضیح می‌دهد. جهت‌ها و مقیاس نیز به خواندن درست نقشه کمک می‌کنند.',example:'اگر در راهنمای نقشه، علامت آبی برای رودخانه باشد، با دیدن همان علامت می‌توان مسیر رودخانه را پیدا کرد.',question:'راهنمای نقشه چه کاربردی دارد؟',options:['توضیح معنی نشانه‌های نقشه','تعیین نمرهٔ دانش‌آموز','تغییر اندازهٔ واقعی مکان','نوشتن داستان روی نقشه'],answer:0,analysis:'راهنما مشخص می‌کند هر رنگ یا نشانه روی نقشه چه چیزی را نشان می‌دهد؛ بدون آن ممکن است نشانه‌ها را اشتباه تفسیر کنیم.'},
+      {id:3,title:'مسئولیت در محله',content:'محله جایی است که مردم در آن زندگی و از خدمات مشترک استفاده می‌کنند. حفظ پاکیزگی، رعایت مقررات و مراقبت از امکانات عمومی، مسئولیت شهروندان است.',example:'ریختن زباله در سطل و مراقبت از پارک محله، به استفادهٔ بهتر همه از فضای عمومی کمک می‌کند.',question:'کدام کار نمونه‌ای از مسئولیت‌پذیری در محله است؟',options:['آسیب زدن به نیمکت پارک','ریختن زباله در خیابان','مراقبت از فضای عمومی','سد کردن مسیر دیگران'],answer:2,analysis:'فضای عمومی متعلق به همه است. مراقبت از آن باعث می‌شود دیگران هم بتوانند به‌خوبی از آن استفاده کنند.'}
+    ]},
+    {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌷',color:'#895bd4',lessons:[
+      {id:1,title:'راست‌گویی و امانت‌داری',content:'راست‌گویی یعنی حقیقت را بیان کنیم و امانت‌داری یعنی از چیزی که به ما سپرده شده مراقبت کنیم و آن را به صاحبش برگردانیم. این رفتارها اعتماد میان آدم‌ها را بیشتر می‌کند.',example:'اگر وسیله‌ای را از دوستمان امانت گرفتیم، باید از آن مراقبت کنیم و در زمان توافق‌شده پس بدهیم.',question:'دوستت کتابی به تو امانت داده است. کدام رفتار درست‌تر است؟',options:['بدون اجازه آن را به دیگری بدهی.','از کتاب مراقبت کنی و به‌موقع برگردانی.','آن را پنهان کنی.','وانمود کنی کتاب مال توست.'],answer:1,analysis:'امانت‌داری یعنی از وسیلهٔ دیگران مراقبت کنیم و آن را به صاحبش برگردانیم؛ این کار نشانهٔ مسئولیت‌پذیری و اعتماد است.'},
+      {id:2,title:'کمک به دیگران',content:'کمک کردن می‌تواند با کارهای کوچک و متناسب با توان ما انجام شود؛ مانند همدلی با فرد ناراحت، همکاری در خانه یا کمک به هم‌کلاسی برای یادگیری بدون انجام دادن تکلیف به جای او.',example:'توضیح دادن یک روش حل به هم‌کلاسی، به او کمک می‌کند خودش یاد بگیرد.',question:'کدام نمونه، کمک مسئولانه به هم‌کلاسی است؟',options:['نوشتن پاسخ‌ها به جای او','مسخره کردن اشتباهش','توضیح دادن روش حل برای یادگیری','پنهان کردن کتابش'],answer:2,analysis:'توضیح روش حل به هم‌کلاسی فرصت یادگیری می‌دهد؛ انجام تکلیف به جای او، یادگیری مستقل را تقویت نمی‌کند.'},
+      {id:3,title:'شکرگزاری در زندگی',content:'شکرگزاری یعنی نعمت‌ها و خوبی‌هایی را که داریم بشناسیم و قدر آن‌ها را بدانیم. شکرگزاری فقط گفتن یک جمله نیست؛ مراقبت از نعمت‌ها و استفادهٔ درست از آن‌ها نیز اهمیت دارد.',example:'صرفه‌جویی در آب و مراقبت از طبیعت، راه‌هایی برای قدر دانستن نعمت‌ها هستند.',question:'کدام رفتار نمونه‌ای از قدرشناسی نسبت به نعمت آب است؟',options:['باز گذاشتن شیر آب','هدر دادن آب برای سرگرمی','استفادهٔ درست و صرفه‌جویی در آب','آلوده کردن آب'],answer:2,analysis:'استفادهٔ درست و صرفه‌جویی نشان می‌دهد ارزش آب را می‌دانیم و از این نعمت مراقبت می‌کنیم.'}
+    ]},
+    {id:'dictation',name:'املای فارسی',icon:'✍️',color:'#d65c85',lessons:[
+      {id:1,title:'دقت در واژه‌های هم‌آوا',content:'برخی واژه‌ها صدای یکسان یا نزدیک دارند اما با حروف متفاوت نوشته می‌شوند و معنی متفاوتی دارند. برای انتخاب املای درست، باید معنی جمله و شکل درست واژه را به یاد بیاوریم.',example:'«خار» به معنی تیغ گیاه است و «خوار» در ترکیب‌هایی مانند ناسپاس‌خوار یا خوار شدن، معنای دیگری دارد؛ معنی جمله راهنماست.',question:'در جملهٔ «گل رز ... دارد»، کدام واژه درست است؟',options:['خار','خوار','خواهر','خوارش'],answer:0,analysis:'در این جمله منظور تیغ گیاه است؛ املای درست «خار» است. برای واژه‌های هم‌آوا همیشه به معنی جمله توجه کن.'},
+      {id:2,title:'نشانه‌گذاری در نوشتن',content:'نقطه پایان جملهٔ خبری را نشان می‌دهد، علامت پرسش در پایان پرسش می‌آید و ویرگول مکث کوتاه میان بخش‌های جمله را نشان می‌دهد. نشانه‌گذاری درست، خواندن متن را آسان‌تر می‌کند.',example:'«امروز به کتابخانه رفتم.» جملهٔ خبری است و با نقطه پایان می‌یابد.',question:'کدام نشانه معمولاً در پایان یک پرسش مستقیم می‌آید؟',options:['نقطه','ویرگول','علامت پرسش','دونقطه'],answer:2,analysis:'پرسش مستقیم با علامت پرسش «؟» پایان می‌یابد تا خواننده بداند جمله سؤال است.'},
+      {id:3,title:'بازبینی املایی',content:'برای کم کردن غلط‌های املایی، نوشته را پس از نوشتن دوباره بخوان، واژه‌های دشوار را با کتاب یا واژه‌نامه بررسی کن و به حروفی که معمولاً اشتباه می‌نویسی توجه ویژه داشته باش.',example:'پس از نوشتن یک بند، یک بار برای معنی و ترتیب جمله‌ها و بار دیگر برای املای واژه‌ها آن را بازبینی کن.',question:'پس از نوشتن املا، کدام کار مفیدتر است؟',options:['فوراً دفتر را ببندیم.','نوشته را بازخوانی و واژه‌های دشوار را بررسی کنیم.','همهٔ واژه‌ها را تغییر دهیم.','نشانه‌گذاری را حذف کنیم.'],answer:1,analysis:'بازخوانی به پیدا کردن جاافتادگی‌ها و غلط‌ها کمک می‌کند. بررسی واژه‌های دشوار احتمال تکرار اشتباه را کاهش می‌دهد.'}
+    ]}
+  ];
+
+  // محتوای فارسی از کتاب فارسی چهارم دبستان (چاپ سیزدهم ۱۴۰۵).
+  // واژه‌ها از متن هر درس انتخاب شده‌اند؛ روابط واژگانی، مثال‌ها و پرسش‌ها آموزشی و خلاصه‌سازی‌شده‌اند.
+  // بخش‌های رسمی کتاب و تمرین‌های تکمیلی در رابط کاربری جداگانه برچسب می‌خورند.
+  const persianLessons = [
+    {id:1,title:'آفریدگار زیبایی',page:'۱۰ تا ۱۴',content:'متن درس، زیبایی فصل‌ها و دگرگونی رنگ‌های طبیعت را مانند نقاشی توصیف می‌کند.',example:'برای یادآوری متن، نام فصل‌ها را با ویژگی‌هایی که در طبیعت می‌بینیم دسته‌بندی کن.',spellingWords:['آفریدگار','آفرینش','زیبایی','خورشید','زمستان','نقاشی','شکوفه','خوشه','جنگل','گلبرگ'],synonyms:[['زیبا','قشنگ'],['لذت','خوشی'],['نگاه','دیدن']],families:[{root:'آفریدن',words:['آفرینش','آفریدگار','آفریده']},{root:'زیبا',words:['زیبایی','زیباتر','زیبایی‌ها']},{root:'نقاش',words:['نقاشی','نقاشانه']}],opposites:[['روشن','تاریک'],['گرم','سرد'],['زیبا','زشت']],wordTopic:{title:'دسته‌بندی معنایی واژه‌ها',source:'کتاب',explain:'در بخش واژه‌آموزی، واژه‌ها در گروه‌های معنایی قرار می‌گیرند؛ مثلاً فصل‌ها و گل‌ها. برای کامل کردن گروه، باید واژه‌ای هم‌نوع با عنوان گروه انتخاب کنیم.',examples:['فصل: بهار، تابستان، پاییز، زمستان','گل: رز، نرگس، بنفشه','گروه‌های دیگر: رنگ، میوه، آب‌وهوا']},languageTopic:{title:'صفت و جملهٔ توصیفی',source:'تکمیلی از متن درس',explain:'برای توصیف طبیعت، اسم را با واژه‌ای دقیق‌تر همراه می‌کنیم؛ مانند «گل زیبا» یا «زمستان سرد». واژهٔ توصیفی به خواننده کمک می‌کند تصویر روشن‌تری بسازد.',examples:['آسمان آبی است.','گل زیبا شکفته است.']},spellingCheck:{question:'املای درست را انتخاب کن.',options:['آفریدگار','آفریگار','آفریدگاد','آفریذگار'],answer:0,analysis:'«آفریدگار» با «د» نوشته می‌شود و به آفریننده اشاره دارد؛ املای گزینه‌های دیگر نادرست است.'},topicCheck:{question:'در بخش واژه‌آموزی، «بهار، تابستان، پاییز و زمستان» در کدام گروه قرار می‌گیرند؟',options:['رنگ‌ها','فصل‌ها','میوه‌ها','گل‌ها'],answer:1,analysis:'این چهار واژه نام فصل‌های سال هستند؛ در فعالیت کتاب باید واژه‌ها بر اساس گروه معنایی مشترک مرتب شوند.'}},
+    {id:2,title:'کوچ پرستوها',page:'۱۸ تا ۲۲',content:'درس دربارهٔ زندگی پرستوها، ساخت لانه، پرورش جوجه‌ها و کوچ فصلی آن‌هاست.',example:'پرستوها در بخش‌های مختلف زندگی خود کارهای مشخصی انجام می‌دهند؛ ترتیب رویدادها را می‌توان از متن استخراج کرد.',spellingWords:['پرستو','مهاجرت','لانه','جوجه','تخم','معتدل','خطر','شگفتی','شکارچی','بازگشت'],synonyms:[['کوچ','مهاجرت'],['خطر','آسیب'],['شگفتی','عجایب']],families:[{root:'پرنده',words:['پرندگان','پرنده‌ها','پرنده‌وار']},{root:'دانش',words:['دانشمند','دانش‌آموز','دانایی']}],opposites:[['گرم','سرد'],['جوان','پیر'],['نزدیک','دور']],wordTopic:{title:'واژه‌های هم‌معنی و مرتبط با سفر',source:'تکمیلی از متن درس',explain:'«کوچ» و «مهاجرت» در این متن به جابه‌جایی فصلی پرستوها اشاره می‌کنند. هنگام انتخاب هم‌معنی، معنی واژه را در جمله بسنج؛ واژه‌های نزدیک همیشه در هر جمله قابل جایگزینی نیستند.',examples:['کوچ / مهاجرت','خطر / آسیب','بازگشت / برگشتن']},languageTopic:{title:'ویرگول و مکث در خواندن',source:'کتاب',explain:'ویرگول (،) مکث کوتاهی را نشان می‌دهد و گاهی معنای جمله را تغییر می‌دهد. در مثال کتاب، جای ویرگول مشخص می‌کند «مادر» مخاطب است یا «مادر نرگس» دربارهٔ کسی صحبت می‌شود.',examples:['مادر نرگس امروز کتاب خرید.','مادر، نرگس امروز کتاب خرید.','هنگام خواندن، در محل ویرگول کمی مکث کن.']},spellingCheck:{question:'کدام واژه درست نوشته شده است؟',options:['مهاجرت','مهاجرتت','مهجرت','مهاجرط'],answer:0,analysis:'املای درست «مهاجرت» است. این واژه در توضیح کوچ پرستوها به کار می‌رود.'},topicCheck:{question:'ویرگول در خواندن جمله چه نقشی دارد؟',options:['همیشه جمله را تمام می‌کند.','مکث کوتاه ایجاد می‌کند و گاهی معنا را روشن می‌کند.','جای همهٔ فعل‌ها می‌آید.','فقط در عنوان کتاب استفاده می‌شود.'],answer:1,analysis:'طبق دانش زبانی این درس، ویرگول مکث کوتاهی ایجاد می‌کند و جابه‌جایی آن می‌تواند برداشت از جمله را تغییر دهد.'}},
+    {id:3,title:'راز نشانه‌ها',page:'۳۰ تا ۳۳',content:'داستان نشان می‌دهد که از نشانه‌ها می‌توان به اطلاعاتی دربارهٔ یک اتفاق یا موجود رسید؛ اما باید از روی نشانه‌ها با دقت نتیجه‌گیری کرد.',example:'در متن، پسر بدون دیدن مستقیم الاغ، از نشانه‌هایی که شنیده بود حدس دقیقی می‌زند.',spellingWords:['نشانه','الاغ','گندم','آسیاب','نشانی','تعجب','خار','خوار','خرد','خواست'],synonyms:[['نشانه','علامت'],['تعجب','شگفتی'],['خشمگین','عصبانی']],families:[{root:'نشان',words:['نشانه','نشانی','نشانگر']},{root:'دانش',words:['دانشمند','دانایی','دانش‌آموز']}],opposites:[['درست','نادرست'],['بزرگ','کوچک'],['آرام','آشفته']],wordTopic:{title:'واژه‌های هم‌آوا با املای متفاوت',source:'کتاب',explain:'بعضی واژه‌ها یکسان یا نزدیک به هم خوانده می‌شوند، اما املاء و معنی متفاوتی دارند. برای انتخاب شکل درست باید به معنی جمله توجه کرد.',examples:['خار: تیغ گیاه / خوار: کوچک و بی‌ارزش شمردن','خورد: از فعل خوردن / خُرد: ریز و کوچک','خواست: طلب کرد / خاست: برخاست']},languageTopic:{title:'نشانه‌گذاری و برداشت درست',source:'تکمیلی از متن درس',explain:'نشانه‌ها و واژه‌های جمله را کنار هم بخوان و بر اساس شواهد نتیجه بگیر. در نوشتن نیز نقطه جملهٔ خبری را تمام می‌کند و ویرگول مکث کوتاه می‌سازد.',examples:['پسر نشانه‌ها را بررسی کرد.','آیا نتیجهٔ او از روی نشانه‌ها درست بود؟']},spellingCheck:{question:'کدام جفت از نظر معنی و املا درست توضیح داده شده است؟',options:['خار = تیغ گیاه','خوار = آب','خورد = کوچک','خواست = برخاست'],answer:0,analysis:'«خار» تیغ گیاه است. «خوار» معنای دیگری دارد؛ «خُرد» به معنی ریز است و «خاست» با «خواست» تفاوت دارد.'},topicCheck:{question:'برای نوشتن درست واژه‌های هم‌آوا چه چیزی را باید بررسی کنیم؟',options:['فقط تعداد حروف را','معنی واژه در جمله را','رنگ مداد را','اندازهٔ دفتر را'],answer:1,analysis:'در بخش واژه‌آموزی کتاب تأکید می‌شود که واژه‌های هم‌آوا ممکن است املا و معنای متفاوتی داشته باشند؛ جمله معنی درست را مشخص می‌کند.'}},
+    {id:4,title:'ارزش علم',page:'۳۶ تا ۴۱',content:'حکیمی در سفر با رویدادهای دشوار روبه‌رو می‌شود و ارزش دانایی و آموخته‌های ماندگار را درمی‌یابد.',example:'در پایان داستان، سرمایهٔ حکیم فقط پول نیست؛ دانشی است که حتی در موقعیت دشوار همراه او می‌ماند.',spellingWords:['ارزش','دانش','حکیم','سفر','کشتی','صخره','سرمایه','ماهیگیر','اندوختن','آموخته'],synonyms:[['علم','دانش'],['سرمایه','اندوخته'],['دشوار','سخت']],families:[{root:'علم',words:['عالم','معلوم','علوم']},{root:'دانش',words:['دانشمند','دانش‌آموز','دانایی']},{root:'سفر',words:['مسافر','مسافرت','سفرها']}],opposites:[['دانا','نادان'],['آرام','آشفته'],['سخت','آسان']],wordTopic:{title:'خانوادهٔ واژه‌ها',source:'تکمیلی از متن درس',explain:'هم‌خانواده‌ها از یک بن یا ریشهٔ مشترک ساخته می‌شوند و با هم ارتباط معنایی دارند. شباهت ظاهری به‌تنهایی کافی نیست؛ معنی هم باید مرتبط باشد.',examples:['علم، عالم، معلوم','دانش، دانشمند، دانش‌آموز','سفر، مسافر، مسافرت']},languageTopic:{title:'جمله پیام کامل می‌رساند',source:'کتاب',explain:'گوینده برای انتقال مطلب از جمله استفاده می‌کند. جمله از یک یا چند واژه ساخته می‌شود و باید پیام نسبتاً کاملی به شنونده برساند.',examples:['حکیم سفر کرد.','کشتی به صخره برخورد کرد.','دانش به انسان کمک می‌کند.']},spellingCheck:{question:'املای درست کدام است؟',options:['سرمایه','سرمایه‌ه','سَرمایهع','سرمايهه'],answer:0,analysis:'شکل درست واژه «سرمایه» است؛ در متن، دانش به‌عنوان سرمایه‌ای ماندگار معرفی می‌شود.'},topicCheck:{question:'جمله چه کاری انجام می‌دهد؟',options:['پیام یا مطلبی را به شنونده انتقال می‌دهد.','فقط یک حرف نشان می‌دهد.','همیشه باید ده واژه داشته باشد.','تنها برای پرسش به کار می‌رود.'],answer:0,analysis:'طبق دانش زبانی این درس، افراد هنگام صحبت کردن برای انتقال مطلب از جمله استفاده می‌کنند؛ جمله می‌تواند از یک یا چند واژه ساخته شود.'}},
+    {id:5,title:'رهایی از قفس',page:'۴۲ تا ۴۷',content:'داستان طوطی و بازرگان دربارهٔ آزادی و راهی است که طوطی هندوستان برای رهایی به طوطی دیگر می‌آموزد.',example:'در واژه‌آموزی این درس، چند واژه با «نامه» معرفی شده‌اند که نوعی نوشته یا سند را نام می‌برند.',spellingWords:['رهایی','قفس','بازرگان','طوطی','پیام','آزادی','کارنامه','شناسنامه','کتابنامه','تشویق‌نامه'],synonyms:[['رهایی','آزادی'],['پیام','خبر'],['اندوه','غم']],families:[{root:'رها',words:['رهایی','رهاشدن','رهاکردن']},{root:'نوشتن',words:['نوشته','نویسنده','نوشتار']}],opposites:[['آزادی','اسارت'],['بیرون','داخل'],['شاد','غمگین']],wordTopic:{title:'واژه‌های ترکیبی با «نامه»',source:'کتاب',explain:'در این درس، «نامه» در پایان چند واژه آمده است و به نوشته یا سندی دربارهٔ موضوعی مشخص اشاره می‌کند.',examples:['کارنامه: نتیجهٔ کارها و آموخته‌ها','شناسنامه: اطلاعات هویتی فرد','کتابنامه: مشخصات کتاب‌ها','روزنامه و تشویق‌نامه']},languageTopic:{title:'جملهٔ خبری و پرسشی',source:'تکمیلی از متن درس',explain:'جملهٔ خبری مطلبی را بیان می‌کند و جملهٔ پرسشی چیزی را می‌پرسد. نشانهٔ پرسش در پایان پرسش مستقیم می‌آید.',examples:['طوطی در قفس بود.','بازرگان چه پیامی آورد؟']},spellingCheck:{question:'کدام واژه به شکل درست نوشته شده است؟',options:['قفس','غفس','قفص','قفث'],answer:0,analysis:'املای درست «قفس» با «ق» و «س» است. این واژه یکی از واژه‌های کلیدی درس است.'},topicCheck:{question:'«کتابنامه» به چه چیزی اشاره دارد؟',options:['نوشته‌ای دربارهٔ مشخصات کتاب‌ها','نتیجهٔ کارهای دانش‌آموز','سند هویت فرد','نامهٔ دعوت به جشن'],answer:0,analysis:'در بخش واژه‌آموزی کتاب، کتابنامه نوشته‌ای معرفی می‌شود که مشخصات کتاب‌ها در آن می‌آید.'}},
+    {id:6,title:'آرش کمان‌گیر',page:'۵۴ تا ۶۰',content:'آرش برای تعیین مرز ایران و توران جان خود را در راه میهن فدا می‌کند.',example:'داستان نشان می‌دهد که جمله از واژه‌ها ساخته می‌شود و باید پیام کاملی به شنونده بدهد.',spellingWords:['آرش','کمان‌گیر','پهلوان','توران','پرتاب','قله','سرزمین','فداکاری','جیحون','نیرو'],synonyms:[['پهلوان','دلاور'],['نیرو','توان'],['شجاعت','دلیری']],families:[{root:'شجاع',words:['شجاعت','شجاعانه','شجاع‌تر']},{root:'فدا',words:['فداکاری','فداکار','فداشدن']}],opposites:[['توانا','ناتوان'],['بالا','پایین'],['پیروزی','شکست']],wordTopic:{title:'واژه‌های هم‌معنی و متضاد',source:'تکمیلی از متن درس',explain:'واژه‌های درس را با توجه به معنی جمله مقایسه کن. هم‌معنی‌ها معنای نزدیک دارند و متضادها معنی مخالف می‌رسانند.',examples:['پهلوان / دلاور','شجاع / ترسو','توانا / ناتوان']},languageTopic:{title:'جمله و پیام کامل',source:'کتاب',explain:'جمله از یک یا چند واژه تشکیل می‌شود و پیام کاملی را به شنونده منتقل می‌کند. برای بررسی جمله، ببین آیا منظور گوینده روشن است یا نه.',examples:['آرش از کوه بالا رفت.','مادران دعا می‌کردند.','آرش نام خدا را بر زبان آورد.']},spellingCheck:{question:'املای درست واژهٔ مربوط به پهلوان داستان کدام است؟',options:['کمان‌گیر','کمانگیرر','کامان‌گیر','کمان‌کیر'],answer:0,analysis:'«کمان‌گیر» واژهٔ درست در عنوان درس است. هنگام نوشتن عنوان و نام‌ها به شکل دقیق واژه توجه کن.'},topicCheck:{question:'کدام گزینه یک جملهٔ کامل است؟',options:['آرش از کوه بالا رفت.','کوه بلند و','وقتی که آرش','در کنار سرزمین'],answer:0,analysis:'«آرش از کوه بالا رفت» پیام کامل دارد؛ عبارت‌های دیگر ناتمام‌اند و خواننده منتظر ادامهٔ جمله می‌ماند.'}},
+    {id:7,title:'مهمان شهر ما',page:'۶۲ تا ۶۷',content:'راوی از انتظار و شادی مردم برای دیدار مهمانی عزیز می‌گوید و بر اهمیت فکر کردن در کنار تلاش تأکید می‌کند.',example:'پیشوند «خود» در واژه‌های مختلف می‌تواند ویژگی‌های متفاوتی بسازد؛ معنی کامل واژه را باید در نظر گرفت.',spellingWords:['مهمان','انتظار','شادابی','هیجان','جمعیت','مسئولان','اندیشه','تلاش','خودباور','خودبین','خوددار'],synonyms:[['شوق','اشتیاق'],['تلاش','کوشش'],['مهربان','دلسوز']],families:[{root:'فکر',words:['تفکر','فکری','متفکر']},{root:'دانش',words:['دانشمند','دانش‌آموز','دانایی']}],opposites:[['خوشحال','غمگین'],['نزدیک','دور'],['خودبین','فروتن']],wordTopic:{title:'واژه‌های ساخته‌شده با «خود»',source:'کتاب',explain:'بخش واژه‌آموزی این درس سه واژه را مقایسه می‌کند. بخش «خود» به‌تنهایی معنی همهٔ واژه را مشخص نمی‌کند؛ باید به ادامهٔ واژه و معنی کل آن دقت کنیم.',examples:['خودباور: به توانایی‌های خودش باور دارد','خودبین: فقط خودش را می‌بیند و به دیگران توجه ندارد','خوددار: مراقب رفتار خود است']},languageTopic:{title:'صفت برای توصیف اسم',source:'تکمیلی از متن درس',explain:'صفت ویژگی اسم را بیان می‌کند؛ مانند «مهمان عزیز»، «هوای خنک» و «جمعیت مشتاق». صفت کمک می‌کند منظور دقیق‌تر شود.',examples:['مهمان عزیز رسید.','هوای خنک صبح دلپذیر بود.']},spellingCheck:{question:'کدام واژه در واژه‌آموزی درس به معنی «مراقب رفتار خود» است؟',options:['خوددار','خودبین','خودباور','خودخواه'],answer:0,analysis:'«خوددار» کسی است که مراقب رفتار خود است و از کار ناپسند دوری می‌کند؛ «خودبین» و «خودباور» معنی‌های دیگری دارند.'},topicCheck:{question:'«خودباور» در این درس چه معنایی دارد؟',options:['کسی که به توانایی‌های خودش باور دارد','کسی که فقط به خودش توجه می‌کند','کسی که از کار فرار می‌کند','کسی که دیگران را نمی‌بیند'],answer:0,analysis:'واژه‌آموزی درس، خودباور را کسی معرفی می‌کند که توانایی‌های خود را می‌شناسد و به آن‌ها باور دارد.'}},
+    {id:8,title:'درس آزاد ۸',page:'۷۴ تا ۷۶',isFreeLesson:true,content:'این بخش در نسخهٔ کتاب «درس آزاد» است و متن ثابت یکسانی برای همهٔ کلاس‌ها ندارد.',example:'پس از انتخاب متن آزاد کلاس، واژه‌های دشوار را از همان متن بیرون بکشید؛ برای آن‌ها املا، هم‌معنی، هم‌خانواده و متضاد را تمرین کنید.',spellingWords:[],synonyms:[],families:[],opposites:[],wordTopic:{title:'ساخت واژه‌نامه از متن آزاد',source:'متن انتخابی کلاس',explain:'کتاب برای این درس متن ثابت تعیین نکرده است؛ بنابراین معلم و دانش‌آموز باید متن منتخب کلاس را مبنا قرار دهند و واژه‌ها را از همان متن استخراج کنند.',examples:['سه واژهٔ دشوار متن را انتخاب کن.','معنی و املای درست هر واژه را بنویس.','اگر نمونهٔ واقعی از متن پیدا نشد، هم‌خانواده یا متضاد نساز.']},languageTopic:{title:'بررسی جمله در متن آزاد',source:'متن انتخابی کلاس',explain:'جمله‌ای از متن منتخب بردار و فاعل، فعل و نشانه‌گذاری آن را بررسی کن. نکتهٔ نهایی باید با متن واقعی درس هماهنگ باشد.',examples:['یک جملهٔ خبری انتخاب کن.','فعل آن را پیدا کن.','جمله را با نشانه‌گذاری درست بازنویسی کن.']},topicCheck:{question:'برای ساخت واژه‌نامهٔ درس آزاد، واژه‌ها را از کجا انتخاب می‌کنیم؟',options:['از متن انتخابی کلاس','از فهرست درس ریاضی','از یک متن نامرتبط','بدون دیدن هیچ متنی'],answer:0,analysis:'درس آزاد در کتاب متن ثابت ندارد؛ واژه‌ها و نکته‌های آن باید از متن انتخابی آموزگار و کلاس استخراج شوند.'}},
+    {id:9,title:'درس آزاد ۹',page:'۷۷ تا ۷۸',isFreeLesson:true,content:'این بخش نیز در نسخهٔ کتاب «درس آزاد» است و محتوای مشخصی برای همهٔ کلاس‌ها ندارد.',example:'وقتی متن کلاس انتخاب شد، از واژه‌ها و جمله‌های همان متن برای تمرین املاء، واژه‌آموزی و دانش زبانی استفاده کنید.',spellingWords:[],synonyms:[],families:[],opposites:[],wordTopic:{title:'تمرین واژه‌آموزی از متن انتخابی',source:'متن انتخابی کلاس',explain:'برای این درس نباید واژه‌هایی را به کتاب نسبت دهیم که در آن چاپ تعیین نشده‌اند. ابتدا متن آزاد را وارد کنید، سپس واژه‌ها را از آن انتخاب کنید.',examples:['واژهٔ دشوار را در جمله پیدا کن.','معنی را با توجه به جمله بنویس.','هم‌معنی و متضاد را فقط وقتی ثبت کن که معنی دقیق آن روشن است.']},languageTopic:{title:'آموزش دانش زبانی از جمله‌های منتخب',source:'متن انتخابی کلاس',explain:'از یک یا دو جملهٔ متن آزاد برای آموزش جمله، فعل و نشانه‌گذاری استفاده کن؛ آموزگار می‌تواند موضوع گرامری متناسب با متن را برگزیند.',examples:['جمله را با صدای بلند بخوان.','فعل و نشانهٔ پایان را پیدا کن.']},topicCheck:{question:'چرا باید واژه‌های درس آزاد را پس از انتخاب متن استخراج کنیم؟',options:['چون متن ثابت و یکسانی در کتاب ندارد.','چون این درس هیچ واژه‌ای ندارد.','چون نباید معنی واژه‌ها را یاد بگیریم.','چون فقط املا مهم است.'],answer:0,analysis:'محتوای درس آزاد به انتخاب کلاس وابسته است؛ بنابراین واژه‌ها و نکته‌های زبانی باید از متن انتخابی همان کلاس گرفته شوند.'}},
+    {id:10,title:'باغچهٔ اطفال',page:'۸۰ تا ۸۶',content:'درس دربارهٔ زندگی و تلاش جبار باغچه‌بان برای آموزش کودکان، به‌ویژه کودکان ناشنواست.',example:'در جمله، فعل پیام اصلی دربارهٔ رخ دادن کار را می‌رساند و بخش‌های دیگر اطلاعات بیشتری می‌دهند.',spellingWords:['باغچه‌بان','آموزگار','ناشنوا','نابینا','الفبا','اراده','پشتکار','تبریز','کودکستان','خدمت'],synonyms:[['پشتکار','کوشش پیوسته'],['اراده','خواست'],['خدمت','یاری']],families:[{root:'آموز',words:['آموزگار','آموزش','آموختن']},{root:'دانش',words:['دانش‌آموز','دانشمند','دانایی']},{root:'خدمت',words:['خدمت‌گزار','خدمت‌کار','خدمت‌رسانی']}],opposites:[['توانا','ناتوان'],['امید','ناامیدی'],['آشنا','ناآشنا']],wordTopic:{title:'واژه‌های مرتبط و خانوادهٔ واژه',source:'تکمیلی از متن درس',explain:'برای گسترش واژگان، واژه‌های مربوط به آموزش و خدمت را پیدا کن و ارتباط معنایی آن‌ها را توضیح بده.',examples:['آموزش، آموزگار، آموختن','دانش، دانش‌آموز، دانشمند','اراده، پشتکار، کوشش']},languageTopic:{title:'بخش‌های اصلی جمله',source:'کتاب',explain:'در مثال‌های این درس، جمله دو بخش مهم دارد: چه کسی یا چه چیزی کار را انجام می‌دهد و چه کاری انجام می‌شود. فعل بخش اصلیِ خبر دربارهٔ کار است؛ بخش دیگر معنی را کامل‌تر می‌کند.',examples:['علی آمد.','مریم رفت.','دانش‌آموزان دویدند.']},spellingCheck:{question:'املای درست نام آموزگار پیشگام کدام است؟',options:['باغچه‌بان','باغچبان','باغچه‌بانن','باغچهپان'],answer:0,analysis:'«باغچه‌بان» نام درست شخصیت درس است. برای املای نام‌ها و واژه‌های مهم، آن‌ها را از روی متن بازبینی کن.'},topicCheck:{question:'در جملهٔ «مریم رفت»، کدام واژه فعل است؟',options:['مریم','رفت','در','هیچ‌کدام'],answer:1,analysis:'«رفت» نشان می‌دهد چه کاری انجام شده است؛ در نمودار دانش زبانی این درس، فعل بخش اصلی خبر جمله است.'}},
+    {id:11,title:'فرماندهٔ دل‌ها',page:'۸۸ تا ۹۳',content:'داستان از مقاومت مردم و رزمندگان خرمشهر و شجاعت فرماندهان در روزهای جنگ می‌گوید.',example:'پسوند «ناپذیر» در نمونه‌های این درس معنای ناتوانی از انجام یا پذیرش کاری را می‌رساند.',spellingWords:['فرمانده','خرمشهر','مقاومت','شهید','شجاعت','تسخیرناپذیر','خستگی‌ناپذیر','وصف‌ناپذیر','دلاور','ایستادگی'],synonyms:[['شجاعت','دلیری'],['مقاومت','ایستادگی'],['شوق','اشتیاق']],families:[{root:'شجاع',words:['شجاعت','شجاعانه','شجاع‌تر']},{root:'مقاوم',words:['مقاومت','مقاوم','مقاومت‌کردن']},{root:'شهید',words:['شهادت','شهدا']}],opposites:[['آزادی','اسارت'],['شجاع','ترسو'],['پیروزی','شکست']],wordTopic:{title:'ترکیب با «ناپذیر»',source:'کتاب',explain:'«ناپذیر» در واژه‌های این درس معنیِ پذیرفته یا انجام‌شدنی نبودن را می‌سازد. معنی کل واژه را از ترکیب دو بخش آن پیدا کن.',examples:['وصف‌ناپذیر: چیزی که به‌آسانی نمی‌توان توصیفش کرد','تسخیرناپذیر: چیزی که نمی‌توان آن را تسخیر کرد','خستگی‌ناپذیر: کسی که خسته نمی‌شود یا از کار بازنمی‌ایستد']},languageTopic:{title:'جملهٔ خبری و احساسی',source:'تکمیلی از متن درس',explain:'جملهٔ خبری مطلبی را بیان می‌کند؛ جملهٔ پرسشی سؤال می‌پرسد و جملهٔ عاطفی احساس را نشان می‌دهد. نشانه‌گذاری مناسب به خواننده کمک می‌کند لحن جمله را درست بفهمد.',examples:['رزمندگان ایستادگی کردند.','چه شجاعتی!','چه کسی خبر آورد؟']},spellingCheck:{question:'کدام واژه از نظر املایی درست است؟',options:['تسخیرناپذیر','تسخیرناپزیر','تسخیرناپذیرر','تسخیرناپظیر'],answer:0,analysis:'شکل درست «تسخیرناپذیر» است. این واژه در متن به چیزی اشاره می‌کند که تسخیرکردنی نیست.'},topicCheck:{question:'«وصف‌ناپذیر» یعنی چه؟',options:['چیزی که نمی‌توان به‌آسانی توصیف کرد','چیزی که به‌راحتی شکسته می‌شود','چیزی که ارزش ندارد','چیزی که تازه ساخته شده است'],answer:0,analysis:'در واژه‌آموزی کتاب، «شوق وصف‌ناپذیر» شوقی است که توصیف آن آسان نیست؛ پس «ناپذیر» معنی ناممکن بودن را می‌رساند.'}},
+    {id:12,title:'اتفاق ساده',page:'۹۴ تا ۹۷',content:'شعر درس از رسیدن نامه‌ای از جبهه و واکنش مادر سخن می‌گوید؛ باران و قطره‌ها در تصویرسازی شعر نقش دارند.',example:'در عبارت «معلم مهربان»، واژهٔ «مهربان» دربارهٔ اسم «معلم» توضیح می‌دهد.',spellingWords:['اتفاق','نامه','جبهه','باران','شیشه','قطره','دفتر','آرام','مهر','نگرانی'],synonyms:[['آرام','بی‌صدا'],['ساده','آسان'],['خنده','لبخند']],families:[{root:'خند',words:['خنده','خندان','خندیدن']},{root:'نویس',words:['نوشتن','نوشته','نویسنده']},{root:'مهر',words:['مهربان','مهربانی','مهرورزی']}],opposites:[['خنده','گریه'],['آرام','پرسر‌وصدا'],['ساده','پیچیده']],wordTopic:{title:'واژه‌های هم‌معنی در شعر',source:'تکمیلی از متن درس',explain:'در شعر باید واژه را با توجه به تصویر و احساس آن بفهمیم. بعضی واژه‌ها در این متن معنایی نزدیک دارند، اما لحن جمله هم مهم است.',examples:['آرام / بی‌صدا','ساده / آسان','خنده / لبخند']},languageTopic:{title:'صفت و اسم',source:'کتاب',explain:'در جمله‌های «دانش‌آموزان زرنگ دویدند»، «معلم مهربان رفت» و «برادر خوبم آمد»، واژه‌های «زرنگ»، «مهربان» و «خوب» دربارهٔ اسم قبل از خود توضیح می‌دهند؛ این واژه‌ها صفت‌اند.',examples:['دانش‌آموز زرنگ','معلم مهربان','برادر خوبم']},spellingCheck:{question:'کدام گزینه املای درست واژهٔ درس است؟',options:['اتفاق','اتفاغ','اتقاق','اتفاقق'],answer:0,analysis:'املای درست «اتفاق» است. بازخوانی واژه و مقایسهٔ آن با متن به جلوگیری از جابه‌جایی حروف کمک می‌کند.'},topicCheck:{question:'در عبارت «معلم مهربان»، کدام واژه صفت است؟',options:['معلم','مهربان','در','از'],answer:1,analysis:'«مهربان» ویژگی معلم را بیان می‌کند؛ بنابراین صفت است و دربارهٔ اسم «معلم» توضیح می‌دهد.'}},
+    {id:13,title:'لطف حق',page:'۱۰۴ تا ۱۰۷',content:'شعر دربارهٔ امید و نجات کبوتر از خطر است و نشان می‌دهد که گاهی راه نجات برخلاف انتظار به نظر می‌رسد.',example:'در واژه‌آموزی، معنی بعضی واژه‌ها با واژهٔ ساده‌تر توضیح داده می‌شود؛ این کار فهم متن را آسان‌تر می‌کند.',spellingWords:['لطف','کبوتر','صیاد','لبالب','سراسر','دمادم','نجات','امید','دشت','بارندگی'],synonyms:[['لبالب','پر'],['سراسر','همه‌جا'],['دمادم','هرلحظه']],families:[{root:'امید',words:['امیدوار','امیدواری','امیدبخش']},{root:'نجات',words:['نجات‌دهنده','نجات‌یافتن','نجات‌بخش']},{root:'دانش',words:['دانشور','دانشمند','دانایی']}],opposites:[['امید','ناامیدی'],['آزاد','گرفتار'],['روشن','تاریک']],wordTopic:{title:'معنی واژه‌ها در متن',source:'کتاب',explain:'واژه‌آموزی این درس، معنی چند واژه را با واژه‌ای ساده‌تر روشن می‌کند. هنگام خواندن، معنی را در جمله بسنج تا واژه را درست به کار ببری.',examples:['لبالب: پر','سراسر: همه‌جا','دمادم: هر لحظه']},languageTopic:{title:'تصویرسازی و معنی جمله',source:'تکمیلی از متن درس',explain:'در شعر، تصویرها و رویدادها به رساندن پیام کمک می‌کنند. برای فهم جمله، هم معنی واژه‌ها و هم ارتباط رویدادها را در نظر بگیر.',examples:['کبوتر از خطر نجات یافت.','امید باعث می‌شود راه‌های تازه را ببینیم.']},spellingCheck:{question:'«دمادم» در واژه‌آموزی این درس به چه معناست؟',options:['هر لحظه','همه‌جا','پر','ناامید'],answer:0,analysis:'در واژه‌آموزی کتاب، «دمادم» به معنی «هر لحظه» است؛ «سراسر» به معنی همه‌جا و «لبالب» به معنی پر است.'},topicCheck:{question:'کدام معنی با واژهٔ «سراسر» در واژه‌آموزی درس هماهنگ است؟',options:['همه‌جا','هر لحظه','پر','گرفتار'],answer:0,analysis:'«سراسر» در بخش واژه‌آموزی به معنی «همه‌جا» آمده است؛ این معنی با «دمادم» و «لبالب» متفاوت است.'}},
+    {id:14,title:'ادب از که آموختی؟',page:'۱۰۸ تا ۱۱۱',content:'حکایت‌ها بر یادگیری ادب از رفتار دیگران و ارزش همراه کردن دانش با عمل تأکید می‌کنند.',example:'در جملهٔ «علی سیب را خورد»، عبارت «سیب را» نشان می‌دهد چه چیزی خورده شده است.',spellingWords:['ادب','لقمان','بی‌ادب','عالم','نادان','عطار','زنبور','عسل','پرهیز','آموختن'],synonyms:[['علم','دانش'],['پرهیز','دوری'],['عطر','بوی خوش']],families:[{root:'علم',words:['عالم','معلوم','علوم']},{root:'ادب',words:['بی‌ادب','ادب‌آموز','باادب']},{root:'دانش',words:['دانا','دانایی','دانشمند']}],opposites:[['باادب','بی‌ادب'],['دانا','نادان'],['عمل','بی‌عمل']],wordTopic:{title:'خانواده و تضاد واژه‌ها',source:'تکمیلی از متن درس',explain:'واژه‌های این حکایت را می‌توان از نظر ریشه و معنی مقایسه کرد. «باادب» و «بی‌ادب» مخالف‌اند؛ «علم» و «عالم» هم از یک خانواده‌اند.',examples:['علم، عالم، معلوم','باادب / بی‌ادب','دانا / نادان']},languageTopic:{title:'مفعول و نشانهٔ «را»',source:'کتاب',explain:'بعضی جمله‌ها پس از فعل هنوز پاسخ پرسش «چه کسی را؟» یا «چه چیزی را؟» را می‌خواهند. کلمه یا گروهی که این پرسش را پاسخ می‌دهد، مفعول است و معمولاً با «را» نشان داده می‌شود.',examples:['علی سیب را خورد. ← چه چیزی را خورد؟ سیب را.','محمد معلم را دید. ← چه کسی را دید؟ معلم را.','برادرم گلدان را خرید.']},spellingCheck:{question:'کدام گزینه شکل درست واژه است؟',options:['بی‌ادب','بی ادبب','بی‌اذب','بیادب'],answer:0,analysis:'«بی‌ادب» با «ادب» نوشته می‌شود و پیشوند «بی» نبودن آن ویژگی را نشان می‌دهد.'},topicCheck:{question:'در جملهٔ «علی سیب را خورد»، مفعول کدام است؟',options:['علی','سیب را','خورد','در'],answer:1,analysis:'پرسش «چه چیزی را خورد؟» پاسخ «سیب را» دارد؛ پس این بخش مفعول جمله است و «را» نشانهٔ مفعول است.'}},
+    {id:15,title:'شیر و موش',page:'۱۱۲ تا ۱۱۵',content:'موش پس از آن‌که شیر را آزاد می‌کند، نشان می‌دهد که کوچک بودن به معنی ناتوان بودن نیست و کمک می‌تواند دوطرفه باشد.',example:'پسوند «زار» در پایان واژه می‌تواند به مکانی اشاره کند که از چیزی پر است یا آن چیز در آن می‌روید.',spellingWords:['شیر','موش','صیاد','دام','پنجه','نیرومند','رهایی','سبزه‌زار','گندم‌زار','نی‌زار'],synonyms:[['نیرومند','قوی'],['رهایی','آزادی'],['یاری','کمک']],families:[{root:'شکار',words:['شکارچی','شکارکردن','شکارگاه']},{root:'رها',words:['رهایی','رهاشدن','رهاکردن']},{root:'کمک',words:['کمک‌کننده','کمک‌کردن','کمک‌رسان']}],opposites:[['قوی','ضعیف'],['آزاد','گرفتار'],['بزرگ','کوچک']],wordTopic:{title:'واژه‌سازی با «زار»',source:'کتاب',explain:'«زار» در پایان این واژه‌ها نام مکانی را می‌سازد که از چیزی پر است یا آن گیاه در آن می‌روید.',examples:['سبزه‌زار: جایی پر از سبزه','گندم‌زار: مزرعهٔ گندم','نی‌زار: جایی که نی در آن روییده','نمک‌زار، چمن‌زار، گل‌زار']},languageTopic:{title:'جمله‌سازی با فعل گذشته',source:'تکمیلی از متن درس',explain:'در روایت داستان، فعل‌های گذشته رویدادهایی را نشان می‌دهند که پیش‌تر رخ داده‌اند. فعل را با توجه به فاعل و زمان رویداد انتخاب کن.',examples:['شیر خوابید.','موش بندها را جوید.','موش شیر را آزاد کرد.']},spellingCheck:{question:'کدام واژه به معنی «مزرعه‌ای که در آن گندم روییده است» است؟',options:['گندم‌زار','نی‌زار','گل‌زار','سبزه‌زار'],answer:0,analysis:'«گندم‌زار» از «گندم» و «زار» ساخته شده و در واژه‌آموزی به مزرعه‌ای گفته می‌شود که گندم در آن روییده است.'},topicCheck:{question:'پسوند «زار» در واژه‌هایی مانند «نی‌زار» چه چیزی را نشان می‌دهد؟',options:['مکان مرتبط با آن چیز','زمان گذشته','نام یک جانور','نشانهٔ پرسش'],answer:0,analysis:'در «نی‌زار»، بخش «زار» به مکانی اشاره دارد که نی در آن روییده است؛ همین الگو در گندم‌زار و سبزه‌زار دیده می‌شود.'}},
+    {id:16,title:'پرسشگری',page:'۱۲۴ تا ۱۲۹',content:'درس دربارهٔ کنجکاوی، ارزش سؤال پرسیدن و تلاش برای رسیدن به پاسخ‌های علمی است و از ابوریحان بیرونی یاد می‌کند.',example:'برخی فعل‌ها برای کامل شدن معنی به اطلاعاتی دربارهٔ چه چیزی یا کجا نیاز دارند.',spellingWords:['پرسشگری','ابوریحان','بیرونی','دانشمند','پژوهشگر','مجهول','کنجکاوی','پاسخ','بیماری','دانایی'],synonyms:[['پرسش','سؤال'],['پاسخ','جواب'],['کوشش','تلاش']],families:[{root:'پرسش',words:['پرسشگر','پرسیدن','پرسش‌ها']},{root:'پژوهش',words:['پژوهشگر','پژوهشی','پژوهش‌ها']},{root:'دانش',words:['دانشمند','دانایی','دانش‌آموز']}],opposites:[['دانا','نادان'],['معلوم','مجهول'],['روشن','تاریک']],wordTopic:{title:'واژه‌های مرتبط با پرسش و پژوهش',source:'تکمیلی از متن درس',explain:'برای درک واژگان علمی، واژه‌های مرتبط را کنار هم بگذار و تفاوت معنی آن‌ها را توضیح بده.',examples:['پرسش / سؤال','پاسخ / جواب','پژوهش / جست‌وجوی منظم','معلوم / مجهول']},languageTopic:{title:'فعل‌هایی که به بخش‌های بیشتری نیاز دارند',source:'کتاب',explain:'برخی فعل‌ها اگر تنها گفته شوند، شنونده می‌پرسد «چه چیزی را؟»، «کجا؟» یا «به چه کسی؟». برای کامل شدن پیام، بخش‌های لازم را به جمله اضافه کن.',examples:['مریم روزنامه را روی میز گذاشت. ← چه چیزی را و کجا؟','سینا کیف را به پدرش داد. ← چه چیزی را و به چه کسی؟']},spellingCheck:{question:'کدام واژه با املای درست نوشته شده است؟',options:['پرسشگری','پرشسگری','پرسشگَریی','پرسشکری'],answer:0,analysis:'شکل درست «پرسشگری» است. این واژه از پرسش و پسوند «گری» ساخته شده و به پرسیدن و جست‌وجو مربوط است.'},topicCheck:{question:'در جملهٔ «مریم روزنامه را روی میز گذاشت»، عبارت «روی میز» چه اطلاعاتی می‌دهد؟',options:['محل گذاشتن را مشخص می‌کند.','شخصی را که گذاشت مشخص می‌کند.','زمان آینده را نشان می‌دهد.','پرسش را پایان می‌دهد.'],answer:0,analysis:'فعل «گذاشت» به توضیح بیشتری نیاز دارد؛ عبارت «روی میز» محل انجام کار را نشان می‌دهد و پیام جمله را کامل می‌کند.'}},
+    {id:17,title:'مدرسهٔ هوشمند',page:'۱۳۰ تا ۱۳۴',content:'مهتاب در مدرسه‌ای با ابزارهای دیجیتال و تختهٔ هوشمند آشنا می‌شود؛ داستان دربارهٔ کاربرد فناوری در یادگیری است.',example:'در واژه‌آموزی این درس، «ـنده» در چند واژه به کسی اشاره می‌کند که کاری انجام می‌دهد.',spellingWords:['هوشمند','رایانه','نرم‌افزار','نمایشگر','مجازی','اینترنت','بیننده','گوینده','شنونده','نویسنده'],synonyms:[['هوشمند','باهوش'],['تماشاچی','بیننده'],['پیشرفت','رشد']],families:[{root:'بین',words:['بیننده','دیدن','بینایی']},{root:'گو',words:['گوینده','گفتن','گفتار']},{root:'نویس',words:['نویسنده','نوشته','نوشتن']}],opposites:[['مجازی','واقعی'],['روشن','خاموش'],['پیشرفت','پسرفت']],wordTopic:{title:'واژه‌سازی با «ـنده»',source:'کتاب',explain:'در نمونه‌های این درس، «ـنده» به واژه‌هایی اضافه شده که شخص انجام‌دهندهٔ یک کار را نام می‌برند.',examples:['بیننده: کسی که می‌بیند','گوینده: کسی که می‌گوید','شنونده: کسی که می‌شنود','نویسنده، خواننده، دونده']},languageTopic:{title:'مقایسهٔ جمله در موقعیت‌های مختلف',source:'تکمیلی مرتبط با فعالیت پایانی درس',explain:'یک موضوع را می‌توان با لحن‌های متفاوت بیان کرد؛ صحبت رسمی با مدیر مدرسه با گفت‌وگو با دوست صمیمی یکسان نیست. واژه‌ها، لحن و نوع جمله را با مخاطب هماهنگ کن.',examples:['درخواست رسمی: «لطفاً اجازه می‌دهید پیشنهادم را توضیح بدهم؟»','گفت‌وگوی دوستانه: «می‌خواهی با هم تکلیف را حل کنیم؟»']},spellingCheck:{question:'املای درست کدام واژه است؟',options:['هوشمند','هشمند','هوش‌مندد','هوشمندد'],answer:0,analysis:'شکل درست واژه «هوشمند» است. این واژه در متن برای توصیف تختهٔ هوشمند به کار رفته است.'},topicCheck:{question:'«شنونده» به چه کسی گفته می‌شود؟',options:['کسی که می‌شنود','کسی که می‌نویسد','کسی که می‌بیند','کسی که می‌دود'],answer:0,analysis:'در واژه‌آموزی کتاب، «شنونده» شخصی است که چیزی را می‌شنود؛ همین الگو در بیننده و گوینده هم دیده می‌شود.'}}
+  ];
+  otherSubjectData.find(s=>s.id==='persian').lessons=persianLessons;
+  otherSubjectData.find(s=>s.id==='dictation').lessons=persianLessons.map(l=>({...l,dictationOnly:true}));
+
+  let selectedOtherSubject = null;
+  let selectedOtherLesson = null;
+  function otherProgressKey(){return 'yare-other-subject-progress-v1-'+String(cloudSession?.user?.id||activeUsername||'guest')}
+  function readOtherProgress(){try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}}
+  function writeOtherProgress(data){try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}}
+  function isRealStudentSession(){return !!(cloudSession?.access_token&&cloudSession?.user?.id&&cloudSession.role==='student'&&cloudSession.profile?.role==='student'&&!cloudSession.studentViewAsTeacher)}
+  async function saveSubjectPracticeProgress(record){
+    if(!isRealStudentSession())return {synced:false,reason:'no-student-session'};
+    const payload={
+      student_id:cloudSession.user.id,
+      class_id:cloudSession.profile?.class_id??null,
+      subject:record.subject,
+      lesson_id:Number(record.lesson_id),
+      activity_key:String(record.activity_key),
+      activity_type:String(record.activity_type||'practice').slice(0,80),
+      selected_answer:Number.isInteger(record.selected_answer)?record.selected_answer:null,
+      correct_answer:Number.isInteger(record.correct_answer)?record.correct_answer:null,
+      is_correct:record.is_correct===true,
+      attempt_count:Math.max(1,Math.floor(Number(record.attempt_count)||1)),
+      question_text:String(record.question_text||'').slice(0,2000),
+      explanation:String(record.explanation||'').slice(0,4000),
+      metadata:record.metadata&&typeof record.metadata==='object'?record.metadata:{},
+      updated_at:record.updated_at||new Date().toISOString()
+    };
+    await cloudFetch('/rest/v1/yare_subject_practice_progress?on_conflict=student_id,subject,lesson_id,activity_key',{
+      method:'POST',body:payload,headers:{Prefer:'resolution=merge-duplicates,return=minimal'}
+    });
+    return {synced:true};
+  }
+  function rowToSubjectProgressKey(row){
+    const q=String(row.activity_key||'').match(/^quiz-(\d+)$/);
+    return q?String(row.subject)+'-'+row.lesson_id+'-quiz-'+q[1]:String(row.subject)+'-'+row.lesson_id;
+  }
+  async function loadOtherSubjectProgressFromCloud(){
+    if(!isRealStudentSession())return;
+    const q='?select=subject,lesson_id,activity_key,activity_type,selected_answer,correct_answer,is_correct,attempt_count,question_text,explanation,metadata,updated_at&student_id=eq.'+encodeURIComponent(cloudSession.user.id)+'&order=updated_at.desc&limit=2000';
+    const rows=await cloudFetch('/rest/v1/yare_subject_practice_progress'+q,{method:'GET'});
+    if(!Array.isArray(rows))throw new Error('پاسخ پیشرفت درس‌های دیگر معتبر نیست.');
+    const progress=readOtherProgress();
+    const remoteTimeByKey=new Map();
+    for(const row of rows){
+      const key=rowToSubjectProgressKey(row);
+      const remoteAt=Date.parse(row.updated_at)||0;remoteTimeByKey.set(key,remoteAt);
+      const old=progress[key],oldAt=Date.parse(old?.updatedAt||'')||0;
+      if(!old||remoteAt>=oldAt)progress[key]={
+        correct:row.is_correct===true,
+        selected:row.selected_answer,
+        answer:row.correct_answer,
+        attemptCount:row.attempt_count||1,
+        updatedAt:row.updated_at,
+        activityType:row.activity_type,
+        questionText:row.question_text||'',
+        lastExplanation:row.explanation||'',
+        selectedText:row.metadata?.selected_text||'',
+        correctText:row.metadata?.correct_text||''
+      };
+    }
+    // Upload newer local results or old local-only results so changing devices won't drop progress.
+    for(const [key,rec] of Object.entries(progress)){
+      if(!rec||typeof rec!=='object'||!Number.isInteger(Number(rec.selected))||!Number.isInteger(Number(rec.answer)))continue;
+      let subject='',lessonId=0,activityKey='',activityType=rec.activityType||'practice';
+      let match=key.match(/^(science|social|gifts)-(\d+)$/);
+      if(match){subject=match[1];lessonId=Number(match[2]);activityKey='lesson-check';}
+      else{
+        match=key.match(/^(persian|dictation)-(\d+)-quiz-(\d+)$/);
+        if(match){subject=match[1];lessonId=Number(match[2]);activityKey='quiz-'+match[3];}
+      }
+      if(!subject||!lessonId)continue;
+      const time=Date.parse(rec.updatedAt||'')||0;
+      if(remoteTimeByKey.has(key)&&remoteTimeByKey.get(key)>=time)continue;
+      try{
+        await saveSubjectPracticeProgress({
+          subject,lesson_id:lessonId,activity_key:activityKey,activity_type:activityType,
+          selected_answer:Number(rec.selected),correct_answer:Number(rec.answer),is_correct:rec.correct===true,
+          attempt_count:rec.attemptCount||1,question_text:rec.questionText||'',
+          explanation:rec.lastExplanation||'',metadata:{selected_text:rec.selectedText||'',correct_text:rec.correctText||''},
+          updated_at:rec.updatedAt||new Date().toISOString()
+        });
+      }catch(error){console.warn('Could not migrate local subject progress to Supabase',error)}
+    }
+    // Recompute lesson completion from each saved question instead of trusting stale aggregate counters.
+    for(const subject of ['persian','dictation']){
+      const lessons=otherSubjectData.find(s=>s.id===subject)?.lessons||[];
+      for(const lesson of lessons){
+        const expected=subject==='dictation'?(lesson.isFreeLesson?1:1):buildPersianLessonQuizzes(lesson).length;
+        const saved=Array.from({length:expected},(_,i)=>progress[subject+'-'+lesson.id+'-quiz-'+i]);
+        progress[subject+'-'+lesson.id]={
+          correct:saved.every(x=>x?.correct===true),
+          answered:saved.filter(Boolean).length,
+          updatedAt:saved.filter(Boolean).map(x=>x.updatedAt||'').sort().at(-1)||''
+        };
+      }
+    }
+    writeOtherProgress(progress);
+    renderOtherSubjectPicker();
+  }
+  function renderOtherSubjectPicker(){
+    const box=$('otherSubjectPicker');if(!box)return;
+    const progress=readOtherProgress();
+    box.innerHTML=otherSubjectData.map(s=>{const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'"><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(s.name)+'</b><small>'+fa(s.lessons.length)+' مبحث آغازین · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
+    box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
+  }
+  function openOtherSubject(id){
+    selectedOtherSubject=otherSubjectData.find(s=>s.id===id);selectedOtherLesson=null;if(!selectedOtherSubject)return;
+    $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
+    $('otherSubjectTitle').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
+    const progress=readOtherProgress();const box=$('otherSubjectLessonPicker');
+    box.innerHTML=selectedOtherSubject.lessons.map(l=>'<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'"><strong>'+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ همهٔ تمرین‌ها درست پاسخ داده شد':'واژه‌آموزی · دانش زبانی · املا')+'</small></button></div>').join('');
+    box.querySelectorAll('[data-other-lesson]').forEach(b=>b.onclick=()=>renderOtherLesson(Number(b.dataset.otherLesson)));
+    $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(l=>progress[selectedOtherSubject.id+'-'+l.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
+  }
+
+  function escapeForHtmlText(s){return escapeHtml(String(s??''))}
+  function persianQuizOptions(correct,candidates,rotation){
+    const wrongs=[];
+    for(const v of candidates||[])if(typeof v==='string'&&v.trim()&&v!==correct&&!wrongs.includes(v))wrongs.push(v);
+    while(wrongs.length<3)wrongs.push(['بهار','کتاب','مدرسه','آسمان'][wrongs.length%4]);
+    const opts=wrongs.slice(0,3);const index=((rotation%4)+4)%4;opts.splice(index,0,correct);
+    return {options:opts,answer:index};
+  }
+  function buildPersianLessonQuizzes(l){
+    if(l.isFreeLesson)return [{kind:'درس آزاد',question:l.topicCheck.question,options:l.topicCheck.options,answer:l.topicCheck.answer,analysis:l.topicCheck.analysis}];
+    const quizzes=[{kind:'املای واژه',...l.spellingCheck}];
+    if(l.synonyms?.length){
+      const [word,meaning]=l.synonyms[0];
+      const q=persianQuizOptions(meaning,[...(l.opposites||[]).flat(),...(l.spellingWords||[]),...(l.families?.[0]?.words||[])].filter(v=>v!==word),l.id%4);
+      quizzes.push({kind:'هم‌معنی',question:'هم‌معنی «'+word+'» در این درس کدام است؟',...q,analysis:'«'+word+'» در کاربرد این درس به «'+meaning+'» نزدیک است. «'+q.options.find((v,i)=>i!==q.answer)+'» و دیگر گزینه‌ها در این بافت هم‌معنی آن نیستند.'});
+    }
+    if(l.families?.length){
+      const fam=l.families[0];const correct=fam.words[0];
+      const blocked=[fam.root,...fam.words];
+      const distractors=[...(l.synonyms||[]).flat(),...(l.opposites||[]).flat(),...(l.spellingWords||[])].filter(v=>!blocked.includes(v));
+      const q=persianQuizOptions(correct,distractors,l.id+1);
+      quizzes.push({kind:'هم‌خانواده',question:'کدام واژه با «'+fam.root+'» هم‌خانواده است؟',...q,analysis:'«'+correct+'» با «'+fam.root+'» ریشه و ارتباط معنایی دارد؛ واژه‌های دیگر فقط با موضوع درس ارتباط دارند یا معنای متفاوتی دارند.'});
+    }
+    if(l.opposites?.length){
+      const [word,opposite]=l.opposites[0];const blocked=[word,opposite];
+      const distractors=[...(l.synonyms||[]).flat(),...(l.spellingWords||[]),...(l.families?.[0]?.words||[])].filter(v=>!blocked.includes(v));
+      const q=persianQuizOptions(opposite,distractors,l.id+2);
+      quizzes.push({kind:'متضاد',question:'متضاد «'+word+'» کدام است؟',...q,analysis:'«'+word+'» و «'+opposite+'» در این تمرین معنی مخالف دارند؛ هم‌معنی‌ها معنای نزدیک و هم‌خانواده‌ها ریشهٔ مرتبط دارند.'});
+    }
+    quizzes.push({kind:l.wordTopic?.source==='کتاب'?'واژه‌آموزی کتاب':'آموزش واژه',question:l.topicCheck.question,options:l.topicCheck.options,answer:l.topicCheck.answer,analysis:l.topicCheck.analysis});
+    return quizzes;
+  }
+  function renderPersianLesson(l){
+    const content=$('otherLessonContent');
+    const sourceBadge=(source,formal)=>'<span class="pill">'+escapeForHtmlText(source==='کتاب'?formal:source==='متن انتخابی کلاس'?'متن انتخابی کلاس':'تمرین تکمیلی از متن درس')+'</span>';
+    const chips=words=>(words||[]).length?'<div class="persian-chip-row">'+words.map(w=>'<span class="persian-word-chip">'+escapeForHtmlText(w)+'</span>').join('')+'</div>':'<p class="muted">برای این درس، پس از انتخاب متن کلاس، واژه‌ها از همان متن ثبت می‌شوند.</p>';
+    const pairs=rows=>(rows||[]).length?'<div class="persian-pair-list">'+rows.map(p=>'<div class="persian-pair"><b>'+escapeForHtmlText(p[0])+'</b><span>↔</span><span>'+escapeForHtmlText(p[1])+'</span></div>').join('')+'</div>':'<p class="muted">این درس متن ثابت ندارد؛ پس از انتخاب متن، موارد واقعی را وارد کنید.</p>';
+    const families=(rows||[]).length?'<div class="persian-pair-list">'+rows.map(x=>'<div class="persian-pair"><b>'+escapeForHtmlText(x.root)+'</b><span>←</span><span>'+x.words.map(escapeForHtmlText).join('، ')+'</span></div>').join('')+'</div>':'<p class="muted">ابتدا متن درس آزاد را انتخاب کنید.</p>';
+    const isDictationOnly=selectedOtherSubject.id==='dictation';
+    const progressPrefix=isDictationOnly?'dictation':'persian';
+    const wordTopic=isDictationOnly?{title:'فهرست املای همین درس',source:l.isFreeLesson?'متن انتخابی کلاس':'کتاب',explain:l.isFreeLesson?'این درس آزاد است؛ واژه‌های املا باید از متن انتخابی کلاس استخراج شوند.':'این فهرست برای تمرین املای واژه‌های درس تنظیم شده است؛ املای دقیق را با متن کتاب مقایسه کن.',examples:[]}:(l.wordTopic||{title:'واژه‌آموزی',source:'تکمیلی',explain:'واژه‌ها را از متن درس استخراج کن.',examples:[]});
+    const langTopic=l.languageTopic||{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های متن درس برای تمرین استفاده کن.',examples:[]};
+    const quizzes=isDictationOnly?(l.isFreeLesson?buildPersianLessonQuizzes(l):[{kind:'املای واژه',...l.spellingCheck}]):buildPersianLessonQuizzes(l);
+    content.innerHTML=
+      '<div class="persian-source-note"><b>منبع:</b> کتاب فارسی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ · '+(l.page?'صفحهٔ '+escapeForHtmlText(l.page):'')+'<p>'+escapeForHtmlText(l.content)+'</p><p class="muted">'+(isDictationOnly?'بخش املا با واژه‌های همین درس تنظیم شده است.':'فهرست املا، هم‌معنی، هم‌خانواده و متضاد از واژه‌های متن و با هدف آموزشی تنظیم شده است؛ این فهرست‌ها لزوماً جدول آمادهٔ خود کتاب نیستند.')+'</p></div>'+
+      '<div class="lesson-note"><h4>'+(isDictationOnly?'✍️ املای واژه‌های درس':'📖 واژه‌آموزی · '+escapeForHtmlText(wordTopic.title))+' '+sourceBadge(wordTopic.source,isDictationOnly?'تمرین املای درس':'بخش واژه‌آموزی کتاب')+'</h4><p>'+escapeForHtmlText(wordTopic.explain)+'</p><ul>'+(wordTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>'+
+      (isDictationOnly?
+        '<div class="lesson-note"><h4>📝 فهرست واژه‌ها برای املا</h4><p class="muted">ابتدا واژه‌ها را با صدای بلند بخوان، سپس بدون نگاه کردن بنویس و در پایان با کتاب مقایسه کن.</p>'+chips(l.spellingWords)+'</div>':
+        '<div class="persian-vocab-grid">'+
+          '<div class="lesson-note"><h4>✍️ واژه‌های املا</h4><p class="muted">واژه‌های پیشنهادی برای تمرین نوشتن و بازبینی املاء.</p>'+chips(l.spellingWords)+'</div>'+
+          '<div class="lesson-note"><h4>🔁 هم‌معنی‌ها</h4><p class="muted">معنی نزدیک؛ جایگزینی را با توجه به جمله بررسی کن.</p>'+pairs(l.synonyms)+'</div>'+
+          '<div class="lesson-note"><h4>🧩 هم‌خانواده‌ها</h4><p class="muted">واژه‌های دارای ریشه و ارتباط معنایی مشترک.</p>'+families(l.families)+'</div>'+
+          '<div class="lesson-note"><h4>↔️ متضادها</h4><p class="muted">واژه‌هایی با معنی مخالف.</p>'+pairs(l.opposites)+'</div>'+
+        '</div>'+
+        '<div class="lesson-note"><h4>🧠 دانش زبانی · '+escapeForHtmlText(langTopic.title)+' '+sourceBadge(langTopic.source,'بخش دانش زبانی کتاب')+'</h4><p>'+escapeForHtmlText(langTopic.explain)+'</p><ul>'+(langTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>')+
+      (l.isFreeLesson?'<div class="notice"><b>مهم:</b> این درس در کتاب «درس آزاد» است و متن ثابتی ندارد. برای ساخت املا و واژه‌نامهٔ دقیق، متن انتخاب‌شدهٔ کلاس باید در برنامه وارد شود؛ بنابراین واژه‌های ساختگی به کتاب نسبت داده نشده‌اند.</div>':'')+
+      '<h4 style="margin:16px 0 8px">'+(isDictationOnly?'📝 تمرین املای درس':'🎯 تمرین‌های همین درس')+'</h4><p class="muted">هر سؤال تحلیل جداگانه دارد و هنگام بررسی، پاسخ صحیح نمایش داده می‌شود.</p>'+
+      '<div class="persian-quiz-grid">'+quizzes.map((q,i)=>{
+        const choices=q.options.map((o,j)=>'<label class="other-answer" data-persian-option="'+j+'"><input type="radio" name="persianQuiz'+l.id+'-'+i+'" value="'+j+'"><span>'+escapeForHtmlText(o)+'</span></label>').join('');
+        return '<section class="persian-quiz-card" data-persian-quiz="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind)+'</b><span class="pill">تمرین '+(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+choices+'<button type="button" data-persian-quiz-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button><div class="notice persian-quiz-feedback hidden" aria-live="polite"></div></section>';
+      }).join('')+'</div>';
+    content.querySelectorAll('[data-persian-quiz-check]').forEach(button=>{
+      button.onclick=async()=>{
+        const i=Number(button.dataset.persianQuizCheck),q=quizzes[i],card=button.closest('.persian-quiz-card');
+        const picked=card.querySelector('input[type="radio"]:checked');
+        const fb=card.querySelector('.persian-quiz-feedback');fb.classList.remove('hidden');
+        if(!picked){fb.textContent='ابتدا یکی از گزینه‌ها را انتخاب کن.';return}
+        const selected=Number(picked.value),ok=selected===q.answer;
+        card.querySelectorAll('[data-persian-option]').forEach((el,j)=>{el.classList.toggle('correct',j===q.answer);el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
+        fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b> ':'<b>این پاسخ درست نیست.</b> ')+
+          '<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis)+'</p>';
+        const progress=readOtherProgress();
+        const progressKey=progressPrefix+'-'+l.id+'-quiz-'+i;
+        const previous=progress[progressKey]||{};
+        const resultTime=new Date().toISOString();
+        progress[progressKey]={correct:ok,selected,answer:q.answer,attemptCount:(Number(previous.attemptCount)||0)+1,updatedAt:resultTime,activityType:q.kind,questionText:q.question,lastExplanation:q.analysis,selectedText:q.options[selected],correctText:q.options[q.answer]};
+        const complete=quizzes.every((_,j)=>progress[progressPrefix+'-'+l.id+'-quiz-'+j]?.correct===true);
+        progress[progressPrefix+'-'+l.id]={correct:complete,answered:quizzes.filter((_,j)=>!!progress[progressPrefix+'-'+l.id+'-quiz-'+j]).length,updatedAt:resultTime};
+        writeOtherProgress(progress);
+        let cloudSyncResult={synced:false};
+        try{
+          cloudSyncResult=await saveSubjectPracticeProgress({
+            subject:progressPrefix,lesson_id:l.id,activity_key:'quiz-'+i,activity_type:q.kind,
+            selected_answer:selected,correct_answer:q.answer,is_correct:ok,attempt_count:progress[progressKey].attemptCount,
+            question_text:q.question,explanation:q.analysis,
+            metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],dictation_only:isDictationOnly},
+            updated_at:resultTime
+          });
+        }catch(error){console.warn('Subject practice cloud save failed',error)}
+        fb.innerHTML+='<p class="muted">'+(cloudSyncResult.synced?'☁️ نتیجه در حساب دانش‌آموز و گزارش معلم ذخیره شد.':isRealStudentSession()?'⚠️ نتیجه در این دستگاه ذخیره شد؛ همگام‌سازی آنلاین ناموفق بود. اتصال اینترنت را بررسی کن.':'ذخیرهٔ آنلاین پس از ورود با حساب دانش‌آموز فعال می‌شود.')+'</p>';
+        $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(x=>readOtherProgress()[selectedOtherSubject.id+'-'+x.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' درس تکمیل‌شده';
+        const lessonButton=$('otherSubjectLessonPicker').querySelector('[data-other-lesson="'+l.id+'"]');
+        if(lessonButton){const small=lessonButton.querySelectorAll('small')[1];if(small)small.textContent=complete?'✅ همهٔ تمرین‌ها درست پاسخ داده شد':'تمرین‌ها پاسخ داده شدند · برای تکمیل همه را درست بزن'}
+        renderOtherSubjectPicker();
+      };
+    });
+    // وضعیت پاسخ‌ها را در بازگشت به همان درس بازیابی کن.
+    const progress=readOtherProgress();
+    quizzes.forEach((q,i)=>{
+      const saved=progress[progressPrefix+'-'+l.id+'-quiz-'+i];if(!saved)return;
+      const card=content.querySelector('[data-persian-quiz="'+i+'"]');if(!card)return;
+      const radio=card.querySelector('input[value="'+saved.selected+'"]');if(radio)radio.checked=true;
+      const fb=card.querySelector('.persian-quiz-feedback');fb.classList.remove('hidden');
+      card.querySelectorAll('[data-persian-option]').forEach((el,j)=>{el.classList.toggle('correct',j===q.answer);el.classList.toggle('wrong',j===saved.selected&&j!==q.answer);el.classList.toggle('selected',j===saved.selected)});
+      fb.innerHTML=(saved.correct?'<b>پاسخ درست ثبت شده.</b> ':'<b>پاسخ قبلی درست نبود.</b> ')+
+        '<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis)+'</p>';
+    });
+  }
+  function renderOtherLesson(id){
+    selectedOtherLesson=selectedOtherSubject?.lessons.find(l=>l.id===id);if(!selectedOtherLesson)return;
+    const l=selectedOtherLesson;
+    $('otherSubjectLessonBody').classList.remove('hidden');
+    $('otherLessonTitle').textContent=(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+l.title;
+    if(selectedOtherSubject.id==='persian'||selectedOtherSubject.id==='dictation'){
+      $('otherLessonQuestion').closest('.lesson-note').classList.add('hidden');
+      renderPersianLesson(l);
+      return;
+    }
+    $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
+    $('otherLessonContent').innerHTML='<p>'+escapeHtml(l.content)+'</p><div class="lesson-example"><b>مثال</b><p>'+escapeHtml(l.example)+'</p></div>';
+    $('otherLessonQuestion').textContent=l.question;
+    $('otherLessonOptions').innerHTML=l.options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
+    $('otherLessonFeedback').classList.add('hidden');$('checkOtherLessonAnswer').disabled=false;
+    $('otherLessonOptions').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{$('otherLessonOptions').querySelectorAll('.other-answer').forEach(x=>x.classList.toggle('selected',x.querySelector('input').checked))});
+  }
+  $('checkOtherLessonAnswer').onclick=async()=>{
+    const l=selectedOtherLesson;if(!l)return;
+    const picked=$('otherLessonOptions').querySelector('input[name="otherLessonAnswer"]:checked');
+    const fb=$('otherLessonFeedback');fb.classList.remove('hidden');
+    if(!picked){fb.textContent='ابتدا یکی از گزینه‌ها را انتخاب کن.';return}
+    const ok=Number(picked.value)===l.answer;
+    $('otherLessonOptions').querySelectorAll('.other-answer').forEach((el,i)=>{el.classList.toggle('correct',i===l.answer);el.classList.toggle('wrong',i===Number(picked.value)&&!ok)});
+    fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b> ':'<b>این پاسخ درست نیست.</b> ')+
+      '<p><b>پاسخ صحیح:</b> '+escapeHtml(l.options[l.answer])+'</p><p><b>تحلیل اختصاصی این سؤال:</b> '+escapeHtml(l.analysis)+'</p>';
+    const progress=readOtherProgress();
+    const progressKey=selectedOtherSubject.id+'-'+l.id,previous=progress[progressKey]||{},resultTime=new Date().toISOString();
+    progress[progressKey]={correct:ok,selected:Number(picked.value),answer:l.answer,attemptCount:(Number(previous.attemptCount)||0)+1,updatedAt:resultTime,activityType:selectedOtherSubject.name,questionText:l.question,lastExplanation:l.analysis,selectedText:l.options[Number(picked.value)],correctText:l.options[l.answer]};
+    writeOtherProgress(progress);
+    $('checkOtherLessonAnswer').disabled=true;
+    let cloudSyncResult={synced:false};
+    try{
+      cloudSyncResult=await saveSubjectPracticeProgress({
+        subject:selectedOtherSubject.id,lesson_id:l.id,activity_key:'lesson-check',activity_type:selectedOtherSubject.name,
+        selected_answer:Number(picked.value),correct_answer:l.answer,is_correct:ok,attempt_count:progress[progressKey].attemptCount,
+        question_text:l.question,explanation:l.analysis,
+        metadata:{selected_text:l.options[Number(picked.value)],correct_text:l.options[l.answer]},
+        updated_at:resultTime
+      });
+    }catch(error){console.warn('Subject practice cloud save failed',error)}
+    fb.innerHTML+='<p class="muted">'+(cloudSyncResult.synced?'☁️ نتیجه در حساب دانش‌آموز و گزارش معلم ذخیره شد.':isRealStudentSession()?'⚠️ نتیجه در این دستگاه ذخیره شد؛ همگام‌سازی آنلاین ناموفق بود. اتصال اینترنت را بررسی کن.':'ذخیرهٔ آنلاین پس از ورود با حساب دانش‌آموز فعال می‌شود.')+'</p>';
+    $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(x=>readOtherProgress()[selectedOtherSubject.id+'-'+x.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
+    const lessonButton=$('otherSubjectLessonPicker').querySelector('[data-other-lesson="'+l.id+'"]');
+    if(lessonButton){const small=lessonButton.querySelectorAll('small')[1]||lessonButton.querySelector('small');if(small)small.textContent=ok?'✅ پاسخ درست ثبت شده':'پاسخ ثبت شد؛ دوباره تمرین کن'}
+    renderOtherSubjectPicker();
+  };
+  $('subjectsBackHome').onclick=()=>showStudentAppView('home');
 
 })();
 
