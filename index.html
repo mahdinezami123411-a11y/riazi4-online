@@ -496,6 +496,22 @@ a{color:#d7ff76}
 .other-answer.selected{border-color:#438ce0;background:#eaf4ff}
 .other-answer.correct{border-color:#14966b;background:#e8fbf2}
 .other-answer.wrong{border-color:#c83d52;background:#fff0f2}
+/* بخش جامع فارسی و تمرین‌های تعاملی */
+.persian-source-note{background:#eef7ff;border:1px solid #cfe4f8;border-radius:14px;padding:12px;margin:10px 0}
+.persian-source-note p{margin:6px 0;line-height:1.9}
+.persian-vocab-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.persian-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.persian-word-chip{display:inline-block;border:1px solid #cbdcf4;background:#f7fbff;border-radius:999px;padding:4px 9px;font-size:12px}
+.persian-pair-list{display:grid;gap:6px;margin-top:8px}
+.persian-pair{display:flex;flex-wrap:wrap;align-items:center;gap:7px;background:#f8fbff;border:1px solid #e0eaf8;border-radius:10px;padding:7px 9px;font-size:13px}
+.persian-pair b{color:#174b97}
+.persian-quiz-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.persian-quiz-card{background:#fff;border:1px solid #d7e5f7;border-radius:15px;padding:12px}
+.persian-quiz-card>p{font-weight:700;line-height:1.9;margin:9px 0}
+.persian-quiz-card .other-answer.correct{background:#e8fbf2;border-color:#14966b}
+.persian-quiz-card .other-answer.wrong{background:#fff0f2;border-color:#c83d52}
+.persian-quiz-feedback{white-space:normal}
+@media(max-width:560px){.persian-vocab-grid{grid-template-columns:1fr}.persian-source-note,.persian-quiz-card{padding:10px}}
 </style></head>
 <body data-build="yare-math-v20-20261016-neon-theme-specific-analysis"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🪐</div><div><h1>🪐 پایگاه فضایی ریاضی‌دان‌ها</h1><p>هر جواب، یک مأموریت تازه؛ آمادهٔ پرتاب به مرحلهٔ بعدی؟</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>ایستگاه آموزش و تمرین پایهٔ چهارم</span><span class="hero-mini-badge">MISSION MODE</span></div></header>
@@ -1886,15 +1902,112 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
     $('otherSubjectTitle').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     const progress=readOtherProgress();const box=$('otherSubjectLessonPicker');
-    box.innerHTML=selectedOtherSubject.lessons.map(l=>'<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'"><strong>'+escapeHtml(l.title)+'</strong><small>'+(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ پاسخ درست ثبت شده':'آموزش و پرسش')+'</small></button></div>').join('');
+    box.innerHTML=selectedOtherSubject.lessons.map(l=>'<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'"><strong>'+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ همهٔ تمرین‌ها درست پاسخ داده شد':'واژه‌آموزی · دانش زبانی · املا')+'</small></button></div>').join('');
     box.querySelectorAll('[data-other-lesson]').forEach(b=>b.onclick=()=>renderOtherLesson(Number(b.dataset.otherLesson)));
     $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(l=>progress[selectedOtherSubject.id+'-'+l.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
+  }
+
+  function escapeForHtmlText(s){return escapeHtml(String(s??''))}
+  function persianQuizOptions(correct,candidates,rotation){
+    const wrongs=[];
+    for(const v of candidates||[])if(typeof v==='string'&&v.trim()&&v!==correct&&!wrongs.includes(v))wrongs.push(v);
+    while(wrongs.length<3)wrongs.push(['بهار','کتاب','مدرسه','آسمان'][wrongs.length%4]);
+    const opts=wrongs.slice(0,3);const index=((rotation%4)+4)%4;opts.splice(index,0,correct);
+    return {options:opts,answer:index};
+  }
+  function buildPersianLessonQuizzes(l){
+    if(l.isFreeLesson)return [{kind:'درس آزاد',question:l.topicCheck.question,options:l.topicCheck.options,answer:l.topicCheck.answer,analysis:l.topicCheck.analysis}];
+    const quizzes=[{kind:'املای واژه',...l.spellingCheck}];
+    if(l.synonyms?.length){
+      const [word,meaning]=l.synonyms[0];
+      const q=persianQuizOptions(meaning,[...(l.opposites||[]).flat(),...(l.spellingWords||[]),...(l.families?.[0]?.words||[])].filter(v=>v!==word),l.id%4);
+      quizzes.push({kind:'هم‌معنی',question:'هم‌معنی «'+word+'» در این درس کدام است؟',...q,analysis:'«'+word+'» در کاربرد این درس به «'+meaning+'» نزدیک است. «'+q.options.find((v,i)=>i!==q.answer)+'» و دیگر گزینه‌ها در این بافت هم‌معنی آن نیستند.'});
+    }
+    if(l.families?.length){
+      const fam=l.families[0];const correct=fam.words[0];
+      const blocked=[fam.root,...fam.words];
+      const distractors=[...(l.synonyms||[]).flat(),...(l.opposites||[]).flat(),...(l.spellingWords||[])].filter(v=>!blocked.includes(v));
+      const q=persianQuizOptions(correct,distractors,l.id+1);
+      quizzes.push({kind:'هم‌خانواده',question:'کدام واژه با «'+fam.root+'» هم‌خانواده است؟',...q,analysis:'«'+correct+'» با «'+fam.root+'» ریشه و ارتباط معنایی دارد؛ واژه‌های دیگر فقط با موضوع درس ارتباط دارند یا معنای متفاوتی دارند.'});
+    }
+    if(l.opposites?.length){
+      const [word,opposite]=l.opposites[0];const blocked=[word,opposite];
+      const distractors=[...(l.synonyms||[]).flat(),...(l.spellingWords||[]),...(l.families?.[0]?.words||[])].filter(v=>!blocked.includes(v));
+      const q=persianQuizOptions(opposite,distractors,l.id+2);
+      quizzes.push({kind:'متضاد',question:'متضاد «'+word+'» کدام است؟',...q,analysis:'«'+word+'» و «'+opposite+'» در این تمرین معنی مخالف دارند؛ هم‌معنی‌ها معنای نزدیک و هم‌خانواده‌ها ریشهٔ مرتبط دارند.'});
+    }
+    quizzes.push({kind:l.wordTopic?.source==='کتاب'?'واژه‌آموزی کتاب':'آموزش واژه',question:l.topicCheck.question,options:l.topicCheck.options,answer:l.topicCheck.answer,analysis:l.topicCheck.analysis});
+    return quizzes;
+  }
+  function renderPersianLesson(l){
+    const content=$('otherLessonContent');
+    const sourceBadge=(source,formal)=>'<span class="pill">'+escapeForHtmlText(source==='کتاب'?formal:'تمرین تکمیلی از متن درس')+'</span>';
+    const chips=words=>(words||[]).length?'<div class="persian-chip-row">'+words.map(w=>'<span class="persian-word-chip">'+escapeForHtmlText(w)+'</span>').join('')+'</div>':'<p class="muted">برای این درس، پس از انتخاب متن کلاس، واژه‌ها از همان متن ثبت می‌شوند.</p>';
+    const pairs=rows=>(rows||[]).length?'<div class="persian-pair-list">'+rows.map(p=>'<div class="persian-pair"><b>'+escapeForHtmlText(p[0])+'</b><span>↔</span><span>'+escapeForHtmlText(p[1])+'</span></div>').join('')+'</div>':'<p class="muted">این درس متن ثابت ندارد؛ پس از انتخاب متن، موارد واقعی را وارد کنید.</p>';
+    const families=(rows||[]).length?'<div class="persian-pair-list">'+rows.map(x=>'<div class="persian-pair"><b>'+escapeForHtmlText(x.root)+'</b><span>←</span><span>'+x.words.map(escapeForHtmlText).join('، ')+'</span></div>').join('')+'</div>':'<p class="muted">ابتدا متن درس آزاد را انتخاب کنید.</p>';
+    const wordTopic=l.wordTopic||{title:'واژه‌آموزی',source:'تکمیلی',explain:'واژه‌ها را از متن درس استخراج کن.',examples:[]};
+    const langTopic=l.languageTopic||{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های متن درس برای تمرین استفاده کن.',examples:[]};
+    const quizzes=buildPersianLessonQuizzes(l);
+    content.innerHTML=
+      '<div class="persian-source-note"><b>منبع:</b> کتاب فارسی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ · '+(l.page?'صفحهٔ '+escapeForHtmlText(l.page):'')+'<p>'+escapeForHtmlText(l.content)+'</p><p class="muted">فهرست املا، هم‌معنی، هم‌خانواده و متضاد از واژه‌های متن و با هدف آموزشی تنظیم شده است؛ این فهرست‌ها لزوماً جدول آمادهٔ خود کتاب نیستند.</p></div>'+
+      '<div class="lesson-note"><h4>📖 واژه‌آموزی · '+escapeForHtmlText(wordTopic.title)+' '+sourceBadge(wordTopic.source,'بخش واژه‌آموزی کتاب')+'</h4><p>'+escapeForHtmlText(wordTopic.explain)+'</p><ul>'+(wordTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>'+
+      '<div class="persian-vocab-grid">'+
+        '<div class="lesson-note"><h4>✍️ واژه‌های املا</h4><p class="muted">واژه‌های پیشنهادی برای تمرین نوشتن و بازبینی املاء.</p>'+chips(l.spellingWords)+'</div>'+
+        '<div class="lesson-note"><h4>🔁 هم‌معنی‌ها</h4><p class="muted">معنی نزدیک؛ جایگزینی را با توجه به جمله بررسی کن.</p>'+pairs(l.synonyms)+'</div>'+
+        '<div class="lesson-note"><h4>🧩 هم‌خانواده‌ها</h4><p class="muted">واژه‌های دارای ریشه و ارتباط معنایی مشترک.</p>'+families(l.families)+'</div>'+
+        '<div class="lesson-note"><h4>↔️ متضادها</h4><p class="muted">واژه‌هایی با معنی مخالف.</p>'+pairs(l.opposites)+'</div>'+
+      '</div>'+
+      '<div class="lesson-note"><h4>🧠 دانش زبانی · '+escapeForHtmlText(langTopic.title)+' '+sourceBadge(langTopic.source,'بخش دانش زبانی کتاب')+'</h4><p>'+escapeForHtmlText(langTopic.explain)+'</p><ul>'+(langTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>'+
+      (l.isFreeLesson?'<div class="notice"><b>مهم:</b> این درس در کتاب «درس آزاد» است و متن ثابتی ندارد. برای ساخت املا و واژه‌نامهٔ دقیق، متن انتخاب‌شدهٔ کلاس باید در برنامه وارد شود؛ بنابراین واژه‌های ساختگی به کتاب نسبت داده نشده‌اند.</div>':'')+
+      '<h4 style="margin:16px 0 8px">🎯 تمرین‌های همین درس</h4><p class="muted">هر سؤال تحلیل جداگانه دارد و هنگام بررسی، پاسخ صحیح نمایش داده می‌شود.</p>'+
+      '<div class="persian-quiz-grid">'+quizzes.map((q,i)=>{
+        const choices=q.options.map((o,j)=>'<label class="other-answer" data-persian-option="'+j+'"><input type="radio" name="persianQuiz'+l.id+'-'+i+'" value="'+j+'"><span>'+escapeForHtmlText(o)+'</span></label>').join('');
+        return '<section class="persian-quiz-card" data-persian-quiz="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind)+'</b><span class="pill">تمرین '+(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+choices+'<button type="button" data-persian-quiz-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button><div class="notice persian-quiz-feedback hidden" aria-live="polite"></div></section>';
+      }).join('')+'</div>';
+    content.querySelectorAll('[data-persian-quiz-check]').forEach(button=>{
+      button.onclick=()=>{
+        const i=Number(button.dataset.persianQuizCheck),q=quizzes[i],card=button.closest('.persian-quiz-card');
+        const picked=card.querySelector('input[type="radio"]:checked');
+        const fb=card.querySelector('.persian-quiz-feedback');fb.classList.remove('hidden');
+        if(!picked){fb.textContent='ابتدا یکی از گزینه‌ها را انتخاب کن.';return}
+        const selected=Number(picked.value),ok=selected===q.answer;
+        card.querySelectorAll('[data-persian-option]').forEach((el,j)=>{el.classList.toggle('correct',j===q.answer);el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
+        fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b> ':'<b>این پاسخ درست نیست.</b> ')+
+          '<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis)+'</p>';
+        const progress=readOtherProgress();
+        progress['persian-'+l.id+'-quiz-'+i]={correct:ok,selected,answer:q.answer,updatedAt:new Date().toISOString()};
+        const complete=quizzes.every((_,j)=>progress['persian-'+l.id+'-quiz-'+j]?.correct===true);
+        progress['persian-'+l.id]={correct:complete,answered:quizzes.filter((_,j)=>!!progress['persian-'+l.id+'-quiz-'+j]).length,updatedAt:new Date().toISOString()};
+        writeOtherProgress(progress);
+        $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(x=>readOtherProgress()[selectedOtherSubject.id+'-'+x.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' درس تکمیل‌شده';
+        const lessonButton=$('otherSubjectLessonPicker').querySelector('[data-other-lesson="'+l.id+'"]');
+        if(lessonButton){const small=lessonButton.querySelectorAll('small')[1];if(small)small.textContent=complete?'✅ همهٔ تمرین‌ها درست پاسخ داده شد':'تمرین‌ها پاسخ داده شدند · برای تکمیل همه را درست بزن'}
+        renderOtherSubjectPicker();
+      };
+    });
+    // وضعیت پاسخ‌ها را در بازگشت به همان درس بازیابی کن.
+    const progress=readOtherProgress();
+    quizzes.forEach((q,i)=>{
+      const saved=progress['persian-'+l.id+'-quiz-'+i];if(!saved)return;
+      const card=content.querySelector('[data-persian-quiz="'+i+'"]');if(!card)return;
+      const radio=card.querySelector('input[value="'+saved.selected+'"]');if(radio)radio.checked=true;
+      const fb=card.querySelector('.persian-quiz-feedback');fb.classList.remove('hidden');
+      card.querySelectorAll('[data-persian-option]').forEach((el,j)=>{el.classList.toggle('correct',j===q.answer);el.classList.toggle('wrong',j===saved.selected&&j!==q.answer);el.classList.toggle('selected',j===saved.selected)});
+      fb.innerHTML=(saved.correct?'<b>پاسخ درست ثبت شده.</b> ':'<b>پاسخ قبلی درست نبود.</b> ')+
+        '<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis)+'</p>';
+    });
   }
   function renderOtherLesson(id){
     selectedOtherLesson=selectedOtherSubject?.lessons.find(l=>l.id===id);if(!selectedOtherLesson)return;
     const l=selectedOtherLesson;
     $('otherSubjectLessonBody').classList.remove('hidden');
-    $('otherLessonTitle').textContent=l.title;
+    $('otherLessonTitle').textContent=(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':'')+l.title;
+    if(selectedOtherSubject.id==='persian'){
+      $('otherLessonQuestion').closest('.lesson-note').classList.add('hidden');
+      renderPersianLesson(l);
+      return;
+    }
+    $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
     $('otherLessonContent').innerHTML='<p>'+escapeHtml(l.content)+'</p><div class="lesson-example"><b>مثال</b><p>'+escapeHtml(l.example)+'</p></div>';
     $('otherLessonQuestion').textContent=l.question;
     $('otherLessonOptions').innerHTML=l.options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
