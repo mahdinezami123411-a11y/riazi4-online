@@ -1958,7 +1958,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     return {synced:true};
   }
   function rowToSubjectProgressKey(row){
-    const q=String(row.activity_key||'').match(/^quiz-(\\d+)$/);
+    const q=String(row.activity_key||'').match(/^quiz-(\d+)$/);
     return q?String(row.subject)+'-'+row.lesson_id+'-quiz-'+q[1]:String(row.subject)+'-'+row.lesson_id;
   }
   async function loadOtherSubjectProgressFromCloud(){
@@ -1989,10 +1989,10 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     for(const [key,rec] of Object.entries(progress)){
       if(!rec||typeof rec!=='object'||!Number.isInteger(Number(rec.selected))||!Number.isInteger(Number(rec.answer)))continue;
       let subject='',lessonId=0,activityKey='',activityType=rec.activityType||'practice';
-      let match=key.match(/^(science|social|gifts)-(\\d+)$/);
+      let match=key.match(/^(science|social|gifts)-(\d+)$/);
       if(match){subject=match[1];lessonId=Number(match[2]);activityKey='lesson-check';}
       else{
-        match=key.match(/^(persian|dictation)-(\\d+)-quiz-(\\d+)$/);
+        match=key.match(/^(persian|dictation)-(\d+)-quiz-(\d+)$/);
         if(match){subject=match[1];lessonId=Number(match[2]);activityKey='quiz-'+match[3];}
       }
       if(!subject||!lessonId)continue;
