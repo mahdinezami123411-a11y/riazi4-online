@@ -2165,7 +2165,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     $('otherLessonFeedback').classList.add('hidden');$('checkOtherLessonAnswer').disabled=false;
     $('otherLessonOptions').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{$('otherLessonOptions').querySelectorAll('.other-answer').forEach(x=>x.classList.toggle('selected',x.querySelector('input').checked))});
   }
-  $('checkOtherLessonAnswer').onclick=()=>{
+  $('checkOtherLessonAnswer').onclick=async()=>{
     const l=selectedOtherLesson;if(!l)return;
     const picked=$('otherLessonOptions').querySelector('input[name="otherLessonAnswer"]:checked');
     const fb=$('otherLessonFeedback');fb.classList.remove('hidden');
