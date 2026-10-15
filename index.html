@@ -1216,7 +1216,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   // Do not offer the learner a difficulty selector: the full bank is shuffled together.
   const difficultyFilter=$('practiceDifficultyFilter');
   if(difficultyFilter){difficultyFilter.value='all';const cell=difficultyFilter.parentElement;if(cell)cell.style.display='none';const parent=cell?.parentElement;if(parent)parent.style.gridTemplateColumns='1fr'}
-  getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>type==='all'||(q.type||'mc')===type)}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
+  getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(!isCourseLessonOpen('math',Number($('bookPracticeTopic')?.value||1)))return [];if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>isCourseLessonOpen('math',Number(q.chapter||1))&&(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
   newBookPractice=function(){
     const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;
     $('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';
@@ -1551,17 +1551,20 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   async function loadStudentQuestionBank(){
     if(!cloudSession?.access_token)throw new Error('نشست دانش‌آموز معتبر نیست. دوباره وارد شو.');
     const classPart=cloudSession.profile?.class_id?`,class_id.eq.${cloudSession.profile.class_id}`:'';
-    const query=`?select=id,class_id,chapter_id,skill,prompt,question_type,options,difficulty,sort_order,is_active,pdf_sample_set&is_active=eq.true&or=(class_id.is.null${classPart})&order=chapter_id.asc,sort_order.asc&limit=1500`;
+    const query=`?select=id,class_id,chapter_id,subject,lesson_id,skill,prompt,question_type,options,difficulty,sort_order,is_active,pdf_sample_set&is_active=eq.true&or=(class_id.is.null${classPart})&order=subject.asc,lesson_id.asc,chapter_id.asc,sort_order.asc&limit=5000`;
     const rows=await cloudFetch('/rest/v1/yare_question_bank'+query,{method:'GET'});
-    if(!Array.isArray(rows)||rows.length===0)throw new Error('بانک سؤال آنلاین خالی است. فایل supabase/seed_question_bank.sql را پس از schema.sql اجرا کن.');
+    if(!Array.isArray(rows)||rows.length===0)throw new Error('بانک سؤال آنلاین خالی است. از پنل معلم سؤال اضافه کن یا seed بانک سؤال را نصب کن.');
+    // فقط سؤال‌های ریاضی وارد بانک تمرین ریاضی می‌شوند؛ درس‌های دیگر هرکدام بانک مستقل دارند.
+    const mathRows=rows.filter(row=>(row.subject||'math')==='math');
     for(let c=1;c<=7;c++)practiceBank[c]=[];
-    rows.forEach(row=>{
-      const c=Number(row.chapter_id);if(c<1||c>7)return;
+    mathRows.forEach(row=>{
+      const c=Number(row.lesson_id??row.chapter_id);if(c<1||c>7)return;
+      if(!isCourseLessonOpen('math',c))return;
       practiceBank[c].push({id:row.id,chapter:c,skill:row.skill||'تمرین ریاضی',q:row.prompt,type:row.question_type||'mc',opts:Array.isArray(row.options)?row.options:[],difficulty:row.difficulty||'medium',pdfSampleSet:row.pdf_sample_set||null,why:''});
     });
-    cloudBankRows=rows;
+    cloudBankRows=mathRows;
     window.__termPracticeCache={};practiceSeen.clear();updatePracticeTopicOptions();updatePracticeStats();
-    $('teacherBankTotal').textContent=fa(rows.length)+' سؤال آنلاین';
+    $('teacherBankTotal').textContent=fa(mathRows.length)+' سؤال ریاضی آنلاین';
   }
   async function refreshStudentProgressFromCloud(){
     if(!cloudSession?.user?.id)return;
