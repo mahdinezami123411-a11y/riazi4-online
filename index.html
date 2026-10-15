@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v11-20261015-pdf-replaced">
+<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v12-20261015-arithmetic-feedback">
 <title>یار یادگیری ریاضی چهارم ابتدایی</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -232,7 +232,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 @media(max-width:700px){.student-account-fields{grid-template-columns:1fr}.student-account-form{padding:11px}.student-accounts-heading{align-items:flex-start}}
 
 </style></head>
-<body data-build="yare-math-v11-20261015-pdf-replaced"><main class="wrap">
+<body data-build="yare-math-v12-20261015-arithmetic-feedback"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🚀</div><div><h1>🚀 مأموریت ریاضی چهارم</h1><p>باشگاه قهرمانان عددها، الگوها و مسئله‌ها</p></div></div><div style="margin-top:13px"><span class="pill" style="background:#ffffff24;color:#fff">نسخهٔ آمادهٔ اتصال به Supabase</span></div></header>
 <section class="card" id="home"><h2>🌟 سلام قهرمان ریاضی! آماده‌ی شروعی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">اینجا هر تمرین یک مأموریت تازه است؛ یاد بگیر، راه‌حل پیدا کن و مرحله‌به‌مرحله به قهرمان ریاضی تبدیل شو!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -373,11 +373,45 @@ $('studentEnter').onclick=()=>show('student');$('teacherEnter').onclick=()=>show
 document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>{const book=b.dataset.studentView==='book';$('remindersView').classList.toggle('hidden',book);$('bookView').classList.toggle('hidden',!book);window.scrollTo({top:0,behavior:'smooth'});if(book)renderStudentBook()});$('backToReminders').onclick=()=>{$('bookView').classList.add('hidden');$('remindersView').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})};
 function renderFullTimesTable(){const colors=['#2498cf','#d78a35','#55a45e','#d85c86','#7556a4','#7556a4','#d85c86','#2498cf','#d78a35','#55a45e'];let h='<div class="times-columns" aria-label="همه جدول‌های ضرب یک تا ده">';for(let n=1;n<=10;n++){h+=`<section class="times-column" style="--stripe:${colors[n-1]}"><h4>جدول ضرب ${n.toLocaleString('fa-IR')}</h4><ol>`;for(let m=1;m<=10;m++){h+=`<li>${m.toLocaleString('fa-IR')} × ${n.toLocaleString('fa-IR')} = ${(m*n).toLocaleString('fa-IR')}</li>`}h+='</ol></section>'}h+='</div>';$('fullTimesTable').innerHTML=h}
 function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
-function newReminderMath(){const type=$('reminderMathType').value;let a,b,text;if(type==='divide'){b=rand(2,10);let q=rand(2,10);a=b*q;currentReminderAnswer=q;text=`${a} ÷ ${b} = ؟`}else if(type==='concept'){a=rand(2,8);b=rand(2,9);currentReminderAnswer=a*b;text=`${a} گروهِ ${b}تایی چندتا می‌شود؟`}else{a=rand(1,10);b=rand(1,10);currentReminderAnswer=a*b;text=`${a} × ${b} = ؟`}currentReminderQuestion={kind:type,a,b,text};$('reminderMathQuestion').textContent=text;$('reminderMathAnswer').value='';$('reminderMathFeedback').classList.add('hidden');$('reminderMathBox').classList.remove('hidden')}
+function newReminderMath(){const type=$('reminderMathType').value;let a,b,text;if(type==='divide'){b=rand(2,10);let q=rand(2,10);a=b*q;currentReminderAnswer=q;text=`${a} ÷ ${b} = ؟`}else if(type==='concept'){a=rand(2,8);b=rand(2,9);currentReminderAnswer=a*b;text=`${a} گروهِ ${b}تایی چندتا می‌شود؟`}else{a=rand(1,10);b=rand(1,10);currentReminderAnswer=a*b;text=`${a} × ${b} = ؟`}currentReminderQuestion={kind:type,a,b,text,answered:false};$('checkReminderMath').disabled=false;$('reminderMathQuestion').textContent=text;$('reminderMathAnswer').value='';$('reminderMathFeedback').classList.add('hidden');$('reminderMathBox').classList.remove('hidden')}
 $('newReminderMath').onclick=newReminderMath;
-async function submitReminderOnline(kind,a,b,inputId,feedbackId,questionText){const f=$(feedbackId);f.classList.remove('hidden');const raw=$(inputId).value.trim();if(!raw){f.textContent='اول پاسخ را وارد کن.';return}if(!cloudSession||!(cloudSession.role==='student'||(cloudSession.role==='teacher'&&cloudSession.studentViewAsTeacher))){f.textContent='برای ذخیره نتیجه، ابتدا با حساب دانش‌آموز وارد شو یا از پیش‌نمایش معلم استفاده کن.';return}const button=kind==='addition'?$('checkAddition'):$('checkReminderMath');setBusy(button,true,'در حال بررسی…');try{const result=await cloudFetch('/functions/v1/submit-reminder-answer',{method:'POST',body:{kind,a,b,submitted_answer:raw,question_text:questionText}});f.textContent=result.correct?'آفرین! پاسخ درست است و نتیجه در حساب تو ذخیره شد.':`هنوز درست نیست. پاسخ درست ${Number(result.correct_answer).toLocaleString('fa-IR')} است؛ نتیجه در حساب تو ثبت شد.`;await refreshStudentProgressFromCloud()}catch(e){f.textContent='نتوانستم پاسخ را در سرور بررسی و ثبت کنم: '+cloudMessage(e)}finally{setBusy(button,false)}}
+async function submitReminderOnline(kind,a,b,inputId,feedbackId,questionText){
+ const f=$(feedbackId);f.classList.remove('hidden');
+ const raw=$(inputId).value.trim();
+ if(!raw){f.textContent='اول پاسخ را وارد کن.';return}
+ if(!cloudSession||!(cloudSession.role==='student'||(cloudSession.role==='teacher'&&cloudSession.studentViewAsTeacher))){
+  f.textContent='برای بررسی و ذخیره نتیجه، ابتدا با حساب دانش‌آموز وارد شو یا از پیش‌نمایش معلم استفاده کن.';
+  f.style.whiteSpace='pre-line';return;
+ }
+ const button=kind==='addition'?$('checkAddition'):$('checkReminderMath');
+ const state=kind==='addition'?currentAdditionQuestion:currentReminderQuestion;
+ if(state?.answered){f.textContent='این پاسخ قبلاً بررسی شده است؛ سؤال جدید بگیر.';return}
+ setBusy(button,true,'در حال بررسی پاسخ…');
+ try{
+  const result=await cloudFetch('/functions/v1/submit-reminder-answer',{method:'POST',body:{kind,a,b,submitted_answer:raw,question_text:questionText}});
+  if(typeof result.correct!=='boolean')throw new Error(result.error||'سرور نتیجهٔ درست یا نادرست بودن پاسخ را برنگرداند.');
+  state.answered=true;
+  const rightAnswer=Number(result.correct_answer).toLocaleString('fa-IR');
+  const why=String(result.explanation||'محاسبه را دوباره با توجه به عمل ریاضی انجام بده.');
+  f.innerHTML=`<div style="font-size:1.05em;font-weight:800;margin-bottom:8px">${result.correct?'✅ آفرین! پاسخ درست است.':'❌ این پاسخ درست نیست.'}</div><p style="margin:6px 0"><b>پاسخ صحیح:</b> ${escapeHtml(rightAnswer)}</p><p style="margin:6px 0"><b>چرا؟</b> ${escapeHtml(why)}</p><p class="muted" style="margin:6px 0">نتیجه ذخیره شد.</p>`;
+  f.style.whiteSpace='normal';
+  f.style.background=result.correct?'linear-gradient(100deg,#e3fff2,#f7fffa)':'linear-gradient(100deg,#fff2dd,#fffaf2)';
+  f.style.color=result.correct?'#126a49':'#72541a';
+  button.textContent=result.correct?'✅ پاسخ درست بود':'📘 پاسخ را یاد بگیر';
+  setCloudStatus('پاسخ تمرین بررسی و نتیجه در پایگاه داده ثبت شد.');
+  // A progress refresh failure must not hide the answer feedback already shown.
+  try{await refreshStudentProgressFromCloud()}catch(progressError){console.warn('Progress refreshed later; answer result is already saved.',progressError)}
+ }catch(e){
+  f.textContent='نتوانستم پاسخ را بررسی و ثبت کنم: '+cloudMessage(e);
+  f.style.whiteSpace='pre-line';f.style.background='#fff2dd';f.style.color='#72541a';
+  setCloudStatus('بررسی یا ثبت پاسخ ناموفق بود: '+cloudMessage(e),true);
+ }finally{
+  setBusy(button,false);
+  if(state?.answered)button.disabled=true;
+ }
+}
 $('checkReminderMath').onclick=()=>{if(!currentReminderQuestion){$('reminderMathFeedback').textContent='ابتدا سؤال جدید بگیر.';$('reminderMathFeedback').classList.remove('hidden');return}submitReminderOnline(currentReminderQuestion.kind,currentReminderQuestion.a,currentReminderQuestion.b,'reminderMathAnswer','reminderMathFeedback',currentReminderQuestion.text)};
-function faDigits(v){return String(v).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)])}function newAddition(){const digits=Number($('additionDigits').value);const min=10**(digits-1),max=10**digits-1,a=rand(min,max),b=rand(min,max);currentAdditionAnswer=a+b;currentAdditionQuestion={kind:'addition',a,b,text:`${a} + ${b} = ؟`};$('additionQuestion').innerHTML=`<div class="stack-row"><span class="stack-num">${faDigits(a)}</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">${faDigits(b)}</span></div><div class="stack-rule"></div><div class="stack-result">؟</div>`;$('additionAnswer').value='';$('additionFeedback').classList.add('hidden');$('additionBox').classList.remove('hidden')}
+function faDigits(v){return String(v).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)])}function newAddition(){const digits=Number($('additionDigits').value);const min=10**(digits-1),max=10**digits-1,a=rand(min,max),b=rand(min,max);currentAdditionAnswer=a+b;currentAdditionQuestion={kind:'addition',a,b,text:`${a} + ${b} = ؟`,answered:false};$('checkAddition').disabled=false;$('additionQuestion').innerHTML=`<div class="stack-row"><span class="stack-num">${faDigits(a)}</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">${faDigits(b)}</span></div><div class="stack-rule"></div><div class="stack-result">؟</div>`;$('additionAnswer').value='';$('additionFeedback').classList.add('hidden');$('additionBox').classList.remove('hidden')}
 $('newAddition').onclick=newAddition;$('checkAddition').onclick=()=>{if(!currentAdditionQuestion){$('additionFeedback').textContent='ابتدا سؤال جمع جدید بگیر.';$('additionFeedback').classList.remove('hidden');return}submitReminderOnline('addition',currentAdditionQuestion.a,currentAdditionQuestion.b,'additionAnswer','additionFeedback',currentAdditionQuestion.text)};
 function feedback(inputId,feedbackId,answer,success){const raw=$(inputId).value.trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));const f=$(feedbackId);f.classList.remove('hidden');if(raw!==''&&Number(raw)===Number(answer)){f.textContent=success}else{f.textContent=`هنوز درست نیست. دوباره تلاش کن؛ پاسخ درست ${Number(answer).toLocaleString('fa-IR')} است.`}}
 let embeddedBookUrl='./assets/math-fourth.pdf', activeChapter=1, currentPractice=null, selectedPracticeAnswer=null;
