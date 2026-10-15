@@ -766,7 +766,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   async function authUserForToken(token){return await cloudFetch('/auth/v1/user',{method:'GET',token,headers:{Accept:'application/json'}})}
   async function loadCloudProfile(token,userId){
-    const query='?select=id,role,class_id,display_name,nickname,favorite_skill&id=eq.'+encodeURIComponent(userId)+'&limit=1';
+    const query='?select=id,role,class_id,display_name,nickname,favorite_skill,avatar_path&id=eq.'+encodeURIComponent(userId)+'&limit=1';
     const rows=await cloudFetch('/rest/v1/yare_profiles'+query,{method:'GET',token});
     if(!Array.isArray(rows)||!rows[0])throw new Error('برای این حساب رکورد yare_profiles وجود ندارد. فایل supabase/schema.sql را اجرا و نقش حساب را در Supabase تنظیم کن.');
     return rows[0];
@@ -832,7 +832,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const profile=await loadCloudProfile(auth.access_token,user.id);
       if(profile.role!=='student')throw new Error('این حساب در جدول yare_profiles نقش دانش‌آموز ندارد.');
       cloudSession.profile=profile;saveCloudSession();activeStudentName=username;activeUsername=username;
-      activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);
+      activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);await loadStudentAvatar(profile.avatar_path);
       $('studentPasswordInput').value='';
       await loadStudentQuestionBank();
       try{await refreshStudentProgressFromCloud()}catch(e){console.warn('Cloud progress read failed',e);studentProgress=loadStudentProgress(username);renderStudentDashboard()}
@@ -1080,13 +1080,17 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   // Keep profile preferences shared across devices after a real server update.
   const previousSaveProfileData=saveProfileData;
   saveProfileData=function(profile){previousSaveProfileData(profile);if($('profileStatus'))$('profileStatus').textContent='پروفایل محلی ذخیره شد؛ با اتصال فعال، نام و ترجیحات همگام می‌شوند.'};
+  let studentAvatarObjectUrl=null;
+  async function loadStudentAvatar(path){if(!path)return;if(studentAvatarObjectUrl)URL.revokeObjectURL(studentAvatarObjectUrl);const blob=await fetchClassMaterial(path);studentAvatarObjectUrl=URL.createObjectURL(blob);$('profileAvatar').innerHTML='<img alt="تصویر پروفایل" src="'+studentAvatarObjectUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'}
   const oldSaveStudentProfile=$('saveStudentProfile').onclick;
   $('saveStudentProfile').onclick=async()=>{
     if(oldSaveStudentProfile)oldSaveStudentProfile();
     if(!cloudSession||cloudSession.role!=='student')return;
     try{
-      await cloudFetch('/rest/v1/yare_profiles?id=eq.'+encodeURIComponent(cloudSession.user.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:{display_name:$('profileNameInput').value.trim(),nickname:$('profileNicknameInput').value.trim(),favorite_skill:$('profileFavoriteInput').value,updated_at:new Date().toISOString()}});
-      cloudSession.profile={...cloudSession.profile,display_name:$('profileNameInput').value.trim(),nickname:$('profileNicknameInput').value.trim(),favorite_skill:$('profileFavoriteInput').value};saveCloudSession();$('profileStatus').textContent='پروفایل در مرورگر و Supabase ذخیره شد.';
+      const photo=$('profilePhotoInput').files?.[0];let avatar_path=cloudSession.profile.avatar_path||null;
+      if(photo){if(!photo.type.startsWith('image/')||photo.size>5*1024*1024)throw new Error('تصویر باید از نوع عکس و حداکثر ۵ مگابایت باشد.');const safe=String(photo.name||'avatar').replace(/[^\\p{L}\\p{N}._-]+/gu,'_').slice(-80)||'avatar';const path=cloudSession.profile.class_id+'/profiles/'+cloudSession.user.id+'/'+crypto.randomUUID()+'-'+safe;const up=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':photo.type,'x-upsert':'false'},body:photo,cache:'no-store'});if(!up.ok)throw new Error('بارگذاری تصویر ناموفق بود ('+up.status+').');if(avatar_path)fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(avatar_path),{method:'DELETE',headers:cloudHeaders(cloudSession.access_token)}).catch(()=>{});avatar_path=path}
+      await cloudFetch('/rest/v1/yare_profiles?id=eq.'+encodeURIComponent(cloudSession.user.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:{display_name:$('profileNameInput').value.trim(),nickname:$('profileNicknameInput').value.trim(),favorite_skill:$('profileFavoriteInput').value,avatar_path,updated_at:new Date().toISOString()}});
+      cloudSession.profile={...cloudSession.profile,display_name:$('profileNameInput').value.trim(),nickname:$('profileNicknameInput').value.trim(),favorite_skill:$('profileFavoriteInput').value,avatar_path};saveCloudSession();if(avatar_path)await loadStudentAvatar(avatar_path);$('profileStatus').textContent='پروفایل و تصویر در Supabase ذخیره و همگام شد.';
     }catch(e){$('profileStatus').textContent='پروفایل محلی ذخیره شد، اما همگام‌سازی آنلاین ناموفق بود: '+cloudMessage(e)}
   };
 
