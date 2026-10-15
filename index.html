@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1456b8">
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b1020">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icons/app-icon.svg">
 <link rel="apple-touch-icon" href="./icons/app-icon.svg">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v16-20261016-visual-math-templates">
-<title>یار یادگیری ریاضی چهارم ابتدایی</title>
+<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v17-20261016-space-arcade-personalized-analysis">
+<title>پایگاه فضایی ریاضی‌دان‌ها | ریاضی چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
 :root{--blue:#1456b8;--blue2:#2679e8;--navy:#10376b;--ink:#183354;--muted:#637b98;--bg:#edf6ff;--card:#fff;--line:#d7e7f8;--green:#14865c;--red:#bf344b;--gold:#a96500;--purple:#7452c7;--cyan:#20b9d4;--orange:#ffad28}
@@ -265,10 +265,155 @@ input,select,textarea{border:1.5px solid #c5dcf7;border-radius:13px;background:#
 .visual-pattern-track{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin:12px 0}.visual-pattern-number{padding:8px 10px;border-radius:12px;border:1.5px solid #b8d9ff;background:#fff;color:#1854a5;font-size:18px;box-shadow:0 3px 0 #e0eafa}.visual-pattern-arrow{color:#ec9d19;font-size:18px;font-weight:900}
 .visual-fraction-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.visual-fraction-card{padding:10px;border:1.5px solid #c6dcfb;border-radius:14px;background:#fff}.visual-fraction-card>b{display:block;color:#315884;font-size:13px}.visual-fraction-bar{display:flex;gap:3px;margin:9px 0}.visual-fraction-cell{height:25px;flex:1;min-width:0;background:#eef3fa;border:1px solid #cfdeed;border-radius:4px}.visual-fraction-cell.filled{background:linear-gradient(145deg,#40b8ff,#1964e8);border-color:#1b66d9;box-shadow:inset 0 1px 0 #ffffff90}.visual-fraction-card small{font-size:10px;color:#607792}.visual-answer-mini{margin-top:9px;padding:7px 10px;background:#e9fff4;border:1px solid #bcebd4;border-radius:11px;color:#116c4d;font-weight:800;font-size:12px}
 
+
+/* بازطراحی کامل: پایگاه فضایی / آرکید ریاضی — پوستهٔ سراسری */
+:root{color-scheme:dark;--blue:#6ee7f2!important;--blue2:#a78bfa!important;--navy:#0a1025!important;--ink:#f3f5ff!important;--muted:#a8b4d5!important;--bg:#0b1020!important;--card:#171f3a!important;--line:#39476c!important;--green:#63e5ad!important;--red:#ff7e92!important;--gold:#ffca66!important;--purple:#b99aff!important;--cyan:#63e7f1!important;--orange:#ff995d!important}
+html{background:#0b1020!important}
+body{background:#0b1020!important;background-image:radial-gradient(circle at 12% 9%,#a78bfa34 0 2px,transparent 3px),radial-gradient(circle at 88% 20%,#54e5f055 0 2px,transparent 3px),radial-gradient(circle at 70% 82%,#ffb34e28 0 2px,transparent 3px),radial-gradient(ellipse at 50% -10%,#263b71 0,transparent 52%),linear-gradient(180deg,#0b1020 0%,#0d142b 58%,#11152b 100%)!important;background-size:47px 47px,61px 61px,73px 73px,auto,auto!important;color:#f3f5ff!important}
+.wrap{max-width:1120px!important;padding:16px 14px 28px!important}
+.hero{position:relative!important;overflow:hidden!important;background:radial-gradient(circle at 87% 20%,#76f0e638 0 13%,transparent 14%),radial-gradient(circle at 8% 100%,#ffb84b48 0 19%,transparent 20%),linear-gradient(125deg,#25184f 0%,#173b78 48%,#087d91 100%)!important;border:1.5px solid #6de6f0!important;border-radius:30px!important;padding:27px 25px 22px!important;box-shadow:0 7px 0 #17254b,0 0 35px #4269dc22!important;color:#fff!important}
+.hero:before{content:"✦   ·   ✧       ✦   ·   ✦"!important;color:#b8edff82!important;letter-spacing:8px!important}
+.hero:after{content:"🪐"!important;opacity:.58!important;font-size:94px!important;filter:drop-shadow(0 7px 16px #0008)!important;left:22px!important;bottom:-19px!important;transform:rotate(-13deg)!important}
+.hero h1{color:#fff!important;font-size:clamp(23px,4vw,32px)!important;font-weight:1000!important;text-shadow:0 3px 0 #171946,0 0 22px #67e8f966!important;letter-spacing:0!important}
+.hero p{color:#d9faff!important;font-size:14px!important;font-weight:800!important}
+.logo{background:linear-gradient(145deg,#ffe18a,#ff9c54)!important;color:#211a48!important;border:3px solid #fff0be!important;box-shadow:0 6px 0 #864c35,0 0 0 5px #ffffff10!important;border-radius:22px!important}
+.hero-statusline{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:relative;z-index:1;margin-top:17px;padding-top:13px;border-top:1px solid #ffffff30;color:#d7f5ff;font-size:11px;font-weight:800}
+.hero-status-dot{width:8px;height:8px;border-radius:50%;background:#58f0ad;box-shadow:0 0 0 4px #58f0ad25,0 0 12px #58f0ad}
+.hero-mini-badge{margin-right:auto;padding:3px 9px;border:1px solid #86e7ed77;border-radius:999px;background:#0c173a65;color:#75f2e1;letter-spacing:1px;font-size:9px}
+.card{background:linear-gradient(155deg,#1a2341 0%,#151d36 70%,#121a31 100%)!important;border:1px solid #37456b!important;border-radius:25px!important;box-shadow:0 7px 0 #0b1228,0 16px 34px #0003!important;color:#f2f5ff!important;padding:20px!important}
+.card h2{color:#f7f8ff!important;font-weight:950!important;font-size:clamp(18px,3vw,22px)!important}
+.card h3{color:#77eced!important;font-weight:900!important}
+.card h4{color:#d8ddfa!important}
+.card p,.card li,.card label,.card summary{color:inherit}
+p{color:inherit}
+.muted{color:#a8b4d5!important}
+.field{color:#c6d4fb!important;font-weight:850!important}
+.item{background:linear-gradient(145deg,#202a4b,#17203b)!important;border:1px solid #3b4a70!important;border-radius:18px!important;color:#e9efff!important}
+.grid,.grid3,.subjects,.modegrid,.chapter-grid{gap:12px!important}
+button{background:linear-gradient(135deg,#ff944f 0%,#ffd05f 100%)!important;color:#291a3c!important;border:1px solid #ffda8c!important;border-radius:15px!important;font-weight:950!important;box-shadow:0 4px 0 #9d4b45,0 8px 17px #ffae3320!important;transition:transform .15s,filter .15s,box-shadow .15s!important}
+button:hover{filter:brightness(1.08)!important;transform:translateY(-2px)!important;box-shadow:0 6px 0 #9d4b45,0 12px 22px #ffae3324!important}
+button:active{transform:translateY(1px)!important;box-shadow:0 2px 0 #9d4b45!important}
+button:disabled{filter:grayscale(.35)!important;opacity:.48!important}
+button.outline,.outline{background:#182342!important;color:#79e9f0!important;border:1.5px solid #4f7caa!important;box-shadow:0 3px 0 #101831!important}
+button.success,.success{background:linear-gradient(135deg,#45dcad,#a6f28c)!important;color:#073e3b!important;border:1px solid #95f4d5!important;box-shadow:0 4px 0 #227a75!important}
+button.danger,.danger{background:#402238!important;color:#ffb9c5!important;border:1px solid #9b4e70!important;box-shadow:none!important}
+.pill{background:#202e56!important;color:#a9f2f4!important;border:1px solid #4e698f!important;font-weight:850!important}
+#home{position:relative!important;overflow:hidden!important;border:1px solid #6e64bd!important;background:radial-gradient(ellipse at 100% 0%,#684eae45 0,transparent 43%),linear-gradient(145deg,#202348,#171d39 68%,#122640)!important}
+.home-kicker{display:inline-flex;align-items:center;gap:7px;margin:0 0 10px;padding:6px 11px;border-radius:999px;background:#2a2d58;border:1px solid #6f6ac1;color:#c8c3ff;font-size:11px;font-weight:950}
+.home-kicker span{font-size:16px}
+#home h2{max-width:720px;margin-top:0;color:#fff!important;font-size:clamp(21px,4vw,29px)!important;line-height:1.65!important}
+#home .grid{margin:15px 0!important}
+#studentEnter{background:linear-gradient(135deg,#35dfae,#a9f37c)!important;color:#103c43!important;border-color:#a6fbd1!important;box-shadow:0 4px 0 #227d77,0 9px 20px #35dfae20!important}
+#teacherEnter{background:linear-gradient(135deg,#9c8bff,#d0a2ff)!important;color:#27184c!important;border-color:#e0caff!important;box-shadow:0 4px 0 #6551ac,0 9px 20px #9c8bff20!important}
+.mission-strip{gap:10px!important;margin-top:19px!important}
+.mission-chip{background:linear-gradient(145deg,#1a2c4d,#1b2140)!important;border:1px solid #435a83!important;border-radius:18px!important;box-shadow:inset 0 1px #ffffff0b!important}
+.mission-chip>span{filter:drop-shadow(0 3px 5px #0006)!important}
+.mission-chip b{color:#f6f4ff!important}.mission-chip small{color:#a9bddf!important}
+.notice{background:#242a47!important;border:1px solid #505d82!important;border-radius:15px!important;color:#e6e8ff!important}
+.adventure-note{background:linear-gradient(110deg,#3a2d3d,#2b2b49)!important;border-color:#926a78!important;color:#ffe0a3!important}
+.nav{gap:8px!important;padding:7px 1px 15px!important;scrollbar-color:#52638d #11182e!important}
+.nav button,.book-tabs button{background:#202945!important;color:#b9c8e8!important;border:1px solid #394d72!important;box-shadow:0 3px 0 #10182c!important;border-radius:13px!important;font-weight:850!important}
+.nav button.active,.book-tabs button.active{background:linear-gradient(135deg,#5c4ac7,#357fcb)!important;border-color:#9b8dff!important;color:#fff!important;box-shadow:0 4px 0 #352e7a,0 0 15px #7165ec30!important}
+.student-app-nav{background:rgba(13,20,42,.97)!important;border:1px solid #405179!important;border-radius:19px!important;box-shadow:0 10px 28px #0007!important;backdrop-filter:blur(14px)!important}
+.student-app-nav button{background:transparent!important;color:#acbddf!important;box-shadow:none!important;border:0!important}
+.student-app-nav button small{color:inherit!important}
+.student-app-nav button.active{background:linear-gradient(135deg,#5b4bd0,#178f9b)!important;color:#fff!important;box-shadow:0 0 0 1px #9d9cff,0 4px 13px #3936a64b!important}
+.metric{background:linear-gradient(150deg,#243253,#18243f)!important;border:1px solid #4b6289!important;border-radius:18px!important;box-shadow:inset 0 3px 0 #62dede,0 4px 0 #0c142b!important;color:#eff6ff!important}
+.metric strong{color:#75f1c0!important;font-weight:1000!important}
+.subject,.mode,.chapter-card{background:linear-gradient(145deg,#202b4a,#161f3a)!important;border:1px solid #3d5078!important;color:#eaf1ff!important;border-radius:17px!important;box-shadow:0 4px 0 #10172c!important}
+.subject:before{width:6px!important;filter:saturate(1.3)!important}
+.subject b,.mode b,.chapter-card b{color:#eef5ff!important}
+.subject small,.mode span,.chapter-card small{color:#a8b8d8!important}
+.subject.active,.mode.active,.chapter-card button.active{background:linear-gradient(120deg,#3b376d,#1d5061)!important;border-color:#8f88ff!important;box-shadow:inset 0 0 0 1px #a89dff,0 4px 0 #121a32!important}
+.chapter-card button{background:linear-gradient(145deg,#202b4a,#17213d)!important;color:#eff4ff!important;border:0!important}
+.chapter-card button strong,.chapter-card button small{color:#eff4ff!important}
+.chapter-card button.active{background:linear-gradient(125deg,#37366e,#144958)!important;box-shadow:inset -5px 0 #ffb34f!important}
+input,select,textarea{background:#0e162d!important;color:#f4f6ff!important;border:1.5px solid #435782!important;border-radius:13px!important;box-shadow:inset 0 2px 4px #0002!important}
+input::placeholder,textarea::placeholder{color:#7f91b8!important}
+input:focus,select:focus,textarea:focus{border-color:#6ee7f2!important;box-shadow:0 0 0 3px #6ee7f226!important}
+input:disabled{color:#9ca9c5!important}
+option{background:#111a32!important;color:#f1f5ff!important}
+.concept-box,.chapter-intro,.chapter-goals,.lesson-note,.lesson-sub,.lesson-example,.lesson-mistake,.lesson-check,.chapter-manager,.teacher-bank-manager,.teacher-legacy-maker,.teacher-question-row,.question-editor,.teacher-chapter-row,.student-account-form,.student-accounts-list,.accessrow,.option,.practice-option,.exam-option,.profile-card,.progress-dashboard,.progress-chapter,.video-manager,.chapter-video{background:linear-gradient(145deg,#202945,#162039)!important;border-color:#3b4e73!important;color:#e8edff!important}
+.chapter-intro h4,.chapter-goals h4,.lesson-note h4,.lesson-sub>b,.lesson-example>b,.lesson-mistake>b,.lesson-check>b,.teacher-question-row b,.teacher-preview-copy b,.chapter-video h4{color:#77e8ee!important}
+.lesson-accordion{background:#17213d!important;border-color:#435984!important}
+.lesson-accordion summary{background:linear-gradient(100deg,#28365a,#202748)!important;color:#eff6ff!important}
+.lesson-accordion summary:after{color:#75ece5!important}
+.lesson-accordion-content{background:#17213b!important;border-color:#384b6e!important;color:#eaf0ff!important}
+.lesson-accordion .topic-number{background:#4b438c!important;color:#fff!important}
+.lesson-accordion .topic-summary{color:#afc0e0!important}
+.practice-option,.exam-option{background:#1a2745!important;border:1.5px solid #3b5279!important;color:#f2f4ff!important;border-radius:14px!important}
+.practice-option.selected,.exam-option.selected{background:#2b3b65!important;border-color:#72e4ec!important;box-shadow:inset -4px 0 #ffb84f!important}
+.practice-option span,.exam-option span{color:#f0f3ff!important}
+.practice-stats{gap:9px!important}
+.practice-stat{background:#202e4e!important;border:1px solid #435b81!important;border-radius:14px!important}
+.practice-stat b{color:#71f0bc!important}.practice-stat span{color:#b7c7e3!important}
+.login-page{background:linear-gradient(145deg,#20284b,#151b34)!important;border:1px solid #6b72ac!important;box-shadow:0 7px 0 #0b1020,0 18px 38px #0005!important}
+.login-art{background:linear-gradient(120deg,#5446ab,#176e8e,#138c7c)!important;color:#fff!important;border:1px solid #9cafff!important}
+.login-art span{color:#fff!important}
+.login-error{background:#392338!important;border-color:#a25479!important;color:#ffc4ce!important}
+.profile-card{background:linear-gradient(145deg,#202b4a,#151d34)!important;border-color:#3c5279!important}
+.profile-section-title{color:#75e5ef!important}
+.profile-help,.teacher-preview-copy small{color:#b3c3e2!important}
+.profile-fields input{background:#0e162d!important}
+.level-emblem{background:#3b3158!important;border-color:#ffbd56!important}
+.progress-summary>div{background:#202e4c!important;border-color:#46587d!important}
+.progress-summary b{color:#72f0bd!important}.progress-summary span{color:#c1cdeb!important}
+.progress-chapter b{color:#e7f2ff!important}.progress-chapter small{color:#aebfdd!important}
+.progress-track{background:#0c1429!important}.progress-track span{background:linear-gradient(90deg,#56e8ce,#8c8bff)!important}
+.achievement-badge{background:#39334b!important;border-color:#8b7648!important;color:#ffdf9b!important}
+.achievement-badge.locked-badge{background:#1c2236!important;border-color:#46506a!important;color:#96a3bd!important}
+.times-poster{background:linear-gradient(145deg,#18264a,#17223c)!important;border:2px solid #5bcdd5!important;box-shadow:inset 0 0 0 3px #ffffff06,0 5px 0 #0d152c!important}
+.times-column{background:#111a31!important;border-color:var(--stripe,#5bcdd5)!important;box-shadow:0 3px 0 #080e20!important}
+.times-column li{background:#121d36!important;color:#e4edff!important;border-color:#293b5b!important}
+.times-column li:nth-child(even){background:#1b2948!important}
+.math-matrix{color:#eaf1ff!important}.math-matrix th,.math-matrix td{background:#192641!important;border-color:#3a5174!important;color:#eaf2ff!important}.math-matrix th{background:#263d63!important;color:#7df0e8!important}.math-matrix .axis{background:#36507b!important;color:#fff!important}
+.stack-sum{background:#10182f!important;color:#f3f7ff!important;box-shadow:0 4px 0 #090f21!important}.stack-rule{border-top-color:#7b9abf!important}.stack-result{color:#63e5ad!important}
+.exam-option input,.practice-option input{accent-color:#5dd8e4!important}
+.teacher-preview-entry{background:linear-gradient(120deg,#202b51,#3b2e4b)!important;border-color:#6f83c5!important;box-shadow:0 4px 0 #121a32!important}
+#teacherStudentPreview{background:linear-gradient(135deg,#38deac,#8deba9)!important;color:#103c43!important;box-shadow:0 4px 0 #1f8679!important}
+.teacher-accounts-table th,.presence-table th{background:#26375a!important;color:#83e9ed!important}.student-accounts-table td,.presence-table td{background:#141d35!important;color:#e8efff!important;border-color:#2b3d5c!important}.student-accounts-table th,.presence-table th{background:#26375a!important;color:#80e9ed!important}
+.student-accounts-list,.accessrow{overflow-x:auto!important}
+.footer{border-top:1px dashed #455b7e!important;color:#91a8ce!important}
+.hidden{display:none!important}
+/* بازخورد پاسخ صحیح و تحلیل اختصاصی */
+#bookPracticeFeedback,#examFeedback,#additionFeedback,#reminderMathFeedback{background:transparent!important;color:#f1f4ff!important;border:0!important;box-shadow:none!important}
+.visual-feedback-head{background:linear-gradient(110deg,#123b3b,#1a3441)!important;color:#aaffde!important;border-color:#3ab993!important}
+.visual-feedback-head.needs-review{background:linear-gradient(110deg,#3e2e1b,#30253a)!important;color:#ffdda3!important;border-color:#b17c3b!important}
+.visual-feedback-mascot{background:#1c2947!important;border-color:#46716e!important;box-shadow:0 3px 0 #0e172d!important}
+.visual-feedback-status{background:#17233f!important;border-color:#4c6a8f!important;color:#c9f8ff!important}
+.visual-answer-summary{background:linear-gradient(120deg,#253251,#19233d)!important;border-color:#58bed0!important;color:#eaf8ff!important}
+.visual-answer-summary strong{background:#0c342f!important;border-color:#48bf9b!important;color:#9bffd0!important}
+.question-analysis-specific{margin:10px 0;padding:13px;border-radius:17px;background:linear-gradient(145deg,#243052,#1b2642)!important;border:1.5px solid #716cb3!important;color:#f3f5ff!important}
+.question-analysis-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px;color:#b6a5ff!important;font-size:14px}
+.question-analysis-title span{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#3b3566!important;font-size:20px}
+.question-analysis-title em{margin-right:auto;font-style:normal;padding:3px 7px;border-radius:999px;background:#123d4a;color:#7bf2e4;font-size:10px}
+.question-analysis-specific p{margin:0;color:#eef2ff!important;line-height:2;font-size:13px}
+.visual-solution{background:linear-gradient(145deg,#141f3b,#182642)!important;border-color:#4c6e9a!important;box-shadow:inset 0 0 0 2px #ffffff04!important;color:#edf4ff!important}
+.visual-solution-heading{color:#78e9ef!important}.visual-puzzle-icon{background:#493b66!important;border-color:#f7bd5d!important;color:#fff!important}
+.visual-step-badge{background:#15213a!important;border-color:#46597b!important;color:#b7c6e5!important}
+.visual-equation{background:#0f1931!important;border-color:#4f6b92!important;color:#d4e7ff!important}
+.visual-equation strong{background:#124438!important;border-color:#37ac87!important;color:#96fbd0!important}
+.visual-place-card{background:#141d36!important;border-color:var(--pc,#4c88e8)!important;box-shadow:0 3px 0 #0a1123!important}
+.visual-place-name{color:#fff!important}
+.visual-place-equation{color:#e3eeff!important}.visual-place-equation strong{color:#8fe9ff!important}
+.visual-write-digit{background:#1d2a48!important}.visual-write-digit small{color:#b5c5df!important}.visual-write-digit b{color:#74edbd!important}
+.visual-carry{color:#afc0dd!important}.visual-carry.has-carry{background:#483a26!important;color:#ffdc87!important}
+.visual-bottom-note{background:linear-gradient(100deg,#332a3a,#2c2a43)!important;border-color:#776044!important;color:#ffdda0!important}
+.visual-group-intro{color:#b9d7f6!important}.visual-group-card{background:#111b33!important;border-color:#46628b!important;box-shadow:0 3px 0 #0b1328!important}.visual-group-card>b{color:#eaf3ff!important}.visual-group-card>small{color:#b4c7e5!important}
+.visual-text-details{background:#151f38!important;border-color:#52658a!important;color:#dce7ff!important}.visual-text-details summary{color:#8eeef1!important}.visual-text-details p{color:#e1eaff!important}
+.visual-pattern-number{background:#1b2a49!important;border-color:#5579ac!important;color:#dffaff!important;box-shadow:0 3px 0 #0b1325!important}.visual-pattern-arrow{color:#ffc362!important}
+.visual-fraction-card{background:#121d35!important;border-color:#4d678f!important}.visual-fraction-card>b{color:#dcecff!important}.visual-fraction-card small{color:#b7c8e2!important}
+.visual-fraction-cell{background:#1b2b46!important;border-color:#3e5575!important}.visual-fraction-cell.filled{background:linear-gradient(145deg,#34cdbb,#417cf3)!important;border-color:#74ece7!important}
+.visual-answer-mini{background:#133e36!important;border-color:#3aa58a!important;color:#a6f6d9!important}
+.visual-step-card{background:#111b34!important;border-color:#405881!important;box-shadow:0 3px 0 #0a1226!important}.visual-step-card b{color:#8fe7ed!important}.visual-step-card p{color:#c4d2ed!important}.visual-step-card>span{background:#2b3157!important}
+.pdfview{border-color:#40547a!important;background:#11182c!important}
+@media(max-width:560px){.wrap{padding:8px 8px 25px!important}.hero{padding:20px 15px 17px!important;border-radius:23px!important}.hero h1{font-size:22px!important}.hero:after{font-size:60px!important;left:4px!important;bottom:-10px!important}.logo{width:55px!important;height:55px!important;font-size:28px!important;border-radius:17px!important}.card{padding:13px!important;border-radius:20px!important}.mission-strip{grid-template-columns:1fr!important}.mission-chip{grid-template-columns:35px 1fr!important;padding:9px 10px!important}.grid3{grid-template-columns:1fr!important}.visual-step-path{grid-template-columns:1fr!important}.visual-step-card{display:grid!important;grid-template-columns:34px minmax(0,1fr)!important;column-gap:8px!important;align-items:start!important}.visual-step-card>span{grid-row:1/span 2!important;margin:0!important}.visual-step-card p{grid-column:2!important}.visual-place-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.visual-group-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.hero-statusline{font-size:10px!important}.hero-mini-badge{font-size:8px!important}}
+@media(prefers-reduced-motion:reduce){button{transition:none!important}}
+
 </style></head>
 <body data-build="yare-math-v16-20261016-visual-math-templates"><main class="wrap">
-<header class="hero"><div class="brand"><div class="logo">🚀</div><div><h1>🚀 مأموریت ریاضی چهارم</h1><p>باشگاه قهرمانان عددها، الگوها و مسئله‌ها</p></div></div><div style="margin-top:13px"><span class="pill" style="background:#ffffff24;color:#fff">نسخهٔ آمادهٔ اتصال به Supabase</span></div></header>
-<section class="card" id="home"><h2>🌟 سلام قهرمان ریاضی! آماده‌ی شروعی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">اینجا هر تمرین یک مأموریت تازه است؛ یاد بگیر، راه‌حل پیدا کن و مرحله‌به‌مرحله به قهرمان ریاضی تبدیل شو!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
+<header class="hero"><div class="brand"><div class="logo">🪐</div><div><h1>🪐 پایگاه فضایی ریاضی‌دان‌ها</h1><p>هر جواب، یک مأموریت تازه؛ آمادهٔ پرتاب به مرحلهٔ بعدی؟</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>ایستگاه آموزش و تمرین پایهٔ چهارم</span><span class="hero-mini-badge">MISSION MODE</span></div></header>
+<section class="card" id="home"><div class="home-kicker"><span>🛸</span> اتاق فرمان مأموریت‌ها</div><h2>سلام فرمانده! آماده‌ای وارد دنیای ریاضی بشی؟</h2><div class="grid"><button id="studentEnter">🎮 شروع ماجراجویی دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ایستگاه معلم</button></div><p class="muted">هر سؤال یک چالش است. جواب بده، راه‌حل را کشف کن و مهارت‌هایت را مرحله‌به‌مرحله بالا ببر!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
   <div class="login-art">🚀 <span>مأموریت شروع می‌شود!</span></div>
   <h2 id="studentLoginTitle">🎒 ورود قهرمان ریاضی</h2>
@@ -423,19 +568,37 @@ function renderQuestionVisualAnalysis(q,rightAnswer,explanation){
  const sequence=normal.match(/(?:\d+\s*[,،]\s*){2,}\d+/);
  if(sequence&&/الگو|دنباله|بعدی/.test(prompt)){
   const nums=sequence[0].split(/[,،]/).map(x=>Number(x.trim())).filter(Number.isFinite).slice(0,7);
-  if(nums.length>=3){const chips=nums.map((n,i)=>(i?'<span class="visual-pattern-arrow">➜</span>':'')+'<b class="visual-pattern-number">'+n.toLocaleString('fa-IR')+'</b>').join(''),diff=nums.slice(1).map((n,i)=>n-nums[i]),same=diff.every(n=>n===diff[0]);
-   return '<div class="visual-solution" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🔍</span><b>کارآگاه الگوها</b></div><div class="visual-pattern-track">'+chips+'</div><div class="visual-bottom-note">🧠 '+(same?'در هر مرحله '+(diff[0]>=0?'+':'')+diff[0].toLocaleString('fa-IR')+' واحد اضافه می‌شود.':'اختلاف عددهای پشت‌سرهم را پیدا کن.')+'</div><div class="visual-answer-mini">پاسخ درست: <b>'+escapeHtml(String(rightAnswer||''))+'</b></div></div>'}
+  if(nums.length>=3){
+   const chips=nums.map((n,i)=>(i?'<span class="visual-pattern-arrow">➜</span>':'')+'<b class="visual-pattern-number">'+n.toLocaleString('fa-IR')+'</b>').join('');
+   const diffs=nums.slice(1).map((n,i)=>n-nums[i]),same=diffs.every(n=>n===diffs[0]);
+   return '<div class="visual-solution" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🔍</span><b>کارآگاه الگوها</b><span class="visual-step-badge">الگو را کشف کن</span></div><div class="visual-pattern-track">'+chips+'</div><div class="visual-bottom-note">🧠 '+(same?'در هر مرحله '+(diffs[0]>=0?'+':'')+diffs[0].toLocaleString('fa-IR')+' واحد تغییر می‌کند.':'اختلاف عددهای پشت‌سرهم را مقایسه کن و قانون را ادامه بده.')+'</div></div>';
+  }
  }
- const fracs=[...normal.matchAll(/(\d{1,2})\s*\/\s*(\d{1,2})/g)].slice(0,2);
- if(fracs.length){const cards=fracs.map((m,i)=>{const n=Number(m[1]),d=Number(m[2]);if(!d||d>16||n>d)return '';const segs=Array.from({length:d},(_,j)=>'<i class="visual-fraction-cell '+(j<n?'filled':'')+'"></i>').join('');return '<div class="visual-fraction-card"><b>'+(fracs.length>1?'کسر '+(i+1):'نمایش کسر')+' '+n+'/'+d+'</b><div class="visual-fraction-bar" dir="ltr">'+segs+'</div><small>'+n+' قسمت از '+d+' قسمت مساوی رنگ شده است.</small></div>'}).filter(Boolean).join('');
-  if(cards)return '<div class="visual-solution" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🍕</span><b>کسر را با شکل ببین</b></div><div class="visual-fraction-list">'+cards+'</div><div class="visual-bottom-note">صورت کسر تعداد قسمت‌های رنگی را نشان می‌دهد؛ مخرج تعداد همهٔ قسمت‌های مساوی است.</div><div class="visual-answer-mini">پاسخ درست: <b>'+escapeHtml(String(rightAnswer||''))+'</b></div></div>'}
- const expr=normal.match(/(\d{1,7})\s*(\+|×|x|\*|÷)\s*(\d{1,7})/i);
- if(expr){const a=Number(expr[1]),op=expr[2],b=Number(expr[3]);if(op==='+')return renderVisualArithmetic('addition',a,b,a+b);if(op==='×'||op.toLowerCase()==='x'||op==='*')return renderVisualArithmetic('multiply',a,b,a*b);if(op==='÷'&&b!==0&&a%b===0)return renderVisualArithmetic('divide',a,b,a/b)}
- const exp=String(explanation||q?.why||q?.explanation||'').trim(),parts=exp.split(/[.!؟؛]/).map(x=>x.trim()).filter(Boolean),skill=String(q?.skill||q?.topic||'مهارت این تمرین');
- return '<div class="visual-solution visual-generic" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🗺️</span><b>نقشهٔ حل این سؤال</b><span class="visual-step-badge">۳ ایستگاه</span></div><div class="visual-step-path"><div class="visual-step-card"><span>🔎</span><b>۱. سؤال</b><p>'+escapeHtml(prompt||'سؤال را کامل بخوان و خواسته‌اش را پیدا کن.')+'</p></div><div class="visual-step-card"><span>🧠</span><b>۲. روش</b><p>'+escapeHtml(parts[0]||('به '+skill+' توجه کن و اطلاعات مهم سؤال را پیدا کن.'))+'</p></div><div class="visual-step-card"><span>✅</span><b>۳. بررسی</b><p>'+escapeHtml(parts[1]||'پاسخت را با خواستهٔ سؤال مقایسه کن.')+' پاسخ درست: '+escapeHtml(String(rightAnswer||''))+'</p></div></div></div>';
+ const fractions=[...normal.matchAll(/(\d{1,2})\s*\/\s*(\d{1,2})/g)].slice(0,2);
+ if(fractions.length){
+  const bars=fractions.map((m,i)=>{
+   const n=Number(m[1]),d=Number(m[2]);if(!d||d>16||n>d)return '';
+   const cells=Array.from({length:d},(_,j)=>'<i class="visual-fraction-cell '+(j<n?'filled':'')+'"></i>').join('');
+   return '<div class="visual-fraction-card"><b>'+(fractions.length>1?'کسر '+(i+1):'نمایش کسر')+' '+n+'/'+d+'</b><div class="visual-fraction-bar" dir="ltr">'+cells+'</div><small>'+n+' قسمت از '+d+' قسمت مساوی رنگ شده است.</small></div>';
+  }).filter(Boolean).join('');
+  if(bars)return '<div class="visual-solution" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🍕</span><b>کسر را با شکل ببین</b></div><div class="visual-fraction-list">'+bars+'</div><div class="visual-bottom-note">صورت کسر تعداد قسمت‌های انتخاب‌شده را نشان می‌دهد و مخرج، تعداد همهٔ قسمت‌های مساوی را.</div></div>';
+ }
+ const expression=normal.match(/(\d{1,7})\s*(\+|×|x|\*|÷)\s*(\d{1,7})/i);
+ if(expression){
+  const a=Number(expression[1]),op=expression[2],b=Number(expression[3]);
+  if(op==='+'&&a<=9999&&b<=9999)return renderVisualArithmetic('addition',a,b,a+b);
+  if((op==='×'||op.toLowerCase()==='x'||op==='*')&&a<=10&&b<=10)return renderVisualArithmetic('multiply',a,b,a*b);
+  if(op==='÷'&&b>0&&a%b===0&&b<=10&&a/b<=10)return renderVisualArithmetic('divide',a,b,a/b);
+ }
+ const explanationText=String(explanation||q?.why||q?.explanation||'').trim();
+ const pieces=explanationText.split(/[.!؟؛]/).map(x=>x.trim()).filter(Boolean);
+ const skill=String(q?.skill||q?.topic||'مهارت این تمرین');
+ return '<div class="visual-solution visual-generic" dir="rtl"><div class="visual-solution-heading"><span class="visual-puzzle-icon">🗺️</span><b>نقشهٔ حل همین سؤال</b><span class="visual-step-badge">۳ گام</span></div><div class="visual-step-path"><div class="visual-step-card"><span>🔎</span><b>۱. داده‌های سؤال</b><p>'+escapeHtml(prompt||'سؤال را کامل بخوان و خواسته‌اش را پیدا کن.')+'</p></div><div class="visual-step-card"><span>🧠</span><b>۲. نکتهٔ موردنیاز</b><p>'+escapeHtml(pieces[0]||('در مبحث «'+skill+'» قانون مناسب را پیدا کن.'))+'</p></div><div class="visual-step-card"><span>✅</span><b>۳. کنترل نتیجه</b><p>'+escapeHtml(pieces[1]||'جواب را با اطلاعات مسئله بررسی کن.')+'</p></div></div></div>';
 }
 function renderQuestionFeedback(q,correct,rightAnswer,explanation){
- return '<div class="visual-feedback-head '+(correct?'is-correct':'needs-review')+'"><span class="visual-feedback-mascot">'+(correct?'🏆':'🧩')+'</span><div><strong>'+(correct?'آفرین، درست جواب دادی!':'اشکالی ندارد؛ با هم یاد می‌گیریم!')+'</strong><small>'+(correct?'یک قدم به قهرمانی ریاضی نزدیک‌تر شدی.':'به تصویرها نگاه کن و روش حل را مرور کن.')+'</small></div><span class="visual-feedback-status">'+(correct?'✓ درست':'↻ مرور')+'</span></div><div class="visual-answer-summary"><span>پاسخ درست</span><strong>'+escapeHtml(String(rightAnswer||''))+'</strong></div>'+renderQuestionVisualAnalysis(q,rightAnswer,explanation)+(explanation?'<details class="visual-text-details"><summary>📘 توضیح نوشتاری را هم ببین</summary><p>'+escapeHtml(String(explanation))+'</p></details>':'');
+ const answer=String(rightAnswer===undefined||rightAnswer===null||rightAnswer===''?'پاسخ صحیح در پاسخ‌نامه ثبت نشده است':rightAnswer);
+ const uniqueExplanation=String(explanation||q?.why||q?.explanation||'برای این سؤال هنوز تحلیل اختصاصی نوشته نشده است. از معلم بخواه توضیح حل را در پاسخ‌نامه تکمیل کند.').trim();
+ return '<div class="visual-feedback-head '+(correct?'is-correct':'needs-review')+'"><span class="visual-feedback-mascot">'+(correct?'🏆':'🧩')+'</span><div><strong>'+(correct?'آفرین، درست جواب دادی!':'اشکالی ندارد؛ با هم یاد می‌گیریم!')+'</strong><small>'+(correct?'روش حل را هم مرور کن تا یادگیری کامل شود.':'پاسخ درست را ببین و دلیلش را یاد بگیر؛ تمرین بعدی فرصت تازه‌ای است.')+'</small></div><span class="visual-feedback-status">'+(correct?'✓ درست':'↻ مرور')+'</span></div><div class="visual-answer-summary"><span>✅ پاسخ صحیح این سؤال</span><strong>'+escapeHtml(answer)+'</strong></div><section class="question-analysis-specific" dir="rtl"><div class="question-analysis-title"><span>🧠</span><b>تحلیل اختصاصی همین سؤال</b><em>ویژهٔ این پرسش</em></div><p>'+escapeHtml(uniqueExplanation)+'</p></section>'+renderQuestionVisualAnalysis(q,answer,uniqueExplanation);
 }
 function explainArithmetic(kind,a,b,answer){
  const fa=n=>Number(n).toLocaleString('fa-IR');
@@ -653,7 +816,7 @@ function finishBookExam(){const score=Math.round((examScore/Math.max(1,examItems
 $('startBookExam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('annual')};
 $('startTerm1Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term1')};
 $('startTerm2Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term2')};
-$('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}if(!examAnswered){const q=examItems[examIndex],response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}const correct=isQuestionCorrect(q,response);if(correct)examScore++;const f=$('examFeedback');f.classList.remove('hidden');f.textContent=correct?'پاسخ ثبت شد. آفرین!':'پاسخ ثبت شد. بعد از آزمون، بخش آموزشی این مبحث را مرور کن.';f.style.background=correct?'#e8fbf2':'#fff8e7';f.style.color=correct?'#126a49':'#72541a';$('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;examAnswered=true;$('examSubmit').textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';return}if(examIndex<examItems.length-1){examIndex++;$('examAnswer').disabled=false;paintExamQuestion()}else{finishBookExam()}};
+$('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}if(!examAnswered){const q=examItems[examIndex],response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}const correct=isQuestionCorrect(q,response);if(correct)examScore++;const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,correct,correctAnswerText(q),q.why||q.explanation||'');f.style.background='transparent';f.style.color=correct?'#126a49':'#ffcc7a';$('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;examAnswered=true;$('examSubmit').textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';return}if(examIndex<examItems.length-1){examIndex++;$('examAnswer').disabled=false;paintExamQuestion()}else{finishBookExam()}};
 
 
 // Online CSV export is bound after Supabase report data has loaded.
@@ -1262,7 +1425,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         const result=await submitServerAnswer(q,response,`exam:${String(examMode).replace(/[^a-zA-Z0-9:_-]/g,'').slice(0,40)}`,currentCloudAttemptGroup);
         if(result.correct)examScore++;
         examAnswered=true;awardProgress(Number(q.chapter||0),!!result.correct);
-        const f=$('examFeedback');f.classList.remove('hidden');f.textContent=result.correct?'پاسخ ثبت شد. آفرین!':'پاسخ ثبت شد. پس از پایان آزمون، نکته‌های آموزشی را مرور کن.';f.style.background=result.correct?'#e8fbf2':'#fff8e7';f.style.color=result.correct?'#126a49':'#72541a';
+        const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,!!result.correct,result.correct_answer||correctAnswerText(q),result.explanation||q.why||q.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
         $('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;
         this.textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';
       }catch(e){alert('پاسخ آزمون ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ آزمون ناموفق بود: '+cloudMessage(e),true)}
