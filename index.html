@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v5-20261016-custom-lessons">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v6-20261016-page-images">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -551,7 +551,7 @@ a{color:#d7ff76}
 @media(max-width:700px){.course-lesson-row{grid-template-columns:1fr 1fr}.course-lesson-row .course-lesson-label{grid-column:1/-1}}
 @media(max-width:430px){.course-lesson-row{grid-template-columns:1fr}.course-lesson-row .course-lesson-label{grid-column:auto}}
 </style></head>
-<body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
+<body data-build="chahromiha-v6-20261016-page-images"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
 <section class="card" id="home"><div class="home-kicker"><span>📚</span> چهارمی ها</div><h2>سلام دانش‌آموز چهارمی! کدام کتاب را می‌خواهی شروع کنی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">بعد از ورود، کتاب موردنظرت را انتخاب کن و آموزش، یادآوری، تمرین و آزمون همان درس را باز کن.</p><div class="mission-strip"><div class="mission-chip"><span>📖</span><b>یادگیری</b><small>درس را مرحله‌به‌مرحله بخوان</small></div><div class="mission-chip"><span>✏️</span><b>تمرین</b><small>دانسته‌هایت را بسنج</small></div><div class="mission-chip"><span>🌟</span><b>پیشرفت</b><small>قدم‌به‌قدم بهتر شو</small></div></div><div class="notice adventure-note">🧭 برای شروع، با حساب دانش‌آموز وارد شو؛ سپس یکی از کتاب‌های پایهٔ چهارم را انتخاب کن. بخش‌های هر کتاب متناسب با همان درس نمایش داده می‌شوند.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -667,7 +667,7 @@ a{color:#d7ff76}
 
 </details>
 </div>
-<div id="tab-curriculum" class="tabpane"><h3>مدیریت فایل‌های کتاب‌های پایهٔ چهارم</h3><p class="muted">از این بخش می‌توانی PDF هر کتاب را جداگانه انتخاب و پیش‌نمایش کنی. فایل‌هایی که از این پنل اضافه می‌شوند در همین مرورگر/دستگاه ذخیره می‌شوند؛ برای دسترسی عمومی از گوشی‌های دانش‌آموزان، PDF باید در مخزن سایت در مسیر تعیین‌شده قرار بگیرد.</p><label class="field" for="bookSubject">انتخاب کتاب</label><select id="bookSubject"></select><label class="field" for="bookPdf">فایل PDF کتاب انتخاب‌شده</label><input id="bookPdf" type="file" accept="application/pdf,.pdf"><button id="attachBook" style="width:100%;margin-top:9px">افزودن PDF به کتاب انتخاب‌شده</button><div id="teacherBookStatus" class="notice">یک کتاب انتخاب کن و فایل PDF آن را اضافه کن.</div><h3 style="margin-top:18px">📚 فایل‌های هر کتاب</h3><div id="teacherBookLibrary" class="book-library"></div><div id="teacherBookPreview"></div><h3 style="margin-top:18px">دسترسی به بخش ریاضی</h3><p class="muted">می‌توانی دسترسی به بخش‌های ریاضی را مدیریت کنی. در نسخه بعدی امکان قفل‌کردن فصل‌ها و مبحث‌های ریاضی به‌صورت جداگانه اضافه می‌شود.</p><div id="subjectAccessList"></div><h3 style="margin-top:18px">مدیریت فصل‌ها و سرفصل‌های کتاب</h3><p class="muted">فصل‌های پیش‌فرض کتاب ریاضی چهارم در فهرست زیر هستند. می‌توانی فصل دیگری به کتاب اضافه کنی؛ نام فصل، خلاصه‌ی آموزشی و نکته‌ها برای دانش‌آموز نمایش داده می‌شود. تغییرات این نسخه آزمایشی فقط تا زمان بارگذاری مجدد همین صفحه باقی می‌مانند.</p><div class="chapter-manager"><label class="field" for="newChapterTitle">نام فصل جدید</label><input id="newChapterTitle" placeholder="مثلاً: مرور و حل مسئله"><label class="field" for="newChapterSummary">توضیح کوتاه فصل</label><input id="newChapterSummary" placeholder="موضوع‌ها و هدف این فصل را کوتاه بنویس"><label class="field" for="newChapterNotes">آموزش و نکته‌های مهم فصل</label><textarea id="newChapterNotes" rows="3" placeholder="قانون‌ها، روش حل و نکته‌هایی که دانش‌آموز باید یاد بگیرد..."></textarea><label class="field" for="newChapterExample">مثال حل‌شده (اختیاری)</label><textarea id="newChapterExample" rows="2" placeholder="مثلاً: ۲۴ ÷ ۶ = ۴، چون ۶ × ۴ = ۲۴."></textarea><h4>نمونه‌سؤال برای همین فصل (اختیاری)</h4><label class="field" for="newChapterQuestion">متن سؤال چهارگزینه‌ای</label><textarea id="newChapterQuestion" rows="2" placeholder="سؤال تمرینی را بنویس"></textarea><div class="grid"><div><label class="field" for="newChapterOpt0">گزینه ۱</label><input id="newChapterOpt0" placeholder="گزینه ۱"></div><div><label class="field" for="newChapterOpt1">گزینه ۲</label><input id="newChapterOpt1" placeholder="گزینه ۲"></div><div><label class="field" for="newChapterOpt2">گزینه ۳</label><input id="newChapterOpt2" placeholder="گزینه ۳"></div><div><label class="field" for="newChapterOpt3">گزینه ۴</label><input id="newChapterOpt3" placeholder="گزینه ۴"></div></div><div class="grid"><div><label class="field" for="newChapterCorrect">گزینه‌ی صحیح</label><select id="newChapterCorrect"><option value="0">گزینه ۱</option><option value="1">گزینه ۲</option><option value="2">گزینه ۳</option><option value="3">گزینه ۴</option></select></div><div><label class="field" for="newChapterWhy">توضیح پاسخ (اختیاری)</label><input id="newChapterWhy" placeholder="چرا این پاسخ درست است؟"></div></div><button id="addTeacherChapter" style="width:100%;margin-top:8px">➕ افزودن فصل به کتاب</button><div id="teacherChapterStatus" class="notice">فصل‌های کتاب آماده‌اند. برای افزودن فصل، نام و آموزش آن را وارد کن.</div></div><h3>فصل‌های فعلی کتاب</h3><div id="teacherChapterList"></div>
+<div id="tab-curriculum" class="tabpane"><h3>مدیریت فایل‌های کتاب‌های پایهٔ چهارم</h3><p class="muted">از این بخش می‌توانی PDF هر کتاب را جداگانه انتخاب و پیش‌نمایش کنی. فایل‌هایی که از این پنل اضافه می‌شوند در همین مرورگر/دستگاه ذخیره می‌شوند؛ برای دسترسی عمومی از گوشی‌های دانش‌آموزان، PDF باید در مخزن سایت در مسیر تعیین‌شده قرار بگیرد.</p><label class="field" for="bookSubject">انتخاب کتاب</label><select id="bookSubject"></select><label class="field" for="bookPdf">فایل PDF کتاب یا ZIP تصاویر صفحات فارسی</label><input id="bookPdf" type="file" accept="application/pdf,.pdf,.zip,application/zip"><button id="attachBook" style="width:100%;margin-top:9px">افزودن کتاب یا تصاویر صفحات به فضای مشترک کلاس</button><div id="teacherBookStatus" class="notice">یک کتاب انتخاب کن و فایل PDF آن را اضافه کن.</div><h3 style="margin-top:18px">📚 فایل‌های هر کتاب</h3><div id="teacherBookLibrary" class="book-library"></div><div id="teacherBookPreview"></div><h3 style="margin-top:18px">دسترسی به بخش ریاضی</h3><p class="muted">می‌توانی دسترسی به بخش‌های ریاضی را مدیریت کنی. در نسخه بعدی امکان قفل‌کردن فصل‌ها و مبحث‌های ریاضی به‌صورت جداگانه اضافه می‌شود.</p><div id="subjectAccessList"></div><h3 style="margin-top:18px">مدیریت فصل‌ها و سرفصل‌های کتاب</h3><p class="muted">فصل‌های پیش‌فرض کتاب ریاضی چهارم در فهرست زیر هستند. می‌توانی فصل دیگری به کتاب اضافه کنی؛ نام فصل، خلاصه‌ی آموزشی و نکته‌ها برای دانش‌آموز نمایش داده می‌شود. تغییرات این نسخه آزمایشی فقط تا زمان بارگذاری مجدد همین صفحه باقی می‌مانند.</p><div class="chapter-manager"><label class="field" for="newChapterTitle">نام فصل جدید</label><input id="newChapterTitle" placeholder="مثلاً: مرور و حل مسئله"><label class="field" for="newChapterSummary">توضیح کوتاه فصل</label><input id="newChapterSummary" placeholder="موضوع‌ها و هدف این فصل را کوتاه بنویس"><label class="field" for="newChapterNotes">آموزش و نکته‌های مهم فصل</label><textarea id="newChapterNotes" rows="3" placeholder="قانون‌ها، روش حل و نکته‌هایی که دانش‌آموز باید یاد بگیرد..."></textarea><label class="field" for="newChapterExample">مثال حل‌شده (اختیاری)</label><textarea id="newChapterExample" rows="2" placeholder="مثلاً: ۲۴ ÷ ۶ = ۴، چون ۶ × ۴ = ۲۴."></textarea><h4>نمونه‌سؤال برای همین فصل (اختیاری)</h4><label class="field" for="newChapterQuestion">متن سؤال چهارگزینه‌ای</label><textarea id="newChapterQuestion" rows="2" placeholder="سؤال تمرینی را بنویس"></textarea><div class="grid"><div><label class="field" for="newChapterOpt0">گزینه ۱</label><input id="newChapterOpt0" placeholder="گزینه ۱"></div><div><label class="field" for="newChapterOpt1">گزینه ۲</label><input id="newChapterOpt1" placeholder="گزینه ۲"></div><div><label class="field" for="newChapterOpt2">گزینه ۳</label><input id="newChapterOpt2" placeholder="گزینه ۳"></div><div><label class="field" for="newChapterOpt3">گزینه ۴</label><input id="newChapterOpt3" placeholder="گزینه ۴"></div></div><div class="grid"><div><label class="field" for="newChapterCorrect">گزینه‌ی صحیح</label><select id="newChapterCorrect"><option value="0">گزینه ۱</option><option value="1">گزینه ۲</option><option value="2">گزینه ۳</option><option value="3">گزینه ۴</option></select></div><div><label class="field" for="newChapterWhy">توضیح پاسخ (اختیاری)</label><input id="newChapterWhy" placeholder="چرا این پاسخ درست است؟"></div></div><button id="addTeacherChapter" style="width:100%;margin-top:8px">➕ افزودن فصل به کتاب</button><div id="teacherChapterStatus" class="notice">فصل‌های کتاب آماده‌اند. برای افزودن فصل، نام و آموزش آن را وارد کن.</div></div><h3>فصل‌های فعلی کتاب</h3><div id="teacherChapterList"></div>
 <div class="video-manager"><h3>🎬 بارگذاری ویدیوی آموزشی</h3><p class="muted">برای هر فصل یک ویدیوی آموزشی انتخاب کن. دانش‌آموز ویدیو را در صفحه آموزش همان فصل می‌بیند. این نسخه ویدیو را فقط در همین مرورگر ذخیره می‌کند.</p><label class="field" for="teacherVideoChapter">فصل مربوط به ویدیو</label><select id="teacherVideoChapter"></select><label class="field" for="teacherVideoTitle">عنوان ویدیو</label><input id="teacherVideoTitle" maxlength="100" placeholder="مثلاً آموزش ضرب چندرقمی">
 <label class="field" for="teacherVideoFile">فایل ویدیویی</label><input id="teacherVideoFile" type="file" accept="video/*"><div class="profile-action-row"><button id="saveTeacherVideo">📤 ذخیره ویدیو برای این فصل</button><button id="removeTeacherVideo" class="outline">حذف ویدیوی این فصل</button></div><div id="teacherVideoStatus" class="notice" role="status">هنوز ویدیویی انتخاب نشده است.</div><div id="teacherVideoPreview"></div></div>
 </div><div id="tab-assignments" class="tabpane"><h3>🧩 آزمون‌ساز و سازندهٔ تمرین</h3><p class="muted">نوع فعالیت، فصل یا نوبت، تعداد سؤال، زمان و تعداد تلاش را تعیین کن. با ذخیره، فعالیت برای کلاس منتشر می‌شود و محدودیت زمان و تلاش در سمت سرور اعمال می‌شود.</p><label class="field" for="actSubject">کتاب موردنظر</label><select id="actSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" for="actLesson">درس موردنظر</label><select id="actLesson"></select><p class="muted">سؤال‌های فعالیت فقط از بانک همین کتاب و درس انتخاب می‌شوند. برای ریاضی می‌توانی از انتخاب فصل یا نوبت استفاده کنی.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً تمرین درس سوم فارسی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div></div>
@@ -1111,7 +1111,7 @@ async function readBookFilesFromDevice(){const db=await openBookFilesDB();return
 async function restoreBookFilesFromDevice(){try{const records=await readBookFilesFromDevice();for(const record of records){if(bookUrls[record.id])URL.revokeObjectURL(bookUrls[record.id]);bookUrls[record.id]=URL.createObjectURL(record.blob);bookNames[record.id]=record.name}}catch(error){console.warn('Book file restore failed',error)}renderTeacherBookLibrary()}
 function renderTeacherBookLibrary(){
  const box=$('teacherBookLibrary');if(!box)return;
- box.innerHTML=bookSubjectCatalog.map(s=>{const loaded=!!bookUrls[s.id]||!!courseSettingsBySubject[s.id]?.bookFilePath;return '<article class="book-library-card"><div class="book-library-heading"><span>'+s.icon+'</span><div><b>'+escapeHtml(s.name)+'</b><small>'+(courseSettingsBySubject[s.id]?.bookFilePath?'PDF مشترک این کلاس':loaded?'PDF ذخیره‌شده روی همین دستگاه':'فایل برای این کتاب هنوز اضافه نشده')+'</small></div></div><button type="button" class="outline" data-preview-teacher-book="'+s.id+'">پیش‌نمایش</button><button type="button" class="outline" data-select-teacher-book="'+s.id+'">انتخاب برای افزودن فایل</button></article>'}).join('');
+ box.innerHTML=bookSubjectCatalog.map(s=>{const loaded=!!bookUrls[s.id]||!!courseSettingsBySubject[s.id]?.bookFilePath||!!courseSettingsBySubject[s.id]?.bookPagesPath;return '<article class="book-library-card"><div class="book-library-heading"><span>'+s.icon+'</span><div><b>'+escapeHtml(s.name)+'</b><small>'+(courseSettingsBySubject[s.id]?.bookPagesPath?'تصاویر صفحات واقعیِ مشترک کلاس':courseSettingsBySubject[s.id]?.bookFilePath?'PDF مشترک این کلاس':loaded?'PDF ذخیره‌شده روی همین دستگاه':'فایل برای این کتاب هنوز اضافه نشده')+'</small></div></div><button type="button" class="outline" data-preview-teacher-book="'+s.id+'">پیش‌نمایش</button><button type="button" class="outline" data-select-teacher-book="'+s.id+'">انتخاب برای افزودن فایل</button></article>'}).join('');
  box.querySelectorAll('[data-preview-teacher-book]').forEach(b=>b.onclick=()=>previewTeacherBook(b.dataset.previewTeacherBook));
  box.querySelectorAll('[data-select-teacher-book]').forEach(b=>b.onclick=()=>{$('bookSubject').value=b.dataset.selectTeacherBook;$('teacherBookStatus').textContent='کتاب «'+(bookSubjectCatalog.find(s=>s.id===b.dataset.selectTeacherBook)?.name||'')+'» انتخاب شد. فایل PDF آن را اضافه کن.';$('bookPdf').value=''});
 }
@@ -1121,6 +1121,12 @@ async function previewTeacherBook(id){
  const target=$('teacherBookPreview');target.innerHTML='';
  let url=bookUrls[id]||courseBookObjectUrls[id];
  const config=courseSettingsBySubject[id]||{};
+ if(!url&&config.bookPagesPath&&cloudSession?.access_token&&id==='persian'){
+  try{
+   const pages=[10,11,12].map(async page=>{const key='page-image:'+config.bookPagesPath+'/page-'+String(page).padStart(3,'0')+'.webp';if(courseBookObjectUrls[key])return courseBookObjectUrls[key];const blob=await fetchClassMaterial(config.bookPagesPath+'/page-'+String(page).padStart(3,'0')+'.webp');const objectUrl=URL.createObjectURL(blob);courseBookObjectUrls[key]=objectUrl;return objectUrl});
+   const urls=await Promise.all(pages);target.innerHTML='<div class="item"><div class="row"><h4>📚 پیش‌نمایش تصاویر صفحات فارسی</h4><button type="button" class="outline" id="closeTeacherBookPreview">بستن پیش‌نمایش</button></div>'+urls.map((u,i)=>'<details class="book-page-item" '+(i===0?'open':'')+'><summary>صفحهٔ '+[10,11,12][i]+'</summary><img src="'+u+'" alt="تصویر صفحهٔ فارسی"></details>').join('')+'</div>';$('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};return;
+  }catch(error){console.warn('Shared page images preview unavailable',error)}
+ }
  if(!url&&config.bookFilePath&&cloudSession?.access_token){try{const blob=await fetchClassMaterial(config.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[id]=url}catch(error){console.warn('Shared book preview unavailable',error)}}
  if(!url&&await assetExists(subject.asset))url=subject.asset;
  if(!url){target.innerHTML='<div class="notice">برای «'+escapeHtml(subject.name)+'» هنوز PDF قابل پیش‌نمایش وجود ندارد. از بخش بالا فایل آن را اضافه کن یا PDF عمومی را در مسیر <code>'+escapeHtml(subject.assetLabel)+'</code> در مخزن سایت قرار بده.</div>';return}
@@ -1129,33 +1135,86 @@ async function previewTeacherBook(id){
 }
 $('bookSubject').innerHTML=bookSubjectCatalog.map(s=>'<option value="'+s.id+'">'+s.icon+' '+escapeHtml(s.name)+'</option>').join('');
 $('bookSubject').onchange=()=>{$('teacherBookStatus').textContent='کتاب «'+(bookSubjectCatalog.find(s=>s.id===$('bookSubject').value)?.name||'')+'» انتخاب شده است.';$('bookPdf').value=''};
+async function extractPersianPageImagesFromZip(file){
+ const bytes=new Uint8Array(await file.arrayBuffer()),view=new DataView(bytes.buffer),decoder=new TextDecoder();
+ const min=Math.max(0,bytes.length-65557);let eocd=-1;
+ for(let i=bytes.length-22;i>=min;i--){if(view.getUint32(i,true)===0x06054b50){eocd=i;break}}
+ if(eocd<0)throw new Error('ساختار ZIP معتبر نیست.');
+ const count=view.getUint16(eocd+10,true);let offset=view.getUint32(eocd+16,true);
+ if(count<80||count>500)throw new Error('بسته باید شامل تصاویر صفحات فارسی باشد؛ تعداد فایل‌های ZIP غیرمنتظره است.');
+ const images=[],seen=new Set();
+ for(let n=0;n<count;n++){
+  if(view.getUint32(offset,true)!==0x02014b50)throw new Error('فهرست داخلی ZIP قابل خواندن نیست.');
+  const method=view.getUint16(offset+10,true),compressedSize=view.getUint32(offset+20,true),fileSize=view.getUint32(offset+24,true),nameLength=view.getUint16(offset+28,true),extraLength=view.getUint16(offset+30,true),commentLength=view.getUint16(offset+32,true),localOffset=view.getUint32(offset+42,true);
+  const name=decoder.decode(bytes.subarray(offset+46,offset+46+nameLength));offset+=46+nameLength+extraLength+commentLength;
+  const match=name.match(/(?:^|\/)page-(\d{3})\.webp$/i);if(!match||!name.includes('book-pages/persian/'))continue;
+  const page=Number(match[1]);if(seen.has(page))throw new Error('شمارهٔ تصویر صفحه تکراری است: '+page);seen.add(page);
+  if(view.getUint32(localOffset,true)!==0x04034b50)throw new Error('سرآیند تصویر داخل ZIP معتبر نیست: '+name);
+  const localNameLength=view.getUint16(localOffset+26,true),localExtraLength=view.getUint16(localOffset+28,true),dataStart=localOffset+30+localNameLength+localExtraLength;
+  const compressed=bytes.slice(dataStart,dataStart+compressedSize);let imageBytes;
+  if(method===0)imageBytes=compressed;
+  else if(method===8){
+    if(typeof DecompressionStream!=='function')throw new Error('این مرورگر امکان بازکردن ZIP تصاویر را ندارد؛ از Chrome به‌روز استفاده کن یا PDF را بارگذاری کن.');
+    const stream=new Blob([compressed]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+    imageBytes=new Uint8Array(await new Response(stream).arrayBuffer());
+  }else throw new Error('روش فشرده‌سازی ZIP پشتیبانی نمی‌شود.');
+  if(imageBytes.length!==fileSize)throw new Error('اندازهٔ تصویر داخل ZIP درست نیست: '+name);
+  images.push({page,bytes:imageBytes,name});
+ }
+ const expected=[...new Set(Object.values(persianBookPageMap).flatMap(info=>Array.from({length:info.end-info.start+1},(_,i)=>info.start+i)))].sort((a,b)=>a-b);
+ const found=new Set(images.map(x=>x.page));
+ const missing=expected.filter(p=>!found.has(p));
+ if(images.length!==84||missing.length)throw new Error('بسته کامل نیست: '+images.length+' تصویر پیدا شد؛ ۸۴ تصویر لازم است. '+(missing.length?'صفحه‌های جاافتاده: '+missing.slice(0,12).join('، '):''));
+ return images.sort((a,b)=>a.page-b.page);
+}
+async function uploadPersianPageZip(file,classId){
+ const btn=$('attachBook'),basePath=classId+'/books/persian-pages';
+ $('teacherBookStatus').textContent='در حال بررسی بستهٔ ZIP و استخراج ۸۴ تصویر صفحه…';
+ const images=await extractPersianPageImagesFromZip(file);
+ for(let offset=0;offset<images.length;offset+=4){
+  const batch=images.slice(offset,offset+4);
+  await Promise.all(batch.map(async image=>{
+   const path=basePath+'/page-'+String(image.page).padStart(3,'0')+'.webp';
+   const response=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':'image/webp','x-upsert':'true'},body:new Blob([image.bytes],{type:'image/webp'}),cache:'no-store'});
+   if(!response.ok)throw new Error('بارگذاری تصویر صفحهٔ '+image.page+' انجام نشد ('+response.status+').');
+  }));
+  $('teacherBookStatus').textContent='بارگذاری تصویرهای صفحات: '+fa(Math.min(offset+batch.length,images.length))+' از '+fa(images.length)+'…';
+ }
+ const saved=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'set_book_pages',subject:'persian',base_path:basePath}});
+ courseSettingsBySubject.persian={...(courseSettingsBySubject.persian||{}),bookPagesPath:saved.bookPagesPath||basePath,bookPagesCount:images.length,bookPagesUploadedAt:new Date().toISOString()};
+ $('teacherBookStatus').textContent='هر ۸۴ تصویر صفحهٔ فارسی در فضای مشترک کلاس ذخیره شد. از این پس هر درس، فقط تصویرهای صفحه‌های مربوط به خودش را نشان می‌دهد.';
+ $('bookPdf').value='';renderTeacherBookLibrary();await previewTeacherBook('persian');
+}
 $('attachBook').onclick=async()=>{
  const id=$('bookSubject').value,file=$('bookPdf').files?.[0],subject=bookSubjectCatalog.find(s=>s.id===id);
  if(!subject){$('teacherBookStatus').textContent='ابتدا کتاب موردنظر را انتخاب کن.';return}
- if(!file){$('teacherBookStatus').textContent='ابتدا فایل PDF کتاب «'+subject.name+'» را انتخاب کن.';return}
- if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){$('teacherBookStatus').textContent='لطفاً فایل PDF انتخاب کن.';return}
+ if(!file){$('teacherBookStatus').textContent='ابتدا فایل PDF یا ZIP را انتخاب کن.';return}
  if(!cloudSession||cloudSession.role!=='teacher'){$('teacherBookStatus').textContent='برای انتشار مشترک کتاب، ابتدا با حساب معلم وارد شو.';return}
- const btn=$('attachBook');setBusy(btn,true,'در حال بارگذاری در فضای کلاس…');
- const classId=cloudSession.profile?.class_id;
- if(!classId){$('teacherBookStatus').textContent='کلاس معلم پیدا نشد.';setBusy(btn,false);return}
- const safeName=String(file.name||'book.pdf').replace(/[^\p{L}\p{N}._-]+/gu,'_').slice(-100)||'book.pdf';
- const path=classId+'/books/'+id+'/'+crypto.randomUUID()+'-'+safeName;
- let uploaded=false;
+ const classId=cloudSession.profile?.class_id;if(!classId){$('teacherBookStatus').textContent='کلاس معلم پیدا نشد.';return}
+ const isZip=file.name.toLowerCase().endsWith('.zip')||file.type==='application/zip'||file.type==='application/x-zip-compressed';
+ const btn=$('attachBook');setBusy(btn,true,'در حال بارگذاری…');
  try{
-   const response=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':'application/pdf','x-upsert':'false'},body:file,cache:'no-store'});
-   if(!response.ok)throw new Error('بارگذاری فایل در فضای مشترک ناموفق بود ('+response.status+').');
-   uploaded=true;
+  if(isZip){
+   if(id!=='persian')throw new Error('بستهٔ ZIP شامل تصاویر کتاب فارسی است؛ ابتدا «فارسی و نگارش» را انتخاب کن.');
+   await uploadPersianPageZip(file,classId);
+   return;
+  }
+  if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf'))throw new Error('فقط فایل PDF یا بستهٔ ZIP تصاویر صفحه پذیرفته می‌شود.');
+  const safeName=String(file.name||'book.pdf').replace(/[^\p{L}\p{N}._-]+/gu,'_').slice(-100)||'book.pdf';
+  const path=classId+'/books/'+id+'/'+crypto.randomUUID()+'-'+safeName;
+  const response=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':'application/pdf','x-upsert':'false'},body:file,cache:'no-store'});
+  if(!response.ok)throw new Error('بارگذاری فایل در فضای مشترک ناموفق بود ('+response.status+').');
+  try{
    const saved=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'set_book_file',subject:id,file_path:path,file_name:file.name}});
    courseSettingsBySubject[id]={...(courseSettingsBySubject[id]||{}),bookFilePath:saved.bookFilePath||path,bookFileName:file.name};
-   if(bookUrls[id])URL.revokeObjectURL(bookUrls[id]);bookUrls[id]=URL.createObjectURL(file);bookNames[id]=file.name;
-   $('teacherBookStatus').textContent='فایل «'+file.name+'» در فضای مشترک کلاس ذخیره شد؛ همهٔ دانش‌آموزان این کلاس می‌توانند از صفحهٔ درس آن را ببینند.';
-   $('bookPdf').value='';renderTeacherBookLibrary();await previewTeacherBook(id);
-   if(courseBookObjectUrls[id]){URL.revokeObjectURL(courseBookObjectUrls[id]);delete courseBookObjectUrls[id]}
-   if(id==='math')renderStudentBook();
- }catch(error){
-   if(uploaded)fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'DELETE',headers:cloudHeaders(cloudSession.access_token)}).catch(()=>{});
-   $('teacherBookStatus').textContent='ذخیره کتاب انجام نشد: '+cloudMessage(error);
- }finally{setBusy(btn,false)}
+  }catch(error){fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'DELETE',headers:cloudHeaders(cloudSession.access_token)}).catch(()=>{});throw error}
+  if(bookUrls[id])URL.revokeObjectURL(bookUrls[id]);bookUrls[id]=URL.createObjectURL(file);bookNames[id]=file.name;
+  $('teacherBookStatus').textContent='فایل «'+file.name+'» در فضای مشترک کلاس ذخیره شد؛ همهٔ دانش‌آموزان همین کلاس می‌توانند از صفحهٔ درس آن را ببینند.';
+  $('bookPdf').value='';renderTeacherBookLibrary();await previewTeacherBook(id);
+  if(courseBookObjectUrls[id]){URL.revokeObjectURL(courseBookObjectUrls[id]);delete courseBookObjectUrls[id]}
+  if(id==='math')renderStudentBook();
+ }catch(error){$('teacherBookStatus').textContent='ذخیره کتاب انجام نشد: '+cloudMessage(error)}
+ finally{setBusy(btn,false)}
 };
 document.querySelectorAll('[data-book-tab]').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x===b));
@@ -2554,6 +2613,20 @@ loadExpandedPersianVocabulary();
           return;
         }
       }catch{}
+      const sharedPagesPath=courseSettingsBySubject[displayId]?.bookPagesPath||courseSettingsBySubject.persian?.bookPagesPath;
+      if(sharedPagesPath&&cloudSession?.access_token){
+        try{
+          const urls=await Promise.all(imagePages.map(async p=>{
+            const key='page-image:'+sharedPagesPath+'/page-'+String(p).padStart(3,'0')+'.webp';
+            if(courseBookObjectUrls[key])return courseBookObjectUrls[key];
+            const blob=await fetchClassMaterial(sharedPagesPath+'/page-'+String(p).padStart(3,'0')+'.webp');
+            const url=URL.createObjectURL(blob);courseBookObjectUrls[key]=url;return url;
+          }));
+          if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
+          mount.innerHTML='<section class="lesson-book-pages"><h4>📚 تصاویر واقعی صفحات همین درس</h4>'+imagePages.map((p,i)=>'<details class="book-page-item" '+(i===0?'open':'')+'><summary>صفحهٔ '+fa(p)+'</summary><img loading="'+(i===0?'eager':'lazy')+'" src="'+urls[i]+'" alt="تصویر صفحهٔ '+fa(p)+' از کتاب فارسی چهارم"></details>').join('')+'</section>';
+          return;
+        }catch(error){console.warn('Persian page images could not be fetched',error)}
+      }
     }
     let url=courseBookObjectUrls[displayId]||bookUrls[displayId];
     const settings=courseSettingsBySubject[displayId]||{};
