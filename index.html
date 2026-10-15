@@ -1061,7 +1061,9 @@ $('saveCourseSettings')?.addEventListener('click',async()=>{
    availableUntil:isoFromDateInput(row.querySelector('.course-lesson-until')?.value||''),
    sortOrder:index+1
  }));
- const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode:$('settingReleaseMode').value,releaseAt:isoFromDateInput($('settingReleaseAt').value),maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
+ const releaseMode=$('settingReleaseMode').value,releaseAt=isoFromDateInput($('settingReleaseAt').value);
+ if(releaseMode==='scheduled'&&!releaseAt){$('courseSettingsStatus').textContent='برای روش زمان‌بندی، زمان بازشدن کتاب را تعیین کن.';return}
+ const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode,releaseAt,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
  const btn=$('saveCourseSettings');setBusy(btn,true,'در حال ذخیره…');$('courseSettingsStatus').textContent='در حال ذخیره تنظیمات کتاب و قفل درس‌ها…';
  try{
    const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});
@@ -2405,11 +2407,11 @@ persianLessons.forEach(l=>{
   function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
-    box.innerHTML=otherSubjectData.map(s=>{const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'"><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(s.name)+'</b><small>'+fa(s.lessons.length)+' مبحث آغازین · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
+    box.innerHTML=otherSubjectData.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;const open=s.lessons.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(cfg.courseEnabled!==false&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(s.lessons.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
   function openOtherSubject(id){
-    selectedOtherSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!selectedOtherSubject)return;
+    selectedOtherSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!selectedOtherSubject)return;if(courseSettingsBySubject[id]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
     activeStudentSubject=selectedOtherSubject.id;$('otherSubjectPicker').classList.add('hidden');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
