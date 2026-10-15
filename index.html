@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v4-20261016-course-management">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v5-20261016-custom-lessons">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -551,7 +551,7 @@ a{color:#d7ff76}
 @media(max-width:700px){.course-lesson-row{grid-template-columns:1fr 1fr}.course-lesson-row .course-lesson-label{grid-column:1/-1}}
 @media(max-width:430px){.course-lesson-row{grid-template-columns:1fr}.course-lesson-row .course-lesson-label{grid-column:auto}}
 </style></head>
-<body data-build="chahromiha-v4-20261016-course-management"><main class="wrap">
+<body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
 <section class="card" id="home"><div class="home-kicker"><span>📚</span> چهارمی ها</div><h2>سلام دانش‌آموز چهارمی! کدام کتاب را می‌خواهی شروع کنی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">بعد از ورود، کتاب موردنظرت را انتخاب کن و آموزش، یادآوری، تمرین و آزمون همان درس را باز کن.</p><div class="mission-strip"><div class="mission-chip"><span>📖</span><b>یادگیری</b><small>درس را مرحله‌به‌مرحله بخوان</small></div><div class="mission-chip"><span>✏️</span><b>تمرین</b><small>دانسته‌هایت را بسنج</small></div><div class="mission-chip"><span>🌟</span><b>پیشرفت</b><small>قدم‌به‌قدم بهتر شو</small></div></div><div class="notice adventure-note">🧭 برای شروع، با حساب دانش‌آموز وارد شو؛ سپس یکی از کتاب‌های پایهٔ چهارم را انتخاب کن. بخش‌های هر کتاب متناسب با همان درس نمایش داده می‌شوند.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -703,8 +703,16 @@ a{color:#d7ff76}
 <div class="grid"><label class="field" for="settingSubject">کتاب مورد تنظیم<select id="settingSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="dictation">املای فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="settingCourseTitle">عنوان نمایشی کتاب<input id="settingCourseTitle" maxlength="160" placeholder="مثلاً فارسی و نگارش پایه چهارم"></label></div>
 <div class="grid"><label class="option"><input id="settingCourseEnabled" type="checkbox" checked> فعال بودن کتاب برای دانش‌آموزان</label><label class="option"><input id="settingDefaultLocked" type="checkbox"> قفل بودن درس‌هایی که جداگانه تنظیم نشده‌اند</label><label class="option"><input id="settingAllowPractice" type="checkbox" checked> اجازهٔ تمرین این کتاب</label><label class="option"><input id="settingAllowExam" type="checkbox" checked> اجازهٔ امتحان این کتاب</label></div>
 <div class="grid"><label class="field" for="settingReleaseMode">روش باز شدن کتاب<select id="settingReleaseMode"><option value="manual">باز/قفل به انتخاب معلم</option><option value="scheduled">باز شدن طبق تاریخ و ساعت</option></select></label><label class="field" for="settingReleaseAt">تاریخ باز شدن کل کتاب (اختیاری)<input id="settingReleaseAt" type="datetime-local"></label><label class="field" for="settingMaxAttempts">تعداد تلاش پیش‌فرض<input id="settingMaxAttempts" type="number" min="1" max="100" value="3"></label><label class="field" for="settingFeedbackMode">زمان نمایش بازخورد<select id="settingFeedbackMode"><option value="immediate">پس از هر سؤال</option><option value="after-submit">پس از تحویل فعالیت</option><option value="hidden">عدم نمایش به دانش‌آموز</option></select></label></div>
-<h4>🔐 مدیریت جداگانهٔ درس‌ها</h4>
-<p class="muted">برای هر درس می‌توانی زمان بازشدن و در صورت نیاز زمان بسته‌شدن را تعیین کنی. اگر «قفل بودن درس‌های تنظیم‌نشده» فعال باشد، فقط درس‌هایی که اینجا باز کرده‌ای قابل دسترسی خواهند بود.</p>
+<h4>➕ افزودن درس به فهرست این کتاب</h4>
+<p class="muted">برای کتاب‌های غیرریاضی می‌توانی درس‌هایی را که هنوز در فهرست اولیه نیستند ثبت کنی. شمارهٔ درس باید یکتا باشد. برای ریاضی، کنترل دسترسی بر اساس همان ۷ فصل انجام می‌شود.</p>
+<div class="grid">
+ <label class="field" for="newCourseLessonId">شمارهٔ درس<input id="newCourseLessonId" type="number" min="1" max="100" placeholder="مثلاً ۴"></label>
+ <label class="field" for="newCourseLessonTitle">عنوان درس<input id="newCourseLessonTitle" maxlength="160" placeholder="مثلاً سفر به دنیای گیاهان"></label>
+ <label class="field" for="newCourseLessonPage">شمارهٔ صفحه در فایل PDF (اختیاری)<input id="newCourseLessonPage" maxlength="40" placeholder="مثلاً ۱۳۵"></label>
+</div>
+<button id="addCourseLesson" type="button" class="outline">افزودن درس به فهرست</button>
+<h4 style="margin-top:18px">🔐 مدیریت جداگانهٔ درس‌ها</h4>
+<p class="muted">برای هر درس می‌توانی زمان بازشدن و در صورت نیاز زمان بسته‌شدن را تعیین کنی. درس تازه به‌صورت قفل اضافه می‌شود؛ برای انتشارش باید گزینهٔ «اجازهٔ دسترسی» را فعال و تنظیمات کتاب را ذخیره کنی.</p>
 <div id="settingLessonList" class="course-lesson-settings"></div>
 <div class="grid"><button id="saveCourseSettings" type="button">💾 ذخیره تنظیمات این کتاب</button><button id="reloadCourseSettings" type="button" class="outline">دریافت دوباره تنظیمات از سرور</button></div>
 <div id="courseSettingsStatus" class="notice" role="status">برای ویرایش تنظیمات، با حساب معلم وارد شو.</div>
@@ -959,10 +967,14 @@ const bookSubjectCatalog=[
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی و نگارش',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
 function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
 function courseLessonCatalog(subject){
- if(subject==='math')return chapters.map(c=>({id:Number(c.id),title:'فصل '+fa(c.id)+' · '+c.title}));
- if(subject==='persian'||subject==='dictation')return (typeof persianLessons!=='undefined'?persianLessons:[]).map(l=>({id:Number(l.id),title:(subject==='dictation'?'املای درس ':'درس ')+fa(l.id)+' · '+l.title}));
- const item=(typeof otherSubjectData!=='undefined'?otherSubjectData:[]).find(s=>s.id===subject);
- return (item?.lessons||[]).map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title}));
+ let base=[];
+ if(subject==='math')base=chapters.map(c=>({id:Number(c.id),title:'فصل '+fa(c.id)+' · '+c.title}));
+ else if(subject==='persian'||subject==='dictation')base=(typeof persianLessons!=='undefined'?persianLessons:[]).map(l=>({id:Number(l.id),title:(subject==='dictation'?'املای درس ':'درس ')+fa(l.id)+' · '+l.title,page:l.page,isFreeLesson:l.isFreeLesson===true}));
+ else{const item=(typeof otherSubjectData!=='undefined'?otherSubjectData:[]).find(s=>s.id===subject);base=(item?.lessons||[]).map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title,page:l.page,isFreeLesson:l.isFreeLesson===true}))}
+ const map=new Map(base.map(item=>[Number(item.id),item]));
+ const custom=courseSettingsBySubject[subject]?.customLessons;
+ if(Array.isArray(custom))custom.forEach(item=>{const id=Number(item.id);if(!Number.isInteger(id)||id<1||id>100||map.has(id))return;map.set(id,{id,title:(subject==='math'?'فصل ':'درس ')+fa(id)+' · '+String(item.title||'درس جدید'),page:String(item.page||'').trim(),isCustom:true,isFreeLesson:['persian','dictation'].includes(subject),content:''})});
+ return [...map.values()].sort((a,b)=>Number(a.id)-Number(b.id));
 }
 function isCourseLessonOpen(subject,lessonId){
  const settings=courseSettingsBySubject[subject]||{};
@@ -1050,6 +1062,20 @@ function renderTeacherGradebook(){
  panel.innerHTML='<p class="muted">'+fa(rows.length)+' نتیجه در فیلتر انتخاب‌شده.</p><div style="overflow-x:auto"><table class="math-matrix" style="min-width:900px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>تحلیل/بازخورد</th><th>زمان</th></tr></thead><tbody>'+rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(names.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||r.activity_type||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+ (r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('')+'</tbody></table></div>';
 }
 $('settingSubject')?.addEventListener('change',renderCourseSettingsForm);
+$('addCourseLesson')?.addEventListener('click',()=>{
+ const subject=$('settingSubject').value;
+ if(subject==='math'){$('courseSettingsStatus').textContent='ریاضی با فصل‌های ۱ تا ۷ مدیریت می‌شود؛ برای کنترل دسترسی از همان فصل‌ها استفاده کن.';return}
+ const id=Number($('newCourseLessonId').value),title=$('newCourseLessonTitle').value.trim(),page=$('newCourseLessonPage').value.trim();
+ if(!Number.isInteger(id)||id<1||id>100||!title){$('courseSettingsStatus').textContent='شمارهٔ درس بین ۱ تا ۱۰۰ و عنوان درس را وارد کن.';return}
+ if(courseLessonCatalog(subject).some(x=>Number(x.id)===id)){$('courseSettingsStatus').textContent='این شمارهٔ درس از قبل وجود دارد؛ یک شمارهٔ تازه انتخاب کن.';return}
+ const current=courseSettingsBySubject[subject]||{};
+ const custom=[...(Array.isArray(current.customLessons)?current.customLessons:[]),{id,title,page}].sort((a,b)=>Number(a.id)-Number(b.id));
+ const lessonSettings=[...(Array.isArray(current.lessons)?current.lessons:[])];lessonSettings.push({id,title:'درس '+fa(id)+' · '+title,isUnlocked:false,availableFrom:null,availableUntil:null,sortOrder:id});
+ courseSettingsBySubject[subject]={...current,customLessons:custom,lessons:lessonSettings};
+ $('newCourseLessonId').value='';$('newCourseLessonTitle').value='';$('newCourseLessonPage').value='';
+ renderCourseSettingsForm();populateLessonFilter('reportSubjectFilter','reportLessonFilter');populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');populateTeacherBankLessons();populateAssignmentLessons();renderStudentSubjectHub?.();renderOtherSubjectPicker?.();
+ $('courseSettingsStatus').textContent='درس جدید به‌صورت پیش‌نویس اضافه شد. برای ثبت روی سرور و زمان‌بندی دسترسی، «ذخیره تنظیمات این کتاب» را بزن.';
+});
 $('reloadCourseSettings')?.addEventListener('click',()=>loadCourseSettings());
 $('saveCourseSettings')?.addEventListener('click',async()=>{
  if(!cloudSession||cloudSession.role!=='teacher'){ $('courseSettingsStatus').textContent='برای ذخیره تنظیمات باید با حساب معلم وارد شوی.';return}
@@ -1063,7 +1089,7 @@ $('saveCourseSettings')?.addEventListener('click',async()=>{
  }));
  const releaseMode=$('settingReleaseMode').value,releaseAt=isoFromDateInput($('settingReleaseAt').value);
  if(releaseMode==='scheduled'&&!releaseAt){$('courseSettingsStatus').textContent='برای روش زمان‌بندی، زمان بازشدن کتاب را تعیین کن.';return}
- const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode,releaseAt,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
+ const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode,releaseAt,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,customLessons:(courseSettingsBySubject[subject]?.customLessons||[]),defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
  const btn=$('saveCourseSettings');setBusy(btn,true,'در حال ذخیره…');$('courseSettingsStatus').textContent='در حال ذخیره تنظیمات کتاب و قفل درس‌ها…';
  try{
    const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});
@@ -2457,7 +2483,8 @@ loadExpandedPersianVocabulary();
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
   function openOtherSubject(id){
-    selectedOtherSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!selectedOtherSubject)return;if(courseSettingsBySubject[id]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
+    const baseSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!baseSubject)return;if(courseSettingsBySubject[id]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
+    selectedOtherSubject={...baseSubject,lessons:courseLessonCatalog(id).map(item=>{const existing=baseSubject.lessons.find(l=>Number(l.id)===Number(item.id));if(existing)return existing;const custom=(courseSettingsBySubject[id]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));return {id:item.id,title:custom?.title||item.title.replace(/^(?:درس|املای درس)\s*[۰-۹0-9]+\s*[·.]\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(id),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}}})};
     activeStudentSubject=selectedOtherSubject.id;$('otherSubjectPicker').classList.add('hidden');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
@@ -2646,8 +2673,9 @@ loadExpandedPersianVocabulary();
         const options=Array.isArray(l.options)?l.options:[];
         $('otherLessonOptions').innerHTML=options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
         $('otherLessonFeedback').classList.add('hidden');$('checkOtherLessonAnswer').disabled=false;
+        $('otherLessonQuestion').closest('.lesson-note').classList.toggle('hidden',!options.length||courseSettingsBySubject[subject.id]?.allowPractice===false);
+        $('otherLessonQuestion').textContent=options.length?(l.question||'پرسش این درس هنوز ثبت نشده است.'):'برای این درس هنوز سؤال اختصاصی ثبت نشده است. از بخش تمرین و آزمون، فعالیت مربوط به همین کتاب و درس را انتخاب کن.';
         $('otherLessonOptions').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{$('otherLessonOptions').querySelectorAll('.other-answer').forEach(x=>x.classList.toggle('selected',x.querySelector('input').checked))});
-        if(courseSettingsBySubject[subject.id]?.allowPractice===false)$('otherLessonQuestion').closest('.lesson-note').classList.add('hidden');
       }
     }catch(error){
       console.error('Could not render lesson',error);
