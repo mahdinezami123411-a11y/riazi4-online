@@ -678,8 +678,9 @@ function buildQuestionSpecificExplanation(q,rightAnswer,providedExplanation){
  const ans=String(rightAnswer??'').trim();
  const nums=(normalized.match(/-?\d+(?:\.\d+)?/g)||[]).map(Number).filter(Number.isFinite);
  const fa=n=>Number(n).toLocaleString('fa-IR');
- const clean=String(providedExplanation||q?.why||q?.explanation||'').trim();
- if(clean.length>35 && normalizeAnswer(clean)!==normalizeAnswer(prompt) && !/^(پاسخ|جواب)\s*(صحیح|درست)?\s*(این سؤال)?\s*[:：.]?$/i.test(clean)) return clean;
+ const clean=String(providedExplanation||'').trim();
+ const authored=String(q?.why||q?.explanation||'').trim();
+ if(authored.length>35 && normalizeAnswer(authored)!==normalizeAnswer(prompt) && !/^(پاسخ|جواب)\s*(صحیح|درست)?\s*(این سؤال)?\s*[:：.]?$/i.test(authored)) return authored;
  const arithmetic=normalized.match(/(-?\d+)\s*(\+|-|\*|\/|÷)\s*(-?\d+)/);
  if(arithmetic){
   const a=Number(arithmetic[1]),op=arithmetic[2],b=Number(arithmetic[3]);
@@ -699,13 +700,16 @@ function buildQuestionSpecificExplanation(q,rightAnswer,providedExplanation){
  if(/ضرب|چند برابر|ردیف|ستون/.test(prompt)&&nums.length>=2)return 'برای پیدا کردن تعداد کلِ ردیف‌ها و ستون‌ها، تعداد ردیف‌ها را در تعداد هر ردیف ضرب می‌کنیم. عددهای سؤال '+nums.slice(0,4).map(fa).join('، ')+' هستند؛ حاصل ضرب با خواستهٔ مسئله تطبیق داده می‌شود. پاسخ: '+ans+'.';
  if(/ساعت|دقیقه|زمان/.test(prompt)&&nums.length)return 'در تبدیل زمان، هر ساعت ۶۰ دقیقه است؛ بنابراین هنگام جمع یا کم کردن دقیقه‌ها از ۶۰ استفاده می‌کنیم، نه ۱۰۰. زمان‌های مطرح‌شده '+nums.slice(0,5).map(fa).join('، ')+' هستند. پاسخ درست: '+ans+'.';
  if(/بزرگ‌تر|کوچک‌تر|بیشتر|کمتر|مقایسه|ترتیب صعودی|ترتیب نزولی/.test(prompt)&&nums.length>=2)return 'برای مقایسه از رقم سمت چپ شروع می‌کنیم؛ هر عددی که در اولین مرتبهٔ متفاوت رقم بزرگ‌تری داشته باشد، بزرگ‌تر است. عددهای مورد مقایسه '+nums.slice(0,5).map(fa).join('، ')+' هستند. طبق ترتیب خواسته‌شده پاسخ درست '+ans+' است.';
- const skill=String(q?.skill||q?.topic||q?.chapter_title||'این مبحث'),opts=Array.isArray(q?.opts)?q.opts:[];
+ if(clean.length>20 && normalizeAnswer(clean)!==normalizeAnswer(prompt)) return clean;
+ const skill=String(q?.skill||q?.topic||q?.chapter_title||'این مبحث'),opts=Array.isArray(q?.opts)?q.opts:(Array.isArray(q?.options)?q.options:[]);
  const keyOption=Number.isInteger(q?.a)?opts[q.a]:'';
  return 'این سؤال از مبحث «'+skill+'» است. خواستهٔ دقیق آن این است: «'+prompt+'». اول اطلاعات لازم را از متن جدا کن، بعد قانون مربوط به '+skill+' را به کار ببر و در پایان نتیجه را دوباره با خواستهٔ سؤال بسنج. '+(nums.length?'عددهای مهم: '+nums.slice(0,5).map(fa).join('، ')+'. ':'')+(opts.length?'گزینهٔ درست «'+String(keyOption||ans)+'» است. ':'')+'پاسخ صحیح: '+ans+'.';
 }
 function renderQuestionFeedback(q,correct,rightAnswer,explanation){
  let answer=String(rightAnswer??'').trim();
  if(!answer && typeof correctAnswerText==='function')answer=String(correctAnswerText(q)||'').trim();
+ if(!answer && q?.correct_answer!==undefined)answer=String(q.correct_answer);
+ if(!answer && q?.answer_text!==undefined)answer=String(q.answer_text);
  if(!answer && q?.answer!==undefined)answer=String(q.answer);
  if(!answer && Array.isArray(q?.options)&&Number.isInteger(q?.correct_index))answer=String(q.options[q.correct_index]||'');
  if(!answer)answer='کلید پاسخ این سؤال در داده‌های دریافتی پیدا نشد و باید بررسی شود.';
