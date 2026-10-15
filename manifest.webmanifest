@@ -1,0 +1,23 @@
+{
+  "id": "./",
+  "name": "مأموریت ریاضی چهارم",
+  "short_name": "ریاضی چهارم",
+  "description": "برنامه آموزشی تعاملی ریاضی پایه چهارم ابتدایی",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#edf6ff",
+  "theme_color": "#1456b8",
+  "categories": ["education"],
+  "icons": [
+    {
+      "src": "./icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
