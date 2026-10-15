@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1456b8"><meta name="app-build" content="yare-math-v5-20261015">
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#1456b8"><meta name="app-build" content="yare-math-v5-20261015-previewfix">
 <title>یار یادگیری ریاضی چهارم ابتدایی</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -187,8 +187,16 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 #practiceFilters>div:nth-child(2){display:none!important}
 
 
+
+/* دکمهٔ پیش‌نمایش دانش‌آموز: جدا، بزرگ و قابل مشاهده در موبایل */
+.teacher-preview-entry{display:flex;flex-direction:column;gap:10px;margin:12px 0 16px;padding:14px;border:2px solid #83bafa;border-radius:17px;background:linear-gradient(120deg,#eaf4ff,#fff8e8);box-shadow:0 4px 0 #d4e4fa}
+.teacher-preview-copy b{display:block;color:#153f80;font-size:15px}
+.teacher-preview-copy small{display:block;color:#55708f;font-size:12px;line-height:1.8;margin-top:3px}
+#teacherStudentPreview{display:block;width:100%;min-height:50px;padding:12px 14px;font-size:15px;background:linear-gradient(135deg,#087f68,#19b889);box-shadow:0 4px 0 #08624f,0 8px 16px #117e6220}
+@media(min-width:560px){.teacher-preview-entry{flex-direction:row;align-items:center;justify-content:space-between}.teacher-preview-entry #teacherStudentPreview{width:auto;min-width:260px}}
+
 </style></head>
-<body data-build="yare-math-v5-20261015"><main class="wrap">
+<body data-build="yare-math-v5-20261015-previewfix"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🚀</div><div><h1>🚀 مأموریت ریاضی چهارم</h1><p>باشگاه قهرمانان عددها، الگوها و مسئله‌ها</p></div></div><div style="margin-top:13px"><span class="pill" style="background:#ffffff24;color:#fff">نسخهٔ آمادهٔ اتصال به Supabase</span></div></header>
 <section class="card" id="home"><h2>🌟 سلام قهرمان ریاضی! آماده‌ی شروعی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">اینجا هر تمرین یک مأموریت تازه است؛ یاد بگیر، راه‌حل پیدا کن و مرحله‌به‌مرحله به قهرمان ریاضی تبدیل شو!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -252,7 +260,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 </section>
 </section>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
-<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><div class="row"><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button><button class="outline" id="teacherHome">خروج</button></div></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
+<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
 <div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس فعال</span><strong>۱</strong></div><div class="metric"><span class="muted">سؤال‌های بانک تمرین</span><strong>۷۰۰+</strong></div><div class="metric"><span class="muted">فصل‌های کتاب</span><strong>۷</strong></div></div><h3 style="margin-top:16px">درس فعال</h3><p class="muted">ریاضی پایه چهارم: جدول ضرب، مفهوم ضرب و تقسیم، حل مسئله و آزمون</p><div id="teacherOverviewStatus" class="notice">پس از راه‌اندازی جداول و توابع Supabase، تعداد دانش‌آموزان، پاسخ‌ها و درصد پاسخ‌های صحیح در این صفحه نمایش داده می‌شوند.</div></div>
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
