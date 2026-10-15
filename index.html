@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v12-20261015-arithmetic-feedback">
+<meta name="application-name" content="ریاضی چهارم"><meta name="app-build" content="yare-math-v13-20261015-student-feedback-teacher-papers">
 <title>یار یادگیری ریاضی چهارم ابتدایی</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -232,7 +232,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 @media(max-width:700px){.student-account-fields{grid-template-columns:1fr}.student-account-form{padding:11px}.student-accounts-heading{align-items:flex-start}}
 
 </style></head>
-<body data-build="yare-math-v12-20261015-arithmetic-feedback"><main class="wrap">
+<body data-build="yare-math-v13-20261015-student-feedback-teacher-papers"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">🚀</div><div><h1>🚀 مأموریت ریاضی چهارم</h1><p>باشگاه قهرمانان عددها، الگوها و مسئله‌ها</p></div></div><div style="margin-top:13px"><span class="pill" style="background:#ffffff24;color:#fff">نسخهٔ آمادهٔ اتصال به Supabase</span></div></header>
 <section class="card" id="home"><h2>🌟 سلام قهرمان ریاضی! آماده‌ی شروعی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">اینجا هر تمرین یک مأموریت تازه است؛ یاد بگیر، راه‌حل پیدا کن و مرحله‌به‌مرحله به قهرمان ریاضی تبدیل شو!</p><div class="mission-strip"><div class="mission-chip"><span>🚀</span><b>مأموریت روز</b><small>یک مهارت تازه یاد بگیر</small></div><div class="mission-chip"><span>🧩</span><b>حل معما</b><small>از فکر کردن نترس</small></div><div class="mission-chip"><span>🏆</span><b>رکورد شخصی</b><small>هر بار بهتر از قبل</small></div></div><div class="notice adventure-note">🧭 راهنما: از «یادآوری» شروع کن، بعد یک فصل را یاد بگیر و در پایان با آزمون خودت را بسنج. برای ورود، تمرین و گزارش آنلاین از حساب دانش‌آموز یا معلم استفاده کن. نتیجهٔ تمرین‌های بانکی و یادآوری پس از بررسی سمت سرور ثبت می‌شود.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -298,7 +298,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 </section>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
 <section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🟢 حضور امروز</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
-<div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس فعال</span><strong>۱</strong></div><div class="metric"><span class="muted">سؤال‌های بانک تمرین</span><strong>۷۰۰+</strong></div><div class="metric"><span class="muted">فصل‌های کتاب</span><strong>۷</strong></div></div><h3 style="margin-top:16px">درس فعال</h3><p class="muted">ریاضی پایه چهارم: جدول ضرب، مفهوم ضرب و تقسیم، حل مسئله و آزمون</p><div id="teacherOverviewStatus" class="notice">پس از راه‌اندازی جداول و توابع Supabase، تعداد دانش‌آموزان، پاسخ‌ها و درصد پاسخ‌های صحیح در این صفحه نمایش داده می‌شوند.</div></div>
+<div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس فعال</span><strong>۱</strong></div><div class="metric"><span class="muted">سؤال‌های بانک تمرین</span><strong>۷۰۰+</strong></div><div class="metric"><span class="muted">فصل‌های کتاب</span><strong>۷</strong></div></div><h3 style="margin-top:16px">درس فعال</h3><p class="muted">ریاضی پایه چهارم: جدول ضرب، مفهوم ضرب و تقسیم، حل مسئله و آزمون</p><div id="teacherOverviewStatus" class="notice">پس از راه‌اندازی جداول و توابع Supabase، تعداد دانش‌آموزان، پاسخ‌ها و درصد پاسخ‌های صحیح در این صفحه نمایش داده می‌شوند.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><label class="field" for="teacherOverviewStudentFilter">انتخاب دانش‌آموز</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
   <div class="row"><div><h3>🗂️ مدیریت کامل بانک سؤال‌های فصل‌ها</h3><p class="muted">همه سؤال‌های فصل انتخابی را ببین، جست‌وجو کن، ویرایش کن یا سؤال تازه بساز.</p></div><span class="pill" id="teacherBankTotal">۷۰۰ سؤال</span></div>
@@ -375,39 +375,63 @@ function renderFullTimesTable(){const colors=['#2498cf','#d78a35','#55a45e','#d8
 function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 function newReminderMath(){const type=$('reminderMathType').value;let a,b,text;if(type==='divide'){b=rand(2,10);let q=rand(2,10);a=b*q;currentReminderAnswer=q;text=`${a} ÷ ${b} = ؟`}else if(type==='concept'){a=rand(2,8);b=rand(2,9);currentReminderAnswer=a*b;text=`${a} گروهِ ${b}تایی چندتا می‌شود؟`}else{a=rand(1,10);b=rand(1,10);currentReminderAnswer=a*b;text=`${a} × ${b} = ؟`}currentReminderQuestion={kind:type,a,b,text,answered:false};$('checkReminderMath').disabled=false;$('reminderMathQuestion').textContent=text;$('reminderMathAnswer').value='';$('reminderMathFeedback').classList.add('hidden');$('reminderMathBox').classList.remove('hidden')}
 $('newReminderMath').onclick=newReminderMath;
-async function submitReminderOnline(kind,a,b,inputId,feedbackId,questionText){
- const f=$(feedbackId);f.classList.remove('hidden');
- const raw=$(inputId).value.trim();
- if(!raw){f.textContent='اول پاسخ را وارد کن.';return}
- if(!cloudSession||!(cloudSession.role==='student'||(cloudSession.role==='teacher'&&cloudSession.studentViewAsTeacher))){
-  f.textContent='برای بررسی و ذخیره نتیجه، ابتدا با حساب دانش‌آموز وارد شو یا از پیش‌نمایش معلم استفاده کن.';
-  f.style.whiteSpace='pre-line';return;
+function explainArithmetic(kind,a,b,answer){
+ const fa=n=>Number(n).toLocaleString('fa-IR');
+ if(kind==='divide')return fa(a)+' ÷ '+fa(b)+' = '+fa(answer)+'؛ برای بررسی، '+fa(answer)+' × '+fa(b)+' = '+fa(a)+'، پس حاصل تقسیم درست است.';
+ if(kind==='multiply'||kind==='concept')return 'ضرب یعنی جمع تکراری: '+Array.from({length:b},()=>fa(a)).join(' + ')+' = '+fa(answer)+'. پس '+fa(a)+' × '+fa(b)+' = '+fa(answer)+'.';
+ const cols=['یکان','دهگان','صدگان','هزارگان','ده‌هزارگان'];
+ const steps=[];let carry=0,place=1,i=0;
+ while(place<=a||place<=b||carry>0){
+  const da=Math.floor(a/place)%10,db=Math.floor(b/place)%10,total=da+db+carry,digit=total%10,next=Math.floor(total/10);
+  steps.push(cols[i]+'؛ '+fa(da)+' + '+fa(db)+(carry?' + '+fa(carry)+' انتقالی':'')+' = '+fa(total)+(next?'؛ '+fa(digit)+' را می‌نویسیم و '+fa(next)+' را انتقال می‌دهیم':'؛ '+fa(digit)+' را می‌نویسیم'));
+  carry=next;place*=10;i++;
  }
- const button=kind==='addition'?$('checkAddition'):$('checkReminderMath');
+ return steps.join('؛ ')+'. بنابراین '+fa(a)+' + '+fa(b)+' = '+fa(answer)+'.';
+}
+async function submitReminderOnline(kind,a,b,inputId,feedbackId,questionText){
+ const f=$(feedbackId),button=kind==='addition'?$ ('checkAddition'):$('checkReminderMath');
  const state=kind==='addition'?currentAdditionQuestion:currentReminderQuestion;
+ f.classList.remove('hidden');f.style.whiteSpace='normal';
+ const raw=$(inputId).value.trim();
+ if(!raw){f.textContent='اول پاسخ را وارد کن.';f.style.background='#fff2dd';return}
  if(state?.answered){f.textContent='این پاسخ قبلاً بررسی شده است؛ سؤال جدید بگیر.';return}
- setBusy(button,true,'در حال بررسی پاسخ…');
+ const answer=kind==='divide'?a/b:(kind==='addition'?a+b:a*b);
+ const normalized=normalizeAnswer(raw);
+ const correct=normalized===normalizeAnswer(answer);
+ const rightAnswer=Number(answer).toLocaleString('fa-IR');
+ const why=explainArithmetic(kind,a,b,answer);
+ // Show the mathematical result first; the student should never get only a blank/yellow box because saving failed.
+ state.answered=true;
+ f.innerHTML='<div style="font-size:1.05em;font-weight:800;margin-bottom:8px">'+(correct?'✅ آفرین! پاسخ درست است.':'❌ پاسخ درست نیست.')+'</div><p style="margin:6px 0"><b>پاسخ صحیح:</b> '+escapeHtml(rightAnswer)+'</p><p style="margin:6px 0"><b>تحلیل و روش حل:</b> '+escapeHtml(why)+'</p><p id="'+(kind==='addition'?'additionSaveStatus':'reminderSaveStatus')+'" class="muted" style="margin:6px 0">در حال ذخیره نتیجه…</p>';
+ f.style.background=correct?'linear-gradient(100deg,#e3fff2,#f7fffa)':'linear-gradient(100deg,#fff2dd,#fffaf2)';
+ f.style.color=correct?'#126a49':'#72541a';
+ button.textContent=correct?'✅ پاسخ درست بود':'📘 پاسخ را یاد بگیر';
+ setBusy(button,true,'در حال ذخیره…');
+ const saveStatus=$(kind==='addition'?'additionSaveStatus':'reminderSaveStatus');
  try{
+  if(!cloudSession||!(cloudSession.role==='student'||(cloudSession.role==='teacher'&&cloudSession.studentViewAsTeacher))){
+   if(saveStatus)saveStatus.textContent='پاسخ بررسی شد؛ برای ذخیره در کارنامه باید با حساب دانش‌آموز وارد شوی.';
+   return;
+  }
   const result=await cloudFetch('/functions/v1/submit-reminder-answer',{method:'POST',body:{kind,a,b,submitted_answer:raw,question_text:questionText}});
-  if(typeof result.correct!=='boolean')throw new Error(result.error||'سرور نتیجهٔ درست یا نادرست بودن پاسخ را برنگرداند.');
-  state.answered=true;
-  const rightAnswer=Number(result.correct_answer).toLocaleString('fa-IR');
-  const why=String(result.explanation||'محاسبه را دوباره با توجه به عمل ریاضی انجام بده.');
-  f.innerHTML=`<div style="font-size:1.05em;font-weight:800;margin-bottom:8px">${result.correct?'✅ آفرین! پاسخ درست است.':'❌ این پاسخ درست نیست.'}</div><p style="margin:6px 0"><b>پاسخ صحیح:</b> ${escapeHtml(rightAnswer)}</p><p style="margin:6px 0"><b>چرا؟</b> ${escapeHtml(why)}</p><p class="muted" style="margin:6px 0">نتیجه ذخیره شد.</p>`;
-  f.style.whiteSpace='normal';
-  f.style.background=result.correct?'linear-gradient(100deg,#e3fff2,#f7fffa)':'linear-gradient(100deg,#fff2dd,#fffaf2)';
-  f.style.color=result.correct?'#126a49':'#72541a';
-  button.textContent=result.correct?'✅ پاسخ درست بود':'📘 پاسخ را یاد بگیر';
-  setCloudStatus('پاسخ تمرین بررسی و نتیجه در پایگاه داده ثبت شد.');
-  // A progress refresh failure must not hide the answer feedback already shown.
-  try{await refreshStudentProgressFromCloud()}catch(progressError){console.warn('Progress refreshed later; answer result is already saved.',progressError)}
+  if(typeof result.correct==='boolean'){
+   // Trust the server's answer when it responds, while keeping the feedback visible.
+   const serverCorrect=result.correct;
+   f.querySelector('div').textContent=serverCorrect?'✅ آفرین! پاسخ درست است.':'❌ پاسخ درست نیست.';
+   f.querySelectorAll('p')[0].innerHTML='<b>پاسخ صحیح:</b> '+escapeHtml(Number(result.correct_answer).toLocaleString('fa-IR'));
+   f.querySelectorAll('p')[1].innerHTML='<b>تحلیل و روش حل:</b> '+escapeHtml(result.explanation||why);
+   f.style.background=serverCorrect?'linear-gradient(100deg,#e3fff2,#f7fffa)':'linear-gradient(100deg,#fff2dd,#fffaf2)';
+   f.style.color=serverCorrect?'#126a49':'#72541a';
+  }
+  if(saveStatus)saveStatus.textContent='نتیجه در کارنامهٔ آنلاین ذخیره شد.';
+  setCloudStatus('پاسخ بررسی و در کارنامه ذخیره شد.');
+  try{await refreshStudentProgressFromCloud()}catch(e){console.warn('Could not refresh progress after save',e)}
  }catch(e){
-  f.textContent='نتوانستم پاسخ را بررسی و ثبت کنم: '+cloudMessage(e);
-  f.style.whiteSpace='pre-line';f.style.background='#fff2dd';f.style.color='#72541a';
-  setCloudStatus('بررسی یا ثبت پاسخ ناموفق بود: '+cloudMessage(e),true);
+  // Keep the answer/explanation; make only the save status amber.
+  if(saveStatus)saveStatus.textContent='پاسخ محاسبه و بررسی شد، اما ذخیرهٔ آنلاین ناموفق بود: '+cloudMessage(e);
+  setCloudStatus('ذخیرهٔ آنلاین پاسخ ناموفق بود: '+cloudMessage(e),true);
  }finally{
-  setBusy(button,false);
-  if(state?.answered)button.disabled=true;
+  setBusy(button,false);if(state?.answered)button.disabled=true;
  }
 }
 $('checkReminderMath').onclick=()=>{if(!currentReminderQuestion){$('reminderMathFeedback').textContent='ابتدا سؤال جدید بگیر.';$('reminderMathFeedback').classList.remove('hidden');return}submitReminderOnline(currentReminderQuestion.kind,currentReminderQuestion.a,currentReminderQuestion.b,'reminderMathAnswer','reminderMathFeedback',currentReminderQuestion.text)};
@@ -1209,7 +1233,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         allProfiles.push(...page);if(page.length<1000)break;
       }
       cloudTeacherAttempts=allAttempts;cloudStudentProfiles=allProfiles;
-      renderTeacherReport();
+      renderTeacherReport();renderTeacherOverviewPapers();
       const overview=$('tab-overview');const metric=overview?.querySelectorAll('.metric strong');
       if(metric&&metric.length>=3){const students=new Set(cloudTeacherAttempts.map(x=>x.student_id));metric[0].textContent=String(students.size);metric[1].textContent=String(cloudTeacherAttempts.length);metric[2].textContent=cloudTeacherAttempts.length?Math.round(cloudTeacherAttempts.filter(x=>x.is_correct).length/cloudTeacherAttempts.length*100)+'٪':'—';const labels=overview.querySelectorAll('.metric .muted');if(labels.length>=3){labels[0].textContent='دانش‌آموزان فعال';labels[1].textContent='پاسخ‌های ثبت‌شده';labels[2].textContent='درستی پاسخ‌ها'}}
       const overviewStatus=$('teacherOverviewStatus');if(overviewStatus)overviewStatus.textContent='آمار بر اساس داده‌های قابل‌دسترسی در Supabase بارگذاری شد.';
@@ -1229,6 +1253,47 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       }
     }catch(e){if(status)status.textContent='خواندن گزارش انجام نشد: '+cloudMessage(e);setCloudStatus('خواندن گزارش انجام نشد: '+cloudMessage(e),true)}
   }
+  function teacherActivityLabel(source){
+    const s=String(source||'');
+    const labels={'exam:annual':'آزمون جامع','exam:term1':'آزمون نوبت اول','exam:term2':'آزمون نوبت دوم','practice:term1':'تمرین نمونه نوبت اول','practice:term2':'تمرین نمونه نوبت دوم','practice:chapter':'تمرین فصل‌به‌فصل'};
+    if(labels[s])return labels[s];
+    if(s.startsWith('exam:'))return 'آزمون · '+s.slice(5);
+    if(s.startsWith('practice:'))return 'تمرین · '+s.slice(9);
+    if(s.startsWith('reminder:'))return 'تمرین محاسبات · '+s.slice(9);
+    return s||'فعالیت ثبت‌شده';
+  }
+  function renderTeacherOverviewPapers(){
+    const host=$('teacherOverviewPapers'),filter=$('teacherOverviewStudentFilter');
+    if(!host||!filter)return;
+    const prior=filter.value||'all';
+    const students=cloudStudentProfiles.filter(p=>p.role==='student');
+    filter.innerHTML='<option value="all">همهٔ دانش‌آموزان</option>'+students.map(p=>'<option value="'+escapeHtml(p.id)+'">'+escapeHtml(p.display_name||p.id)+'</option>').join('');
+    if(prior==='all'||students.some(p=>p.id===prior))filter.value=prior;
+    const nameById=new Map(students.map(p=>[p.id,p.display_name||p.id]));
+    let rows=[...cloudTeacherAttempts];
+    if(filter.value!=='all')rows=rows.filter(r=>r.student_id===filter.value);
+    if(!rows.length){host.innerHTML='<div class="notice">برای این انتخاب هنوز پاسخ ثبت‌شده‌ای وجود ندارد. پاسخ‌هایی که دانش‌آموز ثبت کند، پس از بارگذاری مجدد گزارش در اینجا می‌آیند.</div>';return}
+    const groups=new Map();
+    for(const r of rows){
+      const date=new Date(r.created_at);
+      const day=Number.isNaN(date.getTime())?'بدون تاریخ':date.toISOString().slice(0,10);
+      const key=r.attempt_group?String(r.student_id)+'|group|'+r.attempt_group:String(r.student_id)+'|'+String(r.source||'activity')+'|'+day;
+      if(!groups.has(key))groups.set(key,{student_id:r.student_id,source:r.source||'',attempt_group:r.attempt_group||null,day,created_at:r.created_at,rows:[]});
+      const g=groups.get(key);g.rows.push(r);
+      if(Date.parse(r.created_at)<Date.parse(g.created_at))g.created_at=r.created_at;
+    }
+    const papers=[...groups.values()].sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at));
+    host.innerHTML=papers.map((g,idx)=>{
+      g.rows.sort((a,b)=>Date.parse(a.created_at)-Date.parse(b.created_at));
+      const correct=g.rows.filter(x=>x.is_correct===true).length;
+      const percent=Math.round(correct/g.rows.length*100);
+      const dateText=Number.isNaN(Date.parse(g.created_at))?'':new Date(g.created_at).toLocaleString('fa-IR');
+      const title=teacherActivityLabel(g.source);
+      const items=g.rows.map((r,i)=>'<div style="padding:10px 0;border-top:1px solid var(--line,#ddd)"><b>سؤال '+fa(i+1)+':</b> '+escapeHtml(r.question_text||'متن سؤال در سابقه ثبت نشده است.')+'<p style="margin:6px 0"><b>پاسخ دانش‌آموز:</b> '+escapeHtml(Array.isArray(r.submitted_answer)?r.submitted_answer.join('، '):String(r.submitted_answer??'بدون پاسخ'))+'</p><p style="margin:4px 0;color:'+(r.is_correct?'#16804a':'#b7791f')+';font-weight:700">'+(r.is_correct?'✅ درست':'❌ نادرست')+'</p></div>').join('');
+      return '<details class="item" style="margin:8px 0"><summary style="cursor:pointer;font-weight:800">'+escapeHtml(nameById.get(g.student_id)||g.student_id)+' — '+escapeHtml(title)+' · '+fa(g.rows.length)+' سؤال · '+fa(correct)+' درست ('+fa(percent)+'٪)<div class="muted" style="font-weight:400;font-size:.9em;margin-top:4px">'+escapeHtml(dateText)+'</div></summary><div style="margin-top:10px"><div class="notice">نمره: '+fa(correct)+' از '+fa(g.rows.length)+' ('+fa(percent)+'٪)</div>'+items+'</div></details>';
+    }).join('');
+  }
+  $('teacherOverviewStudentFilter')?.addEventListener('change',renderTeacherOverviewPapers);
   function csvSafe(value){let s=String(value??'');if(/^[\s]*[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
   function filteredReportRows(){
     let rows=[...cloudTeacherAttempts];
