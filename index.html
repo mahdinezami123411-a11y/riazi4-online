@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v1-20261016-subject-hub">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v2-20261016-lesson-reader">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -514,7 +514,7 @@ a{color:#d7ff76}
 .persian-quiz-feedback{white-space:normal}
 @media(max-width:560px){.persian-vocab-grid{grid-template-columns:1fr}.persian-source-note,.persian-quiz-card{padding:10px}}
 </style></head>
-<body data-build="chahromiha-v1-20261016-subject-hub"><main class="wrap">
+<body data-build="chahromiha-v2-20261016-lesson-reader"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
 <section class="card" id="home"><div class="home-kicker"><span>📚</span> چهارمی ها</div><h2>سلام دانش‌آموز چهارمی! کدام کتاب را می‌خواهی شروع کنی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">بعد از ورود، کتاب موردنظرت را انتخاب کن و آموزش، یادآوری، تمرین و آزمون همان درس را باز کن.</p><div class="mission-strip"><div class="mission-chip"><span>📖</span><b>یادگیری</b><small>درس را مرحله‌به‌مرحله بخوان</small></div><div class="mission-chip"><span>✏️</span><b>تمرین</b><small>دانسته‌هایت را بسنج</small></div><div class="mission-chip"><span>🌟</span><b>پیشرفت</b><small>قدم‌به‌قدم بهتر شو</small></div></div><div class="notice adventure-note">🧭 برای شروع، با حساب دانش‌آموز وارد شو؛ سپس یکی از کتاب‌های پایهٔ چهارم را انتخاب کن. بخش‌های هر کتاب متناسب با همان درس نمایش داده می‌شوند.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
@@ -570,8 +570,9 @@ a{color:#d7ff76}
     <div class="row" style="margin-top:14px"><h3 id="otherSubjectTitle">درس</h3><span class="pill" id="otherSubjectProgress">۰ پاسخ</span></div>
     <div id="otherSubjectLessonPicker" class="chapter-grid"></div>
   </div>
-  <div id="otherSubjectLessonBody" class="item hidden" aria-live="polite">
-    <div class="row"><h3 id="otherLessonTitle">آموزش مبحث</h3><span class="pill">یاد بگیر و تمرین کن</span></div>
+  <div id="otherSubjectLessonBody" class="item hidden lesson-reader" aria-live="polite">
+    <div class="row lesson-reader-toolbar"><span class="pill">یاد بگیر و تمرین کن</span><button id="backToOtherLessons" class="outline" type="button">↩ فهرست درس‌ها</button></div>
+    <h3 id="otherLessonTitle">آموزش مبحث</h3>
     <div id="otherLessonContent"></div>
     <div class="lesson-note"><h4>🎯 پرسش این مبحث</h4><p id="otherLessonQuestion"></p><div id="otherLessonOptions"></div><button id="checkOtherLessonAnswer" style="width:100%;margin-top:9px">بررسی پاسخ</button><div id="otherLessonFeedback" class="notice hidden" aria-live="polite"></div></div>
   </div>
@@ -2069,14 +2070,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
   function openOtherSubject(id){
-    selectedOtherSubject=otherSubjectData.find(s=>s.id===id);selectedOtherLesson=null;if(!selectedOtherSubject)return;
-    activeStudentSubject=id;$('otherSubjectPicker').classList.add('hidden');
+    selectedOtherSubject=otherSubjectData.find(s=>s.id===String(id));selectedOtherLesson=null;if(!selectedOtherSubject)return;
+    activeStudentSubject=selectedOtherSubject.id;$('otherSubjectPicker').classList.add('hidden');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
     $('otherSubjectTitle').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     const progress=readOtherProgress();const box=$('otherSubjectLessonPicker');
     box.innerHTML=selectedOtherSubject.lessons.map(l=>'<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'"><strong>'+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ همهٔ تمرین‌ها درست پاسخ داده شد':'واژه‌آموزی · دانش زبانی · املا')+'</small></button></div>').join('');
-    box.querySelectorAll('[data-other-lesson]').forEach(b=>b.onclick=()=>renderOtherLesson(Number(b.dataset.otherLesson)));
+    box.querySelectorAll('[data-other-lesson]').forEach(b=>b.onclick=()=>renderOtherLesson(b.dataset.otherLesson));
     $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(l=>progress[selectedOtherSubject.id+'-'+l.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
   }
 
@@ -2117,14 +2118,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const sourceBadge=(source,formal)=>'<span class="pill">'+escapeForHtmlText(source==='کتاب'?formal:source==='متن انتخابی کلاس'?'متن انتخابی کلاس':'تمرین تکمیلی از متن درس')+'</span>';
     const chips=words=>(words||[]).length?'<div class="persian-chip-row">'+words.map(w=>'<span class="persian-word-chip">'+escapeForHtmlText(w)+'</span>').join('')+'</div>':'<p class="muted">برای این درس، پس از انتخاب متن کلاس، واژه‌ها از همان متن ثبت می‌شوند.</p>';
     const pairs=rows=>(rows||[]).length?'<div class="persian-pair-list">'+rows.map(p=>'<div class="persian-pair"><b>'+escapeForHtmlText(p[0])+'</b><span>↔</span><span>'+escapeForHtmlText(p[1])+'</span></div>').join('')+'</div>':'<p class="muted">این درس متن ثابت ندارد؛ پس از انتخاب متن، موارد واقعی را وارد کنید.</p>';
-    const families=(rows||[]).length?'<div class="persian-pair-list">'+rows.map(x=>'<div class="persian-pair"><b>'+escapeForHtmlText(x.root)+'</b><span>←</span><span>'+x.words.map(escapeForHtmlText).join('، ')+'</span></div>').join('')+'</div>':'<p class="muted">ابتدا متن درس آزاد را انتخاب کنید.</p>';
+    const families=rows=>(rows||[]).length?'<div class="persian-pair-list">'+rows.map(x=>'<div class="persian-pair"><b>'+escapeForHtmlText(x.root)+'</b><span>←</span><span>'+x.words.map(escapeForHtmlText).join('، ')+'</span></div>').join('')+'</div>':'<p class="muted">ابتدا متن درس آزاد را انتخاب کنید.</p>';
     const isDictationOnly=selectedOtherSubject.id==='dictation';
     const progressPrefix=isDictationOnly?'dictation':'persian';
     const wordTopic=isDictationOnly?{title:'فهرست املای همین درس',source:l.isFreeLesson?'متن انتخابی کلاس':'کتاب',explain:l.isFreeLesson?'این درس آزاد است؛ واژه‌های املا باید از متن انتخابی کلاس استخراج شوند.':'این فهرست برای تمرین املای واژه‌های درس تنظیم شده است؛ املای دقیق را با متن کتاب مقایسه کن.',examples:[]}:(l.wordTopic||{title:'واژه‌آموزی',source:'تکمیلی',explain:'واژه‌ها را از متن درس استخراج کن.',examples:[]});
     const langTopic=l.languageTopic||{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های متن درس برای تمرین استفاده کن.',examples:[]};
     const quizzes=isDictationOnly?(l.isFreeLesson?buildPersianLessonQuizzes(l):[{kind:'املای واژه',...l.spellingCheck}]):buildPersianLessonQuizzes(l);
     content.innerHTML=
-      '<div class="persian-source-note"><b>منبع:</b> کتاب فارسی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ · '+(l.page?'صفحهٔ '+escapeForHtmlText(l.page):'')+'<p>'+escapeForHtmlText(l.content)+'</p><p class="muted">'+(isDictationOnly?'بخش املا با واژه‌های همین درس تنظیم شده است.':'فهرست املا، هم‌معنی، هم‌خانواده و متضاد از واژه‌های متن و با هدف آموزشی تنظیم شده است؛ این فهرست‌ها لزوماً جدول آمادهٔ خود کتاب نیستند.')+'</p></div>'+
+      '<section class="lesson-note lesson-text-section"><h4>📖 متن درس</h4><div class="persian-source-note"><b>خلاصهٔ محتوای درس:</b> کتاب فارسی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ · '+(l.page?'صفحهٔ '+escapeForHtmlText(l.page):'')+'<p class="lesson-main-text">'+escapeForHtmlText(l.content||'این درس آزاد است؛ متن انتخابی کلاس باید در این بخش وارد شود.')+'</p><p class="muted">'+(l.isFreeLesson?'این درس آزاد است؛ متن ثابت کتاب ندارد و باید متن انتخاب‌شدهٔ کلاس وارد شود.':isDictationOnly?'این بخش خلاصهٔ محتوای درس را نشان می‌دهد؛ واژه‌های املا در بخش بعد آمده‌اند.':'فهرست املا، هم‌معنی، هم‌خانواده و متضاد در بخش‌های بعدی آمده‌اند؛ این فهرست‌ها لزوماً جدول آمادهٔ خود کتاب نیستند.')+'</p></div></section>'+
       '<div class="lesson-note"><h4>'+(isDictationOnly?'✍️ املای واژه‌های درس':'📖 واژه‌آموزی · '+escapeForHtmlText(wordTopic.title))+' '+sourceBadge(wordTopic.source,isDictationOnly?'تمرین املای درس':'بخش واژه‌آموزی کتاب')+'</h4><p>'+escapeForHtmlText(wordTopic.explain)+'</p><ul>'+(wordTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>'+
       (isDictationOnly?
         '<div class="lesson-note"><h4>📝 فهرست واژه‌ها برای املا</h4><p class="muted">ابتدا واژه‌ها را با صدای بلند بخوان، سپس بدون نگاه کردن بنویس و در پایان با کتاب مقایسه کن.</p>'+chips(l.spellingWords)+'</div>':
@@ -2189,21 +2190,32 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     });
   }
   function renderOtherLesson(id){
-    selectedOtherLesson=selectedOtherSubject?.lessons.find(l=>l.id===id);if(!selectedOtherLesson)return;
+    const subject=selectedOtherSubject;
+    selectedOtherLesson=subject?.lessons.find(l=>String(l.id)===String(id));
+    if(!selectedOtherLesson){console.warn('Requested lesson was not found',{subject:subject?.id,id});return}
     const l=selectedOtherLesson;
+    // On mobile, replace the long lesson list with the selected lesson.
+    $('otherSubjectLessons').classList.add('hidden');
     $('otherSubjectLessonBody').classList.remove('hidden');
-    $('otherLessonTitle').textContent=(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+l.title;
-    if(selectedOtherSubject.id==='persian'||selectedOtherSubject.id==='dictation'){
-      $('otherLessonQuestion').closest('.lesson-note').classList.add('hidden');
-      renderPersianLesson(l);
-      return;
+    $('otherLessonTitle').textContent=(subject.id==='persian'?'درس '+fa(l.id)+' · ':subject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+l.title;
+    try{
+      if(subject.id==='persian'||subject.id==='dictation'){
+        $('otherLessonQuestion').closest('.lesson-note').classList.add('hidden');
+        renderPersianLesson(l);
+      }else{
+        $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
+        $('otherLessonContent').innerHTML='<section class="lesson-note lesson-text-section"><h4>📖 متن درس</h4><p>'+escapeHtml(l.content||'متن این درس هنوز ثبت نشده است.')+'</p></section><div class="lesson-example"><b>مثال</b><p>'+escapeHtml(l.example||'برای این درس هنوز مثالی ثبت نشده است.')+'</p></div>';
+        $('otherLessonQuestion').textContent=l.question||'پرسش این درس هنوز ثبت نشده است.';
+        const options=Array.isArray(l.options)?l.options:[];
+        $('otherLessonOptions').innerHTML=options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
+        $('otherLessonFeedback').classList.add('hidden');$('checkOtherLessonAnswer').disabled=false;
+        $('otherLessonOptions').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{$('otherLessonOptions').querySelectorAll('.other-answer').forEach(x=>x.classList.toggle('selected',x.querySelector('input').checked))});
+      }
+    }catch(error){
+      console.error('Could not render lesson',error);
+      $('otherLessonContent').innerHTML='<div class="notice"><b>باز کردن این درس با خطا روبه‌رو شد.</b><p>صفحه باز است، اما بخشی از محتوا بارگذاری نشد. از دکمهٔ «فهرست درس‌ها» برگرد و درس دیگری را امتحان کن.</p></div>';
     }
-    $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
-    $('otherLessonContent').innerHTML='<p>'+escapeHtml(l.content)+'</p><div class="lesson-example"><b>مثال</b><p>'+escapeHtml(l.example)+'</p></div>';
-    $('otherLessonQuestion').textContent=l.question;
-    $('otherLessonOptions').innerHTML=l.options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
-    $('otherLessonFeedback').classList.add('hidden');$('checkOtherLessonAnswer').disabled=false;
-    $('otherLessonOptions').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{$('otherLessonOptions').querySelectorAll('.other-answer').forEach(x=>x.classList.toggle('selected',x.querySelector('input').checked))});
+    $('otherSubjectLessonBody').scrollIntoView({behavior:'smooth',block:'start'});
   }
   $('checkOtherLessonAnswer').onclick=async()=>{
     const l=selectedOtherLesson;if(!l)return;
@@ -2234,6 +2246,11 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const lessonButton=$('otherSubjectLessonPicker').querySelector('[data-other-lesson="'+l.id+'"]');
     if(lessonButton){const small=lessonButton.querySelectorAll('small')[1]||lessonButton.querySelector('small');if(small)small.textContent=ok?'✅ پاسخ درست ثبت شده':'پاسخ ثبت شد؛ دوباره تمرین کن'}
     renderOtherSubjectPicker();
+  };
+  $('backToOtherLessons').onclick=()=>{
+    $('otherSubjectLessonBody').classList.add('hidden');
+    $('otherSubjectLessons').classList.remove('hidden');
+    $('otherSubjectLessons').scrollIntoView({behavior:'smooth',block:'start'});
   };
   $('subjectsBackHome').onclick=()=>showStudentAppView('home');
   $('mathBackToSubjects').onclick=()=>showStudentAppView('home');
