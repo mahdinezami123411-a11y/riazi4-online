@@ -1334,7 +1334,7 @@ function renderAnswerControls(q,containerId,inputId,name,setSelected){
 function isQuestionCorrect(q,response){if((q.type||'mc')==='input'){const val=normalizeAnswer(response);const accepted=(q.answers||[q.answer]).map(normalizeAnswer);return val!==''&&accepted.includes(val)}if(q.type==='matching'){if(!Array.isArray(response)||!Array.isArray(q.answer))return false;return response.length===q.answer.length&&response.every((v,i)=>v===q.answer[i])}if(q.type==='multi'){if(!Array.isArray(response))return false;const a=[...(q.as||[])].sort((x,y)=>x-y),b=[...response].sort((x,y)=>x-y);return a.length===b.length&&a.every((v,i)=>v===b[i])}return response===q.a}
 function correctAnswerText(q){if(q.type==='input')return (q.answers||[q.answer]).join(' یا ');if(q.type==='matching')return Array.isArray(q.answer)&&Array.isArray(q.opts)?q.opts.slice(0,4).map((left,i)=>String(left)+' ↔ '+String(q.opts[q.answer[i]]||'')).join('؛ '):'جفت‌های صحیح را با ستون پاسخ‌ها مقایسه کن.';if(q.type==='multi')return q.as.map(i=>q.opts[i]).join('، ');return q.opts?.[q.a]||''}
 function newBookPractice(){const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;$('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';if(!filtered.length){currentPractice=null;$('bookPracticeSkill').textContent='این انتخاب سؤال ندارد';$('bookPracticeQuestion').textContent='برای این فصل و فیلتر انتخاب‌شده سؤالی پیدا نشد. فیلتر «همه نوع‌ها» یا «همه سطح‌ها» را انتخاب کن.';$('bookPracticeOptions').innerHTML='';$('bookPracticeOptions').classList.add('hidden');$('bookPracticeAnswer').classList.add('hidden');updatePracticeStats();return}
- let fresh=filtered.filter(q=>!practiceSeen.has(q.q));if(!fresh.length){practiceSeen.clear();fresh=filtered.slice()}const chosen=fresh[Math.floor(Math.random()*fresh.length)];practiceSeen.add(chosen.q);currentPractice=shuffledQuestion(chosen);const practiceMode=$('practiceSetMode')?.value||'chapter';const practiceScope=practiceMode==='term1'?'تمرین نوبت اول':practiceMode==='term2'?'تمرین نوبت دوم':`فصل ${faDigits($('bookPracticeTopic').value)}`;$('bookPracticeSkill').textContent=`${practiceScope} · ${currentPractice.skill||'تمرین ریاضی'} · ${questionTypeLabel(currentPractice)}${practiceMode==='chapter'?' · '+({easy:'آسان',medium:'متوسط',hard:'چالشی'})[currentPractice.difficulty||'medium']:''}`;$('bookPracticeQuestion').textContent=currentPractice.q;renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats()}
+ let fresh=filtered.filter(q=>!practiceSeen.has(q.q));if(!fresh.length){practiceSeen.clear();fresh=filtered.slice()}const history=studentProgress.questionHistory||{};const reviewRows=filtered.filter(q=>{const rec=history[practiceHistoryKey(q)];return rec&&(Number(rec.incorrect)||0)>(Number(rec.correct)||0)});const reviewFresh=reviewRows.filter(q=>!practiceSeen.has(q.q));const reviewPool=reviewFresh.length?reviewFresh:reviewRows;const chosen=reviewPool.length&&Math.random()<0.7?reviewPool[Math.floor(Math.random()*reviewPool.length)]:fresh[Math.floor(Math.random()*fresh.length)];practiceSeen.add(chosen.q);currentPractice=shuffledQuestion(chosen);const practiceMode=$('practiceSetMode')?.value||'chapter';const practiceScope=practiceMode==='term1'?'تمرین نوبت اول':practiceMode==='term2'?'تمرین نوبت دوم':`فصل ${faDigits($('bookPracticeTopic').value)}`;$('bookPracticeSkill').textContent=`${practiceScope} · ${currentPractice.skill||'تمرین ریاضی'} · ${questionTypeLabel(currentPractice)}${practiceMode==='chapter'?' · '+({easy:'آسان',medium:'متوسط',hard:'چالشی'})[currentPractice.difficulty||'medium']:''}`;$('bookPracticeQuestion').textContent=currentPractice.q;renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats()}
 $('newBookPractice').onclick=newBookPractice;$('nextBookPractice').onclick=newBookPractice;
 $('checkBookPractice').onclick=()=>{if(!currentPractice||practiceWasChecked)return;let response=(currentPractice.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(currentPractice.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(currentPractice.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}practiceWasChecked=true;practiceAsked++;const ok=isQuestionCorrect(currentPractice,response);if(ok)practiceCorrect++;const f=$('bookPracticeFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(currentPractice,ok,correctAnswerText(currentPractice),currentPractice.why||'');f.style.background='transparent';f.style.color=ok?'#126a49':'#72541a';$('checkBookPractice').textContent=ok?'✅ درست بود!':'📘 نکته را مرور کن';$('checkBookPractice').disabled=true;updatePracticeStats()};
 $('bookPracticeTopic').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
@@ -1839,12 +1839,15 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   show=function(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});window.scrollTo({top:0,behavior:'smooth'});if(id==='student'&&activeStudentName)renderStudentDashboard()};
   let activeStudentName='';let studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
   function progressKey(name){return STORAGE_P+normalizeAnswer(name)}
-  function loadStudentProgress(name){return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}})}
+  function practiceHistoryKey(q){const id=String(q?.id??'').trim();if(id)return 'id:'+id;const text=normalizeAnswer(q?.q||q?.prompt||q?.question||'');return text?'text:'+text:''}
+  function loadStudentProgress(name){return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}})}
   function storeStudentProgress(){if(activeStudentName)localWrite(progressKey(activeStudentName),studentProgress)}
-  function awardProgress(chapter,correct){
+  function awardProgress(chapter,correct,question=null){
     studentProgress.attempts=(studentProgress.attempts||0)+1;
     if(correct){studentProgress.correct=(studentProgress.correct||0)+1;studentProgress.streak=(studentProgress.streak||0)+1;studentProgress.bestStreak=Math.max(studentProgress.bestStreak||0,studentProgress.streak)}else studentProgress.streak=0;
     if(chapter){const key=String(chapter);if(!studentProgress.byChapter[key])studentProgress.byChapter[key]={attempts:0,correct:0};studentProgress.byChapter[key].attempts++;if(correct)studentProgress.byChapter[key].correct++}
+    const qKey=practiceHistoryKey(question);
+    if(qKey){studentProgress.questionHistory=studentProgress.questionHistory||{};const rec=studentProgress.questionHistory[qKey]||{attempts:0,correct:0,incorrect:0};rec.attempts=(Number(rec.attempts)||0)+1;if(correct)rec.correct=(Number(rec.correct)||0)+1;else rec.incorrect=(Number(rec.incorrect)||0)+1;rec.lastCorrect=correct===true;rec.updatedAt=new Date().toISOString();studentProgress.questionHistory[qKey]=rec}
     storeStudentProgress();renderStudentDashboard();
   }
   function renderStudentDashboard(){
@@ -1866,7 +1869,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   $('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');
   // Record each answered math practice item in the student's progress history.
   const previousPracticeCheck=$('checkBookPractice').onclick;
-  $('checkBookPractice').onclick=function(){const previousCorrect=practiceCorrect,was=practiceWasChecked;if(previousPracticeCheck)previousPracticeCheck.call(this);if(!was&&practiceWasChecked){const ok=practiceCorrect>previousCorrect;awardProgress(Number(currentPractice?.chapter||$('bookPracticeTopic').value),ok)}};
+  $('checkBookPractice').onclick=function(){const previousCorrect=practiceCorrect,was=practiceWasChecked;if(previousPracticeCheck)previousPracticeCheck.call(this);if(!was&&practiceWasChecked){const ok=practiceCorrect>previousCorrect;awardProgress(Number(currentPractice?.chapter||$('bookPracticeTopic').value),ok,currentPractice)}};
   const previousExamSubmit=$('examSubmit').onclick;
   $('examSubmit').onclick=function(){const oldIndex=examIndex,was=examAnswered,oldScore=examScore;if(previousExamSubmit)previousExamSubmit.call(this);if(!was&&examAnswered){const q=examItems[oldIndex];awardProgress(q?.chapter||0,examScore>oldScore)}};
 
@@ -2180,7 +2183,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(!cloudSession?.user?.id)return;
     const q=`?select=chapter_id,is_correct&student_id=eq.${encodeURIComponent(cloudSession.user.id)}&order=created_at.asc&limit=5000`;
     const rows=await cloudFetch('/rest/v1/yare_practice_attempts'+q,{method:'GET'});
-    const p={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
+    const p={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:studentProgress?.questionHistory||{}};
     for(const row of (Array.isArray(rows)?rows:[])){
       if(typeof row.is_correct!=='boolean')continue;
       p.attempts++;if(row.is_correct){p.correct++;p.streak++;p.bestStreak=Math.max(p.bestStreak,p.streak)}else p.streak=0;
@@ -3534,7 +3537,10 @@ loadExpandedPersianVocabulary();
         questionText:row.question_text||'',
         lastExplanation:row.explanation||'',
         selectedText:row.metadata?.selected_text||'',
-        correctText:row.metadata?.correct_text||''
+        correctText:row.metadata?.correct_text||'',
+        incorrectCount:Number(row.metadata?.incorrect_count)||(row.is_correct===false?1:0),
+        correctCount:Number(row.metadata?.correct_count)||(row.is_correct===true?1:0),
+        lastWrongAt:row.metadata?.last_wrong_at||''
       };
     }
     // Upload newer local results or old local-only results so changing devices won't drop progress.
@@ -3826,9 +3832,9 @@ function renderOtherSubjectActivity(mode){
  select.innerHTML=lessons.map(l=>'<option value="'+Number(l.id)+'">درس '+fa(l.id)+' · '+escapeForHtmlText(l.title)+'</option>').join('');
  select.value=String(lessons.some(l=>Number(l.id)===previous)?previous:lessons[0].id);
  select.onchange=()=>renderOtherSubjectActivity(mode);
- const lesson=lessons.find(l=>Number(l.id)===Number(select.value))||lessons[0],all=getOtherSubjectQuestions(subject,lesson);
+ const lesson=lessons.find(l=>Number(l.id)===Number(select.value))||lessons[0],all=getOtherSubjectQuestions(subject,lesson);const progress=readOtherProgress();
  if(!all.length){box.innerHTML='<div class="notice">برای این درس سؤال دارای گزینه‌های مرتبط و معتبر پیدا نشد؛ سؤال ساختگی یا گزینهٔ نامرتبط نمایش داده نمی‌شود.</div>';$('otherSubjectActivityCount').textContent='۰ سؤال';return}
- const pool=all.map((q,sourceIndex)=>({...q,_sourceQuestionIndex:sourceIndex})).sort(()=>Math.random()-.5).slice(0,Math.min(mode==='exam'?15:10,all.length));
+ const candidates=all.map((q,sourceIndex)=>({...q,_sourceQuestionIndex:sourceIndex}));const questionLimit=Math.min(mode==='exam'?15:10,all.length);let pool;if(mode==='practice'){const missed=candidates.filter(q=>{const rec=progress[subject.id+'-'+lesson.id+'-quiz-'+q._sourceQuestionIndex];const misses=Number(rec?.incorrectCount)||(rec?.correct===false?1:0);const corrects=Number(rec?.correctCount)||(rec?.correct===true?1:0);return misses>corrects});pool=[...shuffledCopy(missed),...shuffledCopy(candidates.filter(q=>!missed.includes(q)))].slice(0,questionLimit)}else pool=shuffledCopy(candidates).slice(0,questionLimit);
  $('otherSubjectActivityCount').textContent=fa(pool.length)+' سؤال';$('otherSubjectActivityResult').classList.add('hidden');
  function matchingRows(q){
   return '<div class="other-matching-list">'+q.pairs.map((left,j)=>'<div class="other-matching-row"><span class="other-matching-left"><b>'+fa(j+1)+'.</b> '+escapeForHtmlText(left)+'</span><select aria-label="انتخاب پاسخ برای مورد '+fa(j+1)+'" data-other-matching-index="'+j+'"><option value="">انتخاب پاسخ…</option>'+q.options.slice(4,8).map((option,k)=>'<option value="'+(k+4)+'">'+escapeForHtmlText(option)+'</option>').join('')+'</select></div>').join('')+'</div>';
@@ -3843,7 +3849,7 @@ function renderOtherSubjectActivity(mode){
    if(option.value!=='')option.disabled=values.some((value,otherIndex)=>otherIndex!==index&&value>=4&&value===Number(option.value));
   }));
  }));
- const progress=readOtherProgress(),resultTime=()=>new Date().toISOString();
+ const resultTime=()=>new Date().toISOString();
  function pickedAnswer(q,card){
   if(q.type==='matching'){
    const controls=[...(card?.querySelectorAll('select[data-other-matching-index]')||[])];
@@ -3871,10 +3877,10 @@ function renderOtherSubjectActivity(mode){
   const localKey=subject.id+'-'+lesson.id+'-quiz-'+stableIndex,existing=progress[localKey]||{};
   const selectedText=Array.isArray(value)?value.map(n=>n>=0?q.options[n]:'بدون پاسخ').join('، '):q.options[value];
   const correctText=q.type==='matching'?q.answer.map(n=>q.options[n]).join('، '):q.options[q.answer];
-  progress[localKey]={correct:ok,selected:value,answer:q.type==='matching'?q.answer:Number(q.answer),attemptCount:(Number(existing.attemptCount)||0)+1,updatedAt:savedAt,activityType:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,questionText:q.question,lastExplanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',selectedText,correctText};
+  progress[localKey]={correct:ok,selected:value,answer:q.type==='matching'?q.answer:Number(q.answer),attemptCount:(Number(existing.attemptCount)||0)+1,correctCount:(Number(existing.correctCount)||0)+(ok?1:0),incorrectCount:(Number(existing.incorrectCount)||0)+(ok?0:1),lastWrongAt:ok?(existing.lastWrongAt||''):savedAt,updatedAt:savedAt,activityType:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,questionText:q.question,lastExplanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',selectedText,correctText};
   writeOtherProgress(progress);
   if(isRealStudentSession()){
-   try{await saveSubjectPracticeProgress({subject:subject.id,lesson_id:lesson.id,activity_key:(mode==='exam'?'exam-tab-':'practice-tab-')+stableIndex,activity_type:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,selected_answer:Array.isArray(value)?null:value,correct_answer:Array.isArray(q.answer)?null:Number(q.answer),is_correct:ok,attempt_count:progress[localKey].attemptCount,question_text:q.question,explanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',metadata:{selected_text:selectedText,correct_text:correctText,matching_selected:Array.isArray(value)?value:null,matching_answer:Array.isArray(q.answer)?q.answer:null,exam:mode==='exam'},updated_at:savedAt})}
+   try{await saveSubjectPracticeProgress({subject:subject.id,lesson_id:lesson.id,activity_key:(mode==='exam'?'exam-tab-':'practice-tab-')+stableIndex,activity_type:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,selected_answer:Array.isArray(value)?null:value,correct_answer:Array.isArray(q.answer)?null:Number(q.answer),is_correct:ok,attempt_count:progress[localKey].attemptCount,question_text:q.question,explanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',metadata:{selected_text:selectedText,correct_text:correctText,matching_selected:Array.isArray(value)?value:null,matching_answer:Array.isArray(q.answer)?q.answer:null,exam:mode==='exam',correct_count:progress[localKey].correctCount,incorrect_count:progress[localKey].incorrectCount,last_wrong_at:progress[localKey].lastWrongAt},updated_at:savedAt})}
    catch(error){console.warn('Subject activity could not be synced',error)}
   }
  }
