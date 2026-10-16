@@ -3677,11 +3677,11 @@ function buildPersianLessonQuizzes(l){
     function addQuestion(kind,question,correct,candidates,analysis,seed,forbidden=[]){
       correct=String(correct??'').trim();
       if(!correct||!question||seen.has(kind+'|'+question))return;
-      const blocked=new Set([correct,...forbidden].map(v=>String(v??'').trim()));
+      const blocked=new Set([correct,...forbidden].map(v=>sourceQuestionNormalize(String(v??'').trim())));
       const wrongs=[];
       for(const value of (candidates||[])){
-        const v=String(value??'').trim();
-        if(v&&!blocked.has(v)&&!wrongs.some(x=>sourceQuestionNormalize(x)===sourceQuestionNormalize(v)))wrongs.push(v);
+        const v=String(value??'').trim(),key=sourceQuestionNormalize(v);
+        if(v&&key&&!blocked.has(key)&&!wrongs.some(x=>sourceQuestionNormalize(x)===key))wrongs.push(v);
         if(wrongs.length===3)break;
       }
       if(wrongs.length<3)return;
