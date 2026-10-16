@@ -1706,7 +1706,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   $('studentEnter').onclick=()=>{show('studentNamePage');$('studentLoginError').classList.add('hidden');$('studentNameInput').value='';$('studentPasswordInput').value='';setTimeout(()=>$('studentNameInput').focus(),80)};
   $('studentLoginBack').onclick=()=>show('home');
   $('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');
-  // Record results in this browser only for the progress map and badges.
+  // Record each answered math practice item in the student's progress history.
   const previousPracticeCheck=$('checkBookPractice').onclick;
   $('checkBookPractice').onclick=function(){const previousCorrect=practiceCorrect,was=practiceWasChecked;if(previousPracticeCheck)previousPracticeCheck.call(this);if(!was&&practiceWasChecked){const ok=practiceCorrect>previousCorrect;awardProgress(Number(currentPractice?.chapter||$('bookPracticeTopic').value),ok)}};
   const previousExamSubmit=$('examSubmit').onclick;
@@ -3325,7 +3325,7 @@ loadExpandedPersianVocabulary();
   let selectedOtherLesson = null;
   function otherProgressKey(){return 'yare-other-subject-progress-v1-'+String(cloudSession?.user?.id||activeUsername||'guest')}
   function readOtherProgress(){try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}}
-  function writeOtherProgress(data){try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}}
+  function writeOtherProgress(data){try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}try{if($('unifiedSubjectCards'))renderUnifiedLearningReport()}catch{}}
   function isRealStudentSession(){return !!(cloudSession?.access_token&&cloudSession?.user?.id&&cloudSession.role==='student'&&cloudSession.profile?.role==='student'&&!cloudSession.studentViewAsTeacher)}
   async function saveSubjectPracticeProgress(record){
     if(!isRealStudentSession())return {synced:false,reason:'no-student-session'};
@@ -4211,8 +4211,8 @@ const persianBookPageMap={
     if(!box)return;
     const local=readOtherProgress();
     const allActivityRecords=[];
-    const keyPattern=/^(persian|dictation|science|social|gifts)-(\\d+)-quiz-(\\d+)$/;
-    const singlePattern=/^(persian|dictation|science|social|gifts)-(\\d+)$/;
+    const keyPattern=/^(persian|dictation|science|social|gifts)-(\d+)-quiz-(\d+)$/;
+    const singlePattern=/^(persian|dictation|science|social|gifts)-(\d+)$/;
     Object.entries(local).forEach(([key,rec])=>{
       if(!rec||typeof rec!=='object'||typeof rec.correct!=='boolean')return;
       let match=key.match(keyPattern);
