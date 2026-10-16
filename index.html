@@ -732,6 +732,39 @@ a{color:#d7ff76}
 .unified-subject-status.needs-work{color:#ffd08c}
 .unified-subject-card button{width:100%;margin-top:7px}
 @media(max-width:560px){.unified-progress-summary{gap:6px}.unified-stat{padding:8px}.unified-stat b{font-size:18px}.unified-stat span{font-size:10px}.unified-subject-cards{grid-template-columns:1fr}.unified-report-heading .pill{display:none}}
+
+/* ابزارهای آموزشی تعاملی و آزمون چاپی */
+.fraction-explorer-controls{display:grid;grid-template-columns:1fr 1.5fr;gap:10px}
+.fraction-explorer-controls label{min-width:0}.fraction-explorer-controls input[type=range]{padding:0;accent-color:#64e7d7}
+.visual-fraction-segments{display:flex;gap:5px;margin:16px 0 10px;min-height:46px}
+.visual-fraction-segment{flex:1;min-width:0;height:44px;border:1.5px solid #4f648d;border-radius:8px;background:linear-gradient(145deg,#263252,#1a2340);transition:background .15s,border-color .15s}
+.visual-fraction-segment.filled{background:linear-gradient(145deg,#4c77ef,#64dfd2);border-color:#9af5e9;box-shadow:0 0 12px #59e5dd24}
+.fraction-explorer-explanation{border:1px solid #4c668d;background:#202d4d;color:#e5f6ff;border-radius:12px;padding:10px;font-weight:800;text-align:center}
+.printable-exam-builder{margin-top:14px;border:1px solid #53648c;background:linear-gradient(145deg,#1c2748,#151d36)!important}
+.print-exam-lesson-actions,.print-exam-export-actions{margin:8px 0}
+.print-exam-lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px;margin:8px 0}
+.print-exam-lessons .option{margin:0;align-items:center;background:#1b2745!important;color:#eaf1ff!important;border-color:#435982!important}
+.print-exam-lessons input{width:auto;flex:0 0 auto}
+.print-exam-key-option{align-self:end;min-height:42px;color:#e7edff!important;background:#1c2746!important}
+.printable-exam-preview{background:#fff;color:#172033!important;border:1px solid #93a6c5;border-radius:12px;margin-top:14px;padding:14px}
+.printable-exam-preview *{color:#172033}
+.print-exam-paper h2{text-align:center;margin:0 0 7px;color:#142a4e}
+.print-exam-paper .exam-meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:1px solid #bac7da;padding:8px 0 12px;margin-bottom:10px;font-size:12px}
+.print-exam-question{border:1px solid #d5deeb;border-radius:8px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}
+.print-exam-question>b{display:block;margin-bottom:5px}
+.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}
+.print-exam-option{font-size:13px;line-height:1.8}
+.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #536782;margin-top:28px;padding-top:15px}
+.print-exam-answer-key li{margin:7px 0;line-height:1.8}
+.print-exam-matching{width:100%;border-collapse:collapse;margin-top:8px}
+.print-exam-matching td,.print-exam-matching th{border:1px solid #cbd5e1;padding:6px;text-align:right}
+@media(max-width:560px){.fraction-explorer-controls{grid-template-columns:1fr}.print-exam-lessons{grid-template-columns:1fr 1fr}.printable-exam-preview{padding:8px}.print-exam-options{grid-template-columns:1fr}}
+@media print{
+  body.print-exam-only{background:#fff!important;color:#111!important;font-family:Tahoma,Arial,sans-serif!important}
+  body.print-exam-only .print-exam-paper{max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;color:#111!important}
+  body.print-exam-only .print-exam-question{border-color:#bbb!important;box-shadow:none!important}
+  body.print-exam-only .print-exam-answer-key{page-break-before:always;break-before:page}
+}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -813,7 +846,21 @@ a{color:#d7ff76}
 <div class="row"><h2>🧠 یادآوری ریاضی</h2><span class="pill">مهارت‌های پایه</span></div>
 <section class="learn-section item"><h3>۱. جدول کامل ضرب از ۱ تا ۱۰</h3><p class="muted">همه جدول‌ها یک‌جا نمایش داده شده‌اند. عدد سطر را در عدد ستون ضرب کن؛ جواب در خانه‌ی برخورد آن‌هاست.</p><div class="times-poster" style="overflow-x:auto"><div id="fullTimesTable"></div></div><p class="muted">برای نمونه، سطر ۴ و ستون ۷ برابر ۲۸ است؛ یعنی ۴ × ۷ = ۲۸.</p></section>
 <section class="learn-section item"><h3>۲. مفهوم تقسیم؛ به زبان ساده</h3><p>تقسیم یعنی یک تعداد را به گروه‌های برابر تقسیم کنیم یا ببینیم چند گروه مساوی می‌توانیم بسازیم.</p><div class="concept-grid"><div class="concept-box"><b>تقسیم به گروه‌های برابر</b><p>۱۲ شکلات را بین ۳ کودک به‌طور مساوی پخش می‌کنیم.</p><div class="big-math">۱۲ ÷ ۳ = ۴</div><p class="muted">هر کودک ۴ شکلات می‌گیرد.</p></div><div class="concept-box"><b>ساختن گروه‌ها</b><p>۱۲ مهره داریم و در هر گروه ۴ مهره می‌گذاریم.</p><div class="big-math">۱۲ ÷ ۴ = ۳</div><p class="muted">۳ گروه ۴تایی ساخته می‌شود.</p></div></div><div class="notice"><b>رابطه‌ی ضرب و تقسیم:</b> چون ۳ × ۴ = ۱۲، پس ۱۲ ÷ ۳ = ۴ و ۱۲ ÷ ۴ = ۳.</div></section>
-<section class="learn-section item"><h3>۳. تمرین ضرب و تقسیم</h3><p class="muted">نوع سؤال را انتخاب کن، سؤال تازه بگیر و پاسخت را بررسی کن.</p><label class="field" for="reminderMathType">نوع تمرین</label><select id="reminderMathType"><option value="multiply">ضرب</option><option value="divide">تقسیم</option><option value="concept">مسئله‌ی مفهومی ضرب</option></select><button id="newReminderMath" style="width:100%;margin-top:9px">🎯 سؤال جدید</button><div id="reminderMathBox" class="item hidden"><p id="reminderMathQuestion" class="big-math"></p><input id="reminderMathAnswer" inputmode="numeric" placeholder="پاسخت را بنویس"><button id="checkReminderMath" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="reminderMathFeedback" class="notice hidden"></div></div></section>
+<section class="learn-section item fraction-explorer">
+  <h3>۳. کسرها را با تصویر بشناس</h3>
+  <p class="muted">مخرج می‌گوید کل به چند قسمت مساوی تقسیم شده است؛ صورت تعداد قسمت‌هایی را نشان می‌دهد که انتخاب می‌کنیم.</p>
+  <div class="fraction-explorer-controls">
+    <label class="field" for="visualFractionDenominator">کل قسمت‌های مساوی (مخرج)
+      <select id="visualFractionDenominator"><option value="2">۲ قسمت</option><option value="3">۳ قسمت</option><option value="4" selected>۴ قسمت</option><option value="5">۵ قسمت</option><option value="6">۶ قسمت</option><option value="8">۸ قسمت</option><option value="10">۱۰ قسمت</option></select>
+    </label>
+    <label class="field" for="visualFractionNumerator">قسمت‌های انتخاب‌شده (صورت): <b id="visualFractionNumeratorLabel">۱</b>
+      <input id="visualFractionNumerator" type="range" min="0" max="4" value="1" step="1">
+    </label>
+  </div>
+  <div id="visualFractionSegments" class="visual-fraction-segments" aria-label="مدل تصویری کسر"></div>
+  <div id="visualFractionExplanation" class="fraction-explorer-explanation" role="status">۱ قسمت از ۴ قسمت مساوی، یعنی یک‌چهارم.</div>
+</section>
+<section class="learn-section item"><h3>۴. تمرین ضرب و تقسیم</h3><p class="muted">نوع سؤال را انتخاب کن، سؤال تازه بگیر و پاسخت را بررسی کن.</p><label class="field" for="reminderMathType">نوع تمرین</label><select id="reminderMathType"><option value="multiply">ضرب</option><option value="divide">تقسیم</option><option value="concept">مسئله‌ی مفهومی ضرب</option></select><button id="newReminderMath" style="width:100%;margin-top:9px">🎯 سؤال جدید</button><div id="reminderMathBox" class="item hidden"><p id="reminderMathQuestion" class="big-math"></p><input id="reminderMathAnswer" inputmode="numeric" placeholder="پاسخت را بنویس"><button id="checkReminderMath" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="reminderMathFeedback" class="notice hidden"></div></div></section>
 <section class="learn-section item"><h3>۴. جمع عددهای دو، سه و چهاررقمی</h3><p>برای جمع، رقم‌های هم‌ارزش را زیر هم می‌نویسیم: یکان زیر یکان، دهگان زیر دهگان، صدگان زیر صدگان و هزارگان زیر هزارگان. از ستون یکان شروع می‌کنیم. اگر حاصل یک ستون ۱۰ یا بیشتر شد، ده‌تایی را به ستون بعدی می‌بریم.</p><div class="concept-grid"><div class="concept-box"><b>جمع دورقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۷</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۵</span></div><div class="stack-rule"></div><div class="stack-result">۴۲</div></div><p class="muted">از یکان شروع می‌کنیم: ۷+۵=۱۲؛ ۲ را می‌نویسیم و ۱ دهگان را به ستون بعد می‌بریم.</p></div><div class="concept-box"><b>جمع سه‌رقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۳۳۴</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۵۶۸</span></div><div class="stack-rule"></div><div class="stack-result">۹۰۲</div></div><p class="muted">یکان زیر یکان، دهگان زیر دهگان و صدگان زیر صدگان قرار می‌گیرد.</p></div><div class="concept-box"><b>جمع چهاررقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۳۴۵</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۲۸۷</span></div><div class="stack-rule"></div><div class="stack-result">۳۶۳۲</div></div><p class="muted">در هر ستون، اگر حاصل ۱۰ یا بیشتر شد، رقم یکان را می‌نویسیم و دهگان را انتقال می‌دهیم.</p></div><div class="concept-box"><b>یادت باشد</b><p>عددها را مرتب بنویس و رقم‌های هم‌ارزش را دقیقاً زیر هم قرار بده. از ستون یکان شروع کن.</p></div></div></section>
 <section class="learn-section item"><h3>۵. تمرین جمع دورقمی، سه‌رقمی و چهاررقمی</h3><label class="field" for="additionDigits">نوع جمع</label><select id="additionDigits"><option value="2">دو رقمی</option><option value="3">سه رقمی</option><option value="4">چهار رقمی</option></select><button id="newAddition" style="width:100%;margin-top:9px">➕ سؤال جمع جدید</button><div id="additionBox" class="item hidden"><div id="additionQuestion" class="stack-sum stack-question" aria-live="polite"></div><input id="additionAnswer" inputmode="numeric" placeholder="حاصل جمع را بنویس"><button id="checkAddition" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="additionFeedback" class="notice hidden"></div></div></section>
 </div>
@@ -876,7 +923,38 @@ a{color:#d7ff76}
 </div>
 <div id="tab-curriculum" class="tabpane"><h3>مدیریت فایل‌های کتاب‌های پایهٔ چهارم</h3><p class="muted">از این بخش می‌توانی PDF هر کتاب را جداگانه انتخاب و پیش‌نمایش کنی. فایل‌هایی که از این پنل اضافه می‌شوند در همین مرورگر/دستگاه ذخیره می‌شوند؛ برای دسترسی عمومی از گوشی‌های دانش‌آموزان، PDF باید در مخزن سایت در مسیر تعیین‌شده قرار بگیرد.</p><label class="field" for="bookSubject">انتخاب کتاب</label><select id="bookSubject"></select><label class="field" for="bookPdf">فایل PDF کامل کتاب (اختیاری)</label><input id="bookPdf" type="file" accept="application/pdf,.pdf"><button id="attachBook" style="width:100%;margin-top:9px">افزودن PDF کامل کتاب</button><div class="item" style="margin-top:14px"><h4>📎 فایل آموزشی برای یک درس مشخص</h4><p class="muted">کتاب و درس را انتخاب کن و PDF یا تصویر همان درس را اضافه کن. تصویر و PDF پس از انتخاب، همین‌جا پیش‌نمایش می‌شوند.</p><label class="field" for="lessonFileSubject">کتاب</label><select id="lessonFileSubject"></select><label class="field" for="lessonFileLesson">درس</label><select id="lessonFileLesson"></select><label class="field" for="lessonResourceFile">فایل PDF یا تصویر</label><input id="lessonResourceFile" type="file" accept="application/pdf,image/*"><button type="button" id="previewLessonResource" class="outline" style="width:100%;margin-top:8px">پیش‌نمایش فایل انتخاب‌شده</button><button type="button" id="saveLessonResource" style="width:100%;margin-top:8px">ذخیره و انتشار فایل برای همین درس</button><div id="lessonResourcePreview"></div><div id="lessonResourceStatus" class="notice">انتخاب کتاب، درس و فایل برای پیش‌نمایش.</div></div><div id="teacherBookStatus" class="notice">یک کتاب انتخاب کن و فایل PDF آن را اضافه کن.</div><h3 style="margin-top:18px">📚 فایل‌های هر کتاب</h3><div id="teacherBookLibrary" class="book-library"></div><div id="teacherBookPreview"></div><h3 style="margin-top:18px">دسترسی به کتاب‌ها و درس‌ها</h3><p class="muted">از تنظیمات کتاب‌ها می‌توانی دسترسی هر کتاب و درس را فعال یا غیرفعال کنی.</p><div id="subjectAccessList"></div><div class="video-manager"><h3>🎬 بارگذاری ویدیوی آموزشی</h3><p class="muted">برای هر فصل یک ویدیوی آموزشی انتخاب کن. دانش‌آموز ویدیو را در صفحه آموزش همان فصل می‌بیند. این نسخه ویدیو را فقط در همین مرورگر ذخیره می‌کند.</p><label class="field" for="teacherVideoSubject">کتاب مربوط به ویدیو</label><select id="teacherVideoSubject"></select><label class="field" for="teacherVideoChapter">درس / فصل مربوط به ویدیو</label><select id="teacherVideoChapter"></select><label class="field" for="teacherVideoTitle">عنوان ویدیو</label><input id="teacherVideoTitle" maxlength="100" placeholder="مثلاً آموزش ضرب چندرقمی">
 <label class="field" for="teacherVideoFile">فایل ویدیویی</label><input id="teacherVideoFile" type="file" accept="video/*"><div class="profile-action-row"><button id="saveTeacherVideo">📤 ذخیره ویدیو برای این فصل</button><button id="removeTeacherVideo" class="outline">حذف ویدیوی این فصل</button></div><div id="teacherVideoStatus" class="notice" role="status">هنوز ویدیویی انتخاب نشده است.</div><div id="teacherVideoPreview"></div></div>
-</div><div id="tab-assignments" class="tabpane"><h3>🧩 ساخت تمرین و آزمون برای کتاب و درس مشخص</h3><p class="muted">هر فعالیت به کتاب و درس انتخاب‌شده وابسته است؛ سؤال‌ها از بانک همان کتاب/درس برداشته می‌شوند. نوع فعالیت، تعداد سؤال، زمان، ترتیب سؤال‌ها و تعداد تلاش را تعیین کن.</p><label class="field" for="actSubject">کتاب موردنظر</label><select id="actSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" id="actLessonField" for="actLesson">درس موردنظر</label><select id="actLesson"></select><p class="muted">سؤال‌های فعالیت فقط از بانک همین کتاب و درس انتخاب می‌شوند. برای ریاضی می‌توانی از انتخاب فصل یا نوبت استفاده کنی.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً تمرین درس سوم فارسی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" id="actScopeField" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" id="actChapterField" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" id="actMultiLessonsField" for="actMultiLessons" style="display:none">انتخاب چند درس برای آزمون</label><select id="actMultiLessons" multiple size="5" style="display:none"></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div></div>
+</div><div id="tab-assignments" class="tabpane"><h3>🧩 ساخت تمرین و آزمون برای کتاب و درس مشخص</h3><p class="muted">هر فعالیت به کتاب و درس انتخاب‌شده وابسته است؛ سؤال‌ها از بانک همان کتاب/درس برداشته می‌شوند. نوع فعالیت، تعداد سؤال، زمان، ترتیب سؤال‌ها و تعداد تلاش را تعیین کن.</p><label class="field" for="actSubject">کتاب موردنظر</label><select id="actSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" id="actLessonField" for="actLesson">درس موردنظر</label><select id="actLesson"></select><p class="muted">سؤال‌های فعالیت فقط از بانک همین کتاب و درس انتخاب می‌شوند. برای ریاضی می‌توانی از انتخاب فصل یا نوبت استفاده کنی.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً تمرین درس سوم فارسی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" id="actScopeField" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" id="actChapterField" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" id="actMultiLessonsField" for="actMultiLessons" style="display:none">انتخاب چند درس برای آزمون</label><select id="actMultiLessons" multiple size="5" style="display:none"></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div>
+<section id="teacherPrintableExamBuilder" class="item printable-exam-builder">
+  <h3>📝 ساخت آزمون چاپی برای همهٔ کتاب‌ها</h3>
+  <p class="muted">سؤال‌ها از بانک آنلاین همین کلاس و بانک‌های معتبر محتوایی برنامه انتخاب می‌شوند. پاسخ‌نامه فقط در خروجی معلم قرار می‌گیرد.</p>
+  <div class="grid">
+    <label class="field" for="printExamSubject">کتاب
+      <select id="printExamSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select>
+    </label>
+    <label class="field" for="printExamCount">تعداد سؤال
+      <select id="printExamCount"><option value="5">۵ سؤال</option><option value="10" selected>۱۰ سؤال</option><option value="15">۱۵ سؤال</option><option value="20">۲۰ سؤال</option></select>
+    </label>
+  </div>
+  <label class="field" for="printExamTitle">عنوان برگه</label>
+  <input id="printExamTitle" maxlength="100" value="آزمون پایهٔ چهارم" placeholder="مثلاً آزمون فصل دوم ریاضی">
+  <label class="field">انتخاب درس‌ها</label>
+  <div class="row print-exam-lesson-actions"><button type="button" class="outline" id="printExamSelectAll">انتخاب همهٔ درس‌ها</button><button type="button" class="outline" id="printExamClearAll">پاک‌کردن انتخاب</button></div>
+  <div id="printExamLessons" class="print-exam-lessons"></div>
+  <div class="grid">
+    <label class="field" for="printExamDifficulty">سطح دشواری
+      <select id="printExamDifficulty"><option value="all">همهٔ سطح‌ها</option><option value="easy">آسان</option><option value="medium">متوسط</option><option value="hard">چالشی</option></select>
+    </label>
+    <label class="option print-exam-key-option"><input id="printExamIncludeKey" type="checkbox" checked> افزودن پاسخ‌نامهٔ معلم</label>
+  </div>
+  <button type="button" id="printExamBuild" style="width:100%">ساخت آزمون از سؤال‌های موجود</button>
+  <div id="printExamStatus" class="notice" role="status">برای شروع، کتاب و درس‌ها را انتخاب کن.</div>
+  <div class="grid print-exam-export-actions">
+    <button type="button" class="outline" id="printExamPdf" disabled>🖨️ چاپ / ذخیره PDF</button>
+    <button type="button" class="outline" id="printExamWord" disabled>📄 دریافت فایل Word</button>
+  </div>
+  <div id="printableExamPreview" class="printable-exam-preview hidden"></div>
+</section>
+</div>
 <div id="tab-results" class="tabpane"><h3>بازخورد و نمرات؛ فیلتر مستقل کتاب و درس</h3><p class="muted">با تغییر کتاب و درس، فقط پاسخ‌ها، نمره‌ها و بازخوردهای همان محدوده نمایش داده می‌شوند.</p><div class="grid"><label class="field" for="gradeSubjectFilter">کتاب<select id="gradeSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="gradeLessonFilter">درس<select id="gradeLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label></div><button id="refreshGradebook" type="button" class="outline">به‌روزرسانی نمره‌ها</button><div id="teacherResultPanel" class="notice">پس از ورود معلم، نمرات و بازخوردها بر اساس کتاب و درس انتخاب‌شده نمایش داده می‌شوند.</div></div><div id="tab-reports" class="tabpane"><h3>📊 گزارش عملکرد؛ جداگانه برای هر کتاب و درس</h3><div id="reportsConnectionNotice" class="notice"><b>آمادهٔ اتصال به گزارش آنلاین</b><br>بعد از نصب جداول و توابع Supabase، این بخش اطلاعات واقعی کلاس را نشان می‌دهد؛ پیش از آن هیچ نمره یا دانش‌آموز ساختگی نمایش داده نمی‌شود.</div><div class="grid3"><div class="metric"><span class="muted">دانش‌آموزان ثبت‌شده</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">میانگین نمرات</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">نیازمند تمرین بیشتر</span><strong>پس از اتصال</strong></div></div><h4>تحلیل خطاها بر اساس فصل و مهارت</h4><p class="muted">پس از اتصال، این بخش درصد پاسخ صحیح هر فصل، سؤال‌های دارای بیشترین خطا و دانش‌آموزانی را که به تمرین تکمیلی نیاز دارند نمایش می‌دهد.</p><div class="grid"><label class="field" for="reportSubjectFilter">کتاب مورد گزارش<select id="reportSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="reportLessonFilter">درس مورد گزارش<select id="reportLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label><label class="field" for="reportDateRange">بازهٔ گزارش<select id="reportDateRange"><option>تمام مدت</option><option>۷ روز اخیر</option><option>۳۰ روز اخیر</option></select></label></div><button id="exportReportCsv" class="outline" type="button">خروجی CSV داده‌های موجود</button><div id="teacherReportStatus" class="notice" role="status">هنوز دادهٔ آنلاین برای گزارش وجود ندارد.</div></div>
 <div id="tab-students" class="tabpane">
   <h3>👩‍🎓 مدیریت حساب دانش‌آموزان</h3>
@@ -4291,6 +4369,163 @@ const persianBookPageMap={
     }
     $('otherSubjectActivityPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
   }
+
+
+  function renderFractionExplorer(){
+    const denominator=$('visualFractionDenominator'),numerator=$('visualFractionNumerator');
+    const cells=$('visualFractionSegments'),explanation=$('visualFractionExplanation'),label=$('visualFractionNumeratorLabel');
+    if(!denominator||!numerator||!cells||!explanation)return;
+    const d=Math.max(2,Number(denominator.value)||4),n=Math.min(d,Math.max(0,Number(numerator.value)||0));
+    numerator.max=String(d);numerator.value=String(n);if(label)label.textContent=fa(n);
+    cells.innerHTML=Array.from({length:d},(_,i)=>'<span class="visual-fraction-segment '+(i<n?'filled':'')+'" role="img" aria-label="بخش '+fa(i+1)+(i<n?' انتخاب‌شده':' انتخاب‌نشده')+'"></span>').join('');
+    const names={2:['نصف','نصف'],3:['یک‌سوم','یک‌سوم'],4:['یک‌چهارم','یک‌چهارم'],5:['یک‌پنجم','یک‌پنجم'],6:['یک‌ششم','یک‌ششم'],8:['یک‌هشتم','یک‌هشتم'],10:['یک‌دهم','یک‌دهم']};
+    const part=n===1?(names[d]?.[0]||'یک قسمت'):n===0?'هیچ قسمت':n===d?'یک کل':fa(n)+' قسمت';
+    explanation.textContent=n===0?'هنوز هیچ بخشی انتخاب نشده است؛ صورت کسر صفر است: ۰/'+fa(d)+'.':n===d?'همهٔ '+fa(d)+' قسمت انتخاب شده‌اند؛ کسر '+fa(n)+'/'+fa(d)+' برابر با یک کل است.':part+' از '+fa(d)+' قسمت مساوی انتخاب شده است؛ کسر تصویری برابر '+fa(n)+'/'+fa(d)+' است.';
+  }
+  $('visualFractionDenominator')?.addEventListener('change',renderFractionExplorer);
+  $('visualFractionNumerator')?.addEventListener('input',renderFractionExplorer);
+  renderFractionExplorer();
+
+  let printableExamCurrent=null;
+  const printableSubjectNames={math:'ریاضی',persian:'فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
+  function renderPrintableLessonChoices(){
+    const subject=$('printExamSubject'),box=$('printExamLessons');if(!subject||!box)return;
+    const catalog=courseLessonCatalog(subject.value);
+    box.innerHTML=catalog.map((lesson,index)=>'<label class="option"><input type="checkbox" value="'+Number(lesson.id)+'" '+(index===0?'checked':'')+'><span>'+escapeHtml(lesson.title||('درس '+fa(lesson.id)))+'</span></label>').join('');
+  }
+  $('printExamSubject')?.addEventListener('change',()=>{renderPrintableLessonChoices();printableExamCurrent=null;$('printableExamPreview')?.classList.add('hidden');$('printExamPdf').disabled=true;$('printExamWord').disabled=true;});
+  $('printExamSelectAll')?.addEventListener('click',()=>document.querySelectorAll('#printExamLessons input[type=checkbox]').forEach(x=>x.checked=true));
+  $('printExamClearAll')?.addEventListener('click',()=>document.querySelectorAll('#printExamLessons input[type=checkbox]').forEach(x=>x.checked=false));
+  renderPrintableLessonChoices();
+
+  function normalizePrintableQuestion(q,subject,lessonId,lessonTitle){
+    const type=String(q.question_type||q.type||q.kind||'mc');
+    const options=Array.isArray(q.options)?q.options.map(x=>String(x??'')):[];
+    return {subject,lessonId:Number(lessonId),lessonTitle:String(lessonTitle||''),type,prompt:String(q.prompt||q.q||q.question||q.question_text||''),options,answer:q.answer,accepted:q.accepted,answerKey:q.answer_key||null,explanation:String(q.explanation||q.analysis||q.why||''),difficulty:String(q.difficulty||'medium'),skill:String(q.skill||q.kind||''),id:q.id||null,fromCloud:!!q.fromCloud,pairs:q.pairs};
+  }
+  function getPrintableStaticPool(subjectId,lessonIds){
+    const pool=[];
+    const add=(q,id,title)=>{const row=normalizePrintableQuestion(q,subjectId,id,title);if(row.prompt&&((row.type==='input')||row.options.length>=2))pool.push(row)};
+    for(const id of lessonIds){
+      const lessonTitle=courseLessonTitle(subjectId,id);
+      if(subjectId==='math'){
+        (practiceBank[id]||[]).forEach(q=>add(q,id,lessonTitle));
+      }else if(subjectId==='persian'){
+        const lesson=persianLessons.find(x=>Number(x.id)===Number(id));
+        if(lesson){buildPersianLessonQuizzes(lesson).concat(buildPersianMatchingQuizzes(lesson)).forEach(q=>add(q,id,lessonTitle));}
+      }else{
+        getSourceQuestionBankQuizzes(subjectId,id).forEach(q=>add(q,id,lessonTitle));
+      }
+    }
+    return pool;
+  }
+  function printQuestionAnswer(q){
+    const accepted=Array.isArray(q.answerKey)?q.answerKey:(Array.isArray(q.accepted)?q.accepted:null);
+    if(accepted&&accepted.length){
+      if(q.type==='matching'){
+        const left=Array.isArray(q.pairs)?q.pairs:q.options.slice(0,4);
+        return left.map((x,i)=>String(x)+' ↔ '+String(accepted[i]||'پاسخ '+fa(i+1))).join('؛ ');
+      }
+      return accepted.join('، ');
+    }
+    if(q.type==='matching'&&Array.isArray(q.answer)){
+      const left=Array.isArray(q.pairs)?q.pairs:q.options.slice(0,4);
+      return left.map((x,i)=>String(x)+' ↔ '+String(q.options[Number(q.answer[i])]||'')).join('؛ ');
+    }
+    if(Array.isArray(q.answer)){
+      return q.answer.map(x=>Number.isInteger(Number(x))?String(q.options[Number(x)]??x):String(x)).join('، ');
+    }
+    if(Number.isInteger(Number(q.answer))&&String(q.answer).trim()!==''&&q.options[Number(q.answer)]!==undefined){
+      return String(q.options[Number(q.answer)]);
+    }
+    return q.answer==null?'':String(q.answer);
+  }
+  function printableQuestionMarkup(q,i){
+    const number=fa(i+1),type=String(q.type||'');
+    let body='';
+    if(type==='matching'){
+      const opts=q.options||[],left=Array.isArray(q.pairs)?q.pairs:opts.slice(0,4);
+      body='<p>موارد ستون راست را با ستون چپ جور کن.</p><table class="print-exam-matching"><thead><tr><th>ستون الف</th><th>پاسخ</th></tr></thead><tbody>'+left.map((v,j)=>'<tr><td>'+escapeHtml(v)+'</td><td>........................</td></tr>').join('')+'</tbody></table><p><b>گزینه‌های ستون راست:</b> '+opts.slice(4,8).map((x,j)=>'('+fa(j+1)+') '+escapeHtml(x)).join(' &nbsp; | &nbsp; ')+'</p>';
+    }else if(type==='input'){
+      body='<div style="margin:12px 0 4px">پاسخ: ....................................................................</div>';
+    }else{
+      body='<div class="print-exam-options">'+(q.options||[]).map((x,j)=>'<div class="print-exam-option">□ '+fa(j+1)+') '+escapeHtml(x)+'</div>').join('')+'</div>';
+    }
+    return '<article class="print-exam-question"><b>'+number+'. '+escapeHtml(q.prompt)+'</b><small>'+escapeHtml(q.lessonTitle||'')+(q.skill?' · '+escapeHtml(q.skill):'')+'</small>'+body+'</article>';
+  }
+  function printableExamDocumentHtml(includeKey){
+    if(!printableExamCurrent)return '';
+    const state=printableExamCurrent;
+    const body=state.questions.map((q,i)=>printableQuestionMarkup(q,i)).join('');
+    const key=includeKey?'<section class="print-exam-answer-key"><h2>پاسخ‌نامهٔ معلم</h2><ol>'+state.questions.map(q=>'<li><b>'+escapeHtml(q.prompt)+'</b><br>'+escapeHtml(printQuestionAnswer(q)||'پاسخ‌نامهٔ این سؤال در بانک ثبت نشده است.')+(q.explanation?'<br><small>توضیح: '+escapeHtml(q.explanation)+'</small>':'')+'</li>').join('')+'</ol></section>':'';
+    return '<div class="print-exam-paper" dir="rtl"><h2>'+escapeHtml(state.title)+'</h2><div class="exam-meta"><span>کتاب: '+escapeHtml(printableSubjectNames[state.subject]||state.subject)+'</span><span>نام و نام‌خانوادگی: ....................................</span><span>تاریخ: ....................</span><span>نمره: ....................</span></div>'+body+key+'</div>';
+  }
+  function printableStandaloneHtml(includeKey){
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
+  }
+  async function buildPrintableExam(){
+    const status=$('printExamStatus'),subject=$('printExamSubject')?.value||'math';
+    const lessonIds=[...document.querySelectorAll('#printExamLessons input[type=checkbox]:checked')].map(x=>Number(x.value)).filter(Number.isInteger);
+    if(!lessonIds.length){status.textContent='حداقل یک درس را انتخاب کن.';return}
+    if(!cloudSession||cloudSession.role!=='teacher'){status.textContent='برای ساخت آزمون از بانک سؤال کلاس، ابتدا با حساب معلم وارد شو.';return}
+    const count=Number($('printExamCount')?.value)||10,difficulty=$('printExamDifficulty')?.value||'all';
+    const title=String($('printExamTitle')?.value||'آزمون پایهٔ چهارم').trim().slice(0,100);
+    $('printExamBuild').disabled=true;status.textContent='در حال جمع‌آوری سؤال‌های همین کتاب و درس‌ها…';
+    try{
+      if(['science','social','gifts'].includes(subject)||subject==='persian')await loadSourceQuestionBanks();
+      const pool=getPrintableStaticPool(subject,lessonIds).filter(q=>difficulty==='all'||q.difficulty===difficulty);
+      const rows=(Array.isArray(cloudBankRows)?cloudBankRows:[]).filter(r=>r.subject===subject&&lessonIds.includes(Number(r.lesson_id??r.chapter_id))&&r.is_active!==false&&(difficulty==='all'||String(r.difficulty||'medium')===difficulty));
+      rows.forEach(r=>pool.push(normalizePrintableQuestion({...r,type:r.question_type,fromCloud:true},subject,Number(r.lesson_id??r.chapter_id),courseLessonTitle(subject,Number(r.lesson_id??r.chapter_id)))));
+      const unique=[],seen=new Set();
+      for(const q of pool){const key=q.prompt.replace(/[\\s\\u200c]+/g,' ').trim().toLocaleLowerCase('fa');if(!key||seen.has(key))continue;seen.add(key);unique.push(q)}
+      const shuffled=shuffledCopy(unique).slice(0,count);
+      if(!shuffled.length){status.textContent='برای انتخاب فعلی، سؤال قابل‌استفاده‌ای پیدا نشد. بانک سؤال این درس را در پنل معلم بررسی یا تکمیل کن.';return}
+      const complete=[];
+      for(const q of shuffled){
+        if(q.fromCloud&&q.id){
+          try{
+            const detail=await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:{action:'get',id:q.id}});
+            const full=detail?.question,key=detail?.answer_key;
+            if(full){
+              const merged=normalizePrintableQuestion({...full,fromCloud:true},subject,Number(full.lesson_id??q.lessonId),q.lessonTitle);
+              merged.answerKey=Array.isArray(key?.accepted)?key.accepted:[];
+              merged.explanation=String(key?.explanation||merged.explanation||'');
+              if(merged.prompt&&((merged.type==='input')||merged.options.length>=2))complete.push(merged);
+            }
+          }catch(error){console.warn('Could not retrieve teacher answer key for a printable item',error)}
+        }else if(printQuestionAnswer(q)){complete.push(q)}
+      }
+      if(!complete.length){status.textContent='سؤال پیدا شد، اما پاسخ‌نامهٔ قابل‌دسترسی برای ساخت برگه وجود ندارد. پاسخ‌های سؤال‌های آنلاین از مسیر امن معلم خوانده می‌شوند؛ دوباره وارد پنل معلم شو و تلاش کن.';return}
+      printableExamCurrent={subject,title,questions:complete,createdAt:new Date().toISOString()};
+      const preview=$('printableExamPreview');
+      preview.innerHTML=printableExamDocumentHtml($('printExamIncludeKey')?.checked!==false);
+      preview.classList.remove('hidden');
+      $('printExamPdf').disabled=false;$('printExamWord').disabled=false;
+      status.textContent='آزمون ساخته شد: '+fa(complete.length)+' سؤال از '+escapeHtml(printableSubjectNames[subject])+'، همراه با پاسخ‌نامهٔ امن معلم.';
+    }catch(error){
+      console.error('Printable exam generation failed',error);
+      status.textContent='ساخت آزمون کامل نشد: '+cloudMessage(error);
+    }finally{$('printExamBuild').disabled=false}
+  }
+  $('printExamBuild')?.addEventListener('click',buildPrintableExam);
+  $('printExamIncludeKey')?.addEventListener('change',()=>{
+    if(printableExamCurrent){$('printableExamPreview').innerHTML=printableExamDocumentHtml($('printExamIncludeKey').checked);$('printableExamPreview').classList.remove('hidden')}
+  });
+  $('printExamPdf')?.addEventListener('click',()=>{
+    if(!printableExamCurrent)return;
+    const popup=window.open('','_blank');
+    if(!popup){$('printExamStatus').textContent='مرورگر پنجرهٔ چاپ را مسدود کرد؛ اجازهٔ بازشدن پنجره را بده و دوباره بزن.';return}
+    popup.document.open();popup.document.write(printableStandaloneHtml($('printExamIncludeKey')?.checked!==false));popup.document.close();
+    popup.focus();setTimeout(()=>popup.print(),350);
+  });
+  $('printExamWord')?.addEventListener('click',()=>{
+    if(!printableExamCurrent)return;
+    const html=printableStandaloneHtml($('printExamIncludeKey')?.checked!==false);
+    const blob=new Blob(['\ufeff',html],{type:'application/msword;charset=utf-8'});
+    const url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download=(String(printableExamCurrent.title||'آزمون-چهارمی‌ها').replace(/[\\\\/:*?"<>|]+/g,'-'))+'.doc';
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);
+  });
 
 })();
 
