@@ -149,8 +149,10 @@ const lessonUi = await page.evaluate(() => {
   const mainPracticeAndExamRetained = !!document.querySelector('#studentAppNav [data-app-view="practice"]') && !!document.querySelector('#studentAppNav [data-app-view="exam"]');
   return {catalogCounts,selectors,mathPlanetCount,lessonPlanetCounts,galaxyMapRemoved,progressRendererAvailable,progressBookNames,homeNavLabel,mathBookTabs,mainPracticeAndExamRetained,placement,reportNav:!!document.querySelector('#studentAppNav [data-app-view="report"]')};
 });
+const expectedCatalogCounts = {math:7,persian:17,science:13,social:22,gifts:19};
 for (const subject of ['math','persian','science','social','gifts']) {
   assert.ok(lessonUi.catalogCounts[subject] > 0, subject + ': فهرست پایهٔ درس‌ها خالی است');
+  assert.equal(lessonUi.catalogCounts[subject], expectedCatalogCounts[subject], subject + ': تعداد درس‌ها با فهرست مورد انتظار کتاب چهارم مطابقت ندارد');
 }
 for (const row of lessonUi.selectors) {
   assert.ok(row.bank > 0, row.subject + ': فهرست درس‌های بانک سؤال خالی است');
@@ -207,7 +209,40 @@ assert.match(mathNavigation.lessonTitle, /فصل\s*۱|فصل 1|فصل ۱/, 'عن
 assert.equal(mathNavigation.lessonContentPresent, true, 'توضیحات فصل در صفحهٔ آموزش خالی است');
 assert.equal(mathNavigation.backReturnsToChapters, true, 'دکمهٔ بازگشت باید فهرست فصل‌ها را برگرداند');
 
+const subjectLessonUi = await page.evaluate(async () => {
+  const api = window.__quizTestApi;
+  const result = {};
+  for (const subject of ['persian','science','social','gifts']) {
+    api.showStudentAppView('home');
+    const subjectButton = document.querySelector('#studentSubjectPicker [data-student-subject="'+subject+'"]');
+    subjectButton?.click();
+    const lessonButton = document.querySelector('#otherSubjectLessonPicker [data-other-lesson]:not([disabled])');
+    const lessonId = lessonButton?.getAttribute('data-other-lesson') || '';
+    lessonButton?.click();
+    const title = document.getElementById('otherLessonTitle')?.textContent.trim() || '';
+    const body = document.getElementById('otherLessonContent')?.textContent.trim() || '';
+    const viewVisible = !document.getElementById('otherSubjectLessonBody')?.classList.contains('hidden');
+    const renderedError = /باز کردن این درس با خطا روبه‌رو شد/.test(body);
+    result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError};
+    document.getElementById('backToOtherLessons')?.click();
+  }
+  api.showStudentAppView('home');
+  const idCounts = {};
+  document.querySelectorAll('[id]').forEach(el => { idCounts[el.id]=(idCounts[el.id]||0)+1; });
+  const duplicateIds = Object.entries(idCounts).filter(([,count])=>count>1).map(([id,count])=>({id,count}));
+  return {result,duplicateIds};
+});
+for (const subject of ['persian','science','social','gifts']) {
+  const item = subjectLessonUi.result[subject];
+  assert.ok(item.lessonId, subject + ': هیچ درس بازی برای آزمون پیدا نشد');
+  assert.ok(item.viewVisible, subject + ': صفحهٔ آموزش درس باز نشد');
+  assert.ok(item.title.length > 0, subject + ': عنوان درس نمایش داده نشد');
+  assert.ok(item.bodyLength > 30, subject + ': محتوای درس خالی است');
+  assert.equal(item.renderedError, false, subject + ': نمایش درس به پیام خطا رسید');
+}
+assert.deepEqual(subjectLessonUi.duplicateIds, [], 'شناسهٔ تکراری در DOM می‌تواند کلیک‌ها و کنترل‌ها را مختل کند: '+JSON.stringify(subjectLessonUi.duplicateIds));
 assert.deepEqual(pageErrors, [], 'برنامه هنگام اجرا خطای JavaScript داد: ' + pageErrors.join(' | '));
+assert.deepEqual(consoleErrors, [], 'برنامه درخواست/خطای کنسول ناخواسته دارد: ' + consoleErrors.join(' | '));
 
 console.log('Browser question checks passed:', JSON.stringify(sourceReport));
 console.log('Matching interaction passed: four answer selectors, correct grading, and answer feedback.');
