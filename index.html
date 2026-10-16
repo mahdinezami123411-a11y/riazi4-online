@@ -3388,7 +3388,7 @@ function renderOtherSubjectPicker(){
         if(!picked){fb.classList.remove('hidden');fb.textContent='ابتدا یکی از گزینه‌ها را انتخاب کن.';return}
         const selected=Number(picked.value),ok=selected===Number(q.answer);
         card.querySelectorAll('[data-other-activity-option]').forEach((el,j)=>{el.classList.toggle('correct',j===Number(q.answer));el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
-        fb.classList.remove('hidden');fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b>':'<b>این پاسخ درست نیست.</b>')+'<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.')+'</p>';
+        fb.classList.remove('hidden');fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b>':'<b>این پاسخ درست نیست.</b>')+(q.sourceAnswer?'<p><b>پاسخ صحیح و توضیح دفتر:</b> '+escapeForHtmlText(q.sourceAnswer)+'</p>':'<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.')+'</p>');
         button.disabled=true;await saveActivityAnswer(q,i,selected,ok);
       });
     }else{
@@ -3399,7 +3399,7 @@ function renderOtherSubjectPicker(){
           const selected=picked?Number(picked.value):-1,ok=selected===Number(q.answer);
           if(picked)answered++;if(ok)score++;
           card?.querySelectorAll('[data-other-activity-option]').forEach((el,j)=>{el.classList.toggle('correct',j===Number(q.answer));el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
-          const fb=card?.querySelector('[data-other-activity-feedback]');if(fb){fb.classList.remove('hidden');fb.innerHTML='<p><b>'+(picked?(ok?'پاسخ درست':'پاسخ نادرست'):'بدون پاسخ')+'</b></p><p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.')+'</p>'}
+          const fb=card?.querySelector('[data-other-activity-feedback]');if(fb){fb.classList.remove('hidden');fb.innerHTML='<p><b>'+(picked?(ok?'پاسخ درست':'پاسخ نادرست'):'بدون پاسخ')+'</b></p>'+(q.sourceAnswer?'<p><b>پاسخ صحیح و توضیح دفتر:</b> '+escapeForHtmlText(q.sourceAnswer)+'</p>':'<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.')+'</p>')}
           if(picked)await saveActivityAnswer(q,i,selected,ok);
         }
         const summary=$('otherSubjectActivityResult');summary.classList.remove('hidden');summary.innerHTML='<b>نتیجه آزمون:</b> '+fa(score)+' از '+fa(pool.length)+' · پاسخ داده‌شده: '+fa(answered)+' از '+fa(pool.length);
