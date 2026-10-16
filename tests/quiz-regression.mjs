@@ -37,8 +37,8 @@ assert.match(html, /question_type.*matching|matching.*question_type/s, 'پشتی
 // Readiness guard: the service-worker cache and its registration query must move together.
 const serviceWorker = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
 const manifest = JSON.parse(await readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'));
-const cacheVersion = serviceWorker.match(/const\\s+CACHE_NAME\\s*=\\s*['"]riazi4-pwa-shell-v(\\d+)['"]/);
-const registrationVersion = html.match(/serviceWorker\\.register\\(['"]\\.\\/sw\\.js\\?v=20261016-v(\\d+)['"]/);
+const cacheVersion = serviceWorker.match(/const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v(\d+)['"]/);
+const registrationVersion = html.match(/serviceWorker\.register\(['"]\.\/sw\.js\?v=20261016-v(\d+)['"]/);
 assert.ok(cacheVersion, 'نام نسخهٔ کش در sw.js پیدا نشد');
 assert.ok(registrationVersion, 'نشانی سرویس‌ورکر در index.html پیدا نشد');
 assert.equal(registrationVersion[1], cacheVersion[1], 'نسخهٔ ثبت سرویس‌ورکر و نام کش با هم هماهنگ نیستند');
@@ -47,12 +47,12 @@ assert.equal(manifest.dir, 'rtl', 'جهت برنامه در manifest باید ر
 assert.ok(manifest.start_url && manifest.start_url.startsWith('./'), 'نشانی شروع PWA باید نسبی باشد');
 
 // Every asset explicitly precached by the service worker must exist in the repository.
-const shellMatch = serviceWorker.match(/const\\s+APP_SHELL\\s*=\\s*\\[([\\s\\S]*?)\\];/);
+const shellMatch = serviceWorker.match(/const\s+APP_SHELL\s*=\s*\[([\s\S]*?)\];/);
 assert.ok(shellMatch, 'فهرست APP_SHELL در سرویس‌ورکر پیدا نشد');
 const shellPaths = [...shellMatch[1].matchAll(/['"]([^'"]+)['"]/g)].map(match => match[1]);
 assert.ok(shellPaths.length > 0, 'فهرست APP_SHELL خالی است');
 for (const path of shellPaths) {
-  const relative = path === './' ? '../index.html' : '../' + path.replace(/^\\.\\//, '');
+  const relative = path === './' ? '../index.html' : '../' + path.replace(/^\.\//, '');
   try {
     await access(new URL(relative, import.meta.url));
   } catch {
@@ -61,15 +61,15 @@ for (const path of shellPaths) {
 }
 
 // Only verified files may be treated as bundled PDFs; absent textbook files use the upload/fallback UI.
-const bundledAssetsMatch = html.match(/const\\s+BUNDLED_BOOK_ASSETS\\s*=\\s*new Set\\(\\[([\\s\\S]*?)\\]\\)/);
+const bundledAssetsMatch = html.match(/const\s+BUNDLED_BOOK_ASSETS\s*=\s*new Set\(\[([\s\S]*?)\]\)/);
 assert.ok(bundledAssetsMatch, 'فهرست فایل‌های PDF همراه برنامه پیدا نشد');
 for (const match of bundledAssetsMatch[1].matchAll(/['"]([^'"]+)['"]/g)) {
-  const relative = '../' + match[1].replace(/^\\.\\//, '');
+  const relative = '../' + match[1].replace(/^\.\//, '');
   try {
     await access(new URL(relative, import.meta.url));
   } catch {
     assert.fail('فایل PDF معرفی‌شده به‌عنوان همراه برنامه وجود ندارد: ' + match[1]);
   }
 }
-assert.match(html, /BUNDLED_PERSIAN_PAGE_IMAGES\\s*=\\s*false/, 'نباید تصاویر صفحه‌های کتابِ منتشرنشده درخواست شوند');
-console.log(`Static syntax and deployment checks passed: ${compiled} inline script(s), ${shellPaths.length} precached assets, service-worker version ${cacheVersion[1]}.`);
+assert.match(html, /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false/, 'نباید تصاویر صفحه‌های کتابِ منتشرنشده درخواست شوند');
+console.log('Static syntax and deployment checks passed: ' + compiled + ' inline script(s), ' + shellPaths.length + ' precached assets, service-worker version ' + cacheVersion[1] + '.');
