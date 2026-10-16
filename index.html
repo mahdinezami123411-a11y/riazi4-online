@@ -1224,6 +1224,33 @@ async function previewTeacherBook(id){
  $('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};
 }
 $('bookSubject').innerHTML=bookSubjectCatalog.map(s=>'<option value="'+s.id+'">'+s.icon+' '+escapeHtml(s.name)+'</option>').join('');
+
+function populateLessonResourceLessons(){
+ const subject=$('lessonFileSubject')?.value||'math',sel=$('lessonFileLesson');if(!sel)return;
+ const previous=sel.value;const lessons=courseLessonCatalog(subject);
+ sel.innerHTML=lessons.map(l=>'<option value="'+l.id+'">'+escapeHtml(l.title)+'</option>').join('');
+ if(lessons.some(l=>String(l.id)===String(previous)))sel.value=previous;
+}
+if($('lessonFileSubject')){
+ $('lessonFileSubject').innerHTML=bookSubjectCatalog.map(b=>'<option value="'+b.id+'">'+b.icon+' '+escapeHtml(b.name)+'</option>').join('');
+ $('lessonFileSubject').onchange=populateLessonResourceLessons;
+ populateLessonResourceLessons();
+}
+let lessonResourceObjectUrl=null;
+$('previewLessonResource')?.addEventListener('click',()=>{
+ const file=$('lessonResourceFile')?.files?.[0],target=$('lessonResourcePreview'),status=$('lessonResourceStatus');
+ if(!file){status.textContent='ابتدا یک فایل PDF یا تصویر انتخاب کن.';return}
+ const isPdf=file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf');
+ const isImage=file.type.startsWith('image/');
+ if(!isPdf&&!isImage){status.textContent='فقط فایل PDF یا تصویر پشتیبانی می‌شود.';return}
+ if(lessonResourceObjectUrl)URL.revokeObjectURL(lessonResourceObjectUrl);
+ lessonResourceObjectUrl=URL.createObjectURL(file);
+ target.innerHTML=isImage
+  ?'<div class="item"><img alt="پیش‌نمایش فایل آموزشی" src="'+lessonResourceObjectUrl+'" style="display:block;max-width:100%;max-height:75vh;object-fit:contain;margin:auto;border-radius:12px"></div>'
+  :'<div class="item"><iframe class="pdfview" title="پیش‌نمایش PDF درس" src="'+lessonResourceObjectUrl+'#view=FitH"></iframe></div>';
+ status.textContent='پیش‌نمایش «'+file.name+'» برای '+courseName($('lessonFileSubject').value)+' · '+courseLessonTitle($('lessonFileSubject').value,$('lessonFileLesson').value)+' نمایش داده شد. این پیش‌نمایش فعلاً فقط در همین دستگاه است و فایل هنوز در فضای مشترک کلاس ذخیره نشده است.';
+});
+
 $('bookSubject').onchange=()=>{$('teacherBookStatus').textContent='کتاب «'+(bookSubjectCatalog.find(s=>s.id===$('bookSubject').value)?.name||'')+'» انتخاب شده است.';$('bookPdf').value=''};
 $('attachBook').onclick=async()=>{
  const id=$('bookSubject').value,file=$('bookPdf').files?.[0],subject=bookSubjectCatalog.find(s=>s.id===id);
