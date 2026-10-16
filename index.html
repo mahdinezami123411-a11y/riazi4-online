@@ -710,6 +710,28 @@ a{color:#d7ff76}
 }
 /* اسناد و تصویر صفحات کتاب عمداً مانند کاغذ روشن می‌مانند تا متن چاپی خوانا باشد. */
 
+
+/* کارنامهٔ یکپارچهٔ یادگیری؛ هم‌راستا با تم کهکشانی و بدون نشان و امتیاز نمایشی */
+.unified-learning-report{margin-top:14px!important}
+.unified-report-heading{align-items:flex-start;gap:10px;flex-wrap:wrap}
+.unified-report-heading .pill{flex:0 0 auto}
+.unified-progress-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.unified-stat{border:1px solid #435780;border-radius:14px;padding:11px;background:linear-gradient(145deg,#222f52,#17223e);min-width:0}
+.unified-stat b{display:block;color:#91f0e8;font-size:21px;line-height:1.5}
+.unified-stat span{color:#bbc9e7;font-size:11px;display:block}
+.unified-subject-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:12px}
+.unified-subject-card{border:1px solid #435780;border-radius:17px;padding:13px;background:linear-gradient(145deg,#202b4c,#151e37);min-width:0}
+.unified-subject-title{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.unified-subject-title>span{font-size:24px;filter:drop-shadow(0 3px 4px #0005)}
+.unified-subject-title b{color:#f3f5ff;font-weight:900}
+.unified-subject-title small{display:block;color:#b5c3e1;font-size:10px}
+.unified-subject-card .unified-subject-metrics{display:flex;justify-content:space-between;gap:8px;color:#c6d4ef;font-size:11px;margin:7px 0}
+.unified-subject-card .progress-track{height:8px;border-radius:999px;background:#0c142b;border:1px solid #394b70;overflow:hidden}
+.unified-subject-card .progress-track>span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#5e78f3,#66e7d6)}
+.unified-subject-status{margin:8px 0;color:#b7c9e9;font-size:11px;line-height:1.8}
+.unified-subject-status.needs-work{color:#ffd08c}
+.unified-subject-card button{width:100%;margin-top:7px}
+@media(max-width:560px){.unified-progress-summary{gap:6px}.unified-stat{padding:8px}.unified-stat b{font-size:18px}.unified-stat span{font-size:10px}.unified-subject-cards{grid-template-columns:1fr}.unified-report-heading .pill{display:none}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -748,13 +770,17 @@ a{color:#d7ff76}
   <h3 class="profile-section-title">🗺️ نقشه پیشرفت من</h3><div id="profileProgressMount"></div>
 </div>
 <div id="studentDashboard" class="card progress-dashboard">
-  <div class="row"><div><h2>🗺️ نقشه پیشرفت قهرمان</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">🏆</span></div>
+  <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
   <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
-  <h3>نقشه هفت فصل</h3><div id="chapterProgressMap" class="chapter-progress-map"></div>
-  <h3 style="margin-top:14px">نشان‌های به‌دست‌آمده</h3><div id="studentBadges" class="badge-shelf"></div>
-  <p class="muted">پیشرفت و نشان‌ها در همین مرورگر ذخیره می‌شوند؛ هنوز بین گوشی‌های مختلف مشترک نیستند.</p>
+  <h3>مسیر یادگیری هفت فصل ریاضی</h3><div id="chapterProgressMap" class="chapter-progress-map"></div>
+  <p class="muted">نتایج آنلاین حساب دانش‌آموز همگام‌سازی می‌شوند؛ اگر تمرینی آفلاین انجام شود، تا زمان اتصال در همین دستگاه می‌ماند.</p>
+
 </div>
-</div>
+<section id="unifiedLearningReport" class="card unified-learning-report">
+  <div class="row unified-report-heading"><div><h2>📈 کارنامهٔ یادگیری همهٔ کتاب‌ها</h2><p class="muted">براساس پاسخ‌هایی که در این حساب ثبت شده‌اند؛ برای تمرین متمرکز، مبحث پیشنهادی را باز کن.</p></div><span class="pill">همهٔ درس‌ها</span></div>
+  <div id="unifiedProgressSummary" class="unified-progress-summary"></div>
+  <div id="unifiedSubjectCards" class="unified-subject-cards"><div class="notice">در حال آماده‌سازی کارنامه…</div></div>
+</section>
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
 <div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2><button class="outline" id="mathBackToSubjects" type="button">بازگشت به انتخاب کتاب‌ها</button></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div>
@@ -1667,11 +1693,15 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function renderStudentDashboard(){
     if(!$('studentDashboard'))return;
     const total=studentProgress.attempts||0,correct=studentProgress.correct||0,pct=total?Math.round(correct/total*100):0;
-    $('studentWelcome').textContent=`آماده‌ای ${activeStudentName||'دانش‌آموز چهارمی'}؟ هر تمرین به پیشرفتت کمک می‌کند.`;
+    $('studentWelcome').textContent='آماده‌ای '+(activeStudentName||'دانش‌آموز چهارمی')+'؟ اینجا می‌توانی پیشرفت واقعی خودت را در همهٔ کتاب‌ها ببینی.';
     $('progressAttempts').textContent=fa(total);$('progressCorrect').textContent=fa(correct);$('progressPercent').textContent=fa(pct)+'٪';
-    $('chapterProgressMap').innerHTML=chapters.filter(c=>c.id<=7).map(c=>{const st=studentProgress.byChapter[String(c.id)]||{attempts:0,correct:0};const cp=st.attempts?Math.round(st.correct/st.attempts*100):0;const mastered=st.attempts>=5&&cp>=80;return `<div class="progress-chapter"><span class="pc-icon">${mastered?'🏅':'🧭'}</span><div><b>فصل ${fa(c.id)}: ${escapeHtml(c.title)}</b><small>${fa(st.correct)} پاسخ درست از ${fa(st.attempts)} تلاش ${mastered?'· تسلط خوب!':''}</small><div class="progress-track"><span style="width:${cp}%"></span></div></div></div>`}).join('');
-    const badges=[{icon:'🌟',name:'اولین قدم',earned:total>=1,desc:'اولین تمرین'},{icon:'⚡',name:'ذهن تیز',earned:correct>=10,desc:'۱۰ پاسخ درست'},{icon:'🔥',name:'رکورد پیاپی',earned:(studentProgress.bestStreak||0)>=5,desc:'۵ پاسخ درست پشت سر هم'},{icon:'🧠',name:'استاد تمرین',earned:correct>=30,desc:'۳۰ پاسخ درست'},{icon:'🗺️',name:'کاوشگر فصل‌ها',earned:chapters.filter(c=>c.id<=7).every(c=>(studentProgress.byChapter[String(c.id)]||{attempts:0}).attempts>=1),desc:'تمرین از هر هفت فصل'}];
-    $('studentBadges').innerHTML=badges.map(b=>`<div class="achievement-badge ${b.earned?'':'locked-badge'}" title="${b.earned?'به دست آمده':'هنوز به دست نیامده'}"><span style="font-size:21px">${b.icon}</span><span>${b.name}<small style="display:block;font-weight:400">${b.earned?'گرفته شد':b.desc}</small></span></div>`).join('');
+    $('chapterProgressMap').innerHTML=chapters.filter(c=>c.id<=7).map(c=>{
+      const st=studentProgress.byChapter[String(c.id)]||{attempts:0,correct:0};
+      const cp=st.attempts?Math.round(st.correct/st.attempts*100):0;
+      const mastered=st.attempts>=5&&cp>=80;
+      return '<div class="progress-chapter"><span class="pc-icon">'+(mastered?'🪐':'🧭')+'</span><div><b>فصل '+fa(c.id)+': '+escapeHtml(c.title)+'</b><small>'+fa(st.correct)+' پاسخ درست از '+fa(st.attempts)+' تلاش'+(mastered?' · عملکرد پایدار':'')+'</small><div class="progress-track"><span style="width:'+cp+'%"></span></div></div></div>';
+    }).join('');
+    renderUnifiedLearningReport();
   }
   $('studentEnter').onclick=()=>{show('studentNamePage');$('studentLoginError').classList.add('hidden');$('studentNameInput').value='';$('studentPasswordInput').value='';setTimeout(()=>$('studentNameInput').focus(),80)};
   $('studentLoginBack').onclick=()=>show('home');
@@ -4174,6 +4204,93 @@ const persianBookPageMap={
   };
   $('subjectsBackHome').onclick=()=>showStudentAppView('home');
   $('mathBackToSubjects').onclick=()=>showStudentAppView('home');
+
+
+  function renderUnifiedLearningReport(){
+    const box=$('unifiedSubjectCards');
+    if(!box)return;
+    const local=readOtherProgress();
+    const allActivityRecords=[];
+    const keyPattern=/^(persian|dictation|science|social|gifts)-(\\d+)-quiz-(\\d+)$/;
+    const singlePattern=/^(persian|dictation|science|social|gifts)-(\\d+)$/;
+    Object.entries(local).forEach(([key,rec])=>{
+      if(!rec||typeof rec!=='object'||typeof rec.correct!=='boolean')return;
+      let match=key.match(keyPattern);
+      if(match){
+        allActivityRecords.push({subject:match[1],lessonId:Number(match[2]),key,correct:rec.correct,updatedAt:rec.updatedAt||'',attemptCount:Number(rec.attemptCount)||1});
+        return;
+      }
+      match=key.match(singlePattern);
+      if(match&&(rec.selected!==undefined||rec.questionText||rec.activityType)){
+        allActivityRecords.push({subject:match[1],lessonId:Number(match[2]),key,correct:rec.correct,updatedAt:rec.updatedAt||'',attemptCount:Number(rec.attemptCount)||1});
+      }
+    });
+    const subjects=[
+      {id:'math',name:'ریاضی',icon:'➗',summary:'فصل‌ها و مهارت‌های ریاضی'},
+      {id:'persian',name:'فارسی و املا',icon:'📖',summary:'واژه‌آموزی، نگارش و املا'},
+      {id:'science',name:'علوم تجربی',icon:'🔬',summary:'مفاهیم و فعالیت‌های علمی'},
+      {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',summary:'مفاهیم اجتماعی و نقشه'},
+      {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌙',summary:'مفاهیم و درس‌های کتاب'}
+    ];
+    const getCatalog=id=>courseLessonCatalog(id).filter(l=>isCourseLessonOpen(id,l.id));
+    const cards=[];
+    let globalActivities=0,globalCorrect=0,booksStarted=0,weakCount=0;
+    subjects.forEach(subject=>{
+      const catalog=getCatalog(subject.id);
+      const lessons=catalog.map(lesson=>{
+        if(subject.id==='math'){
+          const rec=studentProgress.byChapter[String(lesson.id)]||{attempts:0,correct:0};
+          return {id:Number(lesson.id),title:lesson.title,attempts:Number(rec.attempts)||0,correct:Number(rec.correct)||0};
+        }
+        const allowed=subject.id==='persian'?['persian','dictation']:[subject.id];
+        const rows=allActivityRecords.filter(r=>allowed.includes(r.subject)&&r.lessonId===Number(lesson.id));
+        return {id:Number(lesson.id),title:lesson.title,attempts:rows.length,correct:rows.filter(r=>r.correct).length};
+      });
+      const activityCount=lessons.reduce((sum,l)=>sum+l.attempts,0);
+      const correctCount=lessons.reduce((sum,l)=>sum+l.correct,0);
+      const accuracy=activityCount?Math.round(correctCount/activityCount*100):null;
+      globalActivities+=activityCount;globalCorrect+=correctCount;
+      if(activityCount>0)booksStarted++;
+      const reviewed=lessons.filter(l=>l.attempts>0);
+      const candidate=reviewed.slice().sort((a,b)=>{
+        const ap=a.attempts?a.correct/a.attempts:1,bp=b.attempts?b.correct/b.attempts:1;
+        return ap-bp || a.attempts-b.attempts || a.id-b.id;
+      })[0];
+      const weak=candidate&&candidate.attempts>=2&&(candidate.correct/candidate.attempts)<0.7?candidate:null;
+      if(weak)weakCount++;
+      const target=weak||candidate||lessons[0]||{id:1,title:'اولین مبحث'};
+      const accuracyText=accuracy===null?'هنوز پاسخی ثبت نشده':('درستی آخرین پاسخ‌های ثبت‌شده: '+fa(accuracy)+'٪');
+      const state=activityCount===0?'هنوز شروع نشده':weak?'به تمرین بیشتر نیاز دارد':accuracy>=80?'عملکرد خوب در پاسخ‌های ثبت‌شده':'در حال یادگیری';
+      const className=weak?'unified-subject-status needs-work':'unified-subject-status';
+      const buttonText=weak?'تمرین مبحث نیازمند تقویت':'رفتن به تمرین این کتاب';
+      cards.push('<article class="unified-subject-card"><div class="unified-subject-title"><span>'+subject.icon+'</span><div><b>'+escapeHtml(subject.name)+'</b><small>'+escapeHtml(subject.summary)+'</small></div></div><div class="unified-subject-metrics"><span>'+fa(activityCount)+' فعالیت ثبت‌شده</span><strong>'+(accuracy===null?'—':fa(accuracy)+'٪')+'</strong></div><div class="progress-track" role="progressbar" aria-label="درصد پاسخ صحیح '+escapeHtml(subject.name)+'" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+(accuracy===null?0:accuracy)+'"><span style="width:'+(accuracy===null?0:accuracy)+'%"></span></div><p class="'+className+'">'+accuracyText+'<br>'+state+(weak?(' · پیشنهاد مرور: '+escapeHtml(weak.title)):'')+'</p><button type="button" class="outline" data-focus-subject="'+subject.id+'" data-focus-lesson="'+Number(target.id||1)+'">'+buttonText+'</button></article>');
+    });
+    if($('unifiedProgressSummary')){
+      const accuracy=globalActivities?Math.round(globalCorrect/globalActivities*100):0;
+      $('unifiedProgressSummary').innerHTML='<div class="unified-stat"><b>'+fa(globalActivities)+'</b><span>فعالیت ثبت‌شده در درس‌های دیگر و ریاضی</span></div><div class="unified-stat"><b>'+fa(booksStarted)+' از '+fa(subjects.length)+'</b><span>کتاب‌های دارای سابقهٔ پاسخ</span></div><div class="unified-stat"><b>'+fa(weakCount)+'</b><span>مبحث دارای عملکرد ضعیف‌تر (با حداقل دو پاسخ)</span></div>';
+    }
+    box.innerHTML=cards.join('')||'<div class="notice">برای نمایش کارنامه، ابتدا یک کتاب و درس را که معلم باز کرده انتخاب کن.</div>';
+    box.querySelectorAll('[data-focus-subject]').forEach(button=>button.onclick=()=>startFocusedPractice(button.dataset.focusSubject,Number(button.dataset.focusLesson)||1));
+  }
+  function startFocusedPractice(subjectId,lessonId){
+    if(subjectId==='math'){
+      activeStudentSubject='math';
+      showStudentAppView('practice');
+      const topic=$('bookPracticeTopic');
+      if(topic){topic.value=String(lessonId);updatePracticeStats();newBookPractice();}
+      return;
+    }
+    showStudentAppView('subjects');
+    openOtherSubject(subjectId);
+    setOtherSubjectTabActive('practice');
+    renderOtherSubjectActivity('practice');
+    const lessonSelect=$('otherSubjectActivityLesson');
+    if(lessonSelect&&[...lessonSelect.options].some(o=>Number(o.value)===Number(lessonId))){
+      lessonSelect.value=String(lessonId);
+      renderOtherSubjectActivity('practice');
+    }
+    $('otherSubjectActivityPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }
 
 })();
 
