@@ -163,6 +163,39 @@ assert.equal(lessonUi.placement.mapInsideHome, true, 'نقشهٔ کامل پیش
 assert.equal(lessonUi.placement.profileChartInsideProfile, true, 'نمودار خلاصهٔ پیشرفت باید در پروفایل نمایش داده شود');
 assert.equal(lessonUi.reportNav, true, 'بخش کارنامه باید در نوار پیمایش وجود داشته باشد');
 
+const mathNavigation = await page.evaluate(() => {
+  const api = window.__quizTestApi;
+  api.showStudentAppView('home');
+  document.querySelector('#studentSubjectPicker [data-student-subject="math"]')?.click();
+  const mathMenuVisible = !document.getElementById('mathHomeMenu')?.classList.contains('hidden');
+  const allBooksMapHidden = document.getElementById('studentDashboard')?.classList.contains('hidden') === true;
+  document.querySelector('#mathHomeMenu [data-student-view="book"]')?.click();
+  const bookVisible = !document.getElementById('bookView')?.classList.contains('hidden');
+  const chapterTabActive = document.getElementById('booktab-chapters')?.classList.contains('active') === true;
+  const chapterButton = document.querySelector('#chapterPicker [data-chapter="1"]');
+  const chapterDisabled = !chapterButton || chapterButton.disabled;
+  chapterButton?.click();
+  const lessonViewVisible = !document.getElementById('mathChapterLessonView')?.classList.contains('hidden');
+  const bookHidden = document.getElementById('bookView')?.classList.contains('hidden') === true;
+  const lessonTitle = document.getElementById('chapterLessonTitle')?.textContent || '';
+  const lessonContentPresent = (document.getElementById('chapterLessonBody')?.textContent || '').trim().length > 20;
+  document.getElementById('backToChapterPicker')?.click();
+  const backReturnsToChapters = document.getElementById('mathChapterLessonView')?.classList.contains('hidden') === true
+    && !document.getElementById('bookView')?.classList.contains('hidden')
+    && !document.getElementById('booktab-chapters')?.classList.contains('active') === false;
+  return {mathMenuVisible,allBooksMapHidden,bookVisible,chapterTabActive,chapterDisabled,lessonViewVisible,bookHidden,lessonTitle,lessonContentPresent,backReturnsToChapters};
+});
+assert.equal(mathNavigation.mathMenuVisible, true, 'انتخاب کتاب ریاضی باید منوی اختصاصی ریاضی را باز کند');
+assert.equal(mathNavigation.allBooksMapHidden, true, 'نقشهٔ تمام کتاب‌ها نباید زیر منوی ریاضی نمایش داده شود');
+assert.equal(mathNavigation.bookVisible, true, 'دکمهٔ کتاب ریاضی باید کتاب ریاضی را باز کند');
+assert.equal(mathNavigation.chapterTabActive, true, 'کتاب ریاضی باید مستقیماً بخش توضیح فصل‌ها را باز کند');
+assert.equal(mathNavigation.chapterDisabled, false, 'فصل اول ریاضی به‌طور پیش‌فرض باید قابل بازشدن باشد');
+assert.equal(mathNavigation.lessonViewVisible, true, 'انتخاب فصل باید صفحهٔ مستقل آموزش را نمایش دهد');
+assert.equal(mathNavigation.bookHidden, true, 'با باز شدن آموزش فصل، فهرست کتاب باید پنهان شود');
+assert.match(mathNavigation.lessonTitle, /فصل\s*۱|فصل 1|فصل ۱/, 'عنوان فصل در صفحهٔ آموزش نمایش داده نشد');
+assert.equal(mathNavigation.lessonContentPresent, true, 'توضیحات فصل در صفحهٔ آموزش خالی است');
+assert.equal(mathNavigation.backReturnsToChapters, true, 'دکمهٔ بازگشت باید فهرست فصل‌ها را برگرداند');
+
 assert.deepEqual(pageErrors, [], 'برنامه هنگام اجرا خطای JavaScript داد: ' + pageErrors.join(' | '));
 
 console.log('Browser question checks passed:', JSON.stringify(sourceReport));
