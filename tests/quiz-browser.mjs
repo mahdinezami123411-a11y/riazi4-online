@@ -30,7 +30,15 @@ const sourceReport = await page.evaluate(() => {
       blankCount: questions.filter(q => q.type === 'blank_mc').length,
       matchingCount: questions.filter(q => q.type === 'matching').length,
       invalidFourChoice: questions.filter(q => q.type !== 'matching' && (q.options.length !== 4 || new Set(q.options.map(sourceQuestionNormalize)).size !== 4 || q.answer < 0 || q.answer >= q.options.length || sourceQuestionNormalize(q.options[q.answer]) !== sourceQuestionNormalize(q.sourceAnswer))).length,
-      invalidMatching: questions.filter(q => q.type === 'matching' && (q.options.length !== 8 || q.pairs.length !== 4 || q.answer.length !== 4 || q.answer.some(index => index < 4 || index > 7) || q.answer.some((index, i) => sourceQuestionNormalize(q.options[index]) !== sourceQuestionNormalize(bank[String(q.pairs[i])])))).length,
+      invalidMatching: questions.filter(q => {
+        if (q.type !== 'matching') return false;
+        if (q.options.length !== 8 || q.pairs.length !== 4 || q.answer.length !== 4 || q.answer.some(index => index < 4 || index > 7) || new Set(q.options.map(sourceQuestionNormalize)).size !== 8) return true;
+        const sourceRows = lessons.flatMap(lesson => bank[lesson] || []);
+        return q.pairs.some((question, i) => {
+          const source = sourceRows.find(row => sourceQuestionNormalize(row.question) === sourceQuestionNormalize(question));
+          return !source || sourceQuestionNormalize(q.options[q.answer[i]]) !== sourceQuestionNormalize(source.answer);
+        });
+      }).length,
       placeholders: questions.filter(q => q.options.some(option => /گزینه.?تکمیلی|option\\s*\\d+/i.test(option))).length
     };
   }
