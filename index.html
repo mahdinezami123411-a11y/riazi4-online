@@ -2800,7 +2800,7 @@ loadExpandedPersianVocabulary();
       $('otherSubjectActivityCount').textContent='۰ سؤال';
       return;
     }
-    const pool=[...all].sort(()=>Math.random()-.5).slice(0,Math.min(mode==='exam'?15:10,all.length));
+    const pool=all.map((q,sourceIndex)=>({...q,_sourceQuestionIndex:sourceIndex})).sort(()=>Math.random()-.5).slice(0,Math.min(mode==='exam'?15:10,all.length));
     $('otherSubjectActivityCount').textContent=fa(pool.length)+' سؤال';
     $('otherSubjectActivityResult').classList.add('hidden');
     box.innerHTML=pool.map((q,i)=>{
@@ -2811,13 +2811,14 @@ loadExpandedPersianVocabulary();
     const resultTime=()=>new Date().toISOString();
     async function saveActivityAnswer(q,i,selected,ok){
       const savedAt=resultTime();
-      const localKey=subject.id+'-'+lesson.id+'-quiz-'+i;
+      const stableIndex=Number.isInteger(q._sourceQuestionIndex)?q._sourceQuestionIndex:i;
+      const localKey=subject.id+'-'+lesson.id+'-quiz-'+stableIndex;
       const existing=progress[localKey]||{};
       progress[localKey]={correct:ok,selected,answer:Number(q.answer),attemptCount:(Number(existing.attemptCount)||0)+1,updatedAt:savedAt,activityType:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,questionText:q.question,lastExplanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',selectedText:q.options[selected],correctText:q.options[q.answer]};
       writeOtherProgress(progress);
       if(isRealStudentSession()){
         try{
-          await saveSubjectPracticeProgress({subject:subject.id,lesson_id:lesson.id,activity_key:(mode==='exam'?'exam-tab-':'practice-tab-')+i,activity_type:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,selected_answer:selected,correct_answer:Number(q.answer),is_correct:ok,attempt_count:progress[localKey].attemptCount,question_text:q.question,explanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],exam:mode==='exam'},updated_at:savedAt});
+          await saveSubjectPracticeProgress({subject:subject.id,lesson_id:lesson.id,activity_key:(mode==='exam'?'exam-tab-':'practice-tab-')+stableIndex,activity_type:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,selected_answer:selected,correct_answer:Number(q.answer),is_correct:ok,attempt_count:progress[localKey].attemptCount,question_text:q.question,explanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],exam:mode==='exam'},updated_at:savedAt});
         }catch(error){console.warn('Subject activity could not be synced',error)}
       }
     }
