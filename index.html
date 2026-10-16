@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v18-20261016-persian-catalog-assessment">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v19-20261016-persian-unlock-assessments">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2696,50 +2696,69 @@ loadExpandedPersianVocabulary();
       }
     });
   }
-  function renderOtherBookExam(){
-    const subject=selectedOtherSubject,box=$('otherSubjectLessonPicker');
-    if(!subject||!box)return;
-    const examQuestions=subject.lessons.filter(l=>isCourseLessonOpen(subject.id,l.id)&&Array.isArray(l.options)&&l.options.length>=2&&Number.isInteger(Number(l.answer))&&Number(l.answer)>=0&&Number(l.answer)<l.options.length);
-    if(!examQuestions.length){
-      box.innerHTML='<div class="notice">برای درس‌های باز این کتاب هنوز سؤال امتحانی معتبر ثبت نشده است.</div><button type="button" id="backFromOtherBookExam">بازگشت به فهرست درس‌ها</button>';
-    }else{
-      box.innerHTML='<section class="lesson-note"><h3>🧪 آزمون جامع '+escapeHtml(subject.name)+'</h3><p class="muted">'+fa(examQuestions.length)+' سؤال از درس‌هایی که در این برنامه سؤال معتبر دارند. پس از ثبت، پاسخ درست و تحلیل هر سؤال نمایش داده می‌شود.</p>'+
-        examQuestions.map((l,i)=>'<section class="persian-quiz-card" data-book-exam-card="'+i+'"><b>درس '+fa(l.id)+' · '+escapeHtml(l.title)+'</b><p>'+escapeHtml(l.question)+'</p>'+
-          l.options.map((o,j)=>'<label class="other-answer"><input type="radio" name="otherBookExam'+i+'" value="'+j+'"><span>'+escapeHtml(o)+'</span></label>').join('')+
-        '</section>').join('')+
-        '<button type="button" id="submitOtherBookExam" style="width:100%;margin-top:10px">ثبت امتحان و دیدن نتیجه</button><button type="button" id="backFromOtherBookExam" class="outline" style="width:100%;margin-top:8px">بازگشت به فهرست درس‌ها</button><div id="otherBookExamResult" class="notice hidden" aria-live="polite"></div></section>';
-      $('submitOtherBookExam').onclick=async()=>{
-        let score=0,answered=0;const details=[],resultTime=new Date().toISOString();
-        examQuestions.forEach((l,i)=>{
-          const card=box.querySelector('[data-book-exam-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');
-          const selected=picked?Number(picked.value):-1,ok=selected===Number(l.answer);
-          if(picked)answered++;if(ok)score++;
-          card?.querySelectorAll('.other-answer').forEach((el,j)=>{el.classList.toggle('correct',j===Number(l.answer));el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
-          details.push('<p><b>درس '+fa(l.id)+' · '+escapeHtml(l.title)+' · '+(picked?(ok?'درست':'نادرست'):'بدون پاسخ')+'</b><br>پاسخ صحیح: '+escapeHtml(l.options[l.answer])+'<br>تحلیل: '+escapeHtml(l.analysis||'پاسخ با محتوای آموزشی ثبت‌شده برای این درس بررسی می‌شود.')+'</p>');
-        });
-        const result=box.querySelector('#otherBookExamResult');
-        result.classList.remove('hidden');
-        result.innerHTML='<h4>نتیجه: '+fa(score)+' از '+fa(examQuestions.length)+'</h4><p>پاسخ داده‌شده: '+fa(answered)+' از '+fa(examQuestions.length)+'</p>'+details.join('');
-        const progress=readOtherProgress();
-        progress[subject.id+'-book-exam']={score,total:examQuestions.length,answered,updatedAt:resultTime};writeOtherProgress(progress);
-        if(isRealStudentSession()){
-          for(let i=0;i<examQuestions.length;i++){
-            const l=examQuestions[i],card=box.querySelector('[data-book-exam-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');
-            if(!picked)continue;
-            const selected=Number(picked.value);
-            try{await saveSubjectPracticeProgress({
-              subject:subject.id,lesson_id:l.id,activity_key:'book-exam-'+i,activity_type:subject.name+' · آزمون جامع',
-              selected_answer:selected,correct_answer:Number(l.answer),is_correct:selected===Number(l.answer),attempt_count:1,
-              question_text:l.question,explanation:l.analysis||'',metadata:{selected_text:l.options[selected],correct_text:l.options[l.answer],book_exam:true,score,total:examQuestions.length},
-              updated_at:resultTime
-            });}catch(error){console.warn('Other book exam result could not be synced',error)}
-          }
-        }
-      };
-    }
-    box.querySelector('#backFromOtherBookExam')?.addEventListener('click',()=>openOtherSubject(subject.id));
+  function buildOtherBookAssessmentPool(subject,openLessons){
+ const pool=[];
+ const add=(lesson,q,kind)=>{
+  if(!q||!Array.isArray(q.options)||q.options.length<2)return;
+  const answer=Number(q.answer),options=q.options.map(String);
+  if(!Number.isInteger(answer)||answer<0||answer>=options.length||new Set(options).size<2)return;
+  pool.push({lessonId:Number(lesson.id),lessonTitle:String(lesson.title||''),kind:kind||q.kind||'پرسش درس',question:String(q.question||''),options,answer,analysis:String(q.analysis||'پاسخ با محتوای آموزشی همین درس بررسی می‌شود.'),bankIndex:pool.length});
+ };
+ for(const lesson of openLessons){
+  if(subject.id==='persian'){buildPersianLessonQuizzes(lesson).forEach(q=>add(lesson,q,q.kind));continue;}
+  if(lesson.question&&Array.isArray(lesson.options))add(lesson,lesson,'پرسش درس');
+  const alternatives=openLessons.filter(x=>Number(x.id)!==Number(lesson.id));
+  const summary=String(lesson.content||'').split(/[.!؟؛]/).map(x=>x.trim()).filter(Boolean)[0]||'';
+  if(summary&&alternatives.length){
+   const q=persianQuizOptions(summary,alternatives.map(x=>String(x.content||'').split(/[.!؟؛]/).map(y=>y.trim()).filter(Boolean)[0]||''),pool.length);
+   add(lesson,{question:'کدام جمله با محتوای درس «'+lesson.title+'» هماهنگ است؟',options:q.options,answer:q.answer,analysis:'این جمله از توضیح ثبت‌شده برای همین درس گرفته شده است: '+summary},'مفهوم درس');
   }
-  function renderOtherSubjectPicker(){
+  const example=String(lesson.example||'').trim();
+  if(example&&alternatives.length){
+   const q=persianQuizOptions(example,alternatives.map(x=>String(x.example||'').trim()),pool.length+1);
+   add(lesson,{question:'کدام نمونه در محتوای درس «'+lesson.title+'» آمده است؟',options:q.options,answer:q.answer,analysis:'این نمونه در محتوای آموزشی ثبت‌شده برای همین درس آمده است.'},'کاربرد درس');
+  }
+ }
+ return pool;
+}
+function renderOtherBookExam(mode='exam'){
+ const subject=selectedOtherSubject,box=$('otherSubjectLessonPicker');
+ if(!subject||!box)return;
+ const settings=courseSettingsBySubject[subject.id]||{},isExam=mode!=='practice';
+ if((isExam&&settings.allowExam===false)||(!isExam&&settings.allowPractice===false)){
+  box.innerHTML='<div class="notice">'+(isExam?'آزمون':'تمرین')+' این کتاب فعلاً از طرف معلم غیرفعال شده است.</div><button id="backFromOtherBookExam">بازگشت به فهرست</button>';
+  box.querySelector('#backFromOtherBookExam')?.addEventListener('click',()=>openOtherSubject(subject.id));return;
+ }
+ const openLessons=subject.lessons.filter(l=>isCourseLessonOpen(subject.id,l.id));
+ const pool=buildOtherBookAssessmentPool(subject,openLessons);
+ const count=isExam?(subject.id==='persian'?20:Math.min(20,pool.length)):(subject.id==='persian'?10:Math.min(6,pool.length));
+ const questions=selectPersianExamQuestions(pool,count),sessionId=Date.now();
+ if(!questions.length){
+  box.innerHTML='<div class="notice">برای درس‌های باز سؤال معتبر پیدا نشد؛ دسترسی کتاب و درس‌ها را در پنل معلم بررسی کن.</div><button id="backFromOtherBookExam">بازگشت به فهرست</button>';
+ }else{
+  box.innerHTML='<section class="lesson-note"><h3>'+(isExam?'🧪 آزمون جامع ':'🎯 تمرین کتاب ')+escapeHtml(subject.name)+'</h3><p class="muted">'+fa(questions.length)+' سؤال انتخاب‌شده از بانک '+fa(pool.length)+' سؤالی. پاسخ صحیح و تحلیل هر سؤال بعد از ثبت نمایش داده می‌شود.</p>'+
+   questions.map((q,i)=>'<section class="persian-quiz-card" data-book-exam-card="'+i+'"><b>درس '+fa(q.lessonId)+' · '+escapeHtml(q.lessonTitle)+' · '+escapeHtml(q.kind)+'</b><p>'+escapeHtml(q.question)+'</p>'+q.options.map((o,j)=>'<label class="other-answer"><input type="radio" name="otherBookExam'+sessionId+'-'+i+'" value="'+j+'"><span>'+escapeHtml(o)+'</span></label>').join('')+'</section>').join('')+
+   '<button id="submitOtherBookExam" style="width:100%;margin-top:10px">ثبت '+(isExam?'امتحان':'تمرین')+' و دیدن تحلیل</button><button id="backFromOtherBookExam" class="outline" style="width:100%;margin-top:8px">بازگشت به فهرست</button><div id="otherBookExamResult" class="notice hidden" aria-live="polite"></div></section>';
+  $('submitOtherBookExam').onclick=async()=>{
+   let score=0,answered=0;const details=[],at=new Date().toISOString();
+   questions.forEach((q,i)=>{
+    const card=box.querySelector('[data-book-exam-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');
+    const selected=picked?Number(picked.value):-1,ok=selected===q.answer;if(picked)answered++;if(ok)score++;
+    card?.querySelectorAll('.other-answer').forEach((el,j)=>{el.classList.toggle('correct',j===q.answer);el.classList.toggle('wrong',j===selected&&!ok)});
+    details.push('<p><b>درس '+fa(q.lessonId)+' · '+escapeHtml(q.lessonTitle)+' · '+(picked?(ok?'درست':'نادرست'):'بدون پاسخ')+'</b><br>پرسش: '+escapeHtml(q.question)+'<br>پاسخ صحیح: '+escapeHtml(q.options[q.answer])+'<br>تحلیل: '+escapeHtml(q.analysis)+'</p>');
+   });
+   const result=box.querySelector('#otherBookExamResult');result.classList.remove('hidden');result.innerHTML='<h4>نتیجه: '+fa(score)+' از '+fa(questions.length)+'</h4><p>پاسخ داده‌شده: '+fa(answered)+' از '+fa(questions.length)+'</p>'+details.join('');
+   const saved=readOtherProgress();saved[subject.id+'-book-'+mode+'-'+sessionId]={score,total:questions.length,answered,updatedAt:at};writeOtherProgress(saved);
+   let synced=0;if(isRealStudentSession())for(let i=0;i<questions.length;i++){
+    const q=questions[i],card=box.querySelector('[data-book-exam-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');if(!picked)continue;
+    try{const selected=Number(picked.value),result=await saveSubjectPracticeProgress({subject:subject.id,lesson_id:q.lessonId,activity_key:'book-'+mode+'-'+sessionId+'-'+i,activity_type:subject.name+' · '+(isExam?'آزمون جامع':'تمرین کتاب'),selected_answer:selected,correct_answer:q.answer,is_correct:selected===q.answer,attempt_count:1,question_text:q.question,explanation:q.analysis,metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],book_assessment:true,mode,lesson_title:q.lessonTitle,score,total:questions.length},updated_at:at});if(result?.synced)synced++;}catch(error){console.warn('Book assessment cloud save failed',error)}
+   }
+   result.innerHTML+='<p class="muted">'+(synced?'☁️ پاسخ‌ها در گزارش معلم ذخیره شدند.':'نتیجه روی این دستگاه ذخیره شد؛ برای ثبت آنلاین اتصال دانش‌آموز را بررسی کن.')+'</p>';
+  };
+ }
+ box.querySelector('#backFromOtherBookExam')?.addEventListener('click',()=>openOtherSubject(subject.id));
+}
+function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
     const availableSubjects=otherSubjectData.filter(s=>s.id!=='dictation');
@@ -2878,10 +2897,11 @@ loadExpandedPersianVocabulary();
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');
     $('otherSubjectTitle').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     const progress=readOtherProgress();const box=$('otherSubjectLessonPicker');
-    const bookExamAllowed=['science','social','gifts'].includes(subjectId)&&courseSettingsBySubject[subjectId]?.allowExam!==false;
-     const bookExamMarkup=bookExamAllowed?'<section class="lesson-note" style="margin:10px 0"><h3>🧪 آزمون جامع کتاب</h3><p class="muted">از سؤال‌های موجودِ درس‌های باز این کتاب آزمون بگیر؛ پاسخ صحیح و تحلیل هر سؤال پس از ثبت نمایش داده می‌شود.</p><button type="button" id="startOtherBookExam">شروع آزمون جامع</button></section>':'';
-     box.innerHTML=bookExamMarkup+selectedOtherSubject.lessons.map(l=>{const open=isCourseLessonOpen(selectedOtherSubject.id,l.id);return '<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'" '+(open?'':'disabled')+'><strong>'+(open?'':'🔒 ')+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(open?(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ تمرین‌ها تکمیل شده':'برای بازکردن محتوا بزن'):'این درس هنوز از طرف معلم باز نشده است')+'</small></button></div>'}).join('');
-     box.querySelector('#startOtherBookExam')?.addEventListener('click',renderOtherBookExam);
+    const bookAssessmentAllowed=['persian','science','social','gifts'].includes(subjectId);
+      const practiceAllowed=courseSettingsBySubject[subjectId]?.allowPractice!==false,examAllowed=courseSettingsBySubject[subjectId]?.allowExam!==false;
+      const bookExamMarkup=bookAssessmentAllowed?'<section class="lesson-note" style="margin:10px 0"><h3>🎯 تمرین و آزمون کتاب '+escapeHtml(selectedOtherSubject.name)+'</h3><p class="muted">از بانک سؤال‌های درس‌ها تمرین کن یا آزمون جامع بگیر؛ پس از ثبت، پاسخ درست و تحلیل نمایش داده می‌شود.</p><div class="grid"><button type="button" id="startOtherBookPractice" '+(practiceAllowed?'':'disabled')+'>تمرین کتاب</button><button type="button" id="startOtherBookExam" '+(examAllowed?'':'disabled')+'>آزمون جامع کتاب</button></div></section>':'';      box.innerHTML=bookExamMarkup+selectedOtherSubject.lessons.map(l=>{const open=isCourseLessonOpen(selectedOtherSubject.id,l.id);return '<div class="chapter-card"><button type="button" data-other-lesson="'+l.id+'" '+(open?'':'disabled')+'><strong>'+(open?'':'🔒 ')+(selectedOtherSubject.id==='persian'?'درس '+fa(l.id)+' · ':selectedOtherSubject.id==='dictation'?'املای درس '+fa(l.id)+' · ':'')+escapeHtml(l.title)+'</strong><small>'+(l.page?'صفحه '+escapeHtml(l.page)+' · ':'')+(l.isFreeLesson?'درس آزاد؛ متن انتخابی کلاس':'آموزش و تمرین')+'</small><small>'+(open?(progress[selectedOtherSubject.id+'-'+l.id]?.correct?'✅ تمرین‌ها تکمیل شده':'برای بازکردن محتوا بزن'):'این درس هنوز از طرف معلم باز نشده است')+'</small></button></div>'}).join('');
+     box.querySelector('#startOtherBookExam')?.addEventListener('click',()=>renderOtherBookExam('exam'));
+     box.querySelector('#startOtherBookPractice')?.addEventListener('click',()=>renderOtherBookExam('practice'));
     box.querySelectorAll('[data-other-lesson]').forEach(b=>b.onclick=()=>renderOtherLesson(b.dataset.otherLesson));
     $('otherSubjectProgress').textContent=fa(selectedOtherSubject.lessons.filter(l=>progress[selectedOtherSubject.id+'-'+l.id]?.correct).length)+' از '+fa(selectedOtherSubject.lessons.length)+' پاسخ درست';
   }
@@ -2894,8 +2914,34 @@ loadExpandedPersianVocabulary();
     const opts=wrongs.slice(0,3);const index=((rotation%4)+4)%4;opts.splice(index,0,correct);
     return {options:opts,answer:index};
   }
-  function buildPersianLessonQuizzes(l){
-    if(l.isFreeLesson)return [];
+  function buildFreeLessonQuestionBank(l){
+ const facts=[
+ {term:'نقطه',correct:'پایان جملهٔ خبری',wrong:['نشان پرسش','جداکردن هم‌معنی‌ها','نشان ریشه']},
+ {term:'علامت پرسش',correct:'پایان پرسش مستقیم',wrong:['پایان خبر','مکث کوتاه','نشان هم‌خانواده']},
+ {term:'ویرگول',correct:'نشان مکث کوتاه',wrong:['پایان همهٔ جمله‌ها','نشان پرسش','نشان تضاد']},
+ {term:'هم‌معنی',correct:'واژه‌ای با معنای نزدیک به واژه‌ای دیگر',wrong:['واژهٔ مخالف','واژه با ریشه مشترک','نشانه پایان']},
+ {term:'متضاد',correct:'واژه‌ای با معنی مخالف واژه‌ای دیگر',wrong:['واژه با معنی نزدیک','نشانه پرسش','گروه جمله‌ها']},
+ {term:'هم‌خانواده',correct:'واژه‌هایی با ریشهٔ مشترک',wrong:['واژه‌های مخالف','نشانه‌های جمله','جمله‌های بی‌ربط']},
+ {term:'اسم',correct:'واژه‌ای برای نامیدن شخص، مکان، چیز یا مفهوم',wrong:['واژهٔ انجام کار','نشانهٔ پایان پرسش','گروه بندها']},
+ {term:'فعل',correct:'واژه‌ای برای بیان کار یا حالت',wrong:['نام شخص یا مکان','ویژگی اسم','نشانه مکث']},
+ {term:'صفت',correct:'واژه‌ای که ویژگی اسم را می‌گوید',wrong:['نام‌گذاری','پایان جمله','ریشهٔ مشترک']},
+ {term:'بند',correct:'گروهی از جمله‌های مرتبط با موضوع اصلی',wrong:['یک حرف','نشانه پرسش','واژه‌های بی‌ارتباط']},
+ {term:'موضوع اصلی',correct:'فکری که متن بیشتر دربارهٔ آن است',wrong:['آخرین واژه','نشانه پایان','واژه مخالف']},
+ {term:'بازخوانی',correct:'دوباره خواندن نوشته برای پیدا کردن و اصلاح خطا',wrong:['حذف نشانه‌ها','تغییر موضوع هر جمله','نوشتن بدون بررسی']},
+ {term:'گیومه',correct:'مشخص کردن نقل‌قول',wrong:['پایان پرسش','جداکردن متضادها','نشان دادن فعل']},
+ {term:'جملهٔ منسجم',correct:'جملهٔ مرتبط با موضوع نوشته',wrong:['جمله نامرتبط','جمله بی‌معنا','فهرست حروف']},
+ {term:'نشانه‌گذاری',correct:'استفاده از نشانه‌ها برای خواناتر شدن متن',wrong:['حذف فاصله‌ها','جایگزینی اسم‌ها','بی‌نظمی نوشتن']}
+ ];
+ const templates=['کدام توضیح دربارهٔ «T» درست است؟','«T» چه کاربردی دارد؟','تعریف درست «T» کدام است؟','کدام جمله دربارهٔ «T» دقیق است؟','برای شناخت «T» چه می‌دانیم؟'];
+ const out=[];
+ facts.forEach((f,i)=>templates.forEach((t,j)=>{
+  const q=persianQuizOptions(f.correct,facts.map(x=>x.correct).concat(f.wrong),i+j);
+  out.push({kind:'تمرین عمومی درس آزاد',question:t.replace(/T/g,f.term),options:q.options,answer:q.answer,analysis:'این سؤال تمرین عمومی مهارت فارسی است؛ فایل‌های ارسالی تصریح می‌کنند که درس آزاد متن ثابت ندارد، بنابراین سؤال به متن اختصاصی این درس نسبت داده نمی‌شود.'});
+ }));
+ return out.slice(0,50).map((q,i)=>({...q,bankIndex:i}));
+}
+function buildPersianLessonQuizzes(l){
+    if(l.isFreeLesson)return buildFreeLessonQuestionBank(l);
     const quizzes=[],seen=new Set();
     const allVocabulary=[...(l.spellingWords||[]),...(l.importantWords||[]),
       ...(l.meanings||[]).flat(),...(l.synonyms||[]).flat(),...(l.opposites||[]).flat(),
@@ -2969,15 +3015,12 @@ loadExpandedPersianVocabulary();
     return quizzes;
   }
   function selectPersianExamQuestions(pool,count){
-    if(!Array.isArray(pool)||pool.length<=count)return (pool||[]).map((q,i)=>({...q,bankIndex:i}));
-    const picked=[],used=new Set();
-    for(let i=0;i<count;i++){
-      const index=Math.min(pool.length-1,Math.floor(i*(pool.length-1)/(count-1)));
-      if(!used.has(index)){used.add(index);picked.push({...pool[index],bankIndex:index});}
-    }
-    return picked;
-  }
-  const persianBookPageMap={
+ if(!Array.isArray(pool)||!pool.length||count<=0)return [];
+ const rows=pool.map((q,i)=>({...q,bankIndex:Number.isInteger(q.bankIndex)?q.bankIndex:i}));
+ for(let i=rows.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[rows[i],rows[j]]=[rows[j],rows[i]];}
+ return rows.slice(0,Math.min(count,rows.length));
+}
+const persianBookPageMap={
     1:{start:10,end:15,pdfStart:1,pdfEnd:6},
     2:{start:18,end:22,pdfStart:7,pdfEnd:11},
     3:{start:30,end:33,pdfStart:12,pdfEnd:15},
@@ -3260,7 +3303,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v33',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v35',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
