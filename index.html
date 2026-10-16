@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v17-20261016-persian-50q-book-exams">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v18-20261016-persian-catalog-assessment">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -972,7 +972,7 @@ function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
 function courseLessonCatalog(subject){
   let base=[];
   const sharedCatalog=(typeof window!=='undefined'&&window.__courseCatalogData&&typeof window.__courseCatalogData==='object')?window.__courseCatalogData:{};
-  const sharedLessons=Array.isArray(sharedCatalog[subject])?sharedCatalog[subject]:null;
+  const sharedLessons=Array.isArray(sharedCatalog[subject])&&sharedCatalog[subject].length?sharedCatalog[subject]:null;
   if(subject==='math')base=chapters.map(c=>({id:Number(c.id),title:'فصل '+fa(c.id)+' · '+c.title}));
   else if(subject==='persian'||subject==='dictation'){
     const lessons=sharedLessons||(typeof persianLessons!=='undefined'?persianLessons:[]);
@@ -996,7 +996,7 @@ function isCourseLessonOpen(subject,lessonId){
  if(settings.releaseMode==='scheduled'&&settings.releaseAt&&Date.parse(settings.releaseAt)>Date.now())return false;
  const list=Array.isArray(settings.lessons)?settings.lessons:[];
  const item=list.find(x=>Number(x.id)===Number(lessonId));
- if(!item)return settings.defaultLocked!==true;
+ if(!item){const stalePersianSettings=subject==='persian'&&(!Array.isArray(settings.lessons)||settings.lessons.length<17);if(stalePersianSettings)return true;return settings.defaultLocked!==true;}
  if(item.isUnlocked!==true)return false;
  if(item.availableFrom&&Date.parse(item.availableFrom)>Date.now())return false;
  if(item.availableUntil&&Date.parse(item.availableUntil)<Date.now())return false;
@@ -1013,7 +1013,7 @@ function renderTeacherCourseOverview(){
    const catalog=courseLessonCatalog(id);
    const enabled=settings.courseEnabled!==false;
    const open=enabled?catalog.filter(lesson=>isCourseLessonOpen(id,lesson.id)):[];
-   return {id,name:settings.courseTitle||courseName(id),icon:bookSubjectCatalog.find(x=>x.id===id)?.icon||'📘',catalog,open,enabled};
+   return {id,name:id==='persian'?'فارسی':(settings.courseTitle||courseName(id)),icon:bookSubjectCatalog.find(x=>x.id===id)?.icon||'📘',catalog,open,enabled};
  });
  const activeLessonCount=courses.reduce((sum,course)=>sum+course.open.length,0);
  const activeBookCount=courses.filter(course=>course.enabled&&course.open.length>0).length;
@@ -1044,7 +1044,7 @@ function localDateInput(value){
 function isoFromDateInput(value){if(!value)return null;const d=new Date(value);return Number.isNaN(d.getTime())?null:d.toISOString()}
 function renderCourseSettingsForm(){
  const subject=$('settingSubject')?.value||'math',settings=courseSettingsBySubject[subject]||{};
- if($('settingCourseTitle'))$('settingCourseTitle').value=settings.courseTitle||courseName(subject);
+ if($('settingCourseTitle'))$('settingCourseTitle').value=subject==='persian'?'فارسی':(settings.courseTitle||courseName(subject));
  $('settingCourseEnabled').checked=settings.courseEnabled!==false;
  $('settingDefaultLocked').checked=settings.defaultLocked===true;
  $('settingAllowPractice').checked=settings.allowPractice!==false;
@@ -1073,6 +1073,12 @@ async function loadCourseSettings(silent=false){
  try{
    const data=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'list'}});
    courseSettingsBySubject=data?.settings&&typeof data.settings==='object'?data.settings:{};
+    const persianCatalogMigrationV18=courseSettingsBySubject.persian;
+    if(persianCatalogMigrationV18){
+      persianCatalogMigrationV18.courseEnabled=true;persianCatalogMigrationV18.allowPractice=true;persianCatalogMigrationV18.allowExam=true;
+      persianCatalogMigrationV18.courseTitle='فارسی';
+      if(!Array.isArray(persianCatalogMigrationV18.lessons)||persianCatalogMigrationV18.lessons.length<17){persianCatalogMigrationV18.defaultLocked=false;persianCatalogMigrationV18.lessons=[];}
+    }
    if($('settingSubject'))renderCourseSettingsForm();
    if($('reportSubjectFilter'))populateLessonFilter('reportSubjectFilter','reportLessonFilter');
    if($('gradeSubjectFilter'))populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');
@@ -2595,7 +2601,7 @@ loadExpandedPersianVocabulary();
         count:fa(courseLessonCatalog(s.id).length)+' مبحث'
       }))
     ];
-    box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=cfg.courseTitle||s.name;const catalog=courseLessonCatalog(s.id);const total=catalog.length;const openCount=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
+    box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=s.id==='persian'?'فارسی':(cfg.courseTitle||s.name);let catalog=courseLessonCatalog(s.id);if(!catalog.length&&Array.isArray(s.lessons))catalog=s.lessons.map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title,page:l.page}));const total=catalog.length;const openCount=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
     box.querySelectorAll('[data-student-subject]').forEach(b=>b.onclick=()=>{
       const id=b.dataset.studentSubject;
       if(id==='math'){
@@ -2655,11 +2661,11 @@ loadExpandedPersianVocabulary();
     const availableSubjects=otherSubjectData.filter(s=>s.id!=='dictation');
     box.innerHTML=availableSubjects.map(s=>{
       const cfg=courseSettingsBySubject[s.id]||{};
-      const catalog=courseLessonCatalog(s.id);
+      let catalog=courseLessonCatalog(s.id);if(!catalog.length&&Array.isArray(s.lessons))catalog=s.lessons.map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title,page:l.page}));
       const done=catalog.filter(l=>progress[s.id+'-'+l.id]?.correct).length;
       const open=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;
       const enabled=cfg.courseEnabled!==false;
-      return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(enabled?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(catalog.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>';
+      return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(enabled?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(s.id==='persian'?'فارسی':(cfg.courseTitle||s.name))+'</b><small>'+fa(open)+' از '+fa(catalog.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>';
     }).join('');
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
@@ -2671,7 +2677,16 @@ loadExpandedPersianVocabulary();
       ?{id:subjectId,name:subjectId==='dictation'?'املای فارسی':'فارسی',icon:subjectId==='dictation'?'✍️':'📖',lessons:persianLessons}
       :otherSubjectData.find(s=>s.id===subjectId);
     const baseSubject=catalogSource;selectedOtherLesson=null;if(!baseSubject)return;if(courseSettingsBySubject[subjectId]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
-    selectedOtherSubject={...baseSubject,id:subjectId,lessons:courseLessonCatalog(subjectId).map(item=>{const existing=baseSubject.lessons.find(l=>Number(l.id)===Number(item.id));if(existing)return {...existing,id:Number(existing.id),isFreeLesson:existing.isFreeLesson===true};const custom=(courseSettingsBySubject[subjectId]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));return {id:item.id,title:custom?.title||item.title.replace(/^(?:درس|املای درس)\s*[۰-۹0-9]+\s*[·.]\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(subjectId),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}}})};
+    const listedCatalog=courseLessonCatalog(subjectId);
+    const localLessons=Array.isArray(baseSubject.lessons)?baseSubject.lessons:[];
+    const fallbackCatalog=localLessons.map(item=>({id:Number(item.id),title:(subjectId==='math'?'فصل ':'درس ')+fa(item.id)+' · '+String(item.title||'درس'),page:item.page,isFreeLesson:item.isFreeLesson===true}));
+    const effectiveCatalog=listedCatalog.length?listedCatalog:fallbackCatalog;
+    selectedOtherSubject={...baseSubject,id:subjectId,name:subjectId==='persian'?'فارسی':baseSubject.name,lessons:effectiveCatalog.map(item=>{
+      const existing=localLessons.find(l=>Number(l.id)===Number(item.id));
+      if(existing)return {...existing,id:Number(existing.id),isFreeLesson:existing.isFreeLesson===true};
+      const custom=(courseSettingsBySubject[subjectId]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));
+      return {id:item.id,title:custom?.title||String(item.title||'درس جدید').replace(/^(?:فصل|درس|املای درس)\\s*[۰-۹0-9]+\\s*[·.]\\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(subjectId),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}};
+    })};
     activeStudentSubject=selectedOtherSubject.id;$('otherSubjectPicker').classList.add('hidden');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
