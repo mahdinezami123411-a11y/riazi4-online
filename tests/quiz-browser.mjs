@@ -241,6 +241,37 @@ for (const subject of ['persian','science','social','gifts']) {
   assert.equal(item.renderedError, false, subject + ': نمایش درس به پیام خطا رسید');
 }
 assert.deepEqual(subjectLessonUi.duplicateIds, [], 'شناسهٔ تکراری در DOM می‌تواند کلیک‌ها و کنترل‌ها را مختل کند: '+JSON.stringify(subjectLessonUi.duplicateIds));
+
+await page.setViewportSize({width:390,height:844});
+const mobileUi = await page.evaluate(() => {
+  const api = window.__quizTestApi;
+  const measure = label => ({
+    label,
+    viewportWidth: document.documentElement.clientWidth,
+    documentWidth: document.documentElement.scrollWidth,
+    hasHorizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1
+  });
+  const checks = [];
+  api.showStudentAppView('home');
+  checks.push(measure('student-home'));
+  document.querySelector('#studentSubjectPicker [data-student-subject="math"]')?.click();
+  checks.push(measure('math-menu'));
+  document.querySelector('#mathHomeMenu [data-student-view="book"]')?.click();
+  checks.push(measure('math-book'));
+  document.querySelector('#chapterPicker [data-chapter="1"]')?.click();
+  checks.push(measure('math-chapter-lesson'));
+  document.getElementById('backToChapterPicker')?.click();
+  api.showStudentAppView('home');
+  document.querySelector('#studentSubjectPicker [data-student-subject="science"]')?.click();
+  const lessonButton = document.querySelector('#otherSubjectLessonPicker [data-other-lesson]:not([disabled])');
+  lessonButton?.click();
+  checks.push(measure('science-lesson'));
+  const navButtons = [...document.querySelectorAll('#studentAppNav [data-app-view]')].filter(button => !button.classList.contains('hidden'));
+  return {checks, visibleNavButtons:navButtons.length, navButtonsHaveLabels:navButtons.every(button => !!button.querySelector('small')?.textContent.trim())};
+});
+assert.equal(mobileUi.checks.every(x=>!x.hasHorizontalOverflow), true, 'نمایش موبایل دارای سرریز افقی است: '+JSON.stringify(mobileUi.checks));
+assert.ok(mobileUi.visibleNavButtons >= 5, 'در عرض موبایل، گزینه‌های ناوبری اصلی پنهان شده‌اند');
+assert.equal(mobileUi.navButtonsHaveLabels, true, 'یکی از دکمه‌های ناوبری موبایل برچسب ندارد');
 assert.deepEqual(pageErrors, [], 'برنامه هنگام اجرا خطای JavaScript داد: ' + pageErrors.join(' | '));
 assert.deepEqual(consoleErrors, [], 'برنامه درخواست/خطای کنسول ناخواسته دارد: ' + consoleErrors.join(' | '));
 
