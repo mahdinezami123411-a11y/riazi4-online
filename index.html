@@ -2327,9 +2327,9 @@ $('teacherSaveQuestion').onclick=async()=>{
 function updateAssignmentSubjectControls(){
  const isMath=$('actSubject')?.value==='math',scope=$('actScope')?.value||'chapter';
  const lessonField=$('actLessonField'),scopeField=$('actScopeField'),chapterField=$('actChapterField'),multiField=$('actMultiLessonsField'),multi=$('actMultiLessons');
- if(lessonField)lessonField.style.display=isMath?'none':'';
- if(scopeField)scopeField.style.display=isMath?'':'none';
- if(chapterField)chapterField.style.display=(isMath&&scope!=='multi')?'':'none';
+ if(lessonField)lessonField.style.display=(!isMath&&scope!=='multi')?'':'none';
+ if(scopeField)scopeField.style.display='';
+ if(chapterField)chapterField.style.display=scope!=='multi'?(isMath?'':'none'):'none';
  if(multiField)multiField.style.display=scope==='multi'?'':'none';
  if(multi){const prev=new Set(Array.from(multi.selectedOptions).map(o=>o.value));const subject=$('actSubject')?.value||'math';multi.innerHTML=courseLessonCatalog(subject).map(l=>'<option value=\"'+l.id+'\">'+escapeHtml(l.title)+'</option>').join('');for(const o of multi.options)o.selected=prev.has(o.value);multi.style.display=scope==='multi'?'':'none';}
 }
