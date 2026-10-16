@@ -2181,13 +2181,33 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   async function refreshStudentProgressFromCloud(){
     if(!cloudSession?.user?.id)return;
-    const q=`?select=chapter_id,is_correct&student_id=eq.${encodeURIComponent(cloudSession.user.id)}&order=created_at.asc&limit=5000`;
+    const q=`?select=chapter_id,question_id,is_correct,created_at&student_id=eq.${encodeURIComponent(cloudSession.user.id)}&order=created_at.asc&limit=5000`;
     const rows=await cloudFetch('/rest/v1/yare_practice_attempts'+q,{method:'GET'});
-    const p={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:studentProgress?.questionHistory||{}};
+    const localHistory=studentProgress?.questionHistory||{};
+    const remoteHistory={};
+    const p={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{...localHistory}};
     for(const row of (Array.isArray(rows)?rows:[])){
       if(typeof row.is_correct!=='boolean')continue;
       p.attempts++;if(row.is_correct){p.correct++;p.streak++;p.bestStreak=Math.max(p.bestStreak,p.streak)}else p.streak=0;
       const ch=Number(row.chapter_id);if(ch>=1&&ch<=7){const k=String(ch);p.byChapter[k]??={attempts:0,correct:0};p.byChapter[k].attempts++;if(row.is_correct)p.byChapter[k].correct++}
+      if(row.question_id){
+        const key='id:'+String(row.question_id);
+        const rec=remoteHistory[key]||(remoteHistory[key]={attempts:0,correct:0,incorrect:0,lastCorrect:false,updatedAt:''});
+        rec.attempts++;
+        if(row.is_correct)rec.correct++;else rec.incorrect++;
+        rec.lastCorrect=row.is_correct===true;
+        rec.updatedAt=row.created_at||rec.updatedAt;
+      }
+    }
+    // Use the larger local/cloud tallies to retain recent local attempts while sharing
+    // question-level mistakes from the authenticated server history across devices.
+    for(const [key,remote] of Object.entries(remoteHistory)){
+      const local=localHistory[key]||{};
+      const attempts=Math.max(Number(local.attempts)||0,remote.attempts);
+      const correct=Math.min(attempts,Math.max(Number(local.correct)||0,remote.correct));
+      const incorrect=Math.min(Math.max(0,attempts-correct),Math.max(Number(local.incorrect)||0,remote.incorrect));
+      const localTime=Date.parse(local.updatedAt||'')||0,remoteTime=Date.parse(remote.updatedAt||'')||0;
+      p.questionHistory[key]={attempts,correct,incorrect,lastCorrect:remoteTime>=localTime?remote.lastCorrect:local.lastCorrect,updatedAt:remoteTime>=localTime?remote.updatedAt:(local.updatedAt||'')};
     }
     studentProgress=p;storeStudentProgress();renderStudentDashboard();
   }
