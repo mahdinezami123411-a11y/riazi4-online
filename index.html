@@ -1075,6 +1075,9 @@ async function loadCourseSettings(silent=false){
    return courseSettingsBySubject;
  }catch(error){
    if(!silent&&$('courseSettingsStatus'))$('courseSettingsStatus').textContent='خواندن تنظیمات آنلاین ناموفق بود: '+cloudMessage(error);
+   renderTeacherCourseOverview();
+   if(typeof renderStudentSubjectHub==='function')renderStudentSubjectHub();
+   if(typeof renderOtherSubjectPicker==='function')renderOtherSubjectPicker();
    return {};
  }
 }
