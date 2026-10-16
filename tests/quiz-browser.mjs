@@ -96,6 +96,66 @@ assert.deepEqual(interaction.displayedOptions.map(x => x.text), ['پاسخ ۱','
 assert.deepEqual(interaction.displayedOptions.map(x => x.value), [4,5,6,7], 'شناسهٔ گزینه‌ها باید با پاسخ‌نامه هماهنگ باشد');
 assert.equal(interaction.duplicateWasDisabled, true, 'یک پاسخ نباید در چند ردیف جورکردنی انتخاب شود');
 assert.match(interaction.feedback, /آفرین|درست/, 'ثبت و تصحیح جورکردنی در صفحه کار نکرد');
+
+const lessonUi = await page.evaluate(() => {
+  const api = window.__quizTestApi;
+  const subjects = ['math','persian','science','social','gifts'];
+  const catalogCounts = Object.fromEntries(subjects.map(subject => [subject, api.getCourseCatalog(subject).length]));
+  const selectors = [];
+  for (const subject of subjects) {
+    const pairs = [
+      ['teacherBankSubject','teacherBankChapter'],
+      ['actSubject','actLesson'],
+      ['lessonFileSubject','lessonFileLesson'],
+      ['printExamSubject','printExamLessons']
+    ];
+    for (const [subjectId, lessonId] of pairs) {
+      const sub = document.getElementById(subjectId), target = document.getElementById(lessonId);
+      if (sub && [...sub.options].some(option => option.value === subject)) sub.value = subject;
+    }
+    api.refreshCourseLessonSelectors();
+    api.renderPrintableLessonChoices();
+    selectors.push({
+      subject,
+      bank: document.querySelectorAll('#teacherBankChapter option').length,
+      assignment: document.querySelectorAll('#actLesson option').length,
+      material: document.querySelectorAll('#lessonFileLesson option').length,
+      printable: document.querySelectorAll('#printExamLessons input[type="checkbox"]').length
+    });
+  }
+  api.renderChapterPicker();
+  const mathPlanetCount = document.querySelectorAll('#chapterPicker .chapter-planet-node[data-chapter]').length;
+  const lessonPlanetCounts = {};
+  for (const subject of ['persian','science','social','gifts']) {
+    api.openOtherSubject(subject);
+    lessonPlanetCounts[subject] = document.querySelectorAll('#otherSubjectLessonPicker .chapter-planet-node[data-other-lesson]').length;
+  }
+  api.renderPlanetaryChapterRoute();
+  const allBookMapCount = document.querySelectorAll('#chapterPlanetRoute .chapter-planet-node[data-planet-subject]').length;
+  api.showStudentAppView('profile');
+  const placement = api.getProgressViewPlacement();
+  api.showStudentAppView('home');
+  return {catalogCounts,selectors,mathPlanetCount,lessonPlanetCounts,allBookMapCount,placement,reportNav:!!document.querySelector('#studentAppNav [data-app-view="report"]')};
+});
+for (const subject of ['math','persian','science','social','gifts']) {
+  assert.ok(lessonUi.catalogCounts[subject] > 0, subject + ': فهرست پایهٔ درس‌ها خالی است');
+}
+for (const row of lessonUi.selectors) {
+  assert.ok(row.bank > 0, row.subject + ': فهرست درس‌های بانک سؤال خالی است');
+  assert.ok(row.assignment > 0, row.subject + ': فهرست درس‌های فعالیت خالی است');
+  assert.ok(row.material > 0, row.subject + ': فهرست درس‌های منابع خالی است');
+  assert.ok(row.printable > 0, row.subject + ': فهرست درس‌های آزمون چاپی خالی است');
+}
+assert.equal(lessonUi.mathPlanetCount, lessonUi.catalogCounts.math, 'فصل‌های ریاضی باید همگی به شکل سیاره نمایش داده شوند');
+for (const subject of ['persian','science','social','gifts']) {
+  assert.equal(lessonUi.lessonPlanetCounts[subject], lessonUi.catalogCounts[subject], subject + ': درس‌ها به شکل سیاره نمایش داده نمی‌شوند');
+}
+assert.equal(lessonUi.allBookMapCount, ['math','persian','science','social','gifts'].reduce((sum,subject)=>sum+lessonUi.catalogCounts[subject],0), 'نقشهٔ پروفایل باید سیاره‌های هر پنج کتاب را داشته باشد');
+assert.equal(lessonUi.placement.homeInsideProfile, false, 'صفحهٔ انتخاب درس نباید داخل بخش پنهان پروفایل باشد');
+assert.equal(lessonUi.placement.reportInsideProfile, false, 'کارنامه باید جدا از پروفایل باشد');
+assert.equal(lessonUi.placement.mapInsideProfile, true, 'نقشهٔ پیشرفت باید در پروفایل نمایش داده شود');
+assert.equal(lessonUi.reportNav, true, 'بخش کارنامه باید در نوار پیمایش وجود داشته باشد');
+
 assert.deepEqual(pageErrors, [], 'برنامه هنگام اجرا خطای JavaScript داد: ' + pageErrors.join(' | '));
 
 console.log('Browser question checks passed:', JSON.stringify(sourceReport));
