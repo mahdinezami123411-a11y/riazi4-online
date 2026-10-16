@@ -848,7 +848,6 @@ a{color:#d7ff76}
 @media(max-width:560px){.book-planet-route-grid,.chapter-planet-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.chapter-planet-node{min-height:126px;padding:8px 5px}.book-planet-section{padding:8px}}
 
 /* پروفایل فقط یک نمای نموداری از پیشرفت نگه می‌دارد؛ داشبورد کامل در خانه است */
-#profileView #studentDashboard{display:none!important}
 #profileProgressMount .profile-progress-chart{display:grid;gap:10px;margin-top:10px}
 .profile-progress-chart .profile-progress-row{display:grid;grid-template-columns:minmax(95px,1fr) minmax(100px,1.8fr) 44px;gap:9px;align-items:center;padding:9px 10px;border:1px solid #3c5077;border-radius:12px;background:linear-gradient(145deg,#202b4a,#151e35)}
 .profile-progress-chart .profile-progress-label{color:#eef4ff;font-size:12px;font-weight:800}
@@ -895,13 +894,7 @@ a{color:#d7ff76}
   <div class="profile-action-row"><button id="saveStudentProfile">💾 ذخیره تغییرات</button><button id="editStudentProfile" class="outline">✏️ ویرایش پروفایل</button></div><p id="profileStatus" class="profile-help" role="status">پروفایل و پیشرفت در همین مرورگر ذخیره می‌شوند.</p>
   <h3 class="profile-section-title">🗺️ نقشه پیشرفت من</h3><div id="profileProgressMount"></div>
 </div>
-<div id="studentDashboard" class="card progress-dashboard">
-  <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
-  <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
-  <h3>🌌 نقشهٔ کهکشانی کتاب‌ها</h3><p class="muted">هر سیاره یک فصل یا درس است. سیاره‌های قفل‌شده هنوز در دسترس نیستند؛ سیاره‌های دیگر را باز کن تا آموزش یا تمرین همان درس را ببینی.</p><div id="chapterPlanetRoute" class="all-books-planet-map"></div>
-  <p class="muted">نتایج آنلاین حساب دانش‌آموز همگام‌سازی می‌شوند؛ اگر تمرینی آفلاین انجام شود، تا زمان اتصال در همین دستگاه می‌ماند.</p>
 
-</div>
 </div>
 <div id="studentReportView" class="student-screen hidden">
 <section id="unifiedLearningReport" class="card unified-learning-report">
@@ -913,6 +906,13 @@ a{color:#d7ff76}
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
 <div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2><button class="outline" id="mathBackToSubjects" type="button">بازگشت به انتخاب کتاب‌ها</button></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div>
+<div id="studentDashboard" class="card progress-dashboard">
+  <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
+  <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
+  <h3>🌌 نقشهٔ کهکشانی کتاب‌ها</h3><p class="muted">هر سیاره یک فصل یا درس است. سیاره‌های قفل‌شده هنوز در دسترس نیستند؛ سیاره‌های دیگر را باز کن تا آموزش یا تمرین همان درس را ببینی.</p><div id="chapterPlanetRoute" class="all-books-planet-map"></div>
+  <p class="muted">نتایج آنلاین حساب دانش‌آموز همگام‌سازی می‌شوند؛ اگر تمرینی آفلاین انجام شود، تا زمان اتصال در همین دستگاه می‌ماند.</p>
+
+</div>
 </div>
 <div id="otherSubjectsView" class="card hidden">
   <div class="row"><h2 id="otherSubjectPageHeading">📚 درس‌های پایهٔ چهارم</h2><button class="outline" id="subjectsBackHome">بازگشت به انتخاب کتاب‌ها</button></div>
@@ -2004,7 +2004,6 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const avatar=$('profileAvatar');avatar.replaceChildren();const safePhoto=typeof activeProfile.photo==='string'&&/^data:image\/(?:jpeg|png|webp|gif);base64,[a-z0-9+/=]+$/i.test(activeProfile.photo)?activeProfile.photo:'';if(safePhoto){const img=document.createElement('img');img.src=safePhoto;img.alt='تصویر پروفایل دانش‌آموز';avatar.appendChild(img)}else avatar.textContent='👦';
     $('profileStatus').textContent='پروفایل در همین مرورگر ذخیره شد؛ این اطلاعات هنوز بین دستگاه‌ها همگام‌سازی نمی‌شود.';
   }
-  function relocateProgressIntoProfile(){const dash=$('studentDashboard'),mount=$('profileProgressMount');if(dash&&mount&&dash.parentElement!==mount){mount.appendChild(dash);dash.classList.remove('hidden')}}
   function normalizeStudentProgressRecord(value){
     const src=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
     const count=v=>{const n=Number(v);return Number.isFinite(n)&&n>=0?Math.floor(n):0};
@@ -2031,7 +2030,6 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(file.size>8*1024*1024){$('profileStatus').textContent='حجم تصویر بیشتر از ۸ مگابایت است؛ لطفاً تصویر کوچک‌تری انتخاب کن.';return}
     const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>{const canvas=document.createElement('canvas'),max=360,scale=Math.min(1,max/Math.max(img.width,img.height));canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);activeProfile.photo=canvas.toDataURL('image/jpeg',0.78);saveProfileData(activeProfile)};img.onerror=()=>{$('profileStatus').textContent='خواندن تصویر امکان‌پذیر نبود.'};img.src=reader.result};reader.onerror=()=>{$('profileStatus').textContent='خواندن فایل تصویر ناموفق بود.'};reader.readAsDataURL(file);
   };
-  relocateProgressIntoProfile();
 
   // App-like student navigation: profile/progress is a distinct screen.
   function setBookTab(tab){
@@ -2092,7 +2090,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(activeStudentSubject==='math'&&view==='learn')setBookTab('chapters');
     if(activeStudentSubject==='math'&&view==='practice'){setBookTab('practice');syncPracticeModeUI();updatePracticeStats()}
     if(activeStudentSubject==='math'&&view==='exam'){setBookTab('exam');populateChapterExamSelect()}
-    if(view==='profile'){relocateProgressIntoProfile();renderStudentDashboard();}
+    if(view==='profile'){renderStudentDashboard();}
     if(view==='report')renderUnifiedLearningReport();
     if(view==='profile')renderProfileProgressChart();
     if(view==='assignments')loadStudentAssignments();
