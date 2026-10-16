@@ -3430,6 +3430,7 @@ function getSourceQuestionBankQuizzes(subjectId,lessonId){
    question:'هر پرسش را با پاسخ درست در ستون مقابل جور کن.',
    pairs:left,options,
    answer:left.map((_,i)=>right.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(group[i].answer))+4),
+   sourceAnswers:group.map(qa=>String(qa.answer||'').trim()),
    analysis:'هر ردیف باید با پاسخ همان پرسش جور شود. پس از ثبت پاسخ، جفت‌های صحیح نمایش داده می‌شوند.',
    sourceIndex:'matching-'+start
   });
