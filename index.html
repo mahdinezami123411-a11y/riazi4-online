@@ -3672,7 +3672,7 @@ loadExpandedPersianVocabulary();
     const subjects=[
       {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'فصل‌های کتاب و مهارت‌های پایه'},
       {id:'persian',name:'فارسی',icon:'📖',description:'درس‌های فارسی، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم',count:fa(courseLessonCatalog('persian').length)+' درس'},
-      ...otherSubjectData.filter(s=>s.id!=='dictation').map(s=>({
+      ...otherSubjectData.filter(s=>s.id!=='dictation'&&s.id!=='persian').map(s=>({
         id:s.id,name:s.name,icon:s.icon,
         description:s.id==='persian'?'درس‌های فارسی، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم':
           s.id==='dictation'?'تمرین املای واژه‌های هر درس بر پایهٔ فهرست املای بررسی‌شده':
