@@ -1897,7 +1897,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     $('chapterLessonBody').innerHTML=intro+goals+sections+videoMarkup+`<div class="notice"><b>روش پیشنهادی:</b> هر نکته را جداگانه باز کن، مثال را خودت حل کن و بعد پاسخ «خودت را بسنج» را ببین.</div>`;
     renderChapterPicker();updatePracticeTopicOptions();
   };
-  renderChapterPicker();renderChapter(activeChapter||1);
+  renderChapterPicker();updatePracticeTopicOptions();$('chapterLesson').classList.add('hidden');$('mathChapterLessonView').classList.add('hidden');
 
   // One-page name entry, followed by the student workspace.
   const originalShow=show;
