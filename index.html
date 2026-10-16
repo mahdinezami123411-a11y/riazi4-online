@@ -715,6 +715,7 @@ a{color:#d7ff76}
 <h4 style="margin-top:18px">🔐 مدیریت جداگانهٔ درس‌ها</h4>
 <p class="muted">برای هر درس می‌توانی زمان بازشدن و در صورت نیاز زمان بسته‌شدن را تعیین کنی. درس تازه به‌صورت قفل اضافه می‌شود؛ برای انتشارش باید گزینهٔ «اجازهٔ دسترسی» را فعال و تنظیمات کتاب را ذخیره کنی.</p>
 <div id="settingLessonList" class="course-lesson-settings"></div>
+<div class="lesson-bulk-tools"><label class="field" for="settingUnlockThrough">بازکردن درس‌ها تا شمارهٔ دلخواه</label><div class="row"><input id="settingUnlockThrough" type="number" min="1" max="100" inputmode="numeric" placeholder="مثلاً ۳"><button id="unlockLessonsThrough" type="button" class="outline">بازکردن تا این درس</button></div><div class="row"><button id="lockAllLessons" type="button" class="outline">قفل همهٔ درس‌ها</button><button id="unlockAllLessons" type="button" class="outline">بازکردن همهٔ درس‌ها</button></div><p class="muted">این دکمه‌ها فقط وضعیت فهرست فعلی را تغییر می‌دهند؛ برای اعمال تغییرها برای دانش‌آموزان، تنظیمات کتاب را ذخیره کن.</p></div>
 <div class="grid"><button id="saveCourseSettings" type="button">💾 ذخیره تنظیمات این کتاب</button><button id="reloadCourseSettings" type="button" class="outline">دریافت دوباره تنظیمات از سرور</button></div>
 <div id="courseSettingsStatus" class="notice" role="status">برای ویرایش تنظیمات، با حساب معلم وارد شو.</div>
 <hr class="soft-rule">
@@ -1070,7 +1071,23 @@ function renderTeacherGradebook(){
  const names=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));
  panel.innerHTML='<p class="muted">'+fa(rows.length)+' نتیجه در فیلتر انتخاب‌شده.</p><div style="overflow-x:auto"><table class="math-matrix" style="min-width:900px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ ثبت‌شده</th><th>نتیجه</th><th>تحلیل/بازخورد</th><th>زمان</th></tr></thead><tbody>'+rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(names.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||r.activity_type||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+ (r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('')+'</tbody></table></div>';
 }
-$('settingSubject')?.addEventListener('change',renderCourseSettingsForm);
+$('settingSubject')?.addEventListener('change',()=>{renderCourseSettingsForm();});
+function setBulkLessonAccess(predicate){
+ const rows=[...$('settingLessonList').querySelectorAll('.course-lesson-row')];
+ rows.forEach(row=>{const checkbox=row.querySelector('.course-lesson-unlocked');const allowed=!!predicate(Number(row.dataset.courseLesson));if(checkbox)checkbox.checked=allowed;const status=row.querySelector('.course-lesson-label small');if(status)status.textContent=allowed?'فعلاً باز':'قفل/منتظر زمان بازشدن';});
+ if($('courseSettingsStatus'))$('courseSettingsStatus').textContent='وضعیت دسترسی درس‌ها تغییر کرد؛ برای اعمال آن برای دانش‌آموزان، تنظیمات کتاب را ذخیره کن.';
+}
+$('lockAllLessons')?.addEventListener('click',()=>setBulkLessonAccess(()=>false));
+$('unlockAllLessons')?.addEventListener('click',()=>setBulkLessonAccess(()=>true));
+$('unlockLessonsThrough')?.addEventListener('click',()=>{
+ const n=Number($('settingUnlockThrough')?.value);
+ if(!Number.isInteger(n)||n<1){$('courseSettingsStatus').textContent='شمارهٔ درس معتبر را وارد کن.';return}
+ setBulkLessonAccess(id=>id<=n);
+});
+$('settingLessonList')?.addEventListener('change',e=>{
+ if(!e.target.matches('.course-lesson-unlocked'))return;
+ const row=e.target.closest('.course-lesson-row');const status=row?.querySelector('.course-lesson-label small');if(status)status.textContent=e.target.checked?'فعلاً باز':'قفل/منتظر زمان بازشدن';
+});
 $('addCourseLesson')?.addEventListener('click',()=>{
  const subject=$('settingSubject').value;
  if(subject==='math'){$('courseSettingsStatus').textContent='ریاضی با فصل‌های ۱ تا ۷ مدیریت می‌شود؛ برای کنترل دسترسی از همان فصل‌ها استفاده کن.';return}
@@ -1108,8 +1125,8 @@ $('saveCourseSettings')?.addEventListener('click',async()=>{
  }catch(error){$('courseSettingsStatus').textContent='ذخیره ناموفق بود: '+cloudMessage(error)}
  finally{setBusy(btn,false)}
 });
-$('reportSubjectFilter')?.addEventListener('change',()=>{populateLessonFilter('reportSubjectFilter','reportLessonFilter');renderTeacherReport()});
-$('reportLessonFilter')?.addEventListener('change',renderTeacherReport);
+$('reportSubjectFilter')?.addEventListener('change',()=>{populateLessonFilter('reportSubjectFilter','reportLessonFilter');renderTeacherReport();renderTeacherSubjectPracticeReport()});
+$('reportLessonFilter')?.addEventListener('change',()=>{renderTeacherReport();renderTeacherSubjectPracticeReport()});
 $('gradeSubjectFilter')?.addEventListener('change',()=>{populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');renderTeacherGradebook()});
 $('gradeLessonFilter')?.addEventListener('change',renderTeacherGradebook);
 $('refreshGradebook')?.addEventListener('click',()=>{loadTeacherReport();renderTeacherGradebook()});
@@ -2016,7 +2033,18 @@ function renderTeacherReport(){
   function renderTeacherSubjectPracticeReport(){
     const tab=$('tab-reports');if(!tab)return;
     let panel=$('cloudSubjectPracticeReport');if(!panel){panel=document.createElement('div');panel.id='cloudSubjectPracticeReport';panel.className='item';tab.appendChild(panel)}
-    const rows=[...cloudSubjectProgress].sort((a,b)=>Date.parse(b.updated_at)-Date.parse(a.updated_at));
+    const selectedSubject=$('reportSubjectFilter')?.value||'all';
+    const selectedLesson=$('reportLessonFilter')?.value||'all';
+    const selectedRange=$('reportDateRange')?.value||'تمام مدت';
+    const rangeDays=selectedRange==='۷ روز اخیر'?7:selectedRange==='۳۰ روز اخیر'?30:0;
+    const cutoff=rangeDays?Date.now()-rangeDays*86400000:0;
+    const rows=[...cloudSubjectProgress].filter(r=>{
+      const subject=r.subject||'persian';
+      if(selectedSubject!=='all'&&subject!==selectedSubject)return false;
+      if(selectedLesson!=='all'&&Number(r.lesson_id)!==Number(selectedLesson))return false;
+      if(cutoff){const at=Date.parse(r.updated_at||r.created_at);if(!Number.isFinite(at)||at<cutoff)return false}
+      return true;
+    }).sort((a,b)=>Date.parse(b.updated_at||b.created_at||0)-Date.parse(a.updated_at||a.created_at||0));
     const nameById=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));
     const correct=rows.filter(r=>r.is_correct===true).length;
     const percent=rows.length?Math.round(correct/rows.length*100):0;
@@ -2053,7 +2081,7 @@ function renderTeacherReport(){
     if($('teacherReportStatus'))$('teacherReportStatus').textContent=`خروجی CSV با ${rows.length} ردیف واقعی ساخته شد.`;
   };
   $('reportChapterFilter')?.addEventListener('change',renderTeacherReport);
-  $('reportDateRange')?.addEventListener('change',renderTeacherReport);
+  $('reportDateRange')?.addEventListener('change',()=>{renderTeacherReport();renderTeacherSubjectPracticeReport()});
   document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.tab==='reports'||b.dataset.tab==='overview')loadTeacherReport()}));
 
   // Remote teacher question manager; keys are requested only after teacher authorization.
