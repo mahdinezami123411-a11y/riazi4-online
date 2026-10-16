@@ -10,9 +10,15 @@ const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ serviceWorkers: 'block' });
 const page = await context.newPage();
 const pageErrors = [];
+const consoleErrors = [];
 page.on('pageerror', error => pageErrors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
 await page.goto('http://127.0.0.1:8765/index.html', { waitUntil: 'domcontentloaded' });
-await page.waitForFunction(() => !!window.__quizTestApi, { timeout: 15000 });
+try {
+  await page.waitForFunction(() => !!window.__quizTestApi, { timeout: 12000 });
+} catch (error) {
+  throw new Error('Local test bridge was not initialized. pageErrors=' + JSON.stringify(pageErrors) + '; consoleErrors=' + JSON.stringify(consoleErrors) + '; ' + error.message);
+}
 await page.evaluate(async () => { await window.__quizTestApi.loadSourceQuestionBanks(); });
 
 const sourceReport = await page.evaluate(() => {
