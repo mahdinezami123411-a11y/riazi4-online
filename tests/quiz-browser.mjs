@@ -83,6 +83,8 @@ const interaction = await page.evaluate(() => {
   api.renderOtherSubjectActivity('practice');
   const selects = [...document.querySelectorAll('#otherSubjectActivityQuestions select[data-other-matching-index]')];
   const displayedOptions = selects[0] ? [...selects[0].options].slice(1).map(option => ({text:option.textContent.trim(),value:Number(option.value)})) : [];
+  if (selects[0]) { selects[0].value='4'; selects[0].dispatchEvent(new Event('change',{bubbles:true})); }
+  const duplicateWasDisabled = selects[1] ? [...selects[1].options].some(option => option.value === '4' && option.disabled) : false;
   selects.forEach((select,i) => { select.value=String(i+4); select.dispatchEvent(new Event('change',{bubbles:true})); });
   const check = document.querySelector('#otherSubjectActivityQuestions [data-other-activity-check]');
   check?.click();
@@ -90,11 +92,12 @@ const interaction = await page.evaluate(() => {
   api.setOtherSubjectQuestions(oldGetter);
   api.setCourseLessonOpen(oldOpen);
   api.setSelectedOtherSubject(oldSubject);
-  return {selectCount:selects.length,displayedOptions,feedback};
+  return {selectCount:selects.length,displayedOptions,duplicateWasDisabled,feedback};
 });
 assert.equal(interaction.selectCount, 4, 'نمایش جورکردنی باید چهار فهرست انتخاب داشته باشد');
 assert.deepEqual(interaction.displayedOptions.map(x => x.text), ['پاسخ ۱','پاسخ ۲','پاسخ ۳','پاسخ ۴'], 'گزینه‌های ستون راست باید فقط پاسخ‌ها باشند');
 assert.deepEqual(interaction.displayedOptions.map(x => x.value), [4,5,6,7], 'شناسهٔ گزینه‌ها باید با پاسخ‌نامه هماهنگ باشد');
+assert.equal(interaction.duplicateWasDisabled, true, 'یک پاسخ نباید در چند ردیف جورکردنی انتخاب شود');
 assert.match(interaction.feedback, /آفرین|درست/, 'ثبت و تصحیح جورکردنی در صفحه کار نکرد');
 assert.deepEqual(pageErrors, [], 'برنامه هنگام اجرا خطای JavaScript داد: ' + pageErrors.join(' | '));
 
