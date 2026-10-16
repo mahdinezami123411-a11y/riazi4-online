@@ -2237,20 +2237,10 @@ $('saveDemoActivity').onclick=async()=>{
   if(legacyExport)legacyExport.title='خروجی نتایج واقعی ثبت‌شده در Supabase';
   const oldDemoQuestions=$('saveDemoQuestion');if(oldDemoQuestions)oldDemoQuestions.title='فرم آزمایشی محلی؛ برای بانک مشترک از مدیریت بانک سؤال آنلاین استفاده کن.';
 
-  // Restore a tab-scoped session only after validating token and role with Supabase.
-  (async()=>{
-    try{
-      const raw=sessionStorage.getItem(CLOUD_SESSION_KEY);if(!raw)return;
-      const prior=JSON.parse(raw);if(!prior?.access_token||!prior?.role)return;
-      cloudSession=prior;const user=await authUserForToken(prior.access_token);const profile=await loadCloudProfile(prior.access_token,user.id);
-      if(profile.role!==prior.role)throw new Error('نقش حساب با نشست ذخیره‌شده مطابقت ندارد.');
-      cloudSession={...prior,user,profile};saveCloudSession();
-      if(profile.role==='student'){
-        activeUsername=String(prior.username||profile.display_name||'');activeStudentName=activeUsername;activeProfile={...readProfile(activeUsername),name:profile.display_name||activeUsername,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);
-        await loadStudentQuestionBank();await loadCourseSettings(true);await refreshStudentProgressFromCloud();try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress restore failed',e)}startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
-      }else if(profile.role==='teacher'){show('teacher');await loadTeacherReport();await loadTeacherQuestionBank()}
-    }catch(e){clearCloudSession(false);console.info('No reusable Supabase session',e)}
-  })();
+  // Do not bypass the role-specific login screens on page load. Clear any stale
+  // tab session so every student/teacher entry starts from the appropriate login form.
+  try{sessionStorage.removeItem(CLOUD_SESSION_KEY)}catch{}
+  cloudSession=null;
 
 
   /* ===== هاب درس‌های دیگر پایه چهارم؛ مستقل از بانک و نمره‌های ریاضی ===== */
