@@ -794,6 +794,20 @@ a{color:#d7ff76}
 .story-choice{display:flex;gap:9px;align-items:center;text-align:right;width:100%;margin:7px 0!important;background:linear-gradient(145deg,#293457,#1b2440)!important;color:#f0f5ff!important;border:1px solid #5e6e95!important;box-shadow:0 3px 0 #0d1428!important}
 .story-choice span{font-size:22px}
 @media(max-width:560px){.explore-tool{padding:10px}.schematic-map{gap:5px}.schematic-map button{font-size:11px;padding:8px 4px}.word-token{font-size:12px}}
+
+/* خلاصهٔ تحلیلی کلاس و موضوع‌های نیازمند مرور */
+.teacher-topic-analytics{border:1px solid #485d84;border-radius:17px;padding:13px;background:linear-gradient(145deg,#202a4b,#151e37);margin:12px 0}
+.teacher-topic-analytics h3{margin:0 0 6px;color:#f0f5ff!important}
+.teacher-topic-row{display:grid;grid-template-columns:minmax(110px,1fr) minmax(90px,1.3fr) auto;gap:9px;align-items:center;padding:9px 0;border-bottom:1px solid #35466a}
+.teacher-topic-row:last-child{border-bottom:0}
+.teacher-topic-row b{font-size:12px;color:#edf4ff}
+.teacher-topic-row small{display:block;color:#adbfdf;font-size:10px}
+.teacher-topic-row .progress-track{height:8px;background:#0c142b;border:1px solid #3e527b;border-radius:99px;overflow:hidden}
+.teacher-topic-row .progress-track span{display:block;height:100%;background:linear-gradient(90deg,#ffbd6b,#ff7e99);border-radius:99px}
+.teacher-topic-row button{padding:6px 8px!important;font-size:10px!important}
+.teacher-report-metric{border:1px solid #425982!important;background:linear-gradient(145deg,#222f52,#17223e)!important}
+.teacher-report-metric strong{color:#8bf0e5!important}
+@media(max-width:560px){.teacher-topic-row{grid-template-columns:1fr auto}.teacher-topic-row .progress-track{grid-column:1/-1;grid-row:2}.teacher-topic-row button{grid-column:2;grid-row:1}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -1953,12 +1967,12 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       activeStudentSubject='';
       $('studentSubjectHub')?.classList.remove('hidden');$('mathHomeMenu')?.classList.add('hidden');
       $('otherSubjectsView')?.classList.add('hidden');$('otherSubjectPicker')?.classList.remove('hidden');
-      $('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');
+      $('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');
       $('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');
       setMathSubjectNav(false);renderStudentSubjectHub();
     }else if(view==='subjects'){
       $('studentSubjectHub')?.classList.add('hidden');$('mathHomeMenu')?.classList.add('hidden');
-      $('otherSubjectPicker')?.classList.remove('hidden');$('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');
+      $('otherSubjectPicker')?.classList.remove('hidden');$('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');
       $('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');
       setMathSubjectNav(false);renderOtherSubjectPicker();
     }else if(['reminders','learn','practice','exam'].includes(view)){
@@ -2568,10 +2582,10 @@ function renderTeacherReport(){
  const nameById=new Map(cloudStudentProfiles.map(p=>[p.id,p.display_name||p.id]));const rows=filteredReportRows();
  status.textContent=rows.length.toLocaleString('fa-IR')+' پاسخ از کتاب/درس انتخاب‌شده؛ گزارش‌های ریاضی و درس‌های دیگر در این جدول یکپارچه شده‌اند.';
  let panel=$('cloudTeacherReportTable');if(!panel){panel=document.createElement('div');panel.id='cloudTeacherReportTable';panel.className='item';tab.appendChild(panel)}
- if(!rows.length){panel.textContent='هنوز پاسخی برای این کتاب و درس ثبت نشده است.';renderTeacherGradebook();return}
+ if(!rows.length){panel.textContent='هنوز پاسخی برای این کتاب و درس ثبت نشده است.';renderClassTopicAnalytics(rows);renderClassSummaryMetrics(rows);renderTeacherGradebook();return}
  const body=rows.slice(0,500).map(r=>'<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(courseName(r.subject))+'</td><td>'+escapeHtml(courseLessonTitle(r.subject,r.lesson_id))+'</td><td>'+escapeHtml(r.source||'تمرین')+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(typeof r.submitted_answer==='object'?JSON.stringify(r.submitted_answer):String(r.submitted_answer??'—'))+'</td><td>'+(r.resultLabel|| (r.is_correct===true?'درست':r.is_correct===false?'نیاز به تمرین':'—'))+'</td><td>'+escapeHtml(r.explanation||'—')+'</td><td>'+escapeHtml(r.created_at?new Date(r.created_at).toLocaleString('fa-IR'):'—')+'</td></tr>').join('');
  panel.innerHTML='<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1000px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ</th><th>نتیجه</th><th>بازخورد/تحلیل</th><th>زمان</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'.</p>';
- renderTeacherGradebook();
+ renderClassTopicAnalytics(rows);renderClassSummaryMetrics(rows);renderTeacherGradebook();
 }
   const subjectPracticeNames={science:'علوم تجربی',persian:'فارسی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی',dictation:'فارسی · املا (سوابق قبلی)'};
   function renderTeacherSubjectPracticeReport(){
@@ -4635,6 +4649,45 @@ const persianBookPageMap={
       return;
     }
     panel.innerHTML='<div class="explore-tool"><h4>فعالیت تعاملی این کتاب</h4><p>برای این کتاب، ابتدا یک درس را از فهرست باز کن؛ سپس فعالیت‌های اختصاصی آن درس را انتخاب کن.</p></div>';
+  }
+
+
+  function renderClassTopicAnalytics(rows){
+    const tab=$('tab-reports');if(!tab)return;
+    let box=$('teacherTopicAnalytics');
+    if(!box){box=document.createElement('section');box.id='teacherTopicAnalytics';box.className='teacher-topic-analytics';const table=$('cloudTeacherReportTable');if(table)table.before(box);else tab.appendChild(box)}
+    const answers=(Array.isArray(rows)?rows:[]).filter(r=>typeof r.is_correct==='boolean'&&r.subject&&Number.isFinite(Number(r.lesson_id)));
+    const grouped=new Map();
+    answers.forEach(r=>{
+      const subject=String(r.subject),lesson=Number(r.lesson_id)||1,key=subject+'-'+lesson;
+      if(!grouped.has(key))grouped.set(key,{subject,lesson,total:0,correct:0,students:new Set()});
+      const g=grouped.get(key);g.total++;if(r.is_correct)g.correct++;if(r.student_id)g.students.add(r.student_id);
+    });
+    const groups=[...grouped.values()].map(g=>({...g,pct:Math.round(g.correct/Math.max(1,g.total)*100)})).sort((a,b)=>a.pct-b.pct||b.total-a.total).slice(0,10);
+    const analyzable=answers.length;
+    const weak=groups.filter(g=>g.total>=2&&g.pct<70).length;
+    box.innerHTML='<h3>🔎 تحلیل فصل‌ها و مبحث‌های نیازمند مرور</h3><p class="muted">این نمایه از پاسخ‌های واقعی ثبت‌شده در محدودهٔ فیلترشده ساخته می‌شود؛ درصد مبحث‌هایی با دادهٔ کم باید با احتیاط تفسیر شود.</p>'+
+      '<div class="unified-progress-summary"><div class="unified-stat"><b>'+fa(analyzable)+'</b><span>پاسخ قابل‌تحلیل</span></div><div class="unified-stat"><b>'+fa(grouped.size)+'</b><span>درس دارای داده</span></div><div class="unified-stat"><b>'+fa(weak)+'</b><span>از ۱۰ مورد اول با کمتر از ۷۰٪ (حداقل ۲ پاسخ)</span></div></div>'+
+      (groups.length?groups.map(g=>{
+        const title=courseName(g.subject)+' · '+courseLessonTitle(g.subject,g.lesson);
+        return '<div class="teacher-topic-row"><div><b>'+escapeHtml(title)+'</b><small>'+fa(g.correct)+' درست از '+fa(g.total)+' پاسخ · '+fa(g.students.size)+' دانش‌آموز</small></div><div class="progress-track" role="progressbar" aria-label="'+escapeHtml(title)+'" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+g.pct+'"><span style="width:'+g.pct+'%"></span></div><button type="button" class="outline" data-topic-filter-subject="'+escapeHtml(g.subject)+'" data-topic-filter-lesson="'+g.lesson+'">دیدن پاسخ‌ها</button></div>'
+      }).join(''):'<div class="notice">برای تحلیل فصل‌ها، هنوز پاسخ قابل‌تحلیلی در این فیلتر ثبت نشده است.</div>');
+    box.querySelectorAll('[data-topic-filter-subject]').forEach(button=>button.onclick=()=>{
+      const subject=$('reportSubjectFilter'),lesson=$('reportLessonFilter');
+      if(subject){subject.value=button.dataset.topicFilterSubject;subject.dispatchEvent(new Event('change',{bubbles:true}))}
+      if(lesson){lesson.value=button.dataset.topicFilterLesson;lesson.dispatchEvent(new Event('change',{bubbles:true}))}
+      renderTeacherReport();
+    });
+  }
+  function renderClassSummaryMetrics(rows){
+    const tab=$('tab-reports'),grid=tab?.querySelector('.grid3');if(!grid)return;
+    const all=Array.isArray(rows)?rows:[];
+    const answerRows=all.filter(r=>typeof r.is_correct==='boolean');
+    const pct=answerRows.length?Math.round(answerRows.filter(r=>r.is_correct).length/answerRows.length*100):null;
+    const byStudent=new Map();
+    answerRows.forEach(r=>{if(!r.student_id)return;if(!byStudent.has(r.student_id))byStudent.set(r.student_id,{total:0,correct:0});const g=byStudent.get(r.student_id);g.total++;if(r.is_correct)g.correct++});
+    const weakStudents=[...byStudent.values()].filter(g=>g.total>=3&&g.correct/g.total<.6).length;
+    grid.innerHTML='<div class="metric teacher-report-metric"><span class="muted">دانش‌آموزان دارای پاسخ</span><strong>'+fa(byStudent.size)+'</strong></div><div class="metric teacher-report-metric"><span class="muted">درستی پاسخ‌های قابل‌تحلیل</span><strong>'+(pct===null?'—':fa(pct)+'٪')+'</strong></div><div class="metric teacher-report-metric"><span class="muted">نیازمند بررسی بیشتر (۳ پاسخ یا بیشتر)</span><strong>'+fa(weakStudents)+'</strong></div>';
   }
 
 })();
