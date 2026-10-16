@@ -2734,43 +2734,6 @@ function chooseOtherBookAssessmentQuestions(pool,count,subjectId){
   }
   return selected.concat(shuffledPool.filter(q=>!used.has(q.lessonId+'|'+q.question))).slice(0,limit);
 }
-function renderOtherBookExam(mode='exam'){
- const subject=selectedOtherSubject,box=$('otherSubjectLessonPicker');
- if(!subject||!box)return;
- const settings=courseSettingsBySubject[subject.id]||{},isExam=mode!=='practice';
- if((isExam&&settings.allowExam===false)||(!isExam&&settings.allowPractice===false)){
-  box.innerHTML='<div class="notice">'+(isExam?'آزمون':'تمرین')+' این کتاب فعلاً از طرف معلم غیرفعال شده است.</div><button id="backFromOtherBookExam">بازگشت به فهرست</button>';
-  box.querySelector('#backFromOtherBookExam')?.addEventListener('click',()=>openOtherSubject(subject.id));return;
- }
- const openLessons=subject.lessons.filter(l=>isCourseLessonOpen(subject.id,l.id));
- const pool=buildOtherBookAssessmentPool(subject,openLessons);
- const count=isExam?(subject.id==='persian'?20:Math.min(20,pool.length)):(subject.id==='persian'?10:Math.min(6,pool.length));
- const questions=chooseOtherBookAssessmentQuestions(pool,count,subject.id),sessionId=Date.now();
- if(!questions.length){
-  box.innerHTML='<div class="notice">برای درس‌های باز سؤال معتبر پیدا نشد؛ دسترسی کتاب و درس‌ها را در پنل معلم بررسی کن.</div><button id="backFromOtherBookExam">بازگشت به فهرست</button>';
- }else{
-  box.innerHTML='<section class="lesson-note"><h3>'+(isExam?'🧪 آزمون جامع ':'🎯 تمرین کتاب ')+escapeHtml(subject.name)+'</h3><p class="muted">'+fa(questions.length)+' سؤال انتخاب‌شده از بانک '+fa(pool.length)+' سؤالی. پاسخ صحیح و تحلیل هر سؤال بعد از ثبت نمایش داده می‌شود.</p>'+
-   questions.map((q,i)=>'<section class="persian-quiz-card" data-book-exam-card="'+i+'"><b>درس '+fa(q.lessonId)+' · '+escapeHtml(q.lessonTitle)+' · '+escapeHtml(q.kind)+'</b><p>'+escapeHtml(q.question)+'</p>'+q.options.map((o,j)=>'<label class="other-answer"><input type="radio" name="otherBookExam'+sessionId+'-'+i+'" value="'+j+'"><span>'+escapeHtml(o)+'</span></label>').join('')+'</section>').join('')+
-   '<button id="submitOtherBookExam" style="width:100%;margin-top:10px">ثبت '+(isExam?'امتحان':'تمرین')+' و دیدن تحلیل</button><button id="backFromOtherBookExam" class="outline" style="width:100%;margin-top:8px">بازگشت به فهرست</button><div id="otherBookExamResult" class="notice hidden" aria-live="polite"></div></section>';
-  $('submitOtherBookExam').onclick=async()=>{
-   let score=0,answered=0;const details=[],at=new Date().toISOString();
-   questions.forEach((q,i)=>{
-    const card=box.querySelector('[data-book-exam-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');
-    const selected=picked?Number(picked.value):-1,ok=selected===q.answer;if(picked)answered++;if(ok)score++;
-    card?.querySelectorAll('.other-answer').forEach((el,j)=>{el.classList.toggle('correct',j===q.answer);el.classList.toggle('wrong',j===selected&&!ok)});
-    details.push('<p><b>درس '+fa(q.lessonId)+' · '+escapeHtml(q.lessonTitle)+' · '+(picked?(ok?'درست':'نادرست'):'بدون پاسخ')+'</b><br>پرسش: '+escapeHtml(q.question)+'<br>پاسخ صحیح: '+escapeHtml(q.options[q.answer])+'<br>تحلیل: '+escapeHtml(q.analysis)+'</p>');
-   });
-   const result=box.querySelector('#otherBookExamResult');result.classList.remove('hidden');result.innerHTML='<h4>نتیجه: '+fa(score)+' از '+fa(questions.length)+'</h4><p>پاسخ داده‌شده: '+fa(answered)+' از '+fa(questions.length)+'</p>'+details.join('');
-   const saved=readOtherProgress();saved[subject.id+'-book-'+mode+'-'+sessionId]={score,total:questions.length,answered,updatedAt:at};writeOtherProgress(saved);
-   let synced=0;if(isRealStudentSession())for(let i=0;i<questions.length;i++){
-    const q=questions[i],card=box.querySelector('[data-book-exam-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');if(!picked)continue;
-    try{const selected=Number(picked.value),result=await saveSubjectPracticeProgress({subject:subject.id,lesson_id:q.lessonId,activity_key:'book-'+mode+'-'+sessionId+'-'+i,activity_type:subject.name+' · '+(isExam?'آزمون جامع':'تمرین کتاب'),selected_answer:selected,correct_answer:q.answer,is_correct:selected===q.answer,attempt_count:1,question_text:q.question,explanation:q.analysis,metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],book_assessment:true,mode,lesson_title:q.lessonTitle,score,total:questions.length},updated_at:at});if(result?.synced)synced++;}catch(error){console.warn('Book assessment cloud save failed',error)}
-   }
-   result.innerHTML+='<p class="muted">'+(synced?'☁️ پاسخ‌ها در گزارش معلم ذخیره شدند.':'نتیجه روی این دستگاه ذخیره شد؛ برای ثبت آنلاین اتصال دانش‌آموز را بررسی کن.')+'</p>';
-  };
- }
- box.querySelector('#backFromOtherBookExam')?.addEventListener('click',()=>openOtherSubject(subject.id));
-}
 function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
