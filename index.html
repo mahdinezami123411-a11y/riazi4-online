@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v15-20261016-persian-lessons-connected">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v16-20261016-catalog-scope-fix">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -970,14 +970,25 @@ const bookSubjectCatalog=[
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی و نگارش',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
 function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
 function courseLessonCatalog(subject){
- let base=[];
- if(subject==='math')base=chapters.map(c=>({id:Number(c.id),title:'فصل '+fa(c.id)+' · '+c.title}));
- else if(subject==='persian'||subject==='dictation')base=(typeof persianLessons!=='undefined'?persianLessons:[]).map(l=>({id:Number(l.id),title:(subject==='dictation'?'املای درس ':'درس ')+fa(l.id)+' · '+l.title,page:l.page,isFreeLesson:l.isFreeLesson===true}));
- else{const item=(typeof otherSubjectData!=='undefined'?otherSubjectData:[]).find(s=>s.id===subject);base=(item?.lessons||[]).map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title,page:l.page,isFreeLesson:l.isFreeLesson===true}))}
- const map=new Map(base.map(item=>[Number(item.id),item]));
- const custom=courseSettingsBySubject[subject]?.customLessons;
- if(Array.isArray(custom))custom.forEach(item=>{const id=Number(item.id);if(!Number.isInteger(id)||id<1||id>100||map.has(id))return;map.set(id,{id,title:(subject==='math'?'فصل ':'درس ')+fa(id)+' · '+String(item.title||'درس جدید'),page:String(item.page||'').trim(),isCustom:true,isFreeLesson:['persian','dictation'].includes(subject),content:''})});
- return [...map.values()].sort((a,b)=>Number(a.id)-Number(b.id));
+  let base=[];
+  const sharedCatalog=(typeof window!=='undefined'&&window.__courseCatalogData&&typeof window.__courseCatalogData==='object')?window.__courseCatalogData:{};
+  const sharedLessons=Array.isArray(sharedCatalog[subject])?sharedCatalog[subject]:null;
+  if(subject==='math')base=chapters.map(c=>({id:Number(c.id),title:'فصل '+fa(c.id)+' · '+c.title}));
+  else if(subject==='persian'||subject==='dictation'){
+    const lessons=sharedLessons||(typeof persianLessons!=='undefined'?persianLessons:[]);
+    base=lessons.map(l=>({id:Number(l.id),title:(subject==='dictation'?'املای درس ':'درس ')+fa(l.id)+' · '+l.title,page:l.page,isFreeLesson:l.isFreeLesson===true}));
+  }else{
+    const localItem=(typeof otherSubjectData!=='undefined'?otherSubjectData:[]).find(s=>s.id===subject);
+    const lessons=sharedLessons||(localItem?.lessons||[]);
+    base=lessons.map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title,page:l.page,isFreeLesson:l.isFreeLesson===true}));
+  }
+  const map=new Map(base.map(item=>[Number(item.id),item]));
+  const custom=courseSettingsBySubject[subject]?.customLessons;
+  if(Array.isArray(custom))custom.forEach(item=>{
+    const id=Number(item.id);if(!Number.isInteger(id)||id<1||id>100||map.has(id))return;
+    map.set(id,{id,title:(subject==='math'?'فصل ':'درس ')+fa(id)+' · '+String(item.title||'درس جدید'),page:String(item.page||'').trim(),isCustom:true,isFreeLesson:['persian','dictation'].includes(subject),content:''});
+  });
+  return [...map.values()].sort((a,b)=>Number(a.id)-Number(b.id));
 }
 function isCourseLessonOpen(subject,lessonId){
  const settings=courseSettingsBySubject[subject]||{};
@@ -2385,6 +2396,10 @@ if(!otherSubjectData.some(subject=>subject.id==='persian')){
   });
   otherSubjectData.find(s=>s.id==='persian').lessons=persianLessons;
   otherSubjectData.find(s=>s.id==='dictation').lessons=persianLessons.map(l=>({...l,dictationOnly:true}));
+  // Bridge lesson data from this IIFE to the outer teacher/settings catalog.
+  window.__courseCatalogData=Object.fromEntries(otherSubjectData.map(subject=>[subject.id,subject.lessons||[]]));
+  window.__courseCatalogData.persian=persianLessons;
+  window.__courseCatalogData.dictation=persianLessons;
 
 // واژه‌ها از دو فایل بارگذاری‌شدهٔ معلم: فهرست املا و جزوهٔ هم‌معنی/متضاد/هم‌خانواده.
 const persianSourceLexicon={
@@ -2580,7 +2595,7 @@ loadExpandedPersianVocabulary();
         count:fa(courseLessonCatalog(s.id).length)+' مبحث'
       }))
     ];
-    box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=cfg.courseTitle||s.name;const catalog=courseLessonCatalog(s.id);const total=catalog.length;const openCount=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled&&openCount?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
+    box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=cfg.courseTitle||s.name;const catalog=courseLessonCatalog(s.id);const total=catalog.length;const openCount=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
     box.querySelectorAll('[data-student-subject]').forEach(b=>b.onclick=()=>{
       const id=b.dataset.studentSubject;
       if(id==='math'){
@@ -2601,7 +2616,7 @@ loadExpandedPersianVocabulary();
       const done=catalog.filter(l=>progress[s.id+'-'+l.id]?.correct).length;
       const open=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;
       const enabled=cfg.courseEnabled!==false;
-      return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(enabled&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(catalog.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>';
+      return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(enabled?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(catalog.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>';
     }).join('');
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
@@ -2932,7 +2947,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v31',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v32',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
