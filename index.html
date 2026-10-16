@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v19-20261016-persian-unlock-assessments">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v20-20261016-assessment-stratified">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2721,6 +2721,19 @@ loadExpandedPersianVocabulary();
  }
  return pool;
 }
+function chooseOtherBookAssessmentQuestions(pool,count,subjectId){
+  if(!Array.isArray(pool)||!pool.length||count<=0)return [];
+  const limit=Math.min(count,pool.length);
+  if(subjectId!=='persian')return selectPersianExamQuestions(pool,limit);
+  const shuffledPool=selectPersianExamQuestions(pool,pool.length);
+  const selected=[],used=new Set();
+  for(const lessonId of [...new Set(pool.map(q=>q.lessonId))]){
+    if(selected.length>=limit)break;
+    const q=shuffledPool.find(x=>x.lessonId===lessonId&&!used.has(x.lessonId+'|'+x.question));
+    if(q){selected.push(q);used.add(q.lessonId+'|'+q.question);}
+  }
+  return selected.concat(shuffledPool.filter(q=>!used.has(q.lessonId+'|'+q.question))).slice(0,limit);
+}
 function renderOtherBookExam(mode='exam'){
  const subject=selectedOtherSubject,box=$('otherSubjectLessonPicker');
  if(!subject||!box)return;
@@ -2732,7 +2745,7 @@ function renderOtherBookExam(mode='exam'){
  const openLessons=subject.lessons.filter(l=>isCourseLessonOpen(subject.id,l.id));
  const pool=buildOtherBookAssessmentPool(subject,openLessons);
  const count=isExam?(subject.id==='persian'?20:Math.min(20,pool.length)):(subject.id==='persian'?10:Math.min(6,pool.length));
- const questions=selectPersianExamQuestions(pool,count),sessionId=Date.now();
+ const questions=chooseOtherBookAssessmentQuestions(pool,count,subject.id),sessionId=Date.now();
  if(!questions.length){
   box.innerHTML='<div class="notice">برای درس‌های باز سؤال معتبر پیدا نشد؛ دسترسی کتاب و درس‌ها را در پنل معلم بررسی کن.</div><button id="backFromOtherBookExam">بازگشت به فهرست</button>';
  }else{
@@ -3303,7 +3316,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v35',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v36',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
