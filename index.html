@@ -1022,6 +1022,32 @@ function courseLessonTitle(subject,lessonId){
  const item=courseLessonCatalog(subject).find(l=>Number(l.id)===Number(lessonId));
  return item?.title||('درس '+fa(lessonId));
 }
+function renderSubjectAccessControls(){
+ const box=$('subjectAccessList');if(!box)return;
+ const ids=['math','persian','science','social','gifts'];
+ box.innerHTML=ids.map(subject=>{
+  const settings=courseSettingsBySubject[subject]||{},catalog=courseLessonCatalog(subject);
+  const title=subject==='persian'?'فارسی':(settings.courseTitle||courseName(subject));
+  const rows=catalog.map(lesson=>{
+   const item=(Array.isArray(settings.lessons)?settings.lessons:[]).find(x=>Number(x.id)===Number(lesson.id));
+   const checked=item?item.isUnlocked===true:settings.defaultLocked!==true;
+   return '<label class="option"><input type="checkbox" data-access-subject="'+subject+'" data-access-lesson="'+lesson.id+'" '+(checked?'checked':'')+'><span>'+escapeHtml(lesson.title)+'</span></label>';
+  }).join('');
+  return '<section class="item"><h4>'+escapeHtml(title)+'</h4><label class="option"><input type="checkbox" data-access-book="'+subject+'" '+(settings.courseEnabled!==false?'checked':'')+'><span>فعال بودن کل کتاب</span></label><div>'+rows+'</div><button type="button" data-save-access="'+subject+'" style="width:100%;margin-top:8px">ذخیره دسترسی‌های '+escapeHtml(title)+'</button></section>';
+ }).join('');
+ box.querySelectorAll('[data-save-access]').forEach(btn=>btn.onclick=async()=>{
+  if(!cloudSession||cloudSession.role!=='teacher'){$('teacherBookStatus').textContent='برای ذخیره دسترسی‌ها ابتدا با حساب معلم وارد شو.';return}
+  const subject=btn.dataset.saveAccess,current=courseSettingsBySubject[subject]||{},catalog=courseLessonCatalog(subject);
+  const enabled=box.querySelector('[data-access-book="'+subject+'"]')?.checked===true;
+  const previous=Array.isArray(current.lessons)?current.lessons:[];
+  const lessons=catalog.map((lesson,index)=>{const old=previous.find(x=>Number(x.id)===Number(lesson.id))||{};const input=box.querySelector('[data-access-subject="'+subject+'"][data-access-lesson="'+lesson.id+'"]');return {...old,id:Number(lesson.id),title:lesson.title,isUnlocked:!!input?.checked,sortOrder:index+1,availableFrom:old.availableFrom||null,availableUntil:old.availableUntil||null}});
+  const settings={...current,courseEnabled:enabled,defaultLocked:false,lessons};
+  btn.disabled=true;btn.textContent='در حال ذخیره…';
+  try{const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});courseSettingsBySubject[subject]=result.setting.settings;$('teacherBookStatus').textContent='دسترسی‌های کتاب «'+(subject==='persian'?'فارسی':courseName(subject))+'» ذخیره شد.';renderSubjectAccessControls();renderTeacherCourseOverview();renderStudentSubjectHub?.();renderOtherSubjectPicker?.()}
+  catch(error){$('teacherBookStatus').textContent='ذخیره دسترسی‌ها ناموفق بود: '+cloudMessage(error)}
+  finally{btn.disabled=false;btn.textContent='ذخیره دسترسی‌های '+(subject==='persian'?'فارسی':courseName(subject))}
+ });
+}
 function renderTeacherCourseOverview(){
  const ids=['math','persian','science','social','gifts'];
  const courses=ids.map(id=>{
@@ -1096,6 +1122,7 @@ async function loadCourseSettings(silent=false){
       if(!Array.isArray(persianCatalogMigrationV18.lessons)||persianCatalogMigrationV18.lessons.length<17){persianCatalogMigrationV18.defaultLocked=false;persianCatalogMigrationV18.lessons=[];}
     }
    if($('settingSubject'))renderCourseSettingsForm();
+   if(typeof renderSubjectAccessControls==='function')renderSubjectAccessControls();
    if($('reportSubjectFilter'))populateLessonFilter('reportSubjectFilter','reportLessonFilter');
    if($('gradeSubjectFilter'))populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');
    if($('teacherBankSubject'))populateTeacherBankLessons($('teacherBankChapter')?.value);
@@ -1224,6 +1251,7 @@ async function previewTeacherBook(id){
  $('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};
 }
 $('bookSubject').innerHTML=bookSubjectCatalog.map(s=>'<option value="'+s.id+'">'+s.icon+' '+escapeHtml(s.name)+'</option>').join('');
+renderSubjectAccessControls();
 
 function populateLessonResourceLessons(){
  const subject=$('lessonFileSubject')?.value||'math',sel=$('lessonFileLesson');if(!sel)return;
