@@ -2757,7 +2757,7 @@ loadExpandedPersianVocabulary();
     ):'';
     content.insertAdjacentHTML('beforeend',examMarkup);
     const examSubmit=content.querySelector('[data-persian-exam-submit]');
-    if(examSubmit)examSubmit.onclick=()=>{
+    if(examSubmit)examSubmit.onclick=async()=>{
       let score=0,answered=0;const details=[];
       quizzes.forEach((q,i)=>{
         const card=content.querySelector('[data-persian-exam-question="'+i+'"]');
@@ -2770,7 +2770,27 @@ loadExpandedPersianVocabulary();
       const result=content.querySelector('[data-persian-exam-result]');
       result.classList.remove('hidden');
       result.innerHTML='<h4>نتیجهٔ آزمون: '+fa(score)+' از '+fa(quizzes.length)+'</h4><p>پاسخ داده‌شده: '+fa(answered)+' از '+fa(quizzes.length)+'</p>'+details.join('');
-      const examProgress=readOtherProgress();examProgress['persian-'+l.id+'-exam']={score,total:quizzes.length,answered,updatedAt:new Date().toISOString()};writeOtherProgress(examProgress);
+      const examTime=new Date().toISOString();
+      const examProgress=readOtherProgress();examProgress['persian-'+l.id+'-exam']={score,total:quizzes.length,answered,updatedAt:examTime};writeOtherProgress(examProgress);
+      let synced=0;
+      if(isRealStudentSession()){
+        for(let i=0;i<quizzes.length;i++){
+          const q=quizzes[i],card=content.querySelector('[data-persian-exam-question="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');
+          if(!picked)continue;
+          const selected=Number(picked.value);
+          try{
+            const saved=await saveSubjectPracticeProgress({
+              subject:'persian',lesson_id:l.id,activity_key:'exam-'+i,activity_type:'آزمون فارسی',
+              selected_answer:selected,correct_answer:Number(q.answer),is_correct:selected===Number(q.answer),attempt_count:1,
+              question_text:q.question,explanation:q.analysis||'پاسخ درست با مفهوم درس تطبیق داده می‌شود.',
+              metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],exam:true,exam_score:score,exam_total:quizzes.length},
+              updated_at:examTime
+            });
+            if(saved?.synced)synced++;
+          }catch(error){console.warn('Persian exam cloud save failed',error)}
+        }
+      }
+      result.innerHTML+='<p class="muted">'+(synced?'☁️ پاسخ‌های آزمون در گزارش معلم ذخیره شد.':'نتیجه در این دستگاه ذخیره شد؛ برای ثبت آنلاین، اتصال حساب دانش‌آموز را بررسی کن.')+'</p>';
     };
     content.querySelectorAll('[data-persian-quiz-check]').forEach(button=>{
       button.onclick=async()=>{
