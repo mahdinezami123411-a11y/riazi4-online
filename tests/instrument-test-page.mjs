@@ -24,7 +24,19 @@ const bridge = `
       setCourseLessonOpen: fn => { isCourseLessonOpen = fn; },
       getSelectedOtherSubject: () => selectedOtherSubject,
       setSelectedOtherSubject: value => { selectedOtherSubject = value; },
-      renderOtherSubjectActivity
+      renderOtherSubjectActivity,
+      getCourseCatalog: subject => courseLessonCatalog(subject),
+      refreshCourseLessonSelectors: () => refreshAllCourseLessonSelectors(),
+      renderPrintableLessonChoices: () => renderPrintableLessonChoices(),
+      renderPlanetaryChapterRoute,
+      renderChapterPicker,
+      openOtherSubject,
+      showStudentAppView,
+      getProgressViewPlacement: () => ({
+        homeInsideProfile: !!document.getElementById('studentHomeView')?.closest('#profileView'),
+        reportInsideProfile: !!document.getElementById('studentReportView')?.closest('#profileView'),
+        mapInsideProfile: !!document.getElementById('studentDashboard')?.closest('#profileView')
+      })
     };
   }
 `;
