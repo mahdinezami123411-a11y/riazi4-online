@@ -3410,7 +3410,7 @@ function renderOtherSubjectPicker(){
     if(sourceQuestionBanksLoading)return sourceQuestionBanksLoading;
     sourceQuestionBanksLoading=(async()=>{
       try{
-        const response=await fetch('./assets/source-question-banks.json.gz.b64?v=20261016-sourceqa1',{cache:'force-cache'});
+        const response=await fetch('./assets/source-question-banks.json.gz.b64',{cache:'force-cache'});
         if(!response.ok)throw new Error('فایل بانک پرسش‌وپاسخ منبع در سایت پیدا نشد.');
         const encoded=(await response.text()).trim();
         if(!encoded)throw new Error('فایل بانک پرسش‌وپاسخ منبع خالی است.');
