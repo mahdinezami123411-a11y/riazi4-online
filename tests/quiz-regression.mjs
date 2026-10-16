@@ -3,13 +3,28 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
-const scripts = [...html.matchAll(/<script\\b([^>]*)>([\\s\\S]*?)<\\/script\\s*>/gi)];
+const scripts = [];
+let cursor = 0;
+const lowerHtml = html.toLowerCase();
+while (true) {
+  const open = lowerHtml.indexOf('<script', cursor);
+  if (open < 0) break;
+  const tagEnd = lowerHtml.indexOf('>', open);
+  const close = lowerHtml.indexOf('</script>', tagEnd + 1);
+  if (tagEnd < 0 || close < 0) break;
+  const attrs = html.slice(open + 7, tagEnd);
+  const body = html.slice(tagEnd + 1, close);
+  if (!attrs.toLowerCase().includes('src=') && !attrs.toLowerCase().includes('application/ld+json') && body.trim()) {
+    scripts.push({attrs, body});
+  }
+  cursor = close + 9;
+}
 let compiled = 0;
 for (let i = 0; i < scripts.length; i++) {
-  const attrs = scripts[i][1] || '';
-  const body = (scripts[i][2] || '').trim();
-  if (/\\bsrc\\s*=/.test(attrs) || !body) continue;
-  const type = (attrs.match(/\\btype\\s*=\\s*["']([^"']+)["']/i) || [])[1] || '';
+  const attrs = scripts[i].attrs || '';
+  const body = (scripts[i].body || '').trim();
+  if (attrs.toLowerCase().includes('src=') || !body) continue;
+  const type = (attrs.toLowerCase().includes('type="module"') || attrs.toLowerCase().includes("type='module'")) ? 'module' : '';
   if (type && !/javascript|ecmascript|module/i.test(type)) continue;
   new vm.Script(body, { filename: `index.html:inline-script-${i + 1}` });
   compiled++;
