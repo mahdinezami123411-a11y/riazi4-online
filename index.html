@@ -1309,11 +1309,9 @@ function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'
  const icons=['🌎','🪐','🌙','☄️','🔵','🟣','🌌'];
  box.innerHTML=chapters.map((chapter,index)=>{
   const open=isCourseLessonOpen('math',chapter.id);
-  const rec=studentProgress.byChapter[String(chapter.id)]||{attempts:0,correct:0};
-  const attempts=Number(rec.attempts)||0,rate=attempts?Math.round((Number(rec.correct)||0)/attempts*100):0;
-  const status=!open?'قفل است':!attempts?'آمادهٔ کاوش':attempts>=2&&rate<70?'پیشنهاد مرور':rate>=80?'خوب پیش رفته':'در حال یادگیری';
-  const cls=(chapter.id===activeChapter?' active-chapter':'')+(!open?' locked':'')+(attempts>=2&&rate<70?' needs-review':'');
-  return '<button type="button" data-chapter="'+chapter.id+'" class="chapter-planet-node'+cls+'" '+(open?'':'disabled')+' aria-label="فصل '+fa(chapter.id)+' '+escapeHtml(chapter.title)+'، '+status+'"><span class="chapter-planet-orb">'+icons[index%icons.length]+'</span><b>فصل '+fa(chapter.id)+'</b><small>'+escapeHtml(chapter.title)+'</small><small>'+status+(attempts?' · '+fa(rate)+'٪':'')+'</small></button>';
+  const status=open?'آمادهٔ کاوش':'قفل است';
+  const cls=(chapter.id===activeChapter?' active-chapter':'')+(!open?' locked':'');
+  return '<button type="button" data-chapter="'+chapter.id+'" class="chapter-planet-node'+cls+'" '+(open?'':'disabled')+' aria-label="فصل '+fa(chapter.id)+' '+escapeHtml(chapter.title)+'، '+status+'"><span class="chapter-planet-orb">'+icons[index%icons.length]+'</span><b>فصل '+fa(chapter.id)+'</b><small>'+escapeHtml(chapter.title)+'</small><small>'+status+'</small></button>';
  }).join('');
  box.querySelectorAll('[data-chapter]').forEach(button=>button.onclick=()=>{if(!isCourseLessonOpen('math',Number(button.dataset.chapter)))return;renderChapter(Number(button.dataset.chapter))});
 }function renderTeacherChapterList(){const box=$('teacherChapterList');if(!box)return;box.innerHTML=chapters.map(c=>`<div class="teacher-chapter-row"><b>فصل ${c.id}: ${escapeHtml(c.title)}</b><span class="muted">${escapeHtml(c.summary)}</span></div>`).join('')}
@@ -1887,6 +1885,12 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   const originalShow=show;
   show=function(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});window.scrollTo({top:0,behavior:'smooth'});if(id==='student'&&activeStudentName)renderStudentDashboard()};
   let activeStudentName='';let studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
+  // Read-only snapshot for the global lesson/map renderers; keep the live record inside the student scope.
+  window.__yareStudentProgressSnapshot=()=>({
+    attempts:Number(studentProgress?.attempts)||0,
+    correct:Number(studentProgress?.correct)||0,
+    byChapter:JSON.parse(JSON.stringify(studentProgress?.byChapter||{}))
+  });
   function progressKey(name){return STORAGE_P+normalizeAnswer(name)}
   function practiceHistoryKey(q){const id=String(q?.id??'').trim();if(id)return 'id:'+id;const text=normalizeAnswer(q?.q||q?.prompt||q?.question||'');return text?'text:'+text:''}
   function loadStudentProgress(name){return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}})}
@@ -4466,6 +4470,7 @@ const persianBookPageMap={
 
 
   function renderUnifiedLearningReport(){
+    const mathProgress=typeof window.__yareStudentProgressSnapshot==='function'?window.__yareStudentProgressSnapshot():{attempts:0,correct:0,byChapter:{}};
     const box=$('unifiedSubjectCards');
     if(!box)return;
     const local=readOtherProgress();
@@ -4498,7 +4503,7 @@ const persianBookPageMap={
       const catalog=getCatalog(subject.id);
       const lessons=catalog.map(lesson=>{
         if(subject.id==='math'){
-          const rec=studentProgress.byChapter[String(lesson.id)]||{attempts:0,correct:0};
+          const rec=mathProgress.byChapter[String(lesson.id)]||{attempts:0,correct:0};
           return {id:Number(lesson.id),title:lesson.title,attempts:Number(rec.attempts)||0,correct:Number(rec.correct)||0,isOpen:isCourseLessonOpen(subject.id,lesson.id)};
         }
         const allowed=subject.id==='persian'?['persian','dictation']:[subject.id];
@@ -4826,6 +4831,7 @@ const persianBookPageMap={
 
 
   function renderPlanetaryChapterRoute(){
+    const mathProgress=typeof window.__yareStudentProgressSnapshot==='function'?window.__yareStudentProgressSnapshot():{attempts:0,correct:0,byChapter:{}};
     const box=$('chapterPlanetRoute');if(!box)return;
     const local=readOtherProgress();
     const subjects=[
@@ -4838,7 +4844,7 @@ const persianBookPageMap={
     const planetIcons=['🪐','🌎','🌙','☄️','🔵','🟣','🌌','🌠'];
     const getStat=(subject,lessonId)=>{
       if(subject.id==='math'){
-        const rec=studentProgress.byChapter[String(lessonId)]||{attempts:0,correct:0};
+        const rec=mathProgress.byChapter[String(lessonId)]||{attempts:0,correct:0};
         return {attempts:Number(rec.attempts)||0,correct:Number(rec.correct)||0};
       }
       const questionRecords=Object.entries(local).filter(([key,rec])=>
