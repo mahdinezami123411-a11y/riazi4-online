@@ -730,8 +730,8 @@ a{color:#d7ff76}
 const subjects=[['➗','ریاضی','یادآوری، کتاب، تمرین و امتحان']];
 let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},courseSettingsBySubject={},courseBookObjectUrls={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual';
 const $=id=>document.getElementById(id);
-function show(id){['home','student','teacherGate','teacher'].forEach(x=>$(x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
-$('studentEnter').onclick=()=>show('student');$('teacherEnter').onclick=()=>show('teacherGate');$('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');$('demoTeacherLogin').onclick=()=>{alert('ورود امن معلم هنوز به Supabase متصل نشده است. برای جلوگیری از دسترسی غیرمجاز، پنل معلم در این نسخهٔ نمایشی باز نمی‌شود.')};
+function show(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});window.scrollTo({top:0,behavior:'smooth'})}
+$('studentEnter').onclick=()=>show('studentNamePage');$('teacherEnter').onclick=()=>show('teacherGate');$('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');$('demoTeacherLogin').onclick=()=>{const status=$('teacherEmail');if(status)status.focus();};
 document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>{const book=b.dataset.studentView==='book';$('remindersView').classList.toggle('hidden',book);$('bookView').classList.toggle('hidden',!book);window.scrollTo({top:0,behavior:'smooth'});if(book)renderStudentBook()});$('backToReminders').onclick=()=>{$('bookView').classList.add('hidden');$('remindersView').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})};
 function renderFullTimesTable(){const colors=['#2498cf','#d78a35','#55a45e','#d85c86','#7556a4','#7556a4','#d85c86','#2498cf','#d78a35','#55a45e'];let h='<div class="times-columns" aria-label="همه جدول‌های ضرب یک تا ده">';for(let n=1;n<=10;n++){h+=`<section class="times-column" style="--stripe:${colors[n-1]}"><h4>جدول ضرب ${n.toLocaleString('fa-IR')}</h4><ol>`;for(let m=1;m<=10;m++){h+=`<li>${m.toLocaleString('fa-IR')} × ${n.toLocaleString('fa-IR')} = ${(m*n).toLocaleString('fa-IR')}</li>`}h+='</ol></section>'}h+='</div>';$('fullTimesTable').innerHTML=h}
 function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
@@ -1257,7 +1257,7 @@ $('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، د
 // Online CSV export is bound after Supabase report data has loaded.
 document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#teacherNav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#teacher .tabpane').forEach(x=>x.classList.toggle('active',x.id==='tab-'+b.dataset.tab));if(b.dataset.tab==='curriculum')renderTeacherChapterList()});
 
-renderFullTimesTable();renderAccessList();
+renderFullTimesTable();
 if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
 
 
