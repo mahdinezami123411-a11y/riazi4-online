@@ -765,6 +765,35 @@ a{color:#d7ff76}
   body.print-exam-only .print-exam-question{border-color:#bbb!important;box-shadow:none!important}
   body.print-exam-only .print-exam-answer-key{page-break-before:always;break-before:page}
 }
+
+/* آزمایشگاه‌ها و فعالیت‌های تعاملی هر کتاب */
+.explore-tool{border:1px solid #465984;border-radius:17px;padding:14px;margin:10px 0;background:linear-gradient(145deg,#222e51,#171f39)}
+.explore-tool h4{margin:0 0 7px;color:#8ef0e7!important}
+.explore-tool p{line-height:1.9}
+.explore-tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.explore-choice{background:#1a2747!important;color:#edf5ff!important;border:1px solid #53688f!important;box-shadow:0 3px 0 #0d1428!important;text-align:center;white-space:normal}
+.explore-choice.active{background:linear-gradient(135deg,#384277,#1d5963)!important;border-color:#8df0e7!important;color:#fff!important}
+.explore-feedback{margin-top:10px;border-radius:12px;border:1px solid #4f668b;background:#1b2847;padding:11px;color:#e4efff;line-height:1.9}
+.plant-sim-stage{display:grid;place-items:center;min-height:110px;border:1px solid #3f6583;border-radius:15px;background:radial-gradient(ellipse at 50% 100%,#265c55,#14233b 72%);margin:12px 0;overflow:hidden}
+.plant-sim-stage span{font-size:62px;filter:drop-shadow(0 5px 8px #0007);transition:transform .2s}
+.plant-sim-stage span.grow{transform:scale(1.14)}
+.explore-range-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin:8px 0;color:#dbe8ff;font-size:12px}
+.explore-range-row input{accent-color:#68e5d5;padding:0}
+.word-token-tray{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.word-token{background:linear-gradient(145deg,#2c3a62,#1e2a48)!important;color:#e7f4ff!important;border:1px solid #5d72a0!important;box-shadow:0 3px 0 #0c1428!important;padding:7px 12px!important}
+.word-sentence-tray{min-height:56px;border:1px dashed #7086b4;border-radius:12px;padding:9px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;background:#111a32;color:#e9f4ff}
+.word-sentence-chip{background:#254d60;border:1px solid #4caaa7;border-radius:10px;padding:5px 9px;color:#e8fffa}
+.schematic-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
+.schematic-map button{min-height:72px;white-space:normal;line-height:1.6;background:linear-gradient(145deg,#253a5b,#1b2846)!important;color:#e5f2ff!important;border:1px solid #59739e!important;box-shadow:0 3px 0 #0d1428!important}
+.schematic-map button[data-region="north"]{grid-column:2}
+.schematic-map button[data-region="west"]{grid-column:1;grid-row:2}
+.schematic-map button[data-region="center"]{grid-column:2;grid-row:2}
+.schematic-map button[data-region="east"]{grid-column:3;grid-row:2}
+.schematic-map button[data-region="south"]{grid-column:1/4;grid-row:3}
+.schematic-map button.active{border-color:#88ede5!important;background:linear-gradient(135deg,#3c4b79,#1c5a60)!important}
+.story-choice{display:flex;gap:9px;align-items:center;text-align:right;width:100%;margin:7px 0!important;background:linear-gradient(145deg,#293457,#1b2440)!important;color:#f0f5ff!important;border:1px solid #5e6e95!important;box-shadow:0 3px 0 #0d1428!important}
+.story-choice span{font-size:22px}
+@media(max-width:560px){.explore-tool{padding:10px}.schematic-map{gap:5px}.schematic-map button{font-size:11px;padding:8px 4px}.word-token{font-size:12px}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -821,7 +850,7 @@ a{color:#d7ff76}
 <div id="otherSubjectsView" class="card hidden">
   <div class="row"><h2 id="otherSubjectPageHeading">📚 درس‌های پایهٔ چهارم</h2><button class="outline" id="subjectsBackHome">بازگشت به انتخاب کتاب‌ها</button></div>
   <p class="muted">ابتدا کتاب را انتخاب کن. بعد از بازشدن کتاب، از نوار بالای آن بین درس‌ها، تمرین و آزمون و امتحان جابه‌جا شو.</p>
-  <nav id="otherSubjectTabs" class="book-tabs hidden" aria-label="بخش‌های کتاب"><button type="button" class="active" data-other-subject-tab="lessons">📖 درس‌ها</button><button type="button" data-other-subject-tab="practice">✏️ تمرین</button><button type="button" data-other-subject-tab="exam">📝 آزمون و امتحان</button></nav>
+  <nav id="otherSubjectTabs" class="book-tabs hidden" aria-label="بخش‌های کتاب"><button type="button" class="active" data-other-subject-tab="lessons">📖 درس‌ها</button><button type="button" data-other-subject-tab="explore">🧩 فعالیت تعاملی</button><button type="button" data-other-subject-tab="practice">✏️ تمرین</button><button type="button" data-other-subject-tab="exam">📝 آزمون و امتحان</button></nav>
   <div id="otherSubjectPicker" class="subjects"></div>
   <div id="otherSubjectLessons" class="hidden">
     <div class="row" style="margin-top:14px"><h3 id="otherSubjectTitle">درس</h3><span class="pill" id="otherSubjectProgress">۰ پاسخ</span></div>
@@ -839,6 +868,11 @@ a{color:#d7ff76}
     <label class="field" for="otherSubjectActivityLesson">انتخاب درس</label><select id="otherSubjectActivityLesson"></select>
     <div id="otherSubjectActivityQuestions" style="margin-top:12px"></div>
     <div id="otherSubjectActivityResult" class="notice hidden" aria-live="polite"></div>
+  </section>
+  <section id="otherSubjectExplorePanel" class="item hidden" aria-live="polite">
+    <div class="row"><h3 id="subjectExploreTitle">🧩 فعالیت تعاملی</h3><span class="pill">یادگیری با انجام‌دادن</span></div>
+    <p class="muted">این بخش برای تجربه و کشف مفهوم‌هاست؛ امتیاز، نشان یا آزمون ندارد.</p>
+    <div id="subjectExploreContent"></div>
   </section>
   <p class="muted" style="margin-top:12px">درس‌های آزاد کتاب فارسی برای متن انتخابی معلم و کلاس در نظر گرفته شده‌اند.</p>
 </div>
@@ -3582,9 +3616,15 @@ function renderOtherSubjectPicker(){
     const tab=button.dataset.otherSubjectTab;
     setOtherSubjectTabActive(tab);
     if(tab==='lessons'){
-      $('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectLessons')?.classList.remove('hidden');
+      $('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');
+      $('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectLessons')?.classList.remove('hidden');
+    }else if(tab==='explore'){
+      $('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');
+      $('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.remove('hidden');
+      renderSubjectExploration();
     }else{
-      $('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.remove('hidden');
+      $('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');
+      $('otherSubjectExplorePanel')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.remove('hidden');
       renderOtherSubjectActivity(tab);
     }
   }));
@@ -3873,7 +3913,7 @@ async function loadSourceQuestionBanks(){
       const custom=(courseSettingsBySubject[subjectId]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));
       return {id:item.id,title:custom?.title||String(item.title||'درس جدید').replace(/^(?:فصل|درس|املای درس)\\s*[۰-۹0-9]+\\s*[·.]\\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(subjectId),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}};
     })};
-    activeStudentSubject=selectedOtherSubject.id;setMathSubjectNav(false);$('otherSubjectPicker').classList.add('hidden');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');setOtherSubjectTabActive('lessons');
+    activeStudentSubject=selectedOtherSubject.id;setMathSubjectNav(false);$('otherSubjectPicker').classList.add('hidden');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');setOtherSubjectTabActive('lessons');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');
     $('otherSubjectTitle').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
@@ -4526,6 +4566,76 @@ const persianBookPageMap={
     a.href=url;a.download=(String(printableExamCurrent.title||'آزمون-چهارمی‌ها').replace(/[\\\\/:*?"<>|]+/g,'-'))+'.doc';
     document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);
   });
+
+
+  function renderSubjectExploration(){
+    const panel=$('subjectExploreContent'),title=$('subjectExploreTitle'),subject=selectedOtherSubject;
+    if(!panel||!subject)return;
+    if(title)title.textContent='🧩 فعالیت تعاملی · '+subject.name;
+    if(subject.id==='persian'){
+      const lesson=(selectedOtherLesson||subject.lessons.find(l=>isCourseLessonOpen(subject.id,l.id))||subject.lessons[0]||{});
+      const rawWords=Array.isArray(lesson.spellingWords)?lesson.spellingWords:[];
+      let words=rawWords.map(x=>typeof x==='string'?x:String(x?.word||x?.text||x?.term||'')).filter(x=>x.length>1).slice(0,12);
+      if(words.length<4)words=['کتاب','دانایی','تلاش','دوستی','طبیعت','مهربانی','ایران','امید'];
+      words=[...new Set(words)].slice(0,12);
+      panel.innerHTML='<section class="explore-tool"><h4>📖 واژه‌ساز و جمله‌پرداز</h4><p>روی واژه‌ها بزن تا وارد جمله شوند. می‌توانی ترتیب واژه‌ها را با انتخاب دوباره و پاک‌کردن جمله تغییر بدهی. هدف، ساخت جمله‌ای معنادار است؛ این فعالیت نمره ندارد.</p><div id="wordTokenTray" class="word-token-tray">'+words.map((w,i)=>'<button type="button" class="word-token" data-word-token="'+i+'">'+escapeHtml(w)+'</button>').join('')+'</div><b style="color:#9af0e5">جملهٔ من:</b><div id="wordSentenceTray" class="word-sentence-tray"><span class="muted">واژه‌ها را از بالا انتخاب کن…</span></div><div class="grid"><button type="button" class="outline" id="wordSentenceUndo">برداشتن واژهٔ آخر</button><button type="button" class="outline" id="wordSentenceClear">پاک‌کردن جمله</button></div><div class="explore-feedback">💡 نکته: جمله با حرف بزرگ/کوچک آغاز نمی‌شود، اما باید معنی کامل داشته باشد و با نشانهٔ مناسب تمام شود.</div></section>';
+      let sentence=[];
+      const renderSentence=()=>{$('wordSentenceTray').innerHTML=sentence.length?sentence.map((w,i)=>'<span class="word-sentence-chip">'+escapeHtml(w)+'</span>').join(''):'<span class="muted">واژه‌ها را از بالا انتخاب کن…</span>'};
+      panel.querySelectorAll('[data-word-token]').forEach(button=>button.onclick=()=>{sentence.push(words[Number(button.dataset.wordToken)]);renderSentence()});
+      $('wordSentenceUndo').onclick=()=>{sentence.pop();renderSentence()};
+      $('wordSentenceClear').onclick=()=>{sentence=[];renderSentence()};
+      return;
+    }
+    if(subject.id==='science'){
+      panel.innerHTML='<section class="explore-tool"><h4>🌱 آزمایشگاه رشد گیاه</h4><p>مقدار آب و نور را کم‌وزیاد کن و تغییر وضعیت گیاه را ببین. این یک مدل آموزشی ساده است؛ اندازه‌گیری واقعی رشد گیاه نیست.</p><div class="explore-range-row"><label for="plantWater">آب دریافتی</label><strong id="plantWaterValue">۲ از ۳</strong></div><input id="plantWater" type="range" min="0" max="3" value="2" step="1"><div class="explore-range-row"><label for="plantLight">نور دریافتی</label><strong id="plantLightValue">۲ از ۳</strong></div><input id="plantLight" type="range" min="0" max="3" value="2" step="1"><div id="plantSimStage" class="plant-sim-stage"><span>🌿</span></div><div id="plantSimFeedback" class="explore-feedback" role="status"></div><button id="plantSimReset" type="button" class="outline" style="width:100%">بازگرداندن شرایط به حالت معمول</button></section>';
+      const updatePlant=()=>{
+        const water=Number($('plantWater').value),light=Number($('plantLight').value),stage=Math.min(water,light);
+        $('plantWaterValue').textContent=fa(water)+' از ۳';$('plantLightValue').textContent=fa(light)+' از ۳';
+        const icons=['🥀','🌱','🌿','🌳'],messages=[
+          'یکی از نیازهای اصلی گیاه بسیار کم است. گیاه برای رشد مناسب به آب و نور کافی نیاز دارد.',
+          'گیاه در این مدل رشد محدودی دارد؛ تغییر یک عامل به‌تنهایی کافی نیست اگر عامل دیگر کم باشد.',
+          'در این مدل شرایط برای رشد متوسط در نظر گرفته شده است؛ مشاهدهٔ واقعی به نوع گیاه و محیط وابسته است.',
+          'در این مدل هر دو عامل در سطح بالاتری قرار دارند. در دنیای واقعی، خاک، دما و نوع گیاه هم اثر دارند.'
+        ];
+        $('plantSimStage').innerHTML='<span class="'+(stage>=2?'grow':'')+'">'+icons[stage]+'</span>';
+        $('plantSimFeedback').textContent=messages[stage];
+      };
+      $('plantWater').addEventListener('input',updatePlant);$('plantLight').addEventListener('input',updatePlant);
+      $('plantSimReset').onclick=()=>{$('plantWater').value='2';$('plantLight').value='2';updatePlant()};
+      updatePlant();return;
+    }
+    if(subject.id==='social'){
+      const regions={
+        north:{title:'شمال ایران',icon:'🌊',body:'دریای خزر در شمال ایران قرار دارد. رشته‌کوه البرز در جنوب دریای خزر امتداد یافته است.'},
+        west:{title:'غرب و جنوب‌غرب',icon:'⛰️',body:'رشته‌کوه زاگرس در بخش‌های غربی و جنوب‌غربی ایران امتداد دارد و در آب‌وهوا و زندگی مردم منطقه اثر می‌گذارد.'},
+        center:{title:'بخش مرکزی',icon:'🏙️',body:'تهران، پایتخت ایران، در شمال بخش مرکزی کشور قرار دارد. برای خواندن نقشه، عنوان، راهنما و جهت شمال را بررسی می‌کنیم.'},
+        east:{title:'شرق ایران',icon:'🧭',body:'ایران در سمت شرق با افغانستان و پاکستان مرز دارد. جهت‌ها کمک می‌کنند موقعیت مکان‌ها را نسبت به هم توصیف کنیم.'},
+        south:{title:'جنوب ایران',icon:'🚢',body:'خلیج فارس در جنوب‌غربی و دریای عمان در جنوب‌شرقی ایران قرار دارند. راه‌های آبی در ارتباط و بازرگانی اهمیت دارند.'}
+      };
+      panel.innerHTML='<section class="explore-tool"><h4>🗺️ کاوش نقشه و جهت‌ها</h4><p>برای آشنایی با موقعیت مناطق، روی بخش دلخواه بزن. این چیدمان شماتیک آموزشی است و نقشهٔ دقیق با مقیاس جغرافیایی نیست.</p><div class="schematic-map"><button data-region="north">🌊<br>شمال<br>دریای خزر</button><button data-region="west">⛰️<br>غرب<br>زاگرس</button><button data-region="center">🏙️<br>مرکز<br>تهران</button><button data-region="east">🧭<br>شرق<br>مرزهای شرقی</button><button data-region="south">🚢  جنوب · خلیج فارس و دریای عمان</button></div><div id="mapExploreFeedback" class="explore-feedback" role="status">یکی از مناطق را انتخاب کن تا توضیح آن را ببینی.</div><h4 style="margin-top:14px">🧭 قطب‌نمای جهت‌یابی</h4><p class="muted">شمال بالاست، جنوب پایین، شرق سمت راست و غرب سمت چپ نقشه است.</p><div class="explore-tool-grid"><button class="explore-choice" data-direction="north">⬆️ شمال</button><button class="explore-choice" data-direction="east">➡️ شرق</button><button class="explore-choice" data-direction="south">⬇️ جنوب</button><button class="explore-choice" data-direction="west">⬅️ غرب</button></div><div id="directionFeedback" class="explore-feedback" role="status">یک جهت را انتخاب کن.</div></section>';
+      panel.querySelectorAll('[data-region]').forEach(button=>button.onclick=()=>{
+        panel.querySelectorAll('[data-region]').forEach(b=>b.classList.toggle('active',b===button));
+        const info=regions[button.dataset.region];$('mapExploreFeedback').textContent=info.icon+' '+info.title+' — '+info.body;
+      });
+      const directions={north:'به سمت شمال حرکت کردی؛ در نقشه‌های معمول، شمال در بالای صفحه قرار می‌گیرد.',east:'به سمت شرق حرکت کردی؛ شرق در سمت راست قطب‌نمای استاندارد قرار می‌گیرد.',south:'به سمت جنوب حرکت کردی؛ جنوب در پایین نقشه قرار می‌گیرد.',west:'به سمت غرب حرکت کردی؛ غرب در سمت چپ نقشه قرار می‌گیرد.'};
+      panel.querySelectorAll('[data-direction]').forEach(button=>button.onclick=()=>{$('directionFeedback').textContent=directions[button.dataset.direction];panel.querySelectorAll('[data-direction]').forEach(b=>b.classList.toggle('active',b===button))});
+      return;
+    }
+    if(subject.id==='gifts'){
+      panel.innerHTML='<section class="explore-tool"><h4>🌙 داستان تصمیم نیک</h4><p>در یک داستان کوتاه، یکی از راه‌های کمک‌کردن را انتخاب کن و پایان داستان را بخوان. اینجا پاسخ نمره‌دار وجود ندارد؛ هدف، فکرکردن به رفتار مهربانانه و مسئولانه است.</p><div class="explore-feedback"><b>موقعیت:</b> هم‌کلاسی‌ات وسایلش را جا گذاشته و نگران است، چون برای انجام فعالیت کلاسی به آن‌ها نیاز دارد. چه واکنشی نشان می‌دهی؟</div><button class="story-choice" data-story-choice="help"><span>🤝</span><div><b>پیشنهاد کمک می‌دهم</b><small>با هم راهی برای حل مشکل پیدا می‌کنیم.</small></div></button><button class="story-choice" data-story-choice="listen"><span>💗</span><div><b>به نگرانی‌اش گوش می‌دهم</b><small>با آرامش و احترام با او صحبت می‌کنم.</small></div></button><button class="story-choice" data-story-choice="adult"><span>🙋</span><div><b>از معلم کمک می‌گیرم</b><small>اگر لازم باشد، از یک بزرگ‌تر قابل اعتماد راهنمایی می‌خواهم.</small></div></button><div id="storyExploreEnding" class="explore-feedback hidden" role="status"></div></section>';
+      const endings={
+        help:'با همکاری می‌توانید وسیله‌ای را قرض بگیرید یا کار را دونفره انجام دهید. کمک‌کردن وقتی با اجازه و احترام باشد، می‌تواند مشکل را حل کند.',
+        listen:'گوش‌دادن با احترام به دوستت نشان می‌دهد نگرانی او برایت مهم است. بعد از شنیدن حرفش، می‌توانید راه‌حل مناسب پیدا کنید.',
+        adult:'درخواست راهنمایی از معلم راه مناسبی است؛ به‌ویژه وقتی به وسیله‌ای نیاز دارید که در کلاس موجود نیست. مسئولیت‌پذیری یعنی مشکل را محترمانه پیگیری کنید.'
+      };
+      panel.querySelectorAll('[data-story-choice]').forEach(button=>button.onclick=()=>{
+        const end=$('storyExploreEnding');end.textContent=endings[button.dataset.storyChoice];end.classList.remove('hidden');
+        panel.querySelectorAll('[data-story-choice]').forEach(b=>b.classList.toggle('active',b===button));
+      });
+      return;
+    }
+    panel.innerHTML='<div class="explore-tool"><h4>فعالیت تعاملی این کتاب</h4><p>برای این کتاب، ابتدا یک درس را از فهرست باز کن؛ سپس فعالیت‌های اختصاصی آن درس را انتخاب کن.</p></div>';
+  }
 
 })();
 
