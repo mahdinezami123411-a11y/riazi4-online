@@ -3421,11 +3421,10 @@ function renderOtherSubjectPicker(){
         const data=JSON.parse(await new Response(stream).text());
         if(!data||!data._meta)throw new Error('ساختار بانک پرسش‌وپاسخ معتبر نیست.');
         sourceQuestionBanks=data;
-        if(selectedOtherSubject&&selectedOtherLesson&&['science','social','gifts'].includes(selectedOtherSubject.id)){
-          renderOtherLesson(selectedOtherLesson.id);
-        }
         const activeTab=document.querySelector('#otherSubjectTabs [data-other-subject-tab].active')?.dataset.otherSubjectTab;
-        if(selectedOtherSubject&&['science','social','gifts'].includes(selectedOtherSubject.id)&&['practice','exam'].includes(activeTab)){
+        if(activeTab==='lessons'&&selectedOtherSubject&&selectedOtherLesson&&['science','social','gifts'].includes(selectedOtherSubject.id)){
+          renderOtherLesson(selectedOtherLesson.id);
+        }else if(selectedOtherSubject&&['science','social','gifts'].includes(selectedOtherSubject.id)&&['practice','exam'].includes(activeTab)){
           renderOtherSubjectActivity(activeTab);
         }
         if($('teacherBankSubject'))renderCloudQuestionList();
