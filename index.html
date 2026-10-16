@@ -1877,6 +1877,9 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   // Compact chapter learning: every learning point opens only when tapped.
   renderChapter=function(id){
     activeChapter=id;const c=chapters.find(x=>x.id===id);if(!c)return;
+    // The later lesson renderer must use the standalone chapter screen too.
+    $('bookView').classList.add('hidden');$('mathChapterLessonView').classList.remove('hidden');
+    $('chapterPicker').classList.add('hidden');$('chapterPickerIntro').classList.add('hidden');
     $('chapterLesson').classList.remove('hidden');$('chapterLessonTitle').textContent=`فصل ${fa(id)}: ${c.title}`;$('chapterLessonTag').textContent=`${fa(c.sections.length)} مبحث آموزشی`;
     const intro='';
     const goals=c.goals?.length?`<details class="lesson-accordion"><summary><span class="topic-number">🎯</span><span>هدف‌های یادگیری فصل<span class="topic-summary">بعد از یادگیری چه چیزهایی باید بلد باشم؟</span></span></summary><div class="lesson-accordion-content"><ul>${c.goals.map(g=>`<li>${escapeHtml(g)}</li>`).join('')}</ul></div></details>`:'';
@@ -2060,6 +2063,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(view==='home'){
       activeStudentSubject='';
       $('studentSubjectHub')?.classList.remove('hidden');$('mathHomeMenu')?.classList.add('hidden');
+      $('studentDashboard')?.classList.remove('hidden');
       $('otherSubjectsView')?.classList.add('hidden');$('otherSubjectPicker')?.classList.remove('hidden');
       $('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');
       $('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');
@@ -3685,8 +3689,11 @@ loadExpandedPersianVocabulary();
     box.querySelectorAll('[data-student-subject]').forEach(b=>b.onclick=()=>{
       const id=b.dataset.studentSubject;
       if(id==='math'){
-        activeStudentSubject='math';showStudentAppView('home');
-        $('studentSubjectHub').classList.add('hidden');$('mathHomeMenu').classList.remove('hidden');setMathSubjectNav(true);
+        showStudentAppView('home');
+        activeStudentSubject='math';
+        $('studentSubjectHub').classList.add('hidden');$('mathHomeMenu').classList.remove('hidden');
+        $('studentDashboard')?.classList.add('hidden');
+        setMathSubjectNav(true);
       }else{
         activeStudentSubject=id;setMathSubjectNav(false);showStudentAppView('subjects');openOtherSubject(id);
       }
