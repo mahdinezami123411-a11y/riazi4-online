@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v8-20261016-persian-restored">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v9-20261016-course-dashboard-persian-fix">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -636,7 +636,7 @@ a{color:#d7ff76}
 </section>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
 <section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🟢 حضور امروز</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
-<div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس فعال</span><strong>۱</strong></div><div class="metric"><span class="muted">سؤال‌های بانک تمرین</span><strong>۷۰۰+</strong></div><div class="metric"><span class="muted">فصل‌های کتاب</span><strong>۷</strong></div></div><h3 style="margin-top:16px">درس فعال</h3><p class="muted">ریاضی پایه چهارم: جدول ضرب، مفهوم ضرب و تقسیم، حل مسئله و آزمون</p><div id="teacherOverviewStatus" class="notice">پس از راه‌اندازی جداول و توابع Supabase، تعداد دانش‌آموزان، پاسخ‌ها و درصد پاسخ‌های صحیح در این صفحه نمایش داده می‌شوند.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><label class="field" for="teacherOverviewStudentFilter">انتخاب دانش‌آموز</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
+<div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس‌های فعال در همهٔ کتاب‌ها</span><strong id="teacherActiveLessonCount">۰</strong></div><div class="metric"><span class="muted">کتاب‌های دارای درس باز</span><strong id="teacherActiveBookCount">۰</strong></div><div class="metric"><span class="muted">تعداد کتاب‌های برنامه</span><strong id="teacherBookTotalCount">۶</strong></div></div><h3 style="margin-top:16px">وضعیت دسترسی درس‌ها به تفکیک کتاب</h3><p class="muted">تعداد درس‌های باز و عنوان همان درس‌ها، بر اساس تنظیمات فعلی کلاس و زمان‌بندی دسترسی، در این فهرست نمایش داده می‌شود.</p><div id="teacherCourseOverviewList" class="stack"></div><div id="teacherOverviewStatus" class="notice">برای مشاهدهٔ وضعیت دقیق، تنظیمات کتاب‌های کلاس از سرور دریافت می‌شود.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><label class="field" for="teacherOverviewStudentFilter">انتخاب دانش‌آموز</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
   <div class="row"><div><h3>🗂️ بانک سؤال مستقل برای هر کتاب و هر درس</h3><p class="muted">ابتدا کتاب و سپس درس را انتخاب کن؛ مشاهده، جست‌وجو، افزودن و ویرایش سؤال‌ها فقط برای همان کتاب و درس انجام می‌شود.</p></div><span class="pill" id="teacherBankTotal">۷۰۰ سؤال</span></div>
@@ -996,6 +996,36 @@ function courseLessonTitle(subject,lessonId){
  const item=courseLessonCatalog(subject).find(l=>Number(l.id)===Number(lessonId));
  return item?.title||('درس '+fa(lessonId));
 }
+function renderTeacherCourseOverview(){
+ const ids=['math','persian','dictation','science','social','gifts'];
+ const courses=ids.map(id=>{
+   const settings=courseSettingsBySubject[id]||{};
+   const catalog=courseLessonCatalog(id);
+   const enabled=settings.courseEnabled!==false;
+   const open=enabled?catalog.filter(lesson=>isCourseLessonOpen(id,lesson.id)):[];
+   return {id,name:settings.courseTitle||courseName(id),icon:bookSubjectCatalog.find(x=>x.id===id)?.icon||'📘',catalog,open,enabled};
+ });
+ const activeLessonCount=courses.reduce((sum,course)=>sum+course.open.length,0);
+ const activeBookCount=courses.filter(course=>course.enabled&&course.open.length>0).length;
+ const lessonMetric=$('teacherActiveLessonCount');
+ const bookMetric=$('teacherActiveBookCount');
+ const totalMetric=$('teacherBookTotalCount');
+ if(lessonMetric)lessonMetric.textContent=fa(activeLessonCount);
+ if(bookMetric)bookMetric.textContent=fa(activeBookCount);
+ if(totalMetric)totalMetric.textContent=fa(courses.length);
+ const list=$('teacherCourseOverviewList');
+ if(!list)return;
+ list.innerHTML=courses.map(course=>{
+   const openText=course.open.length
+     ?'<div class="course-open-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+course.open.map(lesson=>'<span class="pill">'+escapeHtml(lesson.title)+'</span>').join('')+'</div>'
+     :'<p class="muted" style="margin:8px 0 0">'+(!course.enabled?'این کتاب غیرفعال است.':'در حال حاضر هیچ درسی در این کتاب باز نیست.')+'</p>';
+   const closedCount=Math.max(0,course.catalog.length-course.open.length);
+   return '<section class="item" style="margin-top:10px"><div class="row"><h4>'+course.icon+' '+escapeHtml(course.name)+'</h4><span class="pill">'+fa(course.open.length)+' از '+fa(course.catalog.length)+' درس باز</span></div>'+
+     (course.open.length?'<p class="muted" style="margin:8px 0 0">درس‌های باز:</p>':'')+openText+
+     (closedCount?'<p class="muted" style="margin:8px 0 0">'+fa(closedCount)+' درس بسته یا زمان‌بندی‌شده است.</p>':'')+
+     '</section>';
+ }).join('');
+}
 function localDateInput(value){
  if(!value)return '';
  const d=new Date(value);if(Number.isNaN(d.getTime()))return '';
@@ -1038,6 +1068,9 @@ async function loadCourseSettings(silent=false){
    if($('gradeSubjectFilter'))populateLessonFilter('gradeSubjectFilter','gradeLessonFilter');
    if($('teacherBankSubject'))populateTeacherBankLessons($('teacherBankChapter')?.value);
    if($('actSubject'))populateAssignmentLessons($('actLesson')?.value);
+   renderTeacherCourseOverview();
+   if(typeof renderStudentSubjectHub==='function')renderStudentSubjectHub();
+   if(typeof renderOtherSubjectPicker==='function')renderOtherSubjectPicker();
    if(!silent&&$('courseSettingsStatus'))$('courseSettingsStatus').textContent='تنظیمات شش کتاب از سرور دریافت شد.';
    return courseSettingsBySubject;
  }catch(error){
@@ -1657,7 +1690,9 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:'student',profile:null,username};
       const profile=await loadCloudProfile(auth.access_token,user.id);
       if(profile.role!=='student'&&profile.role!=='teacher')throw new Error('این حساب نقش دانش‌آموز یا معلم ندارد.');
-      cloudSession.profile=profile;cloudSession.studentViewAsTeacher=profile.role==='teacher';saveCloudSession();activeStudentName=username;activeUsername=username;
+      cloudSession.profile=profile;cloudSession.studentViewAsTeacher=profile.role==='teacher';saveCloudSession();
+      try{await loadCourseSettings(true)}catch(settingsError){console.warn('Course settings could not be loaded for student view',settingsError)}
+      activeStudentName=username;activeUsername=username;
       activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);await loadStudentAvatar(profile.avatar_path);
       $('studentPasswordInput').value='';
       await loadStudentQuestionBank();
@@ -2522,12 +2557,15 @@ loadExpandedPersianVocabulary();
     const box=$('studentSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
     const subjects=[
-      {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'کتاب و مهارت‌های پایه'},
-      ...[
-        {id:'persian',name:'فارسی و نگارش',icon:'📖',lessons:persianLessons},
-        {id:'dictation',name:'املای فارسی',icon:'✍️',lessons:persianLessons},
-        ...otherSubjectData
-      ].map(s=>({id:s.id,name:s.name,icon:s.icon,description:s.id==='persian'?'واژه‌آموزی و دانش زبانی بر پایهٔ کتاب فارسی چهارم':s.id==='dictation'?'تمرین املای واژه‌های منتخب از متن کتاب و فایل واژگان':s.id==='science'?'آموزش و تمرین علوم تجربی':s.id==='social'?'مفاهیم و تمرین مطالعات اجتماعی':'آموزش و تمرین هدیه‌های آسمانی',count:fa(s.lessons.length)+' مبحث آغازین'}))
+      {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'فصل‌های کتاب و مهارت‌های پایه'},
+      ...otherSubjectData.map(s=>({
+        id:s.id,name:s.name,icon:s.icon,
+        description:s.id==='persian'?'درس‌های فارسی و نگارش، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم':
+          s.id==='dictation'?'تمرین املای واژه‌های هر درس بر پایهٔ فهرست املای بررسی‌شده':
+          s.id==='science'?'آموزش و تمرین علوم تجربی':
+          s.id==='social'?'مفاهیم و تمرین مطالعات اجتماعی':'آموزش و تمرین هدیه‌های آسمانی',
+        count:fa(courseLessonCatalog(s.id).length)+' مبحث'
+      }))
     ];
     box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=cfg.courseTitle||s.name;const catalog=courseLessonCatalog(s.id);const total=catalog.length;const openCount=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled&&openCount?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
     box.querySelectorAll('[data-student-subject]').forEach(b=>b.onclick=()=>{
@@ -2543,12 +2581,15 @@ loadExpandedPersianVocabulary();
   function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
-    const availableSubjects=[
-      {id:'persian',name:'فارسی و نگارش',icon:'📖',lessons:persianLessons},
-      {id:'dictation',name:'املای فارسی',icon:'✍️',lessons:persianLessons},
-      ...otherSubjectData
-    ];
-    box.innerHTML=availableSubjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;const open=s.lessons.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(cfg.courseEnabled!==false&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(s.lessons.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
+    const availableSubjects=[...otherSubjectData];
+    box.innerHTML=availableSubjects.map(s=>{
+      const cfg=courseSettingsBySubject[s.id]||{};
+      const catalog=courseLessonCatalog(s.id);
+      const done=catalog.filter(l=>progress[s.id+'-'+l.id]?.correct).length;
+      const open=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;
+      const enabled=cfg.courseEnabled!==false;
+      return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(enabled&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(catalog.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>';
+    }).join('');
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
   function openOtherSubject(id){
@@ -2671,8 +2712,9 @@ loadExpandedPersianVocabulary();
     const progressPrefix=isDictationOnly?'dictation':'persian';
     const wordTopic=isDictationOnly?{title:'فهرست املای همین درس',source:l.isFreeLesson?'متن انتخابی کلاس':'کتاب',explain:l.isFreeLesson?'این درس آزاد است؛ واژه‌های املا باید از متن انتخابی کلاس استخراج شوند.':'این فهرست برای تمرین املای واژه‌های درس تنظیم شده است؛ املای دقیق را با متن کتاب مقایسه کن.',examples:[]}:(l.wordTopic||{title:'واژه‌آموزی',source:'تکمیلی',explain:'واژه‌ها را از متن درس استخراج کن.',examples:[]});
     const langTopic=l.languageTopic||{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های متن درس برای تمرین استفاده کن.',examples:[]};
-    const quizzes=isDictationOnly?(l.isFreeLesson?buildPersianLessonQuizzes(l):[{kind:'املای واژه',...l.spellingCheck}]):buildPersianLessonQuizzes(l);
     const practiceAllowed=courseSettingsBySubject[progressPrefix]?.allowPractice!==false;
+    const rawQuizzes=isDictationOnly?(l.isFreeLesson?buildPersianLessonQuizzes(l):[{kind:'املای واژه',...(l.spellingCheck||{})}]):buildPersianLessonQuizzes(l);
+    const quizzes=(Array.isArray(rawQuizzes)?rawQuizzes:[]).filter(q=>q&&Array.isArray(q.options)&&q.options.length>=2&&Number.isInteger(Number(q.answer))&&Number(q.answer)>=0&&Number(q.answer)<q.options.length);
     if(!practiceAllowed)quizzes.length=0;
     content.innerHTML='<div id="lessonBookSection"></div>'+
       (isDictationOnly?
@@ -2688,10 +2730,10 @@ loadExpandedPersianVocabulary();
       (l.isFreeLesson?'<div class="notice"><b>مهم:</b> این درس در کتاب «درس آزاد» است و متن ثابتی ندارد. برای ساخت املا و واژه‌نامهٔ دقیق، متن انتخاب‌شدهٔ کلاس باید در برنامه وارد شود؛ بنابراین واژه‌های ساختگی به کتاب نسبت داده نشده‌اند.</div>':'')+
 
       (practiceAllowed?'<h4 style="margin:16px 0 8px">'+(isDictationOnly?'📝 تمرین املای درس':'🎯 تمرین‌های همین درس')+'</h4><p class="muted">هر سؤال تحلیل جداگانه دارد و هنگام بررسی، پاسخ صحیح نمایش داده می‌شود.</p>'+
-      '<div class="persian-quiz-grid">'+quizzes.map((q,i)=>{
+      (quizzes.length?'<div class="persian-quiz-grid">'+quizzes.map((q,i)=>{
         const choices=q.options.map((o,j)=>'<label class="other-answer" data-persian-option="'+j+'"><input type="radio" name="persianQuiz'+l.id+'-'+i+'" value="'+j+'"><span>'+escapeForHtmlText(o)+'</span></label>').join('');
         return '<section class="persian-quiz-card" data-persian-quiz="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind)+'</b><span class="pill">تمرین '+(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+choices+'<button type="button" data-persian-quiz-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button><div class="notice persian-quiz-feedback hidden" aria-live="polite"></div></section>';
-      }).join('')+'</div>':'<div class="notice">تمرین و آزمون این کتاب فعلاً از طرف معلم غیرفعال شده است.</div>');
+      }).join('')+'</div>':'<div class="notice">برای این درس سؤال معتبر ثبت نشده است؛ واژه‌ها و بخش‌های آموزشی بالا در دسترس‌اند.</div>'):'<div class="notice">تمرین و آزمون این کتاب فعلاً از طرف معلم غیرفعال شده است.</div>');
     content.querySelectorAll('[data-persian-quiz-check]').forEach(button=>{
       button.onclick=async()=>{
         const i=Number(button.dataset.persianQuizCheck),q=quizzes[i],card=button.closest('.persian-quiz-card');
