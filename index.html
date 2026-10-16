@@ -1156,7 +1156,7 @@ $('saveCourseSettings')?.addEventListener('click',async()=>{
    const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});
    courseSettingsBySubject[subject]=result.setting.settings;
    $('courseSettingsStatus').textContent='تنظیمات «'+courseName(subject)+'» در سرور ذخیره شد. وضعیت درس‌ها برای دسترسی دانش‌آموزان به‌روزرسانی شد.';
-   renderCourseSettingsForm();renderStudentSubjectHub?.();renderOtherSubjectPicker?.();renderTeacherGradebook();
+   renderCourseSettingsForm();renderTeacherCourseOverview();renderStudentSubjectHub?.();renderOtherSubjectPicker?.();renderTeacherGradebook();
  }catch(error){$('courseSettingsStatus').textContent='ذخیره ناموفق بود: '+cloudMessage(error)}
  finally{setBusy(btn,false)}
 });
