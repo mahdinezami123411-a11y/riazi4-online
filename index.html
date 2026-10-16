@@ -668,13 +668,28 @@ a{color:#d7ff76}
     <div class="row"><h3 id="teacherQuestionEditorTitle">سؤال جدید</h3><button class="outline" type="button" id="teacherCancelQuestionEdit">بستن</button></div>
     <input id="teacherEditingIndex" type="hidden" value="-1">
     <label class="field" for="teacherEditorSkill">مبحث / مهارت</label><input id="teacherEditorSkill" placeholder="مثلاً: الگوهای عددی">
-    <label class="field" for="teacherEditorType">نوع سؤال</label><select id="teacherEditorType"><option value="mc">چهارگزینه‌ای</option><option value="input">پاسخ کوتاه</option><option value="tf">درست / نادرست</option><option value="multi">انتخاب چند پاسخ</option></select>
+    <label class="field" for="teacherEditorType">نوع سؤال</label><select id="teacherEditorType"><option value="mc">چهارگزینه‌ای</option><option value="blank_mc">جای‌خالی چهارگزینه‌ای</option><option value="matching">جورکردنی (۴ جفت)</option><option value="input">پاسخ کوتاه</option><option value="tf">درست / نادرست</option><option value="multi">انتخاب چند پاسخ</option></select>
     <label class="field" for="teacherEditorPrompt">متن سؤال</label><textarea id="teacherEditorPrompt" rows="3" placeholder="صورت سؤال را کامل بنویس..."></textarea>
     <div id="teacherEditorOptionsGrid" class="grid">
       <div><label class="field" for="teacherEditorOpt0">گزینه ۱</label><input id="teacherEditorOpt0"></div>
       <div><label class="field" for="teacherEditorOpt1">گزینه ۲</label><input id="teacherEditorOpt1"></div>
       <div><label class="field" for="teacherEditorOpt2">گزینه ۳</label><input id="teacherEditorOpt2"></div>
       <div><label class="field" for="teacherEditorOpt3">گزینه ۴</label><input id="teacherEditorOpt3"></div>
+    </div>
+    <div id="teacherEditorMatchingGrid" class="grid hidden">
+      <div class="item"><b>موارد ستون چپ (۴ مورد)</b>
+        <label class="field" for="teacherEditorMatchLeft0">مورد ۱</label><input id="teacherEditorMatchLeft0">
+        <label class="field" for="teacherEditorMatchLeft1">مورد ۲</label><input id="teacherEditorMatchLeft1">
+        <label class="field" for="teacherEditorMatchLeft2">مورد ۳</label><input id="teacherEditorMatchLeft2">
+        <label class="field" for="teacherEditorMatchLeft3">مورد ۴</label><input id="teacherEditorMatchLeft3">
+      </div>
+      <div class="item"><b>موارد ستون راست (۴ مورد)</b>
+        <label class="field" for="teacherEditorMatchRight0">پاسخ ۱</label><input id="teacherEditorMatchRight0">
+        <label class="field" for="teacherEditorMatchRight1">پاسخ ۲</label><input id="teacherEditorMatchRight1">
+        <label class="field" for="teacherEditorMatchRight2">پاسخ ۳</label><input id="teacherEditorMatchRight2">
+        <label class="field" for="teacherEditorMatchRight3">پاسخ ۴</label><input id="teacherEditorMatchRight3">
+      </div>
+      <p class="muted" style="grid-column:1/-1">برای پاسخ صحیح، شمارهٔ گزینهٔ سمت راست را به‌ترتیبِ چهار مورد سمت چپ بنویس؛ نمونه: ۲، ۱، ۴، ۳. هر گزینه فقط یک بار استفاده می‌شود.</p>
     </div>
     <label class="field" for="teacherEditorAnswer">پاسخ صحیح</label><input id="teacherEditorAnswer" placeholder="چهارگزینه‌ای: ۱ تا ۴ | چندپاسخی: ۱،۳ | پاسخ کوتاه: متن جواب">
     <label class="field" for="teacherEditorWhy">توضیح پاسخ / راه‌حل</label><textarea id="teacherEditorWhy" rows="3" placeholder="چرا این پاسخ درست است؟ مراحل حل را کوتاه توضیح بده."></textarea>
@@ -953,14 +968,33 @@ function renderChapter(id){
 }
 function normalizeAnswer(v){return String(v??'').trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g,'.').replace(/٬/g,'').replace(/[،,]/g,'').replace(/\s/g,'').toLowerCase()}
 function shuffledCopy(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
-function shuffledQuestion(q){if(!q.opts)return {...q};const order=shuffledCopy(q.opts.map((_,i)=>i));return {...q,opts:order.map(i=>q.opts[i]),a:q.a===undefined?undefined:order.indexOf(q.a),as:q.as? q.as.map(i=>order.indexOf(i)).sort((a,b)=>a-b):undefined,_originalOptions:q.opts,_key:q.q}}
-function questionTypeLabel(q){return ({mc:'چهارگزینه‌ای',input:'پاسخ کوتاه',tf:'درست / نادرست',multi:'انتخاب چند پاسخ'})[q.type||'mc']||'تمرین'}
+function shuffledQuestion(q){
+ if(!q.opts)return {...q};
+ if(q.type==='matching'&&q.opts.length>=8)return {...q,opts:[...q.opts.slice(0,4),...shuffledCopy(q.opts.slice(4,8)],_originalOptions:q.opts,_key:q.q};
+ const order=shuffledCopy(q.opts.map((_,i)=>i));
+ return {...q,opts:order.map(i=>q.opts[i]),a:q.a===undefined?undefined:order.indexOf(q.a),as:q.as?q.as.map(i=>order.indexOf(i)).sort((a,b)=>a-b):undefined,_originalOptions:q.opts,_key:q.q};
+}
+function questionTypeLabel(q){return ({mc:'چهارگزینه‌ای',blank_mc:'جای‌خالی چهارگزینه‌ای',matching:'جورکردنی',input:'پاسخ کوتاه',tf:'درست / نادرست',multi:'انتخاب چند پاسخ'})[q.type||'mc']||'تمرین'}
 function getPracticeFilteredList(){const mode=$('practiceSetMode')?.value||'chapter';const type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))}
 let practiceAsked=0,practiceCorrect=0,practiceSeen=new Set(),practiceWasChecked=false;
 function updatePracticeStats(){const list=getPracticeFilteredList();$('practicePoolCount').textContent=list.length.toLocaleString('fa-IR');$('practiceAskedCount').textContent=practiceAsked.toLocaleString('fa-IR');$('practiceCorrectCount').textContent=practiceCorrect.toLocaleString('fa-IR')}
-function renderAnswerControls(q,containerId,inputId,name,setSelected){const box=$(containerId),input=$(inputId);box.innerHTML='';input.classList.toggle('hidden',(q.type||'mc')!=='input');box.classList.toggle('hidden',(q.type||'mc')==='input');if((q.type||'mc')==='input'){input.placeholder=q.answers?'پاسخ را به شکل خواسته‌شده بنویس':'پاسخ کوتاه را بنویس';return}const multi=q.type==='multi';box.innerHTML=q.opts.map((o,i)=>`<label class="${name==='practiceOption'?'practice-option':'exam-option'}"><input type="${multi?'checkbox':'radio'}" name="${name}" value="${i}"><span>${escapeHtml(o)}</span></label>`).join('');box.querySelectorAll('input').forEach(el=>el.onchange=()=>{let selection;if(multi)selection=[...box.querySelectorAll('input:checked')].map(r=>Number(r.value)).sort((a,b)=>a-b);else selection=Number(el.value);box.querySelectorAll('label').forEach((item,i)=>item.classList.toggle('selected',multi?[...box.querySelectorAll('input:checked')].some(r=>Number(r.value)===i):i===selection));setSelected(selection)})}
-function isQuestionCorrect(q,response){if((q.type||'mc')==='input'){const val=normalizeAnswer(response);const accepted=(q.answers||[q.answer]).map(normalizeAnswer);return val!==''&&accepted.includes(val)}if(q.type==='multi'){if(!Array.isArray(response))return false;const a=[...(q.as||[])].sort((x,y)=>x-y),b=[...response].sort((x,y)=>x-y);return a.length===b.length&&a.every((v,i)=>v===b[i])}return response===q.a}
-function correctAnswerText(q){if(q.type==='input')return (q.answers||[q.answer]).join(' یا ');if(q.type==='multi')return q.as.map(i=>q.opts[i]).join('، ');return q.opts?.[q.a]||''}
+
+function renderAnswerControls(q,containerId,inputId,name,setSelected){
+ const box=$(containerId),input=$(inputId),type=q.type||'mc';
+ const isText=type==='input',isMatching=type==='matching',multi=type==='multi';
+ box.innerHTML='';input.classList.toggle('hidden',!isText);box.classList.toggle('hidden',isText);
+ if(isText){input.placeholder=q.answers?'پاسخ را به شکل خواسته‌شده بنویس':'پاسخ کوتاه را بنویس';return}
+ if(isMatching){
+  const left=q.opts.slice(0,4),right=q.opts.slice(4,8),picked=[-1,-1,-1,-1];
+  box.innerHTML='<p class="muted">برای هر مورد از ستون چپ، یک پاسخ از فهرست سمت راست انتخاب کن؛ هر پاسخ یک بار استفاده می‌شود.</p><div class="question-matching-list">'+left.map((item,i)=>'<div class="question-matching-row"><span><b>'+fa(i+1)+'.</b> '+escapeHtml(item)+'</span><select aria-label="جور کردن مورد '+fa(i+1)+'"><option value="">انتخاب پاسخ…</option>'+right.map((answer,j)=>'<option value="'+(j+4)+'">'+escapeHtml(answer)+'</option>').join('')+'</select></div>').join('')+'</div>';
+  box.querySelectorAll('select').forEach((el,i)=>el.onchange=()=>{picked[i]=el.value===''?-1:Number(el.value);setSelected([...picked]);box.querySelectorAll('select').forEach((other,j)=>[...other.options].forEach(option=>{if(option.value!=='')option.disabled=picked.some((value,k)=>k!==j&&value>=4&&value===Number(option.value))}))});
+  return;
+ }
+ box.innerHTML=q.opts.map((o,i)=>'<label class="'+(name==='practiceOption'?'practice-option':'exam-option')+'"><input type="'+(multi?'checkbox':'radio')+'" name="'+name+'" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
+ box.querySelectorAll('input').forEach(el=>el.onchange=()=>{let selection;if(multi)selection=[...box.querySelectorAll('input:checked')].map(r=>Number(r.value)).sort((a,b)=>a-b);else selection=Number(el.value);box.querySelectorAll('label').forEach((item,i)=>item.classList.toggle('selected',multi?[...box.querySelectorAll('input:checked')].some(r=>Number(r.value)===i):i===selection));setSelected(selection)});
+}
+function isQuestionCorrect(q,response){if((q.type||'mc')==='input'){const val=normalizeAnswer(response);const accepted=(q.answers||[q.answer]).map(normalizeAnswer);return val!==''&&accepted.includes(val)}if(q.type==='matching'){if(!Array.isArray(response)||!Array.isArray(q.answer))return false;return response.length===q.answer.length&&response.every((v,i)=>v===q.answer[i])}if(q.type==='multi'){if(!Array.isArray(response))return false;const a=[...(q.as||[])].sort((x,y)=>x-y),b=[...response].sort((x,y)=>x-y);return a.length===b.length&&a.every((v,i)=>v===b[i])}return response===q.a}
+function correctAnswerText(q){if(q.type==='input')return (q.answers||[q.answer]).join(' یا ');if(q.type==='matching')return 'پس از بررسی، چهار جفت صحیح نمایش داده می‌شود.';if(q.type==='multi')return q.as.map(i=>q.opts[i]).join('، ');return q.opts?.[q.a]||''}
 function newBookPractice(){const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;$('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';if(!filtered.length){currentPractice=null;$('bookPracticeSkill').textContent='این انتخاب سؤال ندارد';$('bookPracticeQuestion').textContent='برای این فصل و فیلتر انتخاب‌شده سؤالی پیدا نشد. فیلتر «همه نوع‌ها» یا «همه سطح‌ها» را انتخاب کن.';$('bookPracticeOptions').innerHTML='';$('bookPracticeOptions').classList.add('hidden');$('bookPracticeAnswer').classList.add('hidden');updatePracticeStats();return}
  let fresh=filtered.filter(q=>!practiceSeen.has(q.q));if(!fresh.length){practiceSeen.clear();fresh=filtered.slice()}const chosen=fresh[Math.floor(Math.random()*fresh.length)];practiceSeen.add(chosen.q);currentPractice=shuffledQuestion(chosen);const practiceMode=$('practiceSetMode')?.value||'chapter';const practiceScope=practiceMode==='term1'?'تمرین نوبت اول':practiceMode==='term2'?'تمرین نوبت دوم':`فصل ${faDigits($('bookPracticeTopic').value)}`;$('bookPracticeSkill').textContent=`${practiceScope} · ${currentPractice.skill||'تمرین ریاضی'} · ${questionTypeLabel(currentPractice)}${practiceMode==='chapter'?' · '+({easy:'آسان',medium:'متوسط',hard:'چالشی'})[currentPractice.difficulty||'medium']:''}`;$('bookPracticeQuestion').textContent=currentPractice.q;renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats()}
 $('newBookPractice').onclick=newBookPractice;$('nextBookPractice').onclick=newBookPractice;
@@ -2016,7 +2050,8 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
 
   function answerForServer(q,response){
     if((q?.type||'mc')==='input')return String(response??'').trim();
-    if(q?.type==='multi')return Array.isArray(response)?response.map(i=>String(q.opts?.[Number(i)]??'')) : [];
+    if(q?.type==='matching')return Array.isArray(response)?response.map(i=>Number.isInteger(i)&&i>=4?String(q.opts?.[i]??''):''):[];
+    if(q?.type==='multi')return Array.isArray(response)?response.map(i=>String(q.opts?.Number(i)]??'')) : [];
     return Number.isInteger(response)?String(q.opts?.[response]??''):String(response??'');
   }
   async function submitServerAnswer(q,response,source,groupId=null){
@@ -3279,41 +3314,86 @@ function renderOtherSubjectPicker(){
     for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}
     return out;
   }
-  function makeSourceQuestionOptions(subjectId,lessonId,qa){
-    const correct=String(qa.answer||'').trim();
-    if(!correct)return [];
-    const norm=sourceQuestionNormalize(correct);
-    const sameLesson=sourceQuestionBankRows(subjectId,lessonId);
-    const allRows=sourceQuestionBankSubjectRows(subjectId);
-    const candidates=shuffleSourceValues([...sameLesson,...allRows].map(row=>String(row.answer||'').trim())
-      .filter(text=>text&&sourceQuestionNormalize(text)!==norm));
-    const unique=[],seen=new Set([norm]);
-    for(const text of candidates){
-      const key=sourceQuestionNormalize(text);
-      if(!key||seen.has(key))continue;
-      seen.add(key);unique.push(text);if(unique.length>=3)break;
-    }
-    const options=shuffleSourceValues([correct,...unique]);
-    return options.length>=2?options:[];
-  }
-  function getSourceQuestionBankQuizzes(subjectId,lessonId){
-    return sourceQuestionBankRows(subjectId,lessonId).map((qa,index)=>{
-      const options=makeSourceQuestionOptions(subjectId,lessonId,qa);
-      const correctKey=sourceQuestionNormalize(qa.answer);
-      const answer=options.findIndex(option=>sourceQuestionNormalize(option)===correctKey);
-      if(options.length<2||answer<0)return null;
-      return {
-        kind:'پرسش دفتر پرسش‌وپاسخ',
-        question:String(qa.question||''),
-        options,
-        answer,
-        analysis:'پاسخِ ثبت‌شده در دفتر پرسش‌وپاسخ این درس: '+String(qa.answer||''),
-        sourceAnswer:String(qa.answer||''),
-        sourceIndex:index
-      };
-    }).filter(q=>q&&q.question&&q.options.length>=2);
-  }
-  function renderSourceQuestionBankPanel(subjectId,lessonId,mode){
+  
+function sourceQuestionTerms(value){
+ const stop=new Set(['چه','چیست','کدام','است','هست','بود','شد','می','شود','را','از','در','به','و','برای','این','آن','یک','های','ها','با','بر','که','چرا','چگونه','نام','کنید','کنند','دارد','دارند','درباره','اگر','پس','آیا','باشد','می‌شود','می‌کنند']);
+ return [...new Set(String(value||'').toLocaleLowerCase('fa').replace(/[؛،,.!?؟:()«»"']/g,' ').split(/\s+/).map(x=>x.trim()).filter(x=>x.length>1&&!stop.has(x)))];
+}
+function sourceAnswerKind(value){
+ const t=String(value||'').trim();
+ if(/[0-9۰-۹٠-٩]/.test(t))return 'number';
+ if(t.length<24)return 'short';
+ if(t.length<70)return 'medium';
+ return 'long';
+}
+function sourceQuestionSimilarity(left,right){
+ const a=sourceQuestionTerms(left),b=new Set(sourceQuestionTerms(right));
+ if(!a.length||!b.size)return 0;
+ return a.filter(x=>b.has(x)).length/Math.max(1,new Set([...a,...b]).size);
+}
+function makeSourceQuestionOptions(subjectId,lessonId,qa){
+ const correct=String(qa.answer||'').trim();
+ if(!correct)return [];
+ const norm=sourceQuestionNormalize(correct),kind=sourceAnswerKind(correct);
+ const sameLesson=sourceQuestionBankRows(subjectId,lessonId);
+ const allRows=sourceQuestionBankSubjectRows(subjectId);
+ const pool=[...sameLesson.map(row=>({...row,lessonId:Number(lessonId)})),...allRows];
+ const candidates=[],seen=new Set([norm]);
+ for(const row of pool){
+  const text=String(row.answer||'').trim(),key=sourceQuestionNormalize(text);
+  if(!text||!key||seen.has(key))continue;
+  seen.add(key);
+  const answerKind=sourceAnswerKind(text);
+  if(kind==='number'&&answerKind!=='number')continue;
+  const lengthScore=Math.max(-2,2-Math.abs(text.length-correct.length)/Math.max(18,correct.length));
+  const questionScore=sourceQuestionSimilarity(qa.question,row.question)*5;
+  const sameLessonScore=Number(row.lessonId)===Number(lessonId)?2:0;
+  const kindScore=answerKind===kind?2:-3;
+  candidates.push({text,score:questionScore+sameLessonScore+lengthScore+kindScore,length:text.length});
+ }
+ candidates.sort((a,b)=>b.score-a.score);
+ const wrongs=[];
+ for(const c of candidates){
+  if(wrongs.some(x=>sourceQuestionNormalize(x)===sourceQuestionNormalize(c.text)))continue;
+  if(wrongs.length&&Math.abs(c.length-correct.length)>Math.max(90,correct.length*1.4))continue;
+  wrongs.push(c.text);if(wrongs.length===3)break;
+ }
+ if(wrongs.length!==3)return [];
+ return shuffleSourceValues([correct,...wrongs]);
+}
+function getSourceQuestionBankQuizzes(subjectId,lessonId){
+ const rows=sourceQuestionBankRows(subjectId,lessonId);
+ const quizzes=rows.map((qa,index)=>{
+  const options=makeSourceQuestionOptions(subjectId,lessonId,qa);
+  const answer=options.findIndex(option=>sourceQuestionNormalize(option)===sourceQuestionNormalize(qa.answer));
+  if(options.length!==4||answer<0)return null;
+  const useBlank=index%4===0;
+  return {
+   kind:useBlank?'جای‌خالی چهارگزینه‌ای':'پرسش دفتر پرسش‌وپاسخ',
+   type:useBlank?'blank_mc':'mc',
+   question:useBlank?'جای خالی را با پاسخ درست کامل کن: پاسخ پرسش «'+String(qa.question||'')+'» این است: ______':String(qa.question||''),
+   options,answer,
+   analysis:'پاسخ با دفتر پرسش‌وپاسخ همین درس سنجیده می‌شود: «'+String(qa.answer||'')+'». گزینه‌های نادرست با توجه به موضوع پرسش و شکل پاسخ انتخاب شده‌اند.',
+   sourceAnswer:String(qa.answer||''),sourceIndex:index
+  };
+ }).filter(q=>q&&q.question&&q.options.length===4);
+ const matchable=rows.filter(qa=>String(qa.question||'').trim().length<=100&&String(qa.answer||'').trim().length>0&&String(qa.answer||'').trim().length<=110);
+ for(let start=0;start+3<matchable.length;start+=4){
+  const group=matchable.slice(start,start+4);
+  if(new Set(group.map(qa=>sourceQuestionNormalize(qa.answer))).size!==4||new Set(group.map(qa=>sourceQuestionNormalize(qa.question))).size!==4)continue;
+  const options=shuffleSourceValues(group.map(qa=>String(qa.answer||'').trim()));
+  quizzes.push({
+   kind:'جورکردنی پرسش و پاسخ',type:'matching',
+   question:'هر پرسش را با پاسخ درست در ستون مقابل جور کن.',
+   pairs:group.map(qa=>String(qa.question||'')),options,
+   answer:group.map(qa=>options.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(qa.answer))),
+   analysis:'هر ردیف باید با پاسخ همان پرسش جور شود. پس از ثبت پاسخ، جفت‌های صحیح نمایش داده می‌شوند.',
+   sourceIndex:'matching-'+start
+  });
+ }
+ return quizzes;
+}
+function renderSourceQuestionBankPanel(subjectId,lessonId,mode){
     if(!['science','social','gifts'].includes(subjectId))return '';
     const rows=sourceQuestionBankRows(subjectId,lessonId);
     if(!rows.length)return '<section class="lesson-note"><p class="muted">بانک پرسش‌وپاسخ منبع هنوز بارگذاری نشده است؛ اتصال را بررسی کن یا صفحه را دوباره بارگذاری کن.</p></section>';
@@ -3325,88 +3405,117 @@ function renderOtherSubjectPicker(){
       rows.map((qa,i)=>'<div class="teacher-chapter-row"><b>سؤال '+fa(i+1)+'</b><p>'+escapeForHtmlText(qa.question)+'</p><details><summary>مشاهدهٔ پاسخ</summary><p>'+escapeForHtmlText(qa.answer)+'</p></details></div>').join('')+
       '</details></section>';
   }
-  function getOtherSubjectQuestions(subject,lesson){
-    let rows=[];
-    if(subject.id==='persian')rows=buildPersianLessonQuizzes(lesson);
-    else if(subject.id==='dictation')rows=lesson.isFreeLesson?buildPersianLessonQuizzes(lesson):[{kind:'املای واژه',...(lesson.spellingCheck||{})}];
-    else if(['science','social','gifts'].includes(subject.id))rows=getSourceQuestionBankQuizzes(subject.id,lesson.id);
-    else if(Array.isArray(lesson.options)&&lesson.options.length>=2)rows=[{kind:lesson.title||'پرسش درس',question:lesson.question||'پرسش این درس',options:lesson.options,answer:Number(lesson.answer),analysis:lesson.analysis||lesson.explanation||lesson.why||'پاسخ را با محتوای همین درس مقایسه کن.'}];
-    return (Array.isArray(rows)?rows:[]).filter(q=>q&&typeof q.question==='string'&&Array.isArray(q.options)&&q.options.length>=2&&Number.isInteger(Number(q.answer))&&Number(q.answer)>=0&&Number(q.answer)<q.options.length);
+  
+function buildPersianMatchingQuizzes(lesson){
+ const sets=[
+  {kind:'جورکردنی واژه و معنی',pairs:(lesson.meanings||[]).map(x=>({left:String(x[0]||''),right:String(x[1]||'')}))},
+  {kind:'جورکردنی هم‌معنی‌ها',pairs:(lesson.synonyms||[]).map(x=>({left:String(x[0]||''),right:String(x[1]||'')}))},
+  {kind:'جورکردنی متضادها',pairs:(lesson.opposites||[]).map(x=>({left:String(x[0]||''),right:String(x[1]||'')}))}
+ ];
+ for(const set of sets){
+  const group=set.pairs.filter(p=>p.left&&p.right).slice(0,4);
+  if(group.length!==4||new Set(group.map(p=>sourceQuestionNormalize(p.left))).size!==4||new Set(group.map(p=>sourceQuestionNormalize(p.right))).size!==4)continue;
+  const options=shuffleSourceValues(group.map(p=>p.right));
+  return [{kind:set.kind,type:'matching',question:'هر مورد را با معنی یا واژهٔ مرتبط در ستون مقابل جور کن.',pairs:group.map(p=>p.left),options,answer:group.map(p=>options.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(p.right))),analysis:'جفت‌ها از واژه‌نامه و فهرست واژگان همین درس انتخاب شده‌اند.'}];
+ }
+ return [];
+}
+function getOtherSubjectQuestions(subject,lesson){
+ let rows=[];
+ if(subject.id==='persian')rows=buildPersianLessonQuizzes(lesson).concat(buildPersianMatchingQuizzes(lesson));
+ else if(subject.id==='dictation')rows=(lesson.isFreeLesson?buildPersianLessonQuizzes(lesson):[{kind:'املای واژه',...(lesson.spellingCheck||{})}]).concat(buildPersianMatchingQuizzes(lesson));
+ else if(['science','social','gifts'].includes(subject.id))rows=getSourceQuestionBankQuizzes(subject.id,lesson.id);
+ else if(Array.isArray(lesson.options)&&lesson.options.length>=2)rows=[{kind:lesson.title||'پرسش درس',question:lesson.question||'پرسش این درس',options:lesson.options,answer:Number(lesson.answer),analysis:lesson.analysis||lesson.explanation||lesson.why||'پاسخ را با محتوای همین درس مقایسه کن.'}];
+ return (Array.isArray(rows)?rows:[]).filter(q=>q&&typeof q.question==='string'&&Array.isArray(q.options)&&(
+  q.type==='matching'
+   ?Array.isArray(q.pairs)&&q.pairs.length===4&&q.options.length===4&&Array.isArray(q.answer)&&q.answer.length===4&&q.answer.every(n=>Number.isInteger(n)&&n>=0&&n<q.options.length)
+   :Number.isInteger(Number(q.answer))&&Number(q.answer)>=0&&Number(q.answer)<q.options.length
+ ));
+}
+
+function renderOtherSubjectActivity(mode){
+ const subject=selectedOtherSubject,select=$('otherSubjectActivityLesson'),box=$('otherSubjectActivityQuestions');
+ if(!subject||!select||!box)return;
+ $('otherSubjectActivityTitle').textContent=(mode==='exam'?'آزمون و امتحان ':'تمرین ')+subject.name;
+ $('otherSubjectActivityHelp').textContent=mode==='exam'
+  ?'به سؤال‌ها پاسخ بده؛ جای‌خالی‌ها هم چهارگزینه‌ای‌اند و در جورکردنی باید هر چهار جفت را کامل کنی.'
+  :'در کنار چهارگزینه‌ای‌ها، جای‌خالی چهارگزینه‌ای و در بعضی درس‌ها جورکردنی هم می‌بینی.';
+ const lessons=subject.lessons.filter(l=>isCourseLessonOpen(subject.id,l.id));
+ if(!lessons.length){select.innerHTML='<option value="">درسی برای نمایش در دسترس نیست</option>';box.innerHTML='<div class="notice">ابتدا از پنل معلم دسترسی به یک درس از این کتاب را فعال کن.</div>';$('otherSubjectActivityCount').textContent='۰ سؤال';return}
+ const previous=Number(select.value);
+ select.innerHTML=lessons.map(l=>'<option value="'+Number(l.id)+'">درس '+fa(l.id)+' · '+escapeForHtmlText(l.title)+'</option>').join('');
+ select.value=String(lessons.some(l=>Number(l.id)===previous)?previous:lessons[0].id);
+ select.onchange=()=>renderOtherSubjectActivity(mode);
+ const lesson=lessons.find(l=>Number(l.id)===Number(select.value))||lessons[0],all=getOtherSubjectQuestions(subject,lesson);
+ if(!all.length){box.innerHTML='<div class="notice">برای این درس سؤال دارای گزینه‌های مرتبط و معتبر پیدا نشد؛ سؤال ساختگی یا گزینهٔ نامرتبط نمایش داده نمی‌شود.</div>';$('otherSubjectActivityCount').textContent='۰ سؤال';return}
+ const pool=all.map((q,sourceIndex)=>({...q,_sourceQuestionIndex:sourceIndex})).sort(()=>Math.random()-.5).slice(0,Math.min(mode==='exam'?15:10,all.length));
+ $('otherSubjectActivityCount').textContent=fa(pool.length)+' سؤال';$('otherSubjectActivityResult').classList.add('hidden');
+ function matchingRows(q){
+  return '<div class="other-matching-list">'+q.pairs.map((left,j)=>'<div class="other-matching-row"><span class="other-matching-left"><b>'+fa(j+1)+'.</b> '+escapeForHtmlText(left)+'</span><select aria-label="انتخاب پاسخ برای مورد '+fa(j+1)+'" data-other-matching-index="'+j+'"><option value="">انتخاب پاسخ…</option>'+q.options.map((option,k)=>'<option value="'+k+'">'+escapeForHtmlText(option)+'</option>').join('')+'</select></div>').join('')+'</div>';
+ }
+ box.innerHTML=pool.map((q,i)=>{
+  const answers=q.type==='matching'?matchingRows(q):q.options.map((option,j)=>'<label class="other-answer" data-other-activity-option="'+j+'"><input type="radio" name="otherActivity'+mode+i+'" value="'+j+'"><span>'+escapeForHtmlText(option)+'</span></label>').join('');
+  return '<section class="persian-quiz-card" data-other-activity-card="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind||'سؤال')+'</b><span class="pill">سؤال '+fa(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+answers+(mode==='practice'?'<button type="button" data-other-activity-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button>':'')+'<div class="notice hidden" data-other-activity-feedback aria-live="polite"></div></section>';
+ }).join('')+(mode==='exam'?'<button type="button" id="submitOtherSubjectExam" style="width:100%;margin-top:10px">ثبت آزمون و مشاهده نتیجه</button>':'');
+ const progress=readOtherProgress(),resultTime=()=>new Date().toISOString();
+ function pickedAnswer(q,card){
+  if(q.type==='matching'){
+   const controls=[...(card?.querySelectorAll('select[data-other-matching-index]')||[])];
+   const selected=controls.map(el=>el.value===''?-1:Number(el.value));
+   return selected.length===4?selected:[-1,-1,-1,-1];
   }
-  function renderOtherSubjectActivity(mode){
-    const subject=selectedOtherSubject,select=$('otherSubjectActivityLesson'),box=$('otherSubjectActivityQuestions');
-    if(!subject||!select||!box)return;
-    const title=(mode==='exam'?'آزمون و امتحان ':'تمرین ')+subject.name;
-    $('otherSubjectActivityTitle').textContent=title;
-    $('otherSubjectActivityHelp').textContent=mode==='exam'
-      ?'درس موردنظر را انتخاب کن، به سؤال‌های آزمون پاسخ بده و در پایان پاسخ صحیح و تحلیل هر سؤال را ببین.'
-      :'درس موردنظر را انتخاب کن؛ سؤال‌های آن درس را تمرین کن و بعد از هر پاسخ، توضیح اختصاصی را ببین.';
-    const lessons=subject.lessons.filter(l=>isCourseLessonOpen(subject.id,l.id));
-    if(!lessons.length){
-      select.innerHTML='<option value="">درسی برای نمایش در دسترس نیست</option>';
-      box.innerHTML='<div class="notice">ابتدا از پنل معلم دسترسی به یک درس از این کتاب را فعال کن.</div>';
-      $('otherSubjectActivityCount').textContent='۰ سؤال';
-      return;
-    }
-    const previous=Number(select.value);
-    select.innerHTML=lessons.map(l=>'<option value="'+Number(l.id)+'">درس '+fa(l.id)+' · '+escapeForHtmlText(l.title)+'</option>').join('');
-    select.value=String(lessons.some(l=>Number(l.id)===previous)?previous:lessons[0].id);
-    select.onchange=()=>renderOtherSubjectActivity(mode);
-    const lesson=lessons.find(l=>Number(l.id)===Number(select.value))||lessons[0];
-    const all=getOtherSubjectQuestions(subject,lesson);
-    if(!all.length){
-      box.innerHTML=('<div class="notice">'+(['science','social','gifts'].includes(subject.id)?'برای این درس پرسش قابل استفاده در بانک منبع پیدا نشد. منبع و شمارهٔ درس را بررسی کن؛ سؤال ساختگی نمایش داده نمی‌شود.':'برای این درس هنوز سؤال معتبر در بانک وجود ندارد. درس دیگری را انتخاب کن یا از معلم بخواه سؤال‌های آن درس را اضافه کند.')+'</div>');
-      $('otherSubjectActivityCount').textContent='۰ سؤال';
-      return;
-    }
-    const pool=all.map((q,sourceIndex)=>({...q,_sourceQuestionIndex:sourceIndex})).sort(()=>Math.random()-.5).slice(0,Math.min(mode==='exam'?15:10,all.length));
-    $('otherSubjectActivityCount').textContent=fa(pool.length)+' سؤال';
-    $('otherSubjectActivityResult').classList.add('hidden');
-    box.innerHTML=pool.map((q,i)=>{
-      const radios=q.options.map((option,j)=>'<label class="other-answer" data-other-activity-option="'+j+'"><input type="radio" name="otherActivity'+mode+i+'" value="'+j+'"><span>'+escapeForHtmlText(option)+'</span></label>').join('');
-      return '<section class="persian-quiz-card" data-other-activity-card="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind||'سؤال')+'</b><span class="pill">سؤال '+fa(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+radios+(mode==='practice'?'<button type="button" data-other-activity-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button>':'')+'<div class="notice hidden" data-other-activity-feedback aria-live="polite"></div></section>';
-    }).join('')+(mode==='exam'?'<button type="button" id="submitOtherSubjectExam" style="width:100%;margin-top:10px">ثبت آزمون و مشاهده نتیجه</button>':'');
-    const progress=readOtherProgress();
-    const resultTime=()=>new Date().toISOString();
-    async function saveActivityAnswer(q,i,selected,ok){
-      const savedAt=resultTime();
-      const stableIndex=Number.isInteger(q._sourceQuestionIndex)?q._sourceQuestionIndex:i;
-      const localKey=subject.id+'-'+lesson.id+'-quiz-'+stableIndex;
-      const existing=progress[localKey]||{};
-      progress[localKey]={correct:ok,selected,answer:Number(q.answer),attemptCount:(Number(existing.attemptCount)||0)+1,updatedAt:savedAt,activityType:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,questionText:q.question,lastExplanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',selectedText:q.options[selected],correctText:q.options[q.answer]};
-      writeOtherProgress(progress);
-      if(isRealStudentSession()){
-        try{
-          await saveSubjectPracticeProgress({subject:subject.id,lesson_id:lesson.id,activity_key:(mode==='exam'?'exam-tab-':'practice-tab-')+stableIndex,activity_type:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,selected_answer:selected,correct_answer:Number(q.answer),is_correct:ok,attempt_count:progress[localKey].attemptCount,question_text:q.question,explanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',metadata:{selected_text:q.options[selected],correct_text:q.options[q.answer],exam:mode==='exam'},updated_at:savedAt});
-        }catch(error){console.warn('Subject activity could not be synced',error)}
-      }
-    }
-    if(mode==='practice'){
-      box.querySelectorAll('[data-other-activity-check]').forEach(button=>button.onclick=async()=>{
-        const i=Number(button.dataset.otherActivityCheck),q=pool[i],card=box.querySelector('[data-other-activity-card="'+i+'"]');
-        const picked=card?.querySelector('input[type="radio"]:checked'),fb=card?.querySelector('[data-other-activity-feedback]');
-        if(!picked){fb.classList.remove('hidden');fb.textContent='ابتدا یکی از گزینه‌ها را انتخاب کن.';return}
-        const selected=Number(picked.value),ok=selected===Number(q.answer);
-        card.querySelectorAll('[data-other-activity-option]').forEach((el,j)=>{el.classList.toggle('correct',j===Number(q.answer));el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
-        fb.classList.remove('hidden');fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b>':'<b>این پاسخ درست نیست.</b>')+(q.sourceAnswer?'<p><b>پاسخ صحیح و توضیح دفتر:</b> '+escapeForHtmlText(q.sourceAnswer)+'</p>':'<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.')+'</p>');
-        button.disabled=true;await saveActivityAnswer(q,i,selected,ok);
-      });
-    }else{
-      $('submitOtherSubjectExam').onclick=async()=>{
-        let score=0,answered=0;const details=[];
-        for(let i=0;i<pool.length;i++){
-          const q=pool[i],card=box.querySelector('[data-other-activity-card="'+i+'"]'),picked=card?.querySelector('input[type="radio"]:checked');
-          const selected=picked?Number(picked.value):-1,ok=selected===Number(q.answer);
-          if(picked)answered++;if(ok)score++;
-          card?.querySelectorAll('[data-other-activity-option]').forEach((el,j)=>{el.classList.toggle('correct',j===Number(q.answer));el.classList.toggle('wrong',j===selected&&!ok);el.classList.toggle('selected',j===selected)});
-          const fb=card?.querySelector('[data-other-activity-feedback]');if(fb){fb.classList.remove('hidden');fb.innerHTML='<p><b>'+(picked?(ok?'پاسخ درست':'پاسخ نادرست'):'بدون پاسخ')+'</b></p>'+(q.sourceAnswer?'<p><b>پاسخ صحیح و توضیح دفتر:</b> '+escapeForHtmlText(q.sourceAnswer)+'</p>':'<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.')+'</p>')}
-          if(picked)await saveActivityAnswer(q,i,selected,ok);
-        }
-        const summary=$('otherSubjectActivityResult');summary.classList.remove('hidden');summary.innerHTML='<b>نتیجه آزمون:</b> '+fa(score)+' از '+fa(pool.length)+' · پاسخ داده‌شده: '+fa(answered)+' از '+fa(pool.length);
-      };
-    }
+  const picked=card?.querySelector('input[type="radio"]:checked');return picked?Number(picked.value):-1;
+ }
+ function answered(q,value){return q.type==='matching'?Array.isArray(value)&&value.length===4&&value.every(n=>Number.isInteger(n)&&n>=0):Number.isInteger(value)&&value>=0}
+ function correct(q,value){return q.type==='matching'?Array.isArray(value)&&value.length===4&&value.every((n,j)=>n===q.answer[j]):value===Number(q.answer)}
+ function answerMarkup(q){
+  if(q.type==='matching')return '<p><b>جفت‌های صحیح:</b></p>'+q.pairs.map((left,j)=>'<p>'+escapeForHtmlText(left)+' ↔ '+escapeForHtmlText(q.options[q.answer[j]])+'</p>').join('');
+  return q.sourceAnswer?'<p><b>پاسخ دفتر:</b> '+escapeForHtmlText(q.sourceAnswer)+'</p>':'<p><b>پاسخ صحیح:</b> '+escapeForHtmlText(q.options[q.answer])+'</p><p><b>تحلیل اختصاصی:</b> '+escapeForHtmlText(q.analysis||'پاسخ را با مفهوم درس مقایسه کن.')+'</p>';
+ }
+ function mark(q,card,value,ok){
+  if(q.type==='matching'){
+   card?.querySelectorAll('select[data-other-matching-index]').forEach((el,j)=>{el.classList.toggle('correct',value[j]===q.answer[j]);el.classList.toggle('wrong',value[j]!==q.answer[j]);el.disabled=true});
+  }else{
+   card?.querySelectorAll('[data-other-activity-option]').forEach((el,j)=>{el.classList.toggle('correct',j===Number(q.answer));el.classList.toggle('wrong',j===value&&!ok);el.classList.toggle('selected',j===value)});
+   card?.querySelectorAll('input[type="radio"]').forEach(el=>el.disabled=true);
   }
-  async function loadSourceQuestionBanks(){
+ }
+ async function saveActivityAnswer(q,i,value,ok){
+  const savedAt=resultTime(),stableIndex=Number.isInteger(q._sourceQuestionIndex)?q._sourceQuestionIndex:i;
+  const localKey=subject.id+'-'+lesson.id+'-quiz-'+stableIndex,existing=progress[localKey]||{};
+  const selectedText=Array.isArray(value)?value.map(n=>n>=0?q.options[n]:'بدون پاسخ').join('، '):q.options[value];
+  const correctText=q.type==='matching'?q.answer.map(n=>q.options[n]).join('، '):q.options[q.answer];
+  progress[localKey]={correct:ok,selected:value,answer:q.type==='matching'?q.answer:Number(q.answer),attemptCount:(Number(existing.attemptCount)||0)+1,updatedAt:savedAt,activityType:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,questionText:q.question,lastExplanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',selectedText,correctText};
+  writeOtherProgress(progress);
+  if(isRealStudentSession()){
+   try{await saveSubjectPracticeProgress({subject:subject.id,lesson_id:lesson.id,activity_key:(mode==='exam'?'exam-tab-':'practice-tab-')+stableIndex,activity_type:mode==='exam'?'آزمون '+subject.name:'تمرین '+subject.name,selected_answer:Array.isArray(value)?null:value,correct_answer:Array.isArray(q.answer)?null:Number(q.answer),is_correct:ok,attempt_count:progress[localKey].attemptCount,question_text:q.question,explanation:q.analysis||'پاسخ با مفهوم درس تطبیق داده می‌شود.',metadata:{selected_text:selectedText,correct_text:correctText,matching_selected:Array.isArray(value)?value:null,matching_answer:Array.isArray(q.answer)?q.answer:null,exam:mode==='exam'},updated_at:savedAt})}
+   catch(error){console.warn('Subject activity could not be synced',error)}
+  }
+ }
+ if(mode==='practice'){
+  box.querySelectorAll('[data-other-activity-check]').forEach(button=>button.onclick=async()=>{
+   const i=Number(button.dataset.otherActivityCheck),q=pool[i],card=box.querySelector('[data-other-activity-card="'+i+'"]'),value=pickedAnswer(q,card),fb=card?.querySelector('[data-other-activity-feedback]');
+   if(!answered(q,value)){fb.classList.remove('hidden');fb.textContent=q.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':'ابتدا یکی از گزینه‌ها را انتخاب کن.';return}
+   const ok=correct(q,value);mark(q,card,value,ok);
+   fb.classList.remove('hidden');fb.innerHTML=(ok?'<b>آفرین! پاسخ درست است.</b>':'<b>این پاسخ کاملاً درست نیست؛ پاسخ صحیح را مرور کن.</b>')+answerMarkup(q);
+   button.disabled=true;await saveActivityAnswer(q,i,value,ok);
+  });
+ }else{
+  $('submitOtherSubjectExam').onclick=async()=>{
+   let score=0,answeredCount=0;
+   for(let i=0;i<pool.length;i++){
+    const q=pool[i],card=box.querySelector('[data-other-activity-card="'+i+'"]'),value=pickedAnswer(q,card),hasAnswer=answered(q,value),ok=hasAnswer&&correct(q,value);
+    if(hasAnswer)answeredCount++;if(ok)score++;
+    mark(q,card,value,ok);
+    const fb=card?.querySelector('[data-other-activity-feedback]');
+    if(fb){fb.classList.remove('hidden');fb.innerHTML='<p><b>'+(hasAnswer?(ok?'پاسخ درست':'پاسخ نادرست'):'بدون پاسخ')+'</b></p>'+answerMarkup(q)}
+    if(hasAnswer)await saveActivityAnswer(q,i,value,ok);
+   }
+   const summary=$('otherSubjectActivityResult');summary.classList.remove('hidden');summary.innerHTML='<b>نتیجه آزمون:</b> '+fa(score)+' از '+fa(pool.length)+' · پاسخ داده‌شده: '+fa(answeredCount)+' از '+fa(pool.length);
+  };
+ }
+}
+async function loadSourceQuestionBanks(){
     if(sourceQuestionBanksLoading)return sourceQuestionBanksLoading;
     sourceQuestionBanksLoading=(async()=>{
       try{
@@ -3520,16 +3629,25 @@ function buildPersianLessonQuizzes(l){
       if(!correct||!question||seen.has(kind+'|'+question))return;
       const blocked=new Set([correct,...forbidden].map(v=>String(v??'').trim()));
       const wrongs=[];
-      for(const value of [...(candidates||[]),...allVocabulary,'بهار','کتاب','مدرسه','آسمان','دوستی','دانش']){
+      for(const value of (candidates||[])){
         const v=String(value??'').trim();
-        if(v&&!blocked.has(v)&&!wrongs.includes(v))wrongs.push(v);
+        if(v&&!blocked.has(v)&&!wrongs.some(x=>sourceQuestionNormalize(x)===sourceQuestionNormalize(v)))wrongs.push(v);
         if(wrongs.length===3)break;
       }
       if(wrongs.length<3)return;
       const answer=((Number(seed)||0)%4+4)%4;
       const options=wrongs.slice(0,3);options.splice(answer,0,correct);
+      let shownQuestion=question,shownKind=kind,type='mc';
+      const quoted=(String(question).match(/«([^»]+)»/)||[])[1]||'';
+      if(Number(seed)%4===0&&quoted&&['معنی واژه','هم‌معنی','متضاد','هم‌خانواده'].includes(kind)){
+        type='blank_mc';shownKind='جای‌خالی چهارگزینه‌ای';
+        if(kind==='معنی واژه')shownQuestion='جای خالی را کامل کن: معنی «'+quoted+'» برابر با «______» است.';
+        else if(kind==='هم‌معنی')shownQuestion='جای خالی را کامل کن: «'+quoted+'» هم‌معنی «______» است.';
+        else if(kind==='متضاد')shownQuestion='جای خالی را کامل کن: متضاد «'+quoted+'»، «______» است.';
+        else shownQuestion='جای خالی را کامل کن: یکی از هم‌خانواده‌های «'+quoted+'»، «______» است.';
+      }
       seen.add(kind+'|'+question);
-      quizzes.push({kind,question,options,answer,analysis:String(analysis||'پاسخ با فهرست واژه‌ها و محتوای همین درس بررسی می‌شود.')});
+      quizzes.push({kind:shownKind,type,question:shownQuestion,options,answer,analysis:String(analysis||'پاسخ با فهرست واژه‌ها و محتوای همین درس بررسی می‌شود.')});
     }
     function spellingVariants(word){
       const out=[],addVariant=v=>{if(v&&v!==word&&!out.includes(v))out.push(v);};
