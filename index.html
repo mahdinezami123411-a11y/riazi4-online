@@ -846,6 +846,17 @@ a{color:#d7ff76}
 #studentReportView .unified-learning-report{margin-top:0!important}
 #studentAppNav [data-app-view="report"].active{background:linear-gradient(135deg,#4d50b9,#187f9c)!important}
 @media(max-width:560px){.book-planet-route-grid,.chapter-planet-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.chapter-planet-node{min-height:126px;padding:8px 5px}.book-planet-section{padding:8px}}
+
+/* پروفایل فقط یک نمای نموداری از پیشرفت نگه می‌دارد؛ داشبورد کامل در خانه است */
+#profileView #studentDashboard{display:none!important}
+#profileProgressMount .profile-progress-chart{display:grid;gap:10px;margin-top:10px}
+.profile-progress-chart .profile-progress-row{display:grid;grid-template-columns:minmax(95px,1fr) minmax(100px,1.8fr) 44px;gap:9px;align-items:center;padding:9px 10px;border:1px solid #3c5077;border-radius:12px;background:linear-gradient(145deg,#202b4a,#151e35)}
+.profile-progress-chart .profile-progress-label{color:#eef4ff;font-size:12px;font-weight:800}
+.profile-progress-chart .profile-progress-track{height:10px;border-radius:99px;background:#0b1328;border:1px solid #3b4c72;overflow:hidden}
+.profile-progress-chart .profile-progress-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#65d8e4,#8e8bff);min-width:0}
+.profile-progress-chart .profile-progress-pct{color:#a9f1e8;font-size:12px;font-weight:900;text-align:left}
+.profile-progress-chart .profile-progress-caption{color:#adbfdf;font-size:10px}
+@media(max-width:480px){.profile-progress-chart .profile-progress-row{grid-template-columns:1fr 40px;gap:6px}.profile-progress-chart .profile-progress-track{grid-column:1/-1;grid-row:2}.profile-progress-chart .profile-progress-pct{grid-column:2;grid-row:1}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -2079,6 +2090,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(activeStudentSubject==='math'&&view==='exam'){setBookTab('exam');populateChapterExamSelect()}
     if(view==='profile'){relocateProgressIntoProfile();renderStudentDashboard();}
     if(view==='report')renderUnifiedLearningReport();
+    if(view==='profile')renderProfileProgressChart();
     if(view==='assignments')loadStudentAssignments();
     window.scrollTo({top:0,behavior:'smooth'});
   }
@@ -3657,6 +3669,7 @@ loadExpandedPersianVocabulary();
     const progress=readOtherProgress();
     const subjects=[
       {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'فصل‌های کتاب و مهارت‌های پایه'},
+      {id:'persian',name:'فارسی',icon:'📖',description:'درس‌های فارسی، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم',count:fa(courseLessonCatalog('persian').length)+' درس'},
       ...otherSubjectData.filter(s=>s.id!=='dictation').map(s=>({
         id:s.id,name:s.name,icon:s.icon,
         description:s.id==='persian'?'درس‌های فارسی، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم':
@@ -3718,7 +3731,7 @@ function chooseOtherBookAssessmentQuestions(pool,count,subjectId){
 function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
-    const availableSubjects=otherSubjectData.filter(s=>s.id!=='dictation');
+    const availableSubjects=[{id:'persian',name:'فارسی',icon:'📖',lessons:(typeof persianLessons!=='undefined'?persianLessons:[]),color:'#8c76d8'},...otherSubjectData.filter(s=>s.id!=='dictation')];
     box.innerHTML=availableSubjects.map(s=>{
       const cfg=courseSettingsBySubject[s.id]||{};
       let catalog=courseLessonCatalog(s.id);if(!catalog.length&&Array.isArray(s.lessons))catalog=s.lessons.map(l=>({id:Number(l.id),title:'درس '+fa(l.id)+' · '+l.title,page:l.page}));
@@ -4908,6 +4921,33 @@ const persianBookPageMap={
   $('arrayRows')?.addEventListener('input',renderAreaArrayLab);
   $('arrayCols')?.addEventListener('input',renderAreaArrayLab);
   renderAreaArrayLab();
+
+
+  function renderProfileProgressChart(){
+    const mount=$('profileProgressMount');if(!mount)return;
+    const local=readOtherProgress();
+    const subjects=[
+      {id:'math',name:'ریاضی',keys:[]},
+      {id:'persian',name:'فارسی',keys:['persian','dictation']},
+      {id:'science',name:'علوم تجربی',keys:['science']},
+      {id:'social',name:'مطالعات اجتماعی',keys:['social']},
+      {id:'gifts',name:'هدیه‌های آسمانی',keys:['gifts']}
+    ];
+    const math=typeof window.__yareStudentProgressSnapshot==='function'?window.__yareStudentProgressSnapshot():{attempts:0,correct:0};
+    const stats=subjects.map(subject=>{
+      let attempts=0,correct=0;
+      if(subject.id==='math'){attempts=Number(math.attempts)||0;correct=Number(math.correct)||0;}
+      else Object.entries(local).forEach(([key,rec])=>{
+        if(!subject.keys.some(prefix=>key.startsWith(prefix+'-'))||!rec||typeof rec.correct!=='boolean')return;
+        const n=Math.max(1,Number(rec.attemptCount)||1);
+        attempts+=n;
+        correct+=Math.min(n,Number.isFinite(Number(rec.correctCount))?Number(rec.correctCount):(rec.correct?n:0));
+      });
+      return {...subject,attempts,correct,pct:attempts?Math.round(correct/attempts*100):0};
+    });
+    const total=stats.reduce((n,s)=>n+s.attempts,0),totalCorrect=stats.reduce((n,s)=>n+s.correct,0);
+    mount.innerHTML='<div class="progress-summary"><div><b>'+fa(total)+'</b><span>تلاش در همهٔ کتاب‌ها</span></div><div><b>'+fa(totalCorrect)+'</b><span>پاسخ درست</span></div><div><b>'+(total?fa(Math.round(totalCorrect/total*100))+'٪':'—')+'</b><span>درصد درستی</span></div></div><div class="profile-progress-chart" aria-label="نمودار پیشرفت بر اساس کتاب">'+stats.map(item=>'<div class="profile-progress-row"><div><div class="profile-progress-label">'+item.name+'</div><div class="profile-progress-caption">'+fa(item.correct)+' درست از '+fa(item.attempts)+' پاسخ</div></div><div class="profile-progress-track" role="progressbar" aria-label="'+item.name+'" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+item.pct+'"><div class="profile-progress-fill" style="width:'+item.pct+'%"></div></div><div class="profile-progress-pct">'+(item.attempts?fa(item.pct)+'٪':'—')+'</div></div>').join('')+'</div><p class="muted">این نمودار فقط از پاسخ‌های ثبت‌شده ساخته می‌شود؛ خط خالی یعنی هنوز داده‌ای برای آن کتاب ثبت نشده است.</p>';
+  }
 
 })();
 
