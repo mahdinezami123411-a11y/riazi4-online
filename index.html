@@ -2636,16 +2636,19 @@ loadExpandedPersianVocabulary();
     }
     let url=courseBookObjectUrls[displayId]||bookUrls[displayId];
     const settings=courseSettingsBySubject[displayId]||{};
+    // A PDF uploaded from the teacher panel is the full book, so use the printed page number.
+    // The bundled persian-pages.pdf is an excerpt, so use its internal page index instead.
+    let pageNumber=info?.start||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
     if(!url&&settings.bookFilePath&&cloudSession?.access_token){
-      try{const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[displayId]=url}catch(error){console.warn('Course PDF could not be loaded',error)}
+      try{const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[displayId]=url;pageNumber=info?.start||pageNumber}catch(error){console.warn('Course PDF could not be loaded',error)}
     }
     if(!url&&displayId==='dictation'&&courseSettingsBySubject.persian?.bookFilePath){
-      try{const blob=await fetchClassMaterial(courseSettingsBySubject.persian.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.persian=url}catch(error){console.warn('Persian PDF could not be loaded',error)}
+      try{const blob=await fetchClassMaterial(courseSettingsBySubject.persian.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.persian=url;pageNumber=info?.start||pageNumber}catch(error){console.warn('Persian PDF could not be loaded',error)}
     }
-    if(!url&&await assetExists(subject.asset))url=subject.asset;
+    if(!url&&await assetExists(subject.asset)){url=subject.asset;pageNumber=info?.pdfStart||pageNumber}
     if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
     if(url){
-      const page=info?.pdfStart||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
+      const page=pageNumber;
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
     }else{
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات واقعی این درس از فایل کتاب بارگذاری می‌شوند و در همین بخش نمایش داده خواهند شد. در این صفحه هیچ پیوند بیرونی به دانش‌آموز نمایش داده نمی‌شود.</p></section>';
