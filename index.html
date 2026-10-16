@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v6-20261016-subject-controls">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v7-20261016-teacher-settings">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -718,7 +718,7 @@ a{color:#d7ff76}
 <div id="courseSettingsStatus" class="notice" role="status">برای ویرایش تنظیمات، با حساب معلم وارد شو.</div>
 <hr class="soft-rule">
 <h4>🧪 تنظیمات پیش‌فرض فعالیت</h4>
-<div class="grid"><label class="option"><input id="settingDefaultRandomQuestions" type="checkbox" checked> جابه‌جایی ترتیب سؤال‌ها</label><label class="option"><input id="settingDefaultRandomOptions" type="checkbox" checked> جابه‌جایی ترتیب گزینه‌ها</label><label class="option"><input id="settingDefaultHideScores" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label><label class="option"><input id="settingDefaultFeedback" type="checkbox" checked> نمایش تحلیل اختصاصی پاسخ</label></div>
+<div class="grid"><label class="option"><input id="settingDefaultRandomQuestions" type="checkbox" checked> جابه‌جایی ترتیب سؤال‌ها</label><label class="option"><input id="settingDefaultRandomOptions" type="checkbox" checked> جابه‌جایی ترتیب گزینه‌ها</label><label class="option"><input id="settingDefaultHideScores" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label><label class="option"><input id="settingDefaultFeedback" type="checkbox" checked> نمایش تحلیل اختصاصی پاسخ</label><label class="option"><input id="settingShowCorrectAnswers" type="checkbox" checked> نمایش پاسخ صحیح پس از تحویل</label><label class="option"><input id="settingAllowReview" type="checkbox" checked> اجازهٔ مرور پاسخ‌های قبلی به دانش‌آموز</label><label class="option"><input id="settingShowProgress" type="checkbox" checked> نمایش میزان پیشرفت درس</label><label class="option"><input id="settingAllowRetryPractice" type="checkbox" checked> اجازهٔ تلاش دوباره در تمرین‌ها</label></div>
 <p class="muted">تنظیمات پیش‌فرض فعالیت در همین کتاب اعمال می‌شوند. مدت و تعداد تلاش هر آزمون نیز در بخش ساخت تمرین/آزمون قابل تعیین است.</p>
 </div>
 </div></section>
@@ -1097,7 +1097,7 @@ $('saveCourseSettings')?.addEventListener('click',async()=>{
  }));
  const releaseMode=$('settingReleaseMode').value,releaseAt=isoFromDateInput($('settingReleaseAt').value);
  if(releaseMode==='scheduled'&&!releaseAt){$('courseSettingsStatus').textContent='برای روش زمان‌بندی، زمان بازشدن کتاب را تعیین کن.';return}
- const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode,releaseAt,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,customLessons:(courseSettingsBySubject[subject]?.customLessons||[]),defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked};
+ const settings={courseEnabled:$('settingCourseEnabled').checked,defaultLocked:$('settingDefaultLocked').checked,allowPractice:$('settingAllowPractice').checked,allowExam:$('settingAllowExam').checked,releaseMode,releaseAt,maxAttempts:Number($('settingMaxAttempts').value||3),feedbackMode:$('settingFeedbackMode').value,courseTitle:$('settingCourseTitle').value.trim(),lessons,customLessons:(courseSettingsBySubject[subject]?.customLessons||[]),defaultRandomQuestions:$('settingDefaultRandomQuestions').checked,defaultRandomOptions:$('settingDefaultRandomOptions').checked,defaultHideScores:$('settingDefaultHideScores').checked,defaultFeedback:$('settingDefaultFeedback').checked,showCorrectAnswers:$('settingShowCorrectAnswers').checked,allowReview:$('settingAllowReview').checked,showProgress:$('settingShowProgress').checked,allowRetryPractice:$('settingAllowRetryPractice').checked};
  const btn=$('saveCourseSettings');setBusy(btn,true,'در حال ذخیره…');$('courseSettingsStatus').textContent='در حال ذخیره تنظیمات کتاب و قفل درس‌ها…';
  try{
    const result=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'save',subject,settings}});
@@ -2575,7 +2575,7 @@ loadExpandedPersianVocabulary();
     if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
     if(url){
       const page=info?.pdfStart||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
-      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">نمایش مستقیم صفحات مربوط به همین درس از فایل کتاب.</p><iframe class="pdfview lesson-book-pdf" title="صفحات واقعی '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe><a class="book-open-link" href="'+url+'#page='+page+'&view=FitH" target="_blank" rel="noopener">باز کردن صفحات در نمایشگر کتاب</a></section>';
+      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
     }else{
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب '+escapeHtml(courseName(displayId))+'</h4><p>هنوز فایل صفحات این کتاب در فضای مشترک کلاس بارگذاری نشده است. معلم می‌تواند از پنل «مدیریت کتاب‌ها» فایل PDF را یک بار بارگذاری کند تا همهٔ دانش‌آموزان همین صفحات را در اینجا ببینند.</p></section>';
     }
@@ -2594,7 +2594,6 @@ loadExpandedPersianVocabulary();
     const practiceAllowed=courseSettingsBySubject[progressPrefix]?.allowPractice!==false;
     if(!practiceAllowed)quizzes.length=0;
     content.innerHTML='<div id="lessonBookSection"></div>'+
-      '<div class="lesson-note"><h4>'+(isDictationOnly?'✍️ املای واژه‌های درس':'📖 واژه‌آموزی · '+escapeForHtmlText(wordTopic.title))+' '+sourceBadge(wordTopic.source,isDictationOnly?'تمرین املای درس':'بخش واژه‌آموزی کتاب')+'</h4><p>'+escapeForHtmlText(wordTopic.explain)+'</p><ul>'+(wordTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>'+
       (isDictationOnly?
         '<div class="lesson-note"><h4>📝 فهرست واژه‌ها برای املا</h4><p class="muted">ابتدا واژه‌ها را با صدای بلند بخوان، سپس بدون نگاه کردن بنویس و در پایان با کتاب مقایسه کن.</p>'+chips(l.spellingWords)+'</div>':
         '<div class="persian-vocab-grid">'+
@@ -2604,7 +2603,7 @@ loadExpandedPersianVocabulary();
           '<div class="lesson-note"><h4>🧩 هم‌خانواده‌ها</h4><p class="muted">واژه‌های دارای ریشه و ارتباط معنایی مشترک.</p>'+families(l.families)+'</div>'+
           '<div class="lesson-note"><h4>↔️ متضادها</h4><p class="muted">واژه‌هایی با معنی مخالف.</p>'+pairs(l.opposites)+'</div>'+
         '</div>'+
-        '<div class="lesson-note"><h4>🧠 دانش زبانی · '+escapeForHtmlText(langTopic.title)+' '+sourceBadge(langTopic.source,'بخش دانش زبانی کتاب')+'</h4><p>'+escapeForHtmlText(langTopic.explain)+'</p><ul>'+(langTopic.examples||[]).map(v=>'<li>'+escapeForHtmlText(v)+'</li>').join('')+'</ul></div>')+
+        '</div>')+
       (l.isFreeLesson?'<div class="notice"><b>مهم:</b> این درس در کتاب «درس آزاد» است و متن ثابتی ندارد. برای ساخت املا و واژه‌نامهٔ دقیق، متن انتخاب‌شدهٔ کلاس باید در برنامه وارد شود؛ بنابراین واژه‌های ساختگی به کتاب نسبت داده نشده‌اند.</div>':'')+
 
       (practiceAllowed?'<h4 style="margin:16px 0 8px">'+(isDictationOnly?'📝 تمرین املای درس':'🎯 تمرین‌های همین درس')+'</h4><p class="muted">هر سؤال تحلیل جداگانه دارد و هنگام بررسی، پاسخ صحیح نمایش داده می‌شود.</p>'+
