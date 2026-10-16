@@ -820,6 +820,13 @@ a{color:#d7ff76}
 .chapter-planet-node.active-chapter{border-color:#68eadf;box-shadow:0 0 0 2px #68eadf1c,0 4px 0 #0b1228!important}
 .chapter-planet-node.needs-review .chapter-planet-orb{border-color:#ffc47a;box-shadow:0 0 0 3px #ffc47a13,0 0 17px #ffc47a25}
 @media(max-width:560px){.chapter-planet-route{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.chapter-planet-node{padding:10px 6px}.chapter-planet-orb{width:47px;height:47px;font-size:23px}}
+
+.area-array-controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.area-array-controls input{padding:0;accent-color:#65e6d8}
+.area-array-grid{display:grid;gap:4px;max-width:100%;width:min(100%,360px);margin:12px auto;padding:9px;border:1px solid #455a83;border-radius:13px;background:#10182f}
+.area-array-cell{aspect-ratio:1;min-width:0;border-radius:4px;border:1px solid #69b7e5;background:linear-gradient(145deg,#5b80ed,#4bcbbf);box-shadow:inset 0 1px 0 #ffffff55}
+.area-array-summary{background:linear-gradient(145deg,#223456,#192741);border:1px solid #4e6c99;border-radius:12px;padding:10px;text-align:center;color:#aff6eb;font-weight:900;margin:8px 0}
+@media(max-width:560px){.area-array-controls{grid-template-columns:1fr}.area-array-grid{width:min(100%,300px)}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -863,12 +870,12 @@ a{color:#d7ff76}
   <h3>🪐 مسیر کهکشانی ریاضی</h3><p class="muted">هر سیاره یک فصل است. روی هر سیاره بزن تا مستقیم به تمرین همان فصل بروی؛ هیچ امتیاز یا نشان رقابتی در این مسیر وجود ندارد.</p><div id="chapterPlanetRoute" class="chapter-planet-route"></div><h3 style="margin-top:16px">جزئیات پیشرفت فصل‌ها</h3><div id="chapterProgressDetails" class="chapter-progress-map"></div>
   <p class="muted">نتایج آنلاین حساب دانش‌آموز همگام‌سازی می‌شوند؛ اگر تمرینی آفلاین انجام شود، تا زمان اتصال در همین دستگاه می‌ماند.</p>
 
-</div>
 <section id="unifiedLearningReport" class="card unified-learning-report">
   <div class="row unified-report-heading"><div><h2>📈 کارنامهٔ یادگیری همهٔ کتاب‌ها</h2><p class="muted">براساس پاسخ‌هایی که در این حساب ثبت شده‌اند؛ برای تمرین متمرکز، مبحث پیشنهادی را باز کن.</p></div><span class="pill">همهٔ درس‌ها</span></div>
   <div id="unifiedProgressSummary" class="unified-progress-summary"></div>
   <div id="unifiedSubjectCards" class="unified-subject-cards"><div class="notice">در حال آماده‌سازی کارنامه…</div></div>
 </section>
+</div>
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
 <div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2><button class="outline" id="mathBackToSubjects" type="button">بازگشت به انتخاب کتاب‌ها</button></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div>
@@ -920,7 +927,19 @@ a{color:#d7ff76}
   <div id="visualFractionSegments" class="visual-fraction-segments" aria-label="مدل تصویری کسر"></div>
   <div id="visualFractionExplanation" class="fraction-explorer-explanation" role="status">۱ قسمت از ۴ قسمت مساوی، یعنی یک‌چهارم.</div>
 </section>
-<section class="learn-section item"><h3>۴. تمرین ضرب و تقسیم</h3><p class="muted">نوع سؤال را انتخاب کن، سؤال تازه بگیر و پاسخت را بررسی کن.</p><label class="field" for="reminderMathType">نوع تمرین</label><select id="reminderMathType"><option value="multiply">ضرب</option><option value="divide">تقسیم</option><option value="concept">مسئله‌ی مفهومی ضرب</option></select><button id="newReminderMath" style="width:100%;margin-top:9px">🎯 سؤال جدید</button><div id="reminderMathBox" class="item hidden"><p id="reminderMathQuestion" class="big-math"></p><input id="reminderMathAnswer" inputmode="numeric" placeholder="پاسخت را بنویس"><button id="checkReminderMath" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="reminderMathFeedback" class="notice hidden"></div></div></section>
+<section class="learn-section item area-array-lab">
+  <h3>۵. مدل تصویری ضرب، مساحت و محیط</h3>
+  <p class="muted">ردیف‌ها و ستون‌ها را تغییر بده تا ببینی ضرب چگونه تعداد خانه‌ها را نشان می‌دهد. تعداد خانه‌ها مساحت را در این مدل واحدی بیان می‌کند.</p>
+  <div class="area-array-controls">
+    <label class="field" for="arrayRows">تعداد ردیف‌ها: <b id="arrayRowsValue">۳</b><input id="arrayRows" type="range" min="1" max="8" value="3"></label>
+    <label class="field" for="arrayCols">تعداد ستون‌ها: <b id="arrayColsValue">۴</b><input id="arrayCols" type="range" min="1" max="8" value="4"></label>
+  </div>
+  <div id="areaArrayGrid" class="area-array-grid" role="img" aria-label="مدل مستطیلی ضرب"></div>
+  <div class="area-array-summary" id="areaArraySummary" role="status">۳ ردیف × ۴ ستون = ۱۲ خانه.</div>
+  <p class="muted">محیط، اندازهٔ دور تا دور مستطیل است. در این مدل هر خانه یک واحد مربع و هر ضلع خانه یک واحد طول دارد.</p>
+  <div id="areaArrayPerimeter" class="area-array-summary">محیط: ۲ × (۳ + ۴) = ۱۴ واحد طول</div>
+</section>
+<section class="learn-section item"><h3>۶. تمرین ضرب و تقسیم</h3><p class="muted">نوع سؤال را انتخاب کن، سؤال تازه بگیر و پاسخت را بررسی کن.</p><label class="field" for="reminderMathType">نوع تمرین</label><select id="reminderMathType"><option value="multiply">ضرب</option><option value="divide">تقسیم</option><option value="concept">مسئله‌ی مفهومی ضرب</option></select><button id="newReminderMath" style="width:100%;margin-top:9px">🎯 سؤال جدید</button><div id="reminderMathBox" class="item hidden"><p id="reminderMathQuestion" class="big-math"></p><input id="reminderMathAnswer" inputmode="numeric" placeholder="پاسخت را بنویس"><button id="checkReminderMath" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="reminderMathFeedback" class="notice hidden"></div></div></section>
 <section class="learn-section item"><h3>۴. جمع عددهای دو، سه و چهاررقمی</h3><p>برای جمع، رقم‌های هم‌ارزش را زیر هم می‌نویسیم: یکان زیر یکان، دهگان زیر دهگان، صدگان زیر صدگان و هزارگان زیر هزارگان. از ستون یکان شروع می‌کنیم. اگر حاصل یک ستون ۱۰ یا بیشتر شد، ده‌تایی را به ستون بعدی می‌بریم.</p><div class="concept-grid"><div class="concept-box"><b>جمع دورقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۷</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۵</span></div><div class="stack-rule"></div><div class="stack-result">۴۲</div></div><p class="muted">از یکان شروع می‌کنیم: ۷+۵=۱۲؛ ۲ را می‌نویسیم و ۱ دهگان را به ستون بعد می‌بریم.</p></div><div class="concept-box"><b>جمع سه‌رقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۳۳۴</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۵۶۸</span></div><div class="stack-rule"></div><div class="stack-result">۹۰۲</div></div><p class="muted">یکان زیر یکان، دهگان زیر دهگان و صدگان زیر صدگان قرار می‌گیرد.</p></div><div class="concept-box"><b>جمع چهاررقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۳۴۵</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۲۸۷</span></div><div class="stack-rule"></div><div class="stack-result">۳۶۳۲</div></div><p class="muted">در هر ستون، اگر حاصل ۱۰ یا بیشتر شد، رقم یکان را می‌نویسیم و دهگان را انتقال می‌دهیم.</p></div><div class="concept-box"><b>یادت باشد</b><p>عددها را مرتب بنویس و رقم‌های هم‌ارزش را دقیقاً زیر هم قرار بده. از ستون یکان شروع کن.</p></div></div></section>
 <section class="learn-section item"><h3>۵. تمرین جمع دورقمی، سه‌رقمی و چهاررقمی</h3><label class="field" for="additionDigits">نوع جمع</label><select id="additionDigits"><option value="2">دو رقمی</option><option value="3">سه رقمی</option><option value="4">چهار رقمی</option></select><button id="newAddition" style="width:100%;margin-top:9px">➕ سؤال جمع جدید</button><div id="additionBox" class="item hidden"><div id="additionQuestion" class="stack-sum stack-question" aria-live="polite"></div><input id="additionAnswer" inputmode="numeric" placeholder="حاصل جمع را بنویس"><button id="checkAddition" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="additionFeedback" class="notice hidden"></div></div></section>
 </div>
@@ -4544,7 +4563,7 @@ const persianBookPageMap={
       const rows=(Array.isArray(cloudBankRows)?cloudBankRows:[]).filter(r=>r.subject===subject&&lessonIds.includes(Number(r.lesson_id??r.chapter_id))&&r.is_active!==false&&(difficulty==='all'||String(r.difficulty||'medium')===difficulty));
       rows.forEach(r=>pool.push(normalizePrintableQuestion({...r,type:r.question_type,fromCloud:true},subject,Number(r.lesson_id??r.chapter_id),courseLessonTitle(subject,Number(r.lesson_id??r.chapter_id)))));
       const unique=[],seen=new Set();
-      for(const q of pool){const key=q.prompt.replace(/[\\s\\u200c]+/g,' ').trim().toLocaleLowerCase('fa');if(!key||seen.has(key))continue;seen.add(key);unique.push(q)}
+      for(const q of pool){const key=q.prompt.replace(/[\s\u200c]+/g,' ').trim().toLocaleLowerCase('fa');if(!key||seen.has(key))continue;seen.add(key);unique.push(q)}
       const shuffled=shuffledCopy(unique).slice(0,count);
       if(!shuffled.length){status.textContent='برای انتخاب فعلی، سؤال قابل‌استفاده‌ای پیدا نشد. بانک سؤال این درس را در پنل معلم بررسی یا تکمیل کن.';return}
       const complete=[];
@@ -4719,6 +4738,21 @@ const persianBookPageMap={
       startFocusedPractice('math',id);
     });
   }
+
+
+  function renderAreaArrayLab(){
+    const rows=$('arrayRows'),cols=$('arrayCols'),grid=$('areaArrayGrid');
+    if(!rows||!cols||!grid)return;
+    const r=Math.max(1,Math.min(8,Number(rows.value)||3)),c=Math.max(1,Math.min(8,Number(cols.value)||4));
+    $('arrayRowsValue').textContent=fa(r);$('arrayColsValue').textContent=fa(c);
+    grid.style.gridTemplateColumns='repeat('+c+',minmax(0,1fr))';
+    grid.innerHTML=Array.from({length:r*c},()=>'<span class="area-array-cell"></span>').join('');
+    $('areaArraySummary').textContent=fa(r)+' ردیف × '+fa(c)+' ستون = '+fa(r*c)+' خانه؛ مساحت = '+fa(r*c)+' واحد مربع.';
+    $('areaArrayPerimeter').textContent='محیط = ۲ × ('+fa(r)+' + '+fa(c)+') = '+fa(2*(r+c))+' واحد طول.';
+  }
+  $('arrayRows')?.addEventListener('input',renderAreaArrayLab);
+  $('arrayCols')?.addEventListener('input',renderAreaArrayLab);
+  renderAreaArrayLab();
 
 })();
 
