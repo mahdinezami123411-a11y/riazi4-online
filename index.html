@@ -982,7 +982,11 @@ function normalizeAnswer(v){return String(v??'').trim().replace(/[۰-۹]/g,d=>'�
 function shuffledCopy(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function shuffledQuestion(q){
  if(!q.opts)return {...q};
- if(q.type==='matching'&&q.opts.length>=8)return {...q,opts:[...q.opts.slice(0,4),...shuffledCopy(q.opts.slice(4,8))],_originalOptions:q.opts,_key:q.q};
+ if(q.type==='matching'&&q.opts.length>=8){
+  const left=q.opts.slice(0,4),originalRight=q.opts.slice(4,8),right=shuffledCopy(originalRight);
+  const answers=Array.isArray(q.answer)?q.answer.map(index=>{const value=q.opts[index];const newIndex=right.findIndex(item=>normalizeAnswer(item)===normalizeAnswer(value));return newIndex>=0?newIndex+4:index}):q.answer;
+  return {...q,opts:[...left,...right],answer:answers,_originalOptions:q.opts,_key:q.q};
+ }
  const order=shuffledCopy(q.opts.map((_,i)=>i));
  return {...q,opts:order.map(i=>q.opts[i]),a:q.a===undefined?undefined:order.indexOf(q.a),as:q.as?q.as.map(i=>order.indexOf(i)).sort((a,b)=>a-b):undefined,_originalOptions:q.opts,_key:q.q};
 }
@@ -3490,7 +3494,7 @@ function renderOtherSubjectActivity(mode){
  const pool=all.map((q,sourceIndex)=>({...q,_sourceQuestionIndex:sourceIndex})).sort(()=>Math.random()-.5).slice(0,Math.min(mode==='exam'?15:10,all.length));
  $('otherSubjectActivityCount').textContent=fa(pool.length)+' سؤال';$('otherSubjectActivityResult').classList.add('hidden');
  function matchingRows(q){
-  return '<div class="other-matching-list">'+q.pairs.map((left,j)=>'<div class="other-matching-row"><span class="other-matching-left"><b>'+fa(j+1)+'.</b> '+escapeForHtmlText(left)+'</span><select aria-label="انتخاب پاسخ برای مورد '+fa(j+1)+'" data-other-matching-index="'+j+'"><option value="">انتخاب پاسخ…</option>'+q.options.map((option,k)=>'<option value="'+k+'">'+escapeForHtmlText(option)+'</option>').join('')+'</select></div>').join('')+'</div>';
+  return '<div class="other-matching-list">'+q.pairs.map((left,j)=>'<div class="other-matching-row"><span class="other-matching-left"><b>'+fa(j+1)+'.</b> '+escapeForHtmlText(left)+'</span><select aria-label="انتخاب پاسخ برای مورد '+fa(j+1)+'" data-other-matching-index="'+j+'"><option value="">انتخاب پاسخ…</option>'+q.options.slice(4,8).map((option,k)=>'<option value="'+(k+4)+'">'+escapeForHtmlText(option)+'</option>').join('')+'</select></div>').join('')+'</div>';
  }
  box.innerHTML=pool.map((q,i)=>{
   const answers=q.type==='matching'?matchingRows(q):q.options.map((option,j)=>'<label class="other-answer" data-other-activity-option="'+j+'"><input type="radio" name="otherActivity'+mode+i+'" value="'+j+'"><span>'+escapeForHtmlText(option)+'</span></label>').join('');
