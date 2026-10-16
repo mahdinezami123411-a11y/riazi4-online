@@ -1,0 +1,39 @@
+name: Question UI regression tests
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/source-question-banks.json.gz.b64'
+      - 'assets/persian-vocabulary.json.gz.b64'
+      - 'tests/**'
+      - '.github/workflows/question-regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  question-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Parse all inline JavaScript
+        run: node tests/quiz-regression.mjs
+      - name: Install Playwright
+        run: |
+          mkdir -p "$RUNNER_TEMP/quiz-test"
+          cd "$RUNNER_TEMP/quiz-test"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund playwright
+          npx playwright install --with-deps chromium
+      - name: Run browser checks
+        run: |
+          python3 -m http.server 8765 > "$RUNNER_TEMP/quiz-http.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/quiz-http.pid"
+          cd "$RUNNER_TEMP/quiz-test"
+          node "$GITHUB_WORKSPACE/tests/quiz-browser.mjs"
