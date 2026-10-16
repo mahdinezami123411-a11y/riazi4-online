@@ -137,11 +137,17 @@ const lessonUi = await page.evaluate(() => {
     lessonPlanetCounts[subject] = document.querySelectorAll('#otherSubjectLessonPicker .chapter-planet-node[data-other-lesson]').length;
   }
   api.renderPlanetaryChapterRoute();
-  const allBookMapCount = document.querySelectorAll('#chapterPlanetRoute .chapter-planet-node[data-planet-subject]').length;
+  const galaxyMapRemoved = !document.getElementById('chapterPlanetRoute');
   api.showStudentAppView('profile');
   const placement = api.getProgressViewPlacement();
   api.showStudentAppView('home');
-  return {catalogCounts,selectors,mathPlanetCount,lessonPlanetCounts,allBookMapCount,placement,reportNav:!!document.querySelector('#studentAppNav [data-app-view="report"]')};
+  const progressRendererAvailable = typeof window.__renderAllBooksProgressDashboard === 'function';
+  if (progressRendererAvailable) window.__renderAllBooksProgressDashboard();
+  const progressBookNames = [...document.querySelectorAll('#allBooksProgressMount .profile-progress-label')].map(el => el.textContent.trim());
+  const homeNavLabel = document.querySelector('#studentAppNav [data-app-view="home"] small')?.textContent.trim() || '';
+  const mathBookTabs = [...document.querySelectorAll('#bookView [data-book-tab]')].map(button => button.dataset.bookTab);
+  const mainPracticeAndExamRetained = !!document.querySelector('#studentAppNav [data-app-view="practice"]') && !!document.querySelector('#studentAppNav [data-app-view="exam"]');
+  return {catalogCounts,selectors,mathPlanetCount,lessonPlanetCounts,galaxyMapRemoved,progressRendererAvailable,progressBookNames,homeNavLabel,mathBookTabs,mainPracticeAndExamRetained,placement,reportNav:!!document.querySelector('#studentAppNav [data-app-view="report"]')};
 });
 for (const subject of ['math','persian','science','social','gifts']) {
   assert.ok(lessonUi.catalogCounts[subject] > 0, subject + ': فهرست پایهٔ درس‌ها خالی است');
@@ -156,7 +162,12 @@ assert.equal(lessonUi.mathPlanetCount, lessonUi.catalogCounts.math, 'فصل‌ه
 for (const subject of ['persian','science','social','gifts']) {
   assert.equal(lessonUi.lessonPlanetCounts[subject], lessonUi.catalogCounts[subject], subject + ': درس‌ها به شکل سیاره نمایش داده نمی‌شوند');
 }
-assert.equal(lessonUi.allBookMapCount, ['math','persian','science','social','gifts'].reduce((sum,subject)=>sum+lessonUi.catalogCounts[subject],0), 'نقشهٔ پروفایل باید سیاره‌های هر پنج کتاب را داشته باشد');
+assert.equal(lessonUi.galaxyMapRemoved, true, 'نقشهٔ کهکشانی کتاب‌ها باید از صفحهٔ پیشرفت حذف شود');
+assert.equal(lessonUi.progressRendererAvailable, true, 'تابع نمایش پیشرفت همهٔ کتاب‌ها تعریف نشده است');
+assert.deepEqual(lessonUi.progressBookNames, ['ریاضی','فارسی','علوم تجربی','مطالعات اجتماعی','هدیه‌های آسمانی'], 'گزارش پیشرفت باید هر پنج کتاب را نشان دهد');
+assert.equal(lessonUi.homeNavLabel, 'انتخاب کتاب', 'برچسب نوار اصلی باید «انتخاب کتاب» باشد');
+assert.deepEqual(lessonUi.mathBookTabs, ['file','chapters'], 'فقط فایل کتاب و توضیح فصل باید در نوار داخلی کتاب بمانند');
+assert.equal(lessonUi.mainPracticeAndExamRetained, true, 'تمرین و امتحان باید از نوار اصلی بالای برنامه در دسترس بمانند');
 assert.equal(lessonUi.placement.homeInsideProfile, false, 'صفحهٔ انتخاب درس نباید داخل بخش پنهان پروفایل باشد');
 assert.equal(lessonUi.placement.reportInsideProfile, false, 'کارنامه باید جدا از پروفایل باشد');
 assert.equal(lessonUi.placement.mapInsideHome, true, 'نقشهٔ کامل پیشرفت باید در صفحهٔ خانه باقی بماند');
