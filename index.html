@@ -3500,6 +3500,12 @@ function renderOtherSubjectActivity(mode){
   const answers=q.type==='matching'?matchingRows(q):q.options.map((option,j)=>'<label class="other-answer" data-other-activity-option="'+j+'"><input type="radio" name="otherActivity'+mode+i+'" value="'+j+'"><span>'+escapeForHtmlText(option)+'</span></label>').join('');
   return '<section class="persian-quiz-card" data-other-activity-card="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind||'سؤال')+'</b><span class="pill">سؤال '+fa(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+answers+(mode==='practice'?'<button type="button" data-other-activity-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button>':'')+'<div class="notice hidden" data-other-activity-feedback aria-live="polite"></div></section>';
  }).join('')+(mode==='exam'?'<button type="button" id="submitOtherSubjectExam" style="width:100%;margin-top:10px">ثبت آزمون و مشاهده نتیجه</button>':'');
+ box.querySelectorAll('select[data-other-matching-index]').forEach(select=>select.addEventListener('change',()=>{
+  const controls=[...box.querySelectorAll('select[data-other-matching-index]')],values=controls.map(el=>el.value===''?-1:Number(el.value));
+  controls.forEach((other,index)=>[...other.options].forEach(option=>{
+   if(option.value!=='')option.disabled=values.some((value,otherIndex)=>otherIndex!==index&&value>=4&&value===Number(option.value));
+  }));
+ }));
  const progress=readOtherProgress(),resultTime=()=>new Date().toISOString();
  function pickedAnswer(q,card){
   if(q.type==='matching'){
