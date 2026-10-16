@@ -2699,7 +2699,7 @@ loadExpandedPersianVocabulary();
       const page=pageNumber;
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
     }else{
-      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات واقعی این درس از فایل کتاب بارگذاری می‌شوند و در همین بخش نمایش داده خواهند شد. در این صفحه هیچ پیوند بیرونی به دانش‌آموز نمایش داده نمی‌شود.</p></section>';
+      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">فایل PDF صفحات اصلی کتاب هنوز داخل سایت قرار نگرفته است؛ اما واژه‌های املا، معنی‌ها و تمرین‌های همین درس از فایل‌های بررسی‌شده در پایین همین صفحه در دسترس‌اند.</p></section>';
     }
   }
   function renderPersianLesson(l){
