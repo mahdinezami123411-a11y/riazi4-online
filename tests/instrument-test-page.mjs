@@ -35,7 +35,8 @@ const bridge = `
       getProgressViewPlacement: () => ({
         homeInsideProfile: !!document.getElementById('studentHomeView')?.closest('#profileView'),
         reportInsideProfile: !!document.getElementById('studentReportView')?.closest('#profileView'),
-        mapInsideProfile: !!document.getElementById('studentDashboard')?.closest('#profileView')
+        mapInsideHome: !!document.getElementById('studentDashboard')?.closest('#studentHomeView'),
+        profileChartInsideProfile: !!document.querySelector('#profileView #profileProgressMount .profile-progress-chart')
       })
     };
   }
