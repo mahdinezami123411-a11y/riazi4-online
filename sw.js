@@ -1,10 +1,11 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v38';
+const CACHE_NAME = 'riazi4-pwa-shell-v39';
 const APP_SHELL = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icons/app-icon.svg',
-  './assets/persian-vocabulary.json.gz.b64'
+  './assets/persian-vocabulary.json.gz.b64',
+  './assets/source-question-banks.json.gz.b64'
 ];
 
 self.addEventListener('install', event => {

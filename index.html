@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v22-20261016-detailed-lessons">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v23-20261016-source-qa-banks">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -983,6 +983,8 @@ const bookSubjectCatalog=[
  {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',asset:'./assets/books/social-fourth.pdf',assetLabel:'assets/books/social-fourth.pdf'},
  {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
 ];
+let sourceQuestionBanks = {};
+let sourceQuestionBanksLoading = null;
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
 function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
 function courseLessonCatalog(subject){
@@ -2314,13 +2316,14 @@ function renderCloudQuestionList(){
   const detail=source?.lessons?.find(item=>Number(item.id)===lesson);
   if(detail&&['science','social','gifts'].includes(subject)){
    infoBox.classList.remove('hidden');
-   infoBox.innerHTML='<b>📘 توضیح مفصل درس</b><p class="muted" style="margin:2px 0 8px">صفحهٔ کتاب: '+fa(detail.page||'—')+'</p>'+formatCourseLessonExplanation(detail.content||'');
+   infoBox.innerHTML='<b>📘 توضیح مفصل درس</b><p class="muted" style="margin:2px 0 8px">صفحهٔ کتاب: '+fa(detail.page||'—')+'</p>'+formatCourseLessonExplanation(detail.content||'')+renderSourceQuestionBankPanel(subject,lesson,'teacher');
   }else{infoBox.classList.add('hidden');infoBox.textContent=''}
  }
  const query=normalizeAnswer($('teacherQuestionSearch')?.value||'');
  const normSubject=v=>({'ریاضی':'math','فارسی':'persian','علوم':'science','علوم تجربی':'science','مطالعات اجتماعی':'social','مطالعات':'social','هدیه‌های آسمانی':'gifts','هدیه ها':'gifts'}[String(v||'').trim()]||String(v||'math').trim());
  const rows=cloudBankRows.filter(q=>normSubject(q.subject)===subject&&Number(q.lesson_id??q.chapter_id??q.lesson??q.chapter)===lesson&&(!query||normalizeAnswer((q.prompt||q.question||'')+' '+(q.skill||'')).includes(query)));
- $('teacherBankCounts').textContent=courseName(subject)+' · '+courseLessonTitle(subject,lesson)+' · '+fa(rows.length)+' سؤال آنلاین؛ این فهرست فقط به همین کتاب و درس مربوط است.';
+ const sourceCount=['science','social','gifts'].includes(subject)?sourceQuestionBankRows(subject,lesson).length:0;
+ $('teacherBankCounts').textContent=courseName(subject)+' · '+courseLessonTitle(subject,lesson)+' · '+fa(rows.length)+' سؤال آنلاین در بانک معلم'+(sourceCount?'؛ '+fa(sourceCount)+' پرسش‌وپاسخ منبع برای تمرین و آزمون':'')+'.';
  $('teacherQuestionList').innerHTML=rows.map((q,i)=>'<div class="teacher-question-row"><div><b>'+fa(i+1)+'. '+escapeHtml(q.prompt)+'</b><small>'+escapeHtml(q.skill||'بدون مبحث')+' · '+({mc:'چهارگزینه‌ای',input:'پاسخ کوتاه',tf:'درست/نادرست',multi:'چندپاسخی'})[q.question_type]+' · '+({easy:'آسان',medium:'متوسط',hard:'سخت'})[q.difficulty]+'</small></div>'+((!q.class_id||q.class_id===cloudSession.profile?.class_id)?'<button class="outline" type="button" data-edit-cloud-question="'+q.id+'">✏️ ویرایش</button>':'<button class="outline" type="button" disabled title="این سؤال متعلق به کلاس دیگری است.">🔒 کلاس دیگر</button>')+'</div>').join('')||'<p class="muted">در این کتاب و درس سؤالی پیدا نشد.</p>';
 }
 $('teacherBankChapter').innerHTML=chapters.filter(c=>c.id<=7).map(c=>'<option value="'+c.id+'">فصل '+fa(c.id)+': '+escapeHtml(c.title)+'</option>').join('');
@@ -3258,10 +3261,75 @@ function renderOtherSubjectPicker(){
       renderOtherSubjectActivity(tab);
     }
   }));
+  function sourceQuestionBankRows(subjectId,lessonId){
+    const bank=sourceQuestionBanks&&sourceQuestionBanks[subjectId];
+    const rows=bank&&bank[String(Number(lessonId))];
+    return Array.isArray(rows)?rows:[];
+  }
+  function sourceQuestionBankSubjectRows(subjectId){
+    const bank=sourceQuestionBanks&&sourceQuestionBanks[subjectId];
+    if(!bank||typeof bank!=='object')return [];
+    return Object.entries(bank).filter(([key,value])=>/^\\d+$/.test(key)&&Array.isArray(value)).flatMap(([lessonId,rows])=>rows.map((q,index)=>({...q,lessonId:Number(lessonId),sourceIndex:index})));
+  }
+  function sourceQuestionNormalize(value){
+    return String(value??'').toLocaleLowerCase('fa').replace(/[\\s\\u200c\\u200f]+/g,'').replace(/[؛،,.!?؟:()«»"']/g,'').trim();
+  }
+  function shuffleSourceValues(values){
+    const out=[...values];
+    for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}
+    return out;
+  }
+  function makeSourceQuestionOptions(subjectId,lessonId,qa){
+    const correct=String(qa.answer||'').trim();
+    if(!correct)return [];
+    const norm=sourceQuestionNormalize(correct);
+    const sameLesson=sourceQuestionBankRows(subjectId,lessonId);
+    const allRows=sourceQuestionBankSubjectRows(subjectId);
+    const candidates=shuffleSourceValues([...sameLesson,...allRows].map(row=>String(row.answer||'').trim())
+      .filter(text=>text&&sourceQuestionNormalize(text)!==norm));
+    const unique=[],seen=new Set([norm]);
+    for(const text of candidates){
+      const key=sourceQuestionNormalize(text);
+      if(!key||seen.has(key))continue;
+      seen.add(key);unique.push(text);if(unique.length>=3)break;
+    }
+    const options=shuffleSourceValues([correct,...unique]);
+    return options.length>=2?options:[];
+  }
+  function getSourceQuestionBankQuizzes(subjectId,lessonId){
+    return sourceQuestionBankRows(subjectId,lessonId).map((qa,index)=>{
+      const options=makeSourceQuestionOptions(subjectId,lessonId,qa);
+      const correctKey=sourceQuestionNormalize(qa.answer);
+      const answer=options.findIndex(option=>sourceQuestionNormalize(option)===correctKey);
+      if(options.length<2||answer<0)return null;
+      return {
+        kind:'پرسش دفتر پرسش‌وپاسخ',
+        question:String(qa.question||''),
+        options,
+        answer,
+        analysis:'پاسخِ ثبت‌شده در دفتر پرسش‌وپاسخ این درس: '+String(qa.answer||''),
+        sourceAnswer:String(qa.answer||''),
+        sourceIndex:index
+      };
+    }).filter(q=>q&&q.question&&q.options.length>=2);
+  }
+  function renderSourceQuestionBankPanel(subjectId,lessonId,mode){
+    if(!['science','social','gifts'].includes(subjectId))return '';
+    const rows=sourceQuestionBankRows(subjectId,lessonId);
+    if(!rows.length)return '<section class="lesson-note"><p class="muted">بانک پرسش‌وپاسخ منبع هنوز بارگذاری نشده است؛ اتصال را بررسی کن یا صفحه را دوباره بارگذاری کن.</p></section>';
+    const meta=sourceQuestionBanks._meta||{};
+    const title=mode==='teacher'?'📚 پرسش‌وپاسخ منبع این درس':'📚 مرور پرسش‌ها و پاسخ‌های دفتر';
+    return '<section class="lesson-note"><details><summary><b>'+title+' · '+fa(rows.length)+' مورد</b></summary>'+
+      '<p class="muted">'+escapeForHtmlText(meta[subjectId]||'دفتر پرسش‌وپاسخ ارسالی')+'</p>'+
+      '<p class="muted">'+escapeForHtmlText(meta.notice||'پیش از ارزشیابی رسمی، انطباق با چاپ فعلی کتاب بررسی شود.')+'</p>'+
+      rows.map((qa,i)=>'<div class="teacher-chapter-row"><b>سؤال '+fa(i+1)+'</b><p>'+escapeForHtmlText(qa.question)+'</p><details><summary>مشاهدهٔ پاسخ</summary><p>'+escapeForHtmlText(qa.answer)+'</p></details></div>').join('')+
+      '</details></section>';
+  }
   function getOtherSubjectQuestions(subject,lesson){
     let rows=[];
     if(subject.id==='persian')rows=buildPersianLessonQuizzes(lesson);
     else if(subject.id==='dictation')rows=lesson.isFreeLesson?buildPersianLessonQuizzes(lesson):[{kind:'املای واژه',...(lesson.spellingCheck||{})}];
+    else if(['science','social','gifts'].includes(subject.id))rows=getSourceQuestionBankQuizzes(subject.id,lesson.id);
     else if(Array.isArray(lesson.options)&&lesson.options.length>=2)rows=[{kind:lesson.title||'پرسش درس',question:lesson.question||'پرسش این درس',options:lesson.options,answer:Number(lesson.answer),analysis:lesson.analysis||lesson.explanation||lesson.why||'پاسخ را با محتوای همین درس مقایسه کن.'}];
     return (Array.isArray(rows)?rows:[]).filter(q=>q&&typeof q.question==='string'&&Array.isArray(q.options)&&q.options.length>=2&&Number.isInteger(Number(q.answer))&&Number(q.answer)>=0&&Number(q.answer)<q.options.length);
   }
@@ -3287,7 +3355,7 @@ function renderOtherSubjectPicker(){
     const lesson=lessons.find(l=>Number(l.id)===Number(select.value))||lessons[0];
     const all=getOtherSubjectQuestions(subject,lesson);
     if(!all.length){
-      box.innerHTML=('<div class="notice">'+(['science','social','gifts'].includes(subject.id)?'توضیح آموزشی این درس آماده است؛ پرسش‌های تمرین و آزمون پس از دریافت و ثبت دفتر پرسش‌وپاسخ همین کتاب اضافه می‌شوند. در حال حاضر سؤال ساختگی به‌جای سؤال کتاب نمایش داده نمی‌شود.':'برای این درس هنوز سؤال معتبر در بانک وجود ندارد. درس دیگری را انتخاب کن یا از معلم بخواه سؤال‌های آن درس را اضافه کند.')+'</div>');
+      box.innerHTML=('<div class="notice">'+(['science','social','gifts'].includes(subject.id)?'برای این درس پرسش قابل استفاده در بانک منبع پیدا نشد. منبع و شمارهٔ درس را بررسی کن؛ سؤال ساختگی نمایش داده نمی‌شود.':'برای این درس هنوز سؤال معتبر در بانک وجود ندارد. درس دیگری را انتخاب کن یا از معلم بخواه سؤال‌های آن درس را اضافه کند.')+'</div>');
       $('otherSubjectActivityCount').textContent='۰ سؤال';
       return;
     }
@@ -3338,6 +3406,39 @@ function renderOtherSubjectPicker(){
       };
     }
   }
+  async function loadSourceQuestionBanks(){
+    if(sourceQuestionBanksLoading)return sourceQuestionBanksLoading;
+    sourceQuestionBanksLoading=(async()=>{
+      try{
+        const response=await fetch('./assets/source-question-banks.json.gz.b64?v=20261016-sourceqa1',{cache:'force-cache'});
+        if(!response.ok)throw new Error('فایل بانک پرسش‌وپاسخ منبع در سایت پیدا نشد.');
+        const encoded=(await response.text()).trim();
+        if(!encoded)throw new Error('فایل بانک پرسش‌وپاسخ منبع خالی است.');
+        const binary=atob(encoded),bytes=new Uint8Array(binary.length);
+        for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+        if(!('DecompressionStream' in window))throw new Error('مرورگر این دستگاه از فشرده‌گشایی فایل منبع پشتیبانی نمی‌کند.');
+        const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'));
+        const data=JSON.parse(await new Response(stream).text());
+        if(!data||!data._meta)throw new Error('ساختار بانک پرسش‌وپاسخ معتبر نیست.');
+        sourceQuestionBanks=data;
+        if(selectedOtherSubject&&selectedOtherLesson&&['science','social','gifts'].includes(selectedOtherSubject.id)){
+          renderOtherLesson(selectedOtherLesson.id);
+        }
+        const activeTab=document.querySelector('#otherSubjectTabs [data-other-subject-tab].active')?.dataset.otherSubjectTab;
+        if(selectedOtherSubject&&['science','social','gifts'].includes(selectedOtherSubject.id)&&['practice','exam'].includes(activeTab)){
+          renderOtherSubjectActivity(activeTab);
+        }
+        if($('teacherBankSubject'))renderCloudQuestionList();
+        console.info('Source Q&A loaded for science, social studies and gifts of heaven.');
+      }catch(error){
+        console.warn('Source Q&A bank could not be loaded:',error);
+        sourceQuestionBanksLoading=null;
+      }
+    })();
+    return sourceQuestionBanksLoading;
+  }
+  loadSourceQuestionBanks();
+
   async function trackLessonView(subjectId,lesson){
     if(!isRealStudentSession()||!['persian','dictation','science','social','gifts'].includes(subjectId))return;
     const viewedAt=new Date().toISOString();
@@ -3709,7 +3810,7 @@ const persianBookPageMap={
       }else{
         $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
         const lessonExplainBlock=(['science','social','gifts'].includes(subject.id)&&l.content)?('<section class="lesson-note"><h4>📘 توضیح کامل درس</h4>'+formatCourseLessonExplanation(l.content)+'<p class="muted">صفحهٔ کتاب: '+fa(l.page||'—')+'</p></section>'):'';
-        $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div>'+lessonExplainBlock;
+        $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div>'+lessonExplainBlock+renderSourceQuestionBankPanel(subject.id,l.id,'student');
         $('otherLessonQuestion').textContent=l.question||'سؤال‌های این درس پس از ثبت پرسش‌های معتبر در بانک سؤال نمایش داده می‌شوند.';
         const options=Array.isArray(l.options)?l.options:[];
         $('otherLessonOptions').innerHTML=options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
@@ -3775,7 +3876,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v38',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v39',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
