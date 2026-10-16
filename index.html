@@ -1404,6 +1404,10 @@ const bookSubjectCatalog=[
  {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',asset:'./assets/books/social-fourth.pdf',assetLabel:'assets/books/social-fourth.pdf'},
  {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
 ];
+ // Only assets verified to exist in the deployed repository may be requested as bundled files.
+ const BUNDLED_BOOK_ASSETS = new Set(['./assets/math-fourth.pdf']);
+ // The lesson page images are not shipped in this repository yet; do not issue 404 requests for them.
+ const BUNDLED_PERSIAN_PAGE_IMAGES = false;
 let sourceQuestionBanks = {};
 let sourceQuestionBanksLoading = null;
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
@@ -1686,8 +1690,8 @@ async function previewTeacherBook(id){
  let url=bookUrls[id]||courseBookObjectUrls[id];
  const config=courseSettingsBySubject[id]||{};
  if(!url&&config.bookFilePath&&cloudSession?.access_token){try{const blob=await fetchClassMaterial(config.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[id]=url}catch(error){console.warn('Shared book preview unavailable',error)}}
- if(!url&&await assetExists(subject.asset))url=subject.asset;
- if(!url){target.innerHTML='<div class="notice">برای «'+escapeHtml(subject.name)+'» هنوز PDF قابل پیش‌نمایش وجود ندارد. از بخش بالا فایل آن را اضافه کن یا PDF عمومی را در مسیر <code>'+escapeHtml(subject.assetLabel)+'</code> در مخزن سایت قرار بده.</div>';return}
+ if(!url&&BUNDLED_BOOK_ASSETS.has(subject.asset)&&await assetExists(subject.asset))url=subject.asset;
+ if(!url){target.innerHTML='<div class="notice">برای «'+escapeHtml(subject.name)+'» هنوز PDF مشترک قابل پیش‌نمایش وجود ندارد. از بخش «کتاب‌ها و منابع» فایل را بارگذاری و در فضای مشترک کلاس ذخیره کن.</div>';return}
  target.innerHTML='<div class="item"><div class="row"><h4>'+subject.icon+' پیش‌نمایش '+escapeHtml(subject.name)+'</h4><button type="button" class="outline" id="closeTeacherBookPreview">بستن پیش‌نمایش</button></div><iframe class="pdfview" title="پیش‌نمایش '+escapeHtml(subject.name)+'" src="'+url+'#view=FitH"></iframe></div>';
  $('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};
 }
@@ -4242,7 +4246,7 @@ const persianBookPageMap={
     if(!subject){mount.innerHTML='';return}
     mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">در حال بارگذاری صفحات اصلی کتاب…</p></section>';
     const info=(subjectId==='persian'||subjectId==='dictation')?persianBookPageMap[Number(lesson.id)]:null;
-    if(info){
+    if(info&&BUNDLED_PERSIAN_PAGE_IMAGES){
       const imagePages=[];for(let p=info.start;p<=info.end;p++)imagePages.push(p);
       const pathFor=p=>'./assets/book-pages/persian/page-'+String(p).padStart(3,'0')+'.webp';
       try{
@@ -4265,7 +4269,7 @@ const persianBookPageMap={
     if(!url&&displayId==='dictation'&&courseSettingsBySubject.persian?.bookFilePath){
       try{const blob=await fetchClassMaterial(courseSettingsBySubject.persian.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.persian=url;pageNumber=info?.start||pageNumber}catch(error){console.warn('Persian PDF could not be loaded',error)}
     }
-    if(!url&&await assetExists(subject.asset)){url=subject.asset;pageNumber=info?.pdfStart||pageNumber}
+    if(!url&&BUNDLED_BOOK_ASSETS.has(subject.asset)&&await assetExists(subject.asset)){url=subject.asset;pageNumber=info?.pdfStart||pageNumber}
     if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
     if(url){
       const page=pageNumber;
