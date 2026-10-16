@@ -3467,7 +3467,7 @@ function getOtherSubjectQuestions(subject,lesson){
  else if(Array.isArray(lesson.options)&&lesson.options.length>=2)rows=[{kind:lesson.title||'پرسش درس',question:lesson.question||'پرسش این درس',options:lesson.options,answer:Number(lesson.answer),analysis:lesson.analysis||lesson.explanation||lesson.why||'پاسخ را با محتوای همین درس مقایسه کن.'}];
  return (Array.isArray(rows)?rows:[]).filter(q=>q&&typeof q.question==='string'&&Array.isArray(q.options)&&(
   q.type==='matching'
-   ?Array.isArray(q.pairs)&&q.pairs.length===4&&q.options.length===4&&Array.isArray(q.answer)&&q.answer.length===4&&q.answer.every(n=>Number.isInteger(n)&&n>=0&&n<q.options.length)
+   ?Array.isArray(q.pairs)&&q.pairs.length===4&&q.options.length===8&&Array.isArray(q.answer)&&q.answer.length===4&&q.answer.every(n=>Number.isInteger(n)&&n>=4&&n<q.options.length)
    :Number.isInteger(Number(q.answer))&&Number(q.answer)>=0&&Number(q.answer)<q.options.length
  ));
 }
