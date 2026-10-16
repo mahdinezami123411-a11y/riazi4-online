@@ -640,7 +640,7 @@ a{color:#d7ff76}
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
   <div class="row"><div><h3>🗂️ بانک سؤال مستقل برای هر کتاب و هر درس</h3><p class="muted">ابتدا کتاب و سپس درس را انتخاب کن؛ مشاهده، جست‌وجو، افزودن و ویرایش سؤال‌ها فقط برای همان کتاب و درس انجام می‌شود.</p></div><span class="pill" id="teacherBankTotal">۷۰۰ سؤال</span></div>
-  <label class="field" for="teacherBankSubject">انتخاب کتاب</label><select id="teacherBankSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" for="teacherBankChapter">انتخاب درس یا فصل</label><select id="teacherBankChapter"></select>
+  <label class="field" for="teacherBankSubject">انتخاب کتاب</label><select id="teacherBankSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" for="teacherBankChapter">انتخاب درس یا فصل</label><select id="teacherBankChapter"></select>
   <label class="field" for="teacherQuestionSearch">جست‌وجو در سؤال‌ها</label><input id="teacherQuestionSearch" placeholder="بخشی از متن سؤال یا مبحث را بنویس...">
   <div id="teacherBankCounts" class="notice">برای دیدن بانک، یک فصل را انتخاب کن.</div>
   <div id="teacherQuestionList" class="teacher-question-list"></div>
@@ -671,8 +671,8 @@ a{color:#d7ff76}
 <div id="tab-curriculum" class="tabpane"><h3>مدیریت فایل‌های کتاب‌های پایهٔ چهارم</h3><p class="muted">از این بخش می‌توانی PDF هر کتاب را جداگانه انتخاب و پیش‌نمایش کنی. فایل‌هایی که از این پنل اضافه می‌شوند در همین مرورگر/دستگاه ذخیره می‌شوند؛ برای دسترسی عمومی از گوشی‌های دانش‌آموزان، PDF باید در مخزن سایت در مسیر تعیین‌شده قرار بگیرد.</p><label class="field" for="bookSubject">انتخاب کتاب</label><select id="bookSubject"></select><label class="field" for="bookPdf">فایل PDF کتاب انتخاب‌شده</label><input id="bookPdf" type="file" accept="application/pdf,.pdf"><button id="attachBook" style="width:100%;margin-top:9px">افزودن PDF به کتاب انتخاب‌شده</button><div id="teacherBookStatus" class="notice">یک کتاب انتخاب کن و فایل PDF آن را اضافه کن.</div><h3 style="margin-top:18px">📚 فایل‌های هر کتاب</h3><div id="teacherBookLibrary" class="book-library"></div><div id="teacherBookPreview"></div><h3 style="margin-top:18px">دسترسی به بخش ریاضی</h3><p class="muted">می‌توانی دسترسی به بخش‌های ریاضی را مدیریت کنی. در نسخه بعدی امکان قفل‌کردن فصل‌ها و مبحث‌های ریاضی به‌صورت جداگانه اضافه می‌شود.</p><div id="subjectAccessList"></div><h3 style="margin-top:18px">مدیریت فصل‌ها و سرفصل‌های کتاب</h3><p class="muted">فصل‌های پیش‌فرض کتاب ریاضی چهارم در فهرست زیر هستند. می‌توانی فصل دیگری به کتاب اضافه کنی؛ نام فصل، خلاصه‌ی آموزشی و نکته‌ها برای دانش‌آموز نمایش داده می‌شود. تغییرات این نسخه آزمایشی فقط تا زمان بارگذاری مجدد همین صفحه باقی می‌مانند.</p><div class="chapter-manager"><label class="field" for="newChapterTitle">نام فصل جدید</label><input id="newChapterTitle" placeholder="مثلاً: مرور و حل مسئله"><label class="field" for="newChapterSummary">توضیح کوتاه فصل</label><input id="newChapterSummary" placeholder="موضوع‌ها و هدف این فصل را کوتاه بنویس"><label class="field" for="newChapterNotes">آموزش و نکته‌های مهم فصل</label><textarea id="newChapterNotes" rows="3" placeholder="قانون‌ها، روش حل و نکته‌هایی که دانش‌آموز باید یاد بگیرد..."></textarea><label class="field" for="newChapterExample">مثال حل‌شده (اختیاری)</label><textarea id="newChapterExample" rows="2" placeholder="مثلاً: ۲۴ ÷ ۶ = ۴، چون ۶ × ۴ = ۲۴."></textarea><h4>نمونه‌سؤال برای همین فصل (اختیاری)</h4><label class="field" for="newChapterQuestion">متن سؤال چهارگزینه‌ای</label><textarea id="newChapterQuestion" rows="2" placeholder="سؤال تمرینی را بنویس"></textarea><div class="grid"><div><label class="field" for="newChapterOpt0">گزینه ۱</label><input id="newChapterOpt0" placeholder="گزینه ۱"></div><div><label class="field" for="newChapterOpt1">گزینه ۲</label><input id="newChapterOpt1" placeholder="گزینه ۲"></div><div><label class="field" for="newChapterOpt2">گزینه ۳</label><input id="newChapterOpt2" placeholder="گزینه ۳"></div><div><label class="field" for="newChapterOpt3">گزینه ۴</label><input id="newChapterOpt3" placeholder="گزینه ۴"></div></div><div class="grid"><div><label class="field" for="newChapterCorrect">گزینه‌ی صحیح</label><select id="newChapterCorrect"><option value="0">گزینه ۱</option><option value="1">گزینه ۲</option><option value="2">گزینه ۳</option><option value="3">گزینه ۴</option></select></div><div><label class="field" for="newChapterWhy">توضیح پاسخ (اختیاری)</label><input id="newChapterWhy" placeholder="چرا این پاسخ درست است؟"></div></div><button id="addTeacherChapter" style="width:100%;margin-top:8px">➕ افزودن فصل به کتاب</button><div id="teacherChapterStatus" class="notice">فصل‌های کتاب آماده‌اند. برای افزودن فصل، نام و آموزش آن را وارد کن.</div></div><h3>فصل‌های فعلی کتاب</h3><div id="teacherChapterList"></div>
 <div class="video-manager"><h3>🎬 بارگذاری ویدیوی آموزشی</h3><p class="muted">برای هر فصل یک ویدیوی آموزشی انتخاب کن. دانش‌آموز ویدیو را در صفحه آموزش همان فصل می‌بیند. این نسخه ویدیو را فقط در همین مرورگر ذخیره می‌کند.</p><label class="field" for="teacherVideoChapter">فصل مربوط به ویدیو</label><select id="teacherVideoChapter"></select><label class="field" for="teacherVideoTitle">عنوان ویدیو</label><input id="teacherVideoTitle" maxlength="100" placeholder="مثلاً آموزش ضرب چندرقمی">
 <label class="field" for="teacherVideoFile">فایل ویدیویی</label><input id="teacherVideoFile" type="file" accept="video/*"><div class="profile-action-row"><button id="saveTeacherVideo">📤 ذخیره ویدیو برای این فصل</button><button id="removeTeacherVideo" class="outline">حذف ویدیوی این فصل</button></div><div id="teacherVideoStatus" class="notice" role="status">هنوز ویدیویی انتخاب نشده است.</div><div id="teacherVideoPreview"></div></div>
-</div><div id="tab-assignments" class="tabpane"><h3>🧩 ساخت تمرین و آزمون برای کتاب و درس مشخص</h3><p class="muted">هر فعالیت به کتاب و درس انتخاب‌شده وابسته است؛ سؤال‌ها از بانک همان کتاب/درس برداشته می‌شوند. نوع فعالیت، تعداد سؤال، زمان، ترتیب سؤال‌ها و تعداد تلاش را تعیین کن.</p><label class="field" for="actSubject">کتاب موردنظر</label><select id="actSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" id="actLessonField" for="actLesson">درس موردنظر</label><select id="actLesson"></select><p class="muted">سؤال‌های فعالیت فقط از بانک همین کتاب و درس انتخاب می‌شوند. برای ریاضی می‌توانی از انتخاب فصل یا نوبت استفاده کنی.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً تمرین درس سوم فارسی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" id="actScopeField" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" id="actChapterField" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div></div>
-<div id="tab-results" class="tabpane"><h3>بازخورد و نمرات؛ فیلتر مستقل کتاب و درس</h3><p class="muted">با تغییر کتاب و درس، فقط پاسخ‌ها، نمره‌ها و بازخوردهای همان محدوده نمایش داده می‌شوند.</p><div class="grid"><label class="field" for="gradeSubjectFilter">کتاب<select id="gradeSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="gradeLessonFilter">درس<select id="gradeLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label></div><button id="refreshGradebook" type="button" class="outline">به‌روزرسانی نمره‌ها</button><div id="teacherResultPanel" class="notice">پس از ورود معلم، نمرات و بازخوردها بر اساس کتاب و درس انتخاب‌شده نمایش داده می‌شوند.</div></div><div id="tab-reports" class="tabpane"><h3>📊 گزارش عملکرد؛ جداگانه برای هر کتاب و درس</h3><div id="reportsConnectionNotice" class="notice"><b>آمادهٔ اتصال به گزارش آنلاین</b><br>بعد از نصب جداول و توابع Supabase، این بخش اطلاعات واقعی کلاس را نشان می‌دهد؛ پیش از آن هیچ نمره یا دانش‌آموز ساختگی نمایش داده نمی‌شود.</div><div class="grid3"><div class="metric"><span class="muted">دانش‌آموزان ثبت‌شده</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">میانگین نمرات</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">نیازمند تمرین بیشتر</span><strong>پس از اتصال</strong></div></div><h4>تحلیل خطاها بر اساس فصل و مهارت</h4><p class="muted">پس از اتصال، این بخش درصد پاسخ صحیح هر فصل، سؤال‌های دارای بیشترین خطا و دانش‌آموزانی را که به تمرین تکمیلی نیاز دارند نمایش می‌دهد.</p><div class="grid"><label class="field" for="reportSubjectFilter">کتاب مورد گزارش<select id="reportSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="reportLessonFilter">درس مورد گزارش<select id="reportLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label><label class="field" for="reportDateRange">بازهٔ گزارش<select id="reportDateRange"><option>تمام مدت</option><option>۷ روز اخیر</option><option>۳۰ روز اخیر</option></select></label></div><button id="exportReportCsv" class="outline" type="button">خروجی CSV داده‌های موجود</button><div id="teacherReportStatus" class="notice" role="status">هنوز دادهٔ آنلاین برای گزارش وجود ندارد.</div></div>
+</div><div id="tab-assignments" class="tabpane"><h3>🧩 ساخت تمرین و آزمون برای کتاب و درس مشخص</h3><p class="muted">هر فعالیت به کتاب و درس انتخاب‌شده وابسته است؛ سؤال‌ها از بانک همان کتاب/درس برداشته می‌شوند. نوع فعالیت، تعداد سؤال، زمان، ترتیب سؤال‌ها و تعداد تلاش را تعیین کن.</p><label class="field" for="actSubject">کتاب موردنظر</label><select id="actSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" id="actLessonField" for="actLesson">درس موردنظر</label><select id="actLesson"></select><p class="muted">سؤال‌های فعالیت فقط از بانک همین کتاب و درس انتخاب می‌شوند. برای ریاضی می‌توانی از انتخاب فصل یا نوبت استفاده کنی.</p><label class="field" for="actTitle">عنوان فعالیت</label><input id="actTitle" placeholder="مثلاً تمرین درس سوم فارسی"><label class="field" for="actType">نوع فعالیت</label><select id="actType"><option value="تمرین">تمرین</option><option value="امتحان فصل">امتحان فصل</option><option value="نوبت اول">آزمون نوبت اول</option><option value="نوبت دوم">آزمون نوبت دوم</option></select><label class="field" id="actScopeField" for="actScope">محدودهٔ سؤال‌ها</label><select id="actScope"><option value="chapter">یک فصل</option><option value="multi">چند فصل</option><option value="midterm">نوبت اول (تا صفحه ۸۲)</option><option value="final">نوبت دوم (کل کتاب)</option><option value="all">کل کتاب</option></select><div class="grid"><label class="field" id="actChapterField" for="actChapter">فصل</label><select id="actChapter"><option value="1">فصل ۱ · اعداد و الگوها</option><option value="2">فصل ۲ · کسر</option><option value="3">فصل ۳ · ضرب و تقسیم</option><option value="4">فصل ۴ · اندازه‌گیری</option><option value="5">فصل ۵ · عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶ · شکل‌های هندسی</option><option value="7">فصل ۷ · آمار و احتمال</option></select><label class="field" for="actQuestionCount">تعداد سؤال</label><input id="actQuestionCount" type="number" min="1" max="200" value="20"></div><div class="grid"><label class="field" for="actDuration">مدت (دقیقه؛ صفر یعنی بدون محدودیت)</label><input id="actDuration" type="number" min="0" max="300" value="30"><label class="field" for="actAttempts">تعداد تلاش</label><select id="actAttempts"><option value="1">۱ تلاش</option><option value="2">۲ تلاش</option><option value="unlimited">نامحدود برای تمرین</option></select></div><div class="grid"><label class="option"><input id="actRandomQuestions" type="checkbox" checked> ترتیب تصادفی سؤال‌ها</label><label class="option"><input id="actRandomOptions" type="checkbox" checked> ترتیب تصادفی گزینه‌ها</label><label class="option"><input id="actShowFeedback" type="checkbox" checked> نمایش توضیح پاسخ در تمرین</label><label class="option"><input id="actHideScore" type="checkbox" checked> پنهان‌ماندن نمره از سایر دانش‌آموزان</label></div><button id="saveDemoActivity" style="width:100%;margin-top:10px">ساخت پیش‌نویس فعالیت</button><div id="demoActivityList"></div><div id="teacherAssignmentsOnline" class="notice">فعالیت‌های منتشرشدهٔ این کلاس پس از بارگذاری نمایش داده می‌شوند.</div></div>
+<div id="tab-results" class="tabpane"><h3>بازخورد و نمرات؛ فیلتر مستقل کتاب و درس</h3><p class="muted">با تغییر کتاب و درس، فقط پاسخ‌ها، نمره‌ها و بازخوردهای همان محدوده نمایش داده می‌شوند.</p><div class="grid"><label class="field" for="gradeSubjectFilter">کتاب<select id="gradeSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="gradeLessonFilter">درس<select id="gradeLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label></div><button id="refreshGradebook" type="button" class="outline">به‌روزرسانی نمره‌ها</button><div id="teacherResultPanel" class="notice">پس از ورود معلم، نمرات و بازخوردها بر اساس کتاب و درس انتخاب‌شده نمایش داده می‌شوند.</div></div><div id="tab-reports" class="tabpane"><h3>📊 گزارش عملکرد؛ جداگانه برای هر کتاب و درس</h3><div id="reportsConnectionNotice" class="notice"><b>آمادهٔ اتصال به گزارش آنلاین</b><br>بعد از نصب جداول و توابع Supabase، این بخش اطلاعات واقعی کلاس را نشان می‌دهد؛ پیش از آن هیچ نمره یا دانش‌آموز ساختگی نمایش داده نمی‌شود.</div><div class="grid3"><div class="metric"><span class="muted">دانش‌آموزان ثبت‌شده</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">میانگین نمرات</span><strong>پس از اتصال</strong></div><div class="metric"><span class="muted">نیازمند تمرین بیشتر</span><strong>پس از اتصال</strong></div></div><h4>تحلیل خطاها بر اساس فصل و مهارت</h4><p class="muted">پس از اتصال، این بخش درصد پاسخ صحیح هر فصل، سؤال‌های دارای بیشترین خطا و دانش‌آموزانی را که به تمرین تکمیلی نیاز دارند نمایش می‌دهد.</p><div class="grid"><label class="field" for="reportSubjectFilter">کتاب مورد گزارش<select id="reportSubjectFilter"><option value="all">همهٔ کتاب‌ها</option><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="reportLessonFilter">درس مورد گزارش<select id="reportLessonFilter"><option value="all">همهٔ درس‌ها</option></select></label><label class="field" for="reportDateRange">بازهٔ گزارش<select id="reportDateRange"><option>تمام مدت</option><option>۷ روز اخیر</option><option>۳۰ روز اخیر</option></select></label></div><button id="exportReportCsv" class="outline" type="button">خروجی CSV داده‌های موجود</button><div id="teacherReportStatus" class="notice" role="status">هنوز دادهٔ آنلاین برای گزارش وجود ندارد.</div></div>
 <div id="tab-students" class="tabpane">
   <h3>👩‍🎓 مدیریت حساب دانش‌آموزان</h3>
   <p class="muted">از این بخش حساب بساز و نام کاربری و رمز اولیه را در فهرست ببین. برای حساب‌هایی که قبلاً ساخته شده‌اند و رمز ثبت‌شده ندارند، از «تعیین رمز» استفاده کن. رمزهای این فهرست فقط در پنل معلم نمایش داده می‌شوند؛ آن‌ها را محرمانه نگه دار.</p>
@@ -701,7 +701,7 @@ a{color:#d7ff76}
 <div id="tab-settings" class="tabpane">
 <h3>⚙️ تنظیمات گستردهٔ هر کتاب و زمان‌بندی تک‌تک درس‌ها</h3>
 <p class="muted">هر کتاب تنظیمات مستقل دارد. می‌توانی کتاب را غیرفعال کنی، تمرین یا امتحان را روشن/خاموش کنی و تک‌تک درس‌ها را قفل، باز یا زمان‌بندی کنی. محدودیت دسترسی از سرور بررسی می‌شود، نه فقط از ظاهر صفحه.</p>
-<div class="grid"><label class="field" for="settingSubject">کتاب مورد تنظیم<select id="settingSubject"><option value="math">ریاضی</option><option value="persian">فارسی و نگارش</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="settingCourseTitle">عنوان نمایشی کتاب<input id="settingCourseTitle" maxlength="160" placeholder="مثلاً فارسی و نگارش پایه چهارم"></label></div>
+<div class="grid"><label class="field" for="settingSubject">کتاب مورد تنظیم<select id="settingSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select></label><label class="field" for="settingCourseTitle">عنوان نمایشی کتاب<input id="settingCourseTitle" maxlength="160" placeholder="مثلاً فارسی پایه چهارم"></label></div>
 <div class="grid"><label class="option"><input id="settingCourseEnabled" type="checkbox" checked> فعال بودن کتاب برای دانش‌آموزان</label><label class="option"><input id="settingDefaultLocked" type="checkbox"> قفل بودن درس‌هایی که جداگانه تنظیم نشده‌اند</label><label class="option"><input id="settingAllowPractice" type="checkbox" checked> اجازهٔ تمرین این کتاب</label><label class="option"><input id="settingAllowExam" type="checkbox" checked> اجازهٔ امتحان این کتاب</label></div>
 <div class="grid"><label class="field" for="settingReleaseMode">روش باز شدن کتاب<select id="settingReleaseMode"><option value="manual">باز/قفل به انتخاب معلم</option><option value="scheduled">باز شدن طبق تاریخ و ساعت</option></select></label><label class="field" for="settingReleaseAt">تاریخ باز شدن کل کتاب (اختیاری)<input id="settingReleaseAt" type="datetime-local"></label><label class="field" for="settingMaxAttempts">تعداد تلاش پیش‌فرض<input id="settingMaxAttempts" type="number" min="1" max="100" value="3"></label><label class="field" for="settingFeedbackMode">زمان نمایش بازخورد<select id="settingFeedbackMode"><option value="immediate">پس از هر سؤال</option><option value="after-submit">پس از تحویل فعالیت</option><option value="hidden">عدم نمایش به دانش‌آموز</option></select></label></div>
 <h4>➕ افزودن درس به فهرست این کتاب</h4>
@@ -962,12 +962,12 @@ $('saveDemoQuestion').onclick=()=>{const q=$('qText').value.trim();if(!q){alert(
 $('saveDemoActivity').onclick=()=>{const title=$('actTitle').value.trim();const count=Number($('actQuestionCount').value);if(!title){alert('عنوان فعالیت را وارد کن.');return}if(!Number.isInteger(count)||count<1||count>200){alert('تعداد سؤال باید بین ۱ تا ۲۰۰ باشد.');return}const scope=$('actScope').selectedOptions[0].textContent;const chapter=$('actChapter').selectedOptions[0].textContent;const duration=Number($('actDuration').value)||0;const attempts=$('actAttempts').selectedOptions[0].textContent;activities.push({title,type:$('actType').value,scope,chapter,count,duration,attempts,randomQuestions:$('actRandomQuestions').checked,randomOptions:$('actRandomOptions').checked,feedback:$('actShowFeedback').checked,hideScore:$('actHideScore').checked});$('demoActivityList').innerHTML='<h3>پیش‌نویس‌های ساخته‌شده در همین مرورگر</h3>'+activities.map((x,i)=>`<div class="item"><b>${i+1}. ${escapeHtml(x.title)}</b><p class="muted">${escapeHtml(x.type)} · ${escapeHtml(x.scope)} · ${x.count} سؤال · ${x.duration?x.duration+' دقیقه':'بدون محدودیت زمانی'}</p><small>${escapeHtml(x.chapter)} · ${escapeHtml(x.attempts)} · ${x.randomQuestions?'سؤال تصادفی':'ترتیب ثابت'} · ${x.randomOptions?'گزینه تصادفی':'گزینه ثابت'}</small></div>`).join('');$('actTitle').value=''};
 const bookSubjectCatalog=[
  {id:'math',name:'ریاضی چهارم',icon:'➗',asset:'./assets/math-fourth.pdf',assetLabel:'assets/math-fourth.pdf'},
- {id:'persian',name:'فارسی و نگارش',icon:'📚',asset:'./assets/books/persian-pages.pdf',assetLabel:'assets/books/persian-pages.pdf'},
+ {id:'persian',name:'فارسی',icon:'📚',asset:'./assets/books/persian-pages.pdf',assetLabel:'assets/books/persian-pages.pdf'},
  {id:'science',name:'علوم تجربی',icon:'🔬',asset:'./assets/books/science-fourth.pdf',assetLabel:'assets/books/science-fourth.pdf'},
  {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',asset:'./assets/books/social-fourth.pdf',assetLabel:'assets/books/social-fourth.pdf'},
  {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
 ];
-const COURSE_NAMES={math:'ریاضی',persian:'فارسی و نگارش',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
+const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
 function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
 function courseLessonCatalog(subject){
   let base=[];
@@ -2079,7 +2079,7 @@ function renderTeacherReport(){
  panel.innerHTML='<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1000px"><thead><tr><th>دانش‌آموز</th><th>کتاب</th><th>درس</th><th>فعالیت</th><th>سؤال</th><th>پاسخ</th><th>نتیجه</th><th>بازخورد/تحلیل</th><th>زمان</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'.</p>';
  renderTeacherGradebook();
 }
-  const subjectPracticeNames={science:'علوم تجربی',persian:'فارسی و نگارش',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی',dictation:'فارسی و نگارش · املا (سوابق قبلی)'};
+  const subjectPracticeNames={science:'علوم تجربی',persian:'فارسی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی',dictation:'فارسی · املا (سوابق قبلی)'};
   function renderTeacherSubjectPracticeReport(){
     const tab=$('tab-reports');if(!tab)return;
     let panel=$('cloudSubjectPracticeReport');if(!panel){panel=document.createElement('div');panel.id='cloudSubjectPracticeReport';panel.className='item';tab.appendChild(panel)}
@@ -2300,7 +2300,7 @@ $('saveDemoActivity').onclick=async()=>{
       {id:2,title:'مخلوط‌ها در زندگی',content:'مخلوط از کنار هم قرار گرفتن دو یا چند ماده ساخته می‌شود. در بعضی مخلوط‌ها اجزا دیده می‌شوند و در بعضی دیگر، مانند آب‌نمک پس از حل شدن نمک، اجزا به‌آسانی دیده نمی‌شوند.',example:'برای جدا کردن شن از آب می‌توان از صاف‌کردن استفاده کرد؛ برای به‌دست‌آوردن نمک از آب‌نمک، تبخیر آب مناسب است.',question:'برای جدا کردن شن از آب کدام روش مناسب‌تر است؟',options:['صاف‌کردن با صافی','آهن‌ربا در همهٔ حالت‌ها','منجمد کردن شن','اضافه کردن شکر'],answer:0,analysis:'شن در آب حل نمی‌شود و ذره‌های آن از صافی عبور نمی‌کنند؛ بنابراین صاف‌کردن، شن را از آب جدا می‌کند.'},
       {id:3,title:'انرژی و کاربردهای آن',content:'برای حرکت، روشنایی، صدا و گرم شدن به انرژی نیاز داریم. انرژی می‌تواند از شکلی به شکل دیگر تبدیل شود؛ مثلاً چراغ، انرژی الکتریکی را به نور و گرما تبدیل می‌کند.',example:'در پنکه، انرژی الکتریکی به حرکت پره‌ها تبدیل می‌شود و مقداری صدا و گرما هم تولید می‌شود.',question:'در یک چراغ روشن، انرژی الکتریکی بیشتر به چه شکل‌هایی تبدیل می‌شود؟',options:['نور و گرما','فقط صدا','فقط ماده','آب و خاک'],answer:0,analysis:'چراغ هنگام کار نور تولید می‌کند و بخشی از انرژی آن نیز به گرما تبدیل می‌شود؛ پس پاسخ «نور و گرما» درست است.'}
     ]},
-    {id:'persian',name:'فارسی و نگارش',icon:'📖',color:'#3278ff',lessons:[
+    {id:'persian',name:'فارسی',icon:'📖',color:'#3278ff',lessons:[
       {id:1,title:'درک مفهوم متن',content:'برای فهمیدن متن، فقط خواندن واژه‌ها کافی نیست. باید موضوع اصلی، پیام نویسنده و جزئیات مهم را پیدا کنیم. می‌توانیم پس از هر بند از خود بپرسیم: این بخش دربارهٔ چیست؟',example:'اگر متنی دربارهٔ کمک به همسایه باشد، پیام آن می‌تواند همکاری و مهربانی باشد؛ اما پاسخ دقیق باید با جمله‌های متن هماهنگ باشد.',question:'برای پیدا کردن پیام اصلی یک متن، کدام کار بهتر است؟',options:['فقط آخرین واژه را بخوانیم.','موضوع و جمله‌های مهم متن را بررسی کنیم.','یک پاسخ دلخواه بنویسیم.','عنوان را نادیده بگیریم.'],answer:1,analysis:'پیام اصلی از موضوع و جمله‌های مهم متن به دست می‌آید. پاسخ باید با شواهد متن سازگار باشد، نه بر پایهٔ حدس دلخواه.'},
       {id:2,title:'واژه و هم‌معنی',content:'هم‌معنی واژه‌ای است که معنایی نزدیک به واژهٔ دیگر دارد. هنگام انتخاب هم‌معنی باید به جمله توجه کنیم، چون یک واژه ممکن است در موقعیت‌های مختلف معنای متفاوتی داشته باشد.',example:'«شاد» و «خوشحال» در بسیاری از جمله‌ها هم‌معنی‌اند.',question:'کدام واژه در بیشتر جمله‌ها هم‌معنی «شاد» است؟',options:['اندوهگین','خوشحال','خسته','خاموش'],answer:1,analysis:'«خوشحال» معنایی نزدیک به «شاد» دارد. «اندوهگین» تقریباً معنای مخالف دارد و دو گزینهٔ دیگر هم‌معنی نیستند.'},
       {id:3,title:'نگارش یک بند منسجم',content:'یک بند خوب معمولاً یک موضوع اصلی دارد. جمله‌ها باید به همان موضوع مربوط باشند و با ترتیب منطقی کنار هم قرار بگیرند. استفاده از نشانه‌گذاری و بازخوانی متن، نوشته را روشن‌تر می‌کند.',example:'برای نوشتن دربارهٔ «کتابخانهٔ کلاس»، می‌توان از معرفی کتابخانه شروع کرد، سپس دربارهٔ کتاب‌ها و در پایان دربارهٔ شیوهٔ امانت گرفتن نوشت.',question:'کدام ویژگی به منسجم بودن یک بند کمک می‌کند؟',options:['جمله‌های نامرتبط','تغییر موضوع در هر جمله','ارتباط جمله‌ها با یک موضوع اصلی','حذف همهٔ نشانه‌ها'],answer:2,analysis:'وقتی جمله‌ها به یک موضوع اصلی مربوط باشند، خواننده مسیر نوشته را دنبال می‌کند و بند منسجم می‌شود.'}
@@ -2346,7 +2346,7 @@ $('saveDemoActivity').onclick=async()=>{
   ];
 // اتصال فهرست درس‌های فارسی به فهرست کتاب‌ها؛ این اتصال باید پس از تعریف persianLessons انجام شود.
 if(!otherSubjectData.some(subject=>subject.id==='persian')){
-  otherSubjectData.unshift({id:'persian',name:'فارسی و نگارش',icon:'📚',color:'#398a9a',lessons:persianLessons});
+  otherSubjectData.unshift({id:'persian',name:'فارسی',icon:'📚',color:'#398a9a',lessons:persianLessons});
 }
 
   // واژه‌های املایی از فایل ارسالی farsi4_spelling_words_verified.pdf؛ درس‌های آزاد عمداً بدون واژهٔ ثابت هستند.
@@ -2588,7 +2588,7 @@ loadExpandedPersianVocabulary();
       {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'فصل‌های کتاب و مهارت‌های پایه'},
       ...otherSubjectData.filter(s=>s.id!=='dictation').map(s=>({
         id:s.id,name:s.name,icon:s.icon,
-        description:s.id==='persian'?'درس‌های فارسی و نگارش، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم':
+        description:s.id==='persian'?'درس‌های فارسی، واژه‌آموزی و دانش زبانی بر پایهٔ فایل‌های معلم':
           s.id==='dictation'?'تمرین املای واژه‌های هر درس بر پایهٔ فهرست املای بررسی‌شده':
           s.id==='science'?'آموزش و تمرین علوم تجربی':
           s.id==='social'?'مفاهیم و تمرین مطالعات اجتماعی':'آموزش و تمرین هدیه‌های آسمانی',
@@ -2625,7 +2625,7 @@ loadExpandedPersianVocabulary();
     // فارسی و املا باید از داده‌های اختصاصی کتاب و فایل واژگان استفاده کنند؛
     // نه از چند درس نمونه‌ای که برای سایر کتاب‌ها در otherSubjectData نگهداری می‌شود.
     const catalogSource=(subjectId==='persian'||subjectId==='dictation')&&typeof persianLessons!=='undefined'
-      ?{id:subjectId,name:subjectId==='dictation'?'املای فارسی':'فارسی و نگارش',icon:subjectId==='dictation'?'✍️':'📖',lessons:persianLessons}
+      ?{id:subjectId,name:subjectId==='dictation'?'املای فارسی':'فارسی',icon:subjectId==='dictation'?'✍️':'📖',lessons:persianLessons}
       :otherSubjectData.find(s=>s.id===subjectId);
     const baseSubject=catalogSource;selectedOtherLesson=null;if(!baseSubject)return;if(courseSettingsBySubject[subjectId]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
     selectedOtherSubject={...baseSubject,id:subjectId,lessons:courseLessonCatalog(subjectId).map(item=>{const existing=baseSubject.lessons.find(l=>Number(l.id)===Number(item.id));if(existing)return {...existing,id:Number(existing.id),isFreeLesson:existing.isFreeLesson===true};const custom=(courseSettingsBySubject[subjectId]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));return {id:item.id,title:custom?.title||item.title.replace(/^(?:درس|املای درس)\s*[۰-۹0-9]+\s*[·.]\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(subjectId),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}}})};
@@ -2648,29 +2648,87 @@ loadExpandedPersianVocabulary();
     return {options:opts,answer:index};
   }
   function buildPersianLessonQuizzes(l){
-    if(l.isFreeLesson)return l.topicCheck?[{kind:'درس آزاد',question:l.topicCheck.question,options:l.topicCheck.options,answer:l.topicCheck.answer,analysis:l.topicCheck.analysis}]:[];
-    const quizzes=[];
-    if(l.spellingCheck)quizzes.push({kind:'املای واژه',...l.spellingCheck});
-    if(l.synonyms?.length){
-      const [word,meaning]=l.synonyms[0];
-      const q=persianQuizOptions(meaning,[...(l.opposites||[]).flat(),...(l.spellingWords||[]),...(l.families?.[0]?.words||[])].filter(v=>v!==word),l.id%4);
-      quizzes.push({kind:'هم‌معنی',question:'هم‌معنی «'+word+'» در این درس کدام است؟',...q,analysis:'«'+word+'» در کاربرد این درس به «'+meaning+'» نزدیک است. «'+q.options.find((v,i)=>i!==q.answer)+'» و دیگر گزینه‌ها در این بافت هم‌معنی آن نیستند.'});
+    if(l.isFreeLesson)return [];
+    const quizzes=[],seen=new Set();
+    const allVocabulary=[...(l.spellingWords||[]),...(l.importantWords||[]),
+      ...(l.meanings||[]).flat(),...(l.synonyms||[]).flat(),...(l.opposites||[]).flat(),
+      ...(l.families||[]).flatMap(f=>[f.root,...(f.words||[])])].filter(v=>typeof v==='string'&&v.trim());
+    function addQuestion(kind,question,correct,candidates,analysis,seed,forbidden=[]){
+      correct=String(correct??'').trim();
+      if(!correct||!question||seen.has(kind+'|'+question))return;
+      const blocked=new Set([correct,...forbidden].map(v=>String(v??'').trim()));
+      const wrongs=[];
+      for(const value of [...(candidates||[]),...allVocabulary,'بهار','کتاب','مدرسه','آسمان','دوستی','دانش']){
+        const v=String(value??'').trim();
+        if(v&&!blocked.has(v)&&!wrongs.includes(v))wrongs.push(v);
+        if(wrongs.length===3)break;
+      }
+      if(wrongs.length<3)return;
+      const answer=((Number(seed)||0)%4+4)%4;
+      const options=wrongs.slice(0,3);options.splice(answer,0,correct);
+      seen.add(kind+'|'+question);
+      quizzes.push({kind,question,options,answer,analysis:String(analysis||'پاسخ با فهرست واژه‌ها و محتوای همین درس بررسی می‌شود.')});
     }
-    if(l.families?.length){
-      const fam=l.families[0];const correct=fam.words[0];
-      const blocked=[fam.root,...fam.words];
-      const distractors=[...(l.synonyms||[]).flat(),...(l.opposites||[]).flat(),...(l.spellingWords||[])].filter(v=>!blocked.includes(v));
-      const q=persianQuizOptions(correct,distractors,l.id+1);
-      quizzes.push({kind:'هم‌خانواده',question:'کدام واژه با «'+fam.root+'» هم‌خانواده است؟',...q,analysis:'«'+correct+'» با «'+fam.root+'» ریشه و ارتباط معنایی دارد؛ واژه‌های دیگر فقط با موضوع درس ارتباط دارند یا معنای متفاوتی دارند.'});
+    function spellingVariants(word){
+      const out=[],addVariant=v=>{if(v&&v!==word&&!out.includes(v))out.push(v);};
+      const rules=[['س','ص'],['ص','س'],['ز','ذ'],['ذ','ز'],['ت','ط'],['ط','ت'],['ح','ه'],['ه','ح'],['ق','غ'],['غ','ق'],['ا','آ'],['آ','ا'],['ک','ق'],['گ','ک'],['ی','ئ'],['ئ','ی']];
+      for(const pair of rules){const from=pair[0],to=pair[1];if(word.includes(from)){addVariant(word.replace(from,to));if(out.length>=3)break;}}
+      const chars=Array.from(word);
+      for(let i=1;i<chars.length-1&&out.length<3;i++){if(chars[i]!==' '){const changed=[...chars];changed.splice(i,1);addVariant(changed.join(''));}}
+      if(out.length<3&&chars.length>3){const changed=[...chars];[changed[1],changed[2]]=[changed[2],changed[1]];addVariant(changed.join(''));}
+      return out;
     }
-    if(l.opposites?.length){
-      const [word,opposite]=l.opposites[0];const blocked=[word,opposite];
-      const distractors=[...(l.synonyms||[]).flat(),...(l.spellingWords||[]),...(l.families?.[0]?.words||[])].filter(v=>!blocked.includes(v));
-      const q=persianQuizOptions(opposite,distractors,l.id+2);
-      quizzes.push({kind:'متضاد',question:'متضاد «'+word+'» کدام است؟',...q,analysis:'«'+word+'» و «'+opposite+'» در این تمرین معنی مخالف دارند؛ هم‌معنی‌ها معنای نزدیک و هم‌خانواده‌ها ریشهٔ مرتبط دارند.'});
+    if(l.spellingCheck){
+      const q=l.spellingCheck;
+      addQuestion('املای واژه',q.question,q.options?.[q.answer],q.options?.filter((_,i)=>i!==q.answer),q.analysis,l.id);
     }
-    if(l.topicCheck)quizzes.push({kind:l.wordTopic?.source==='کتاب'?'واژه‌آموزی کتاب':'آموزش واژه',question:l.topicCheck.question,options:l.topicCheck.options,answer:l.topicCheck.answer,analysis:l.topicCheck.analysis});
+    if(l.topicCheck){
+      const q=l.topicCheck;
+      addQuestion('واژه‌آموزی',q.question,q.options?.[q.answer],q.options?.filter((_,i)=>i!==q.answer),q.analysis,l.id+1);
+    }
+    (l.spellingWords||[]).forEach((word,i)=>{
+      addQuestion('املای دشوار','کدام گزینه املای درست واژهٔ «'+word+'» است؟',word,spellingVariants(word),
+        'در فهرست املای بررسی‌شدهٔ همین درس، واژه به شکل «'+word+'» آمده است. گزینهٔ درست باید همین واژه را با ترتیب حروف درست نشان دهد.',l.id*19+i);
+    });
+    (l.meanings||[]).forEach(([word,meaning],i)=>{
+      addQuestion('معنی واژه','در واژه‌نامهٔ همین درس، معنی «'+word+'» کدام است؟',meaning,
+        [...(l.meanings||[]).filter((_,j)=>j!==i).map(x=>x[1]),...(l.opposites||[]).flat(),...(l.synonyms||[]).map(x=>x[1])],
+        'در فهرست واژگان درس، «'+word+'» با معنی «'+meaning+'» ثبت شده است؛ پاسخ با واژه‌نامهٔ همین درس تطبیق دارد.',l.id*23+i);
+    });
+    (l.synonyms||[]).forEach(([word,meaning],i)=>{
+      addQuestion('هم‌معنی','کدام عبارت در واژه‌نامهٔ این درس برای «'+word+'» به‌عنوان هم‌معنی یا توضیح نزدیک آمده است؟',meaning,
+        [...(l.synonyms||[]).filter((_,j)=>j!==i).map(x=>x[1]),...(l.meanings||[]).map(x=>x[1]),...(l.opposites||[]).map(x=>x[1])],
+        'در فایل واژگان همین درس، «'+word+'» با عبارت «'+meaning+'» توضیح داده شده است.',l.id*29+i);
+    });
+    (l.opposites||[]).forEach(([word,opposite],i)=>{
+      addQuestion('متضاد','متضاد «'+word+'» طبق فهرست واژه‌های این درس کدام است؟',opposite,
+        [...(l.opposites||[]).filter((_,j)=>j!==i).map(x=>x[1]),...(l.synonyms||[]).map(x=>x[1]),...(l.meanings||[]).map(x=>x[1])],
+        'در جفت واژگانی ثبت‌شده برای این درس، «'+word+'» و «'+opposite+'» معنی مخالف دارند.',l.id*31+i);
+    });
+    (l.families||[]).forEach((family,fi)=>{
+      (family.words||[]).forEach((word,wi)=>{
+        addQuestion('هم‌خانواده','کدام گزینه از هم‌خانواده‌های «'+family.root+'» در این درس است؟',word,
+          [...(l.families||[]).filter((_,j)=>j!==fi).flatMap(x=>x.words||[]),...(l.synonyms||[]).flatMap(x=>x),...(l.opposites||[]).flatMap(x=>x),...(l.meanings||[]).flatMap(x=>x)],
+          'در فهرست هم‌خانواده‌های این درس، «'+word+'» زیر ریشهٔ «'+family.root+'» قرار گرفته است.',l.id*37+fi*11+wi,
+          [family.root,...(family.words||[])]);
+      });
+    });
+    const spellings=[...new Set(l.spellingWords||[])];
+    for(let i=0;quizzes.length<50&&i<spellings.length;i++){
+      const word=spellings[i];
+      addQuestion('بازبینی املا','برای بازبینی املای درس، کدام شکل باید عیناً نوشته شود: «'+word+'»؟',word,spellingVariants(word),
+        'در این تمرین باید همان صورت املایی ثبت‌شده برای «'+word+'» را بدون جابه‌جایی یا حذف حرف بنویسی.',l.id*41+i);
+    }
     return quizzes;
+  }
+  function selectPersianExamQuestions(pool,count){
+    if(!Array.isArray(pool)||pool.length<=count)return (pool||[]).map((q,i)=>({...q,bankIndex:i}));
+    const picked=[],used=new Set();
+    for(let i=0;i<count;i++){
+      const index=Math.min(pool.length-1,Math.floor(i*(pool.length-1)/(count-1)));
+      if(!used.has(index)){used.add(index);picked.push({...pool[index],bankIndex:index});}
+    }
+    return picked;
   }
   const persianBookPageMap={
     1:{start:10,end:15,pdfStart:1,pdfEnd:6},
