@@ -1190,6 +1190,7 @@ async function loadCourseSettings(silent=false){
    return courseSettingsBySubject;
  }catch(error){
    if(!silent&&$('courseSettingsStatus'))$('courseSettingsStatus').textContent='خواندن تنظیمات آنلاین ناموفق بود: '+cloudMessage(error);
+   if(typeof renderSubjectAccessControls==='function')renderSubjectAccessControls();
    renderTeacherCourseOverview();
    if(typeof renderStudentSubjectHub==='function')renderStudentSubjectHub();
    if(typeof renderOtherSubjectPicker==='function')renderOtherSubjectPicker();
@@ -1450,7 +1451,7 @@ $('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، د
 
 
 // Online CSV export is bound after Supabase report data has loaded.
-document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#teacherNav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#teacher .tabpane').forEach(x=>x.classList.toggle('active',x.id==='tab-'+b.dataset.tab));if(b.dataset.tab==='curriculum')renderTeacherChapterList()});
+document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#teacherNav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#teacher .tabpane').forEach(x=>x.classList.toggle('active',x.id==='tab-'+b.dataset.tab));if(b.dataset.tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}});
 
 renderFullTimesTable();
 if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
@@ -3065,6 +3066,8 @@ if(!otherSubjectData.some(subject=>subject.id==='persian')){
   window.__courseCatalogData=Object.fromEntries(otherSubjectData.map(subject=>[subject.id,subject.lessons||[]]));
   window.__courseCatalogData.persian=persianLessons;
   window.__courseCatalogData.dictation=persianLessons;
+  // The first render happens before these catalogs exist; refresh access checkboxes now that all lesson lists are ready.
+  if(typeof renderSubjectAccessControls==='function')renderSubjectAccessControls();
 
 // واژه‌ها از دو فایل بارگذاری‌شدهٔ معلم: فهرست املا و جزوهٔ هم‌معنی/متضاد/هم‌خانواده.
 const persianSourceLexicon={
