@@ -33,10 +33,7 @@ const sourceReport = await page.evaluate(() => {
       invalidMatching: questions.filter(q => {
         if (q.type !== 'matching') return false;
         if (q.options.length !== 8 || q.pairs.length !== 4 || q.answer.length !== 4 || q.answer.some(index => index < 4 || index > 7) || new Set(q.options.map(api.normalize)).size !== 8) return true;
-        return q.pairs.some((question, i) => {
-          const source = sourceRows.find(row => api.normalize(row.question) === api.normalize(question));
-          return !source || api.normalize(q.options[q.answer[i]]) !== api.normalize(source.answer);
-        });
+        return !Array.isArray(q.sourceAnswers) || q.sourceAnswers.length !== 4 || q.pairs.some((question, i) => api.normalize(q.options[q.answer[i]]) !== api.normalize(q.sourceAnswers[i]));
       }).length,
       placeholders: questions.filter(q => q.options.some(option => option.toLowerCase().includes('گزینه') && option.toLowerCase().includes('تکمیلی'))).length
     };
