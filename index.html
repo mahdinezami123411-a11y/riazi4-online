@@ -3532,7 +3532,7 @@ loadExpandedPersianVocabulary();
     return {synced:true};
   }
   function rowToSubjectProgressKey(row){
-    const q=String(row.activity_key||'').match(/^quiz-(\d+)$/);
+    const q=String(row.activity_key||'').match(/^(?:quiz-|practice-tab-|exam-tab-)(\d+)$/);
     return q?String(row.subject)+'-'+row.lesson_id+'-quiz-'+q[1]:String(row.subject)+'-'+row.lesson_id;
   }
   async function loadOtherSubjectProgressFromCloud(){
@@ -3570,8 +3570,8 @@ loadExpandedPersianVocabulary();
       let match=key.match(/^(science|social|gifts)-(\d+)$/);
       if(match){subject=match[1];lessonId=Number(match[2]);activityKey='lesson-check';}
       else{
-        match=key.match(/^(persian|dictation)-(\d+)-quiz-(\d+)$/);
-        if(match){subject=match[1];lessonId=Number(match[2]);activityKey='quiz-'+match[3];}
+        match=key.match(/^(persian|dictation|science|social|gifts)-(\d+)-quiz-(\d+)$/);
+        if(match){subject=match[1];lessonId=Number(match[2]);const isExam=String(rec.activityType||'').startsWith('آزمون');activityKey=(isExam?'exam-tab-':'practice-tab-')+match[3];}
       }
       if(!subject||!lessonId)continue;
       const time=Date.parse(rec.updatedAt||'')||0;
