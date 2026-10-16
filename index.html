@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v7-20261016-teacher-settings">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v8-20261016-persian-restored">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2503,7 +2503,7 @@ loadExpandedPersianVocabulary();
     }
     // Recompute lesson completion from each saved question instead of trusting stale aggregate counters.
     for(const subject of ['persian','dictation']){
-      const lessons=otherSubjectData.find(s=>s.id===subject)?.lessons||[];
+      const lessons=persianLessons;
       for(const lesson of lessons){
         const expected=subject==='dictation'?(lesson.isFreeLesson?1:1):buildPersianLessonQuizzes(lesson).length;
         const saved=Array.from({length:expected},(_,i)=>progress[subject+'-'+lesson.id+'-quiz-'+i]);
@@ -2523,7 +2523,11 @@ loadExpandedPersianVocabulary();
     const progress=readOtherProgress();
     const subjects=[
       {id:'math',name:'ریاضی',icon:'➗',description:'یادآوری، آموزش، تمرین و امتحان',count:'کتاب و مهارت‌های پایه'},
-      ...otherSubjectData.map(s=>({id:s.id,name:s.name,icon:s.icon,description:s.id==='persian'?'املا، معنی واژه، هم‌خانواده، متضاد و دانش زبانی':s.id==='dictation'?'املای واژه‌ها و تمرین دقت نوشتاری':s.id==='science'?'آموزش و تمرین علوم تجربی':s.id==='social'?'مفاهیم و تمرین مطالعات اجتماعی':'آموزش و تمرین هدیه‌های آسمانی',count:fa(s.lessons.length)+' مبحث آغازین'}))
+      ...[
+        {id:'persian',name:'فارسی و نگارش',icon:'📖',lessons:persianLessons},
+        {id:'dictation',name:'املای فارسی',icon:'✍️',lessons:persianLessons},
+        ...otherSubjectData
+      ].map(s=>({id:s.id,name:s.name,icon:s.icon,description:s.id==='persian'?'واژه‌آموزی و دانش زبانی بر پایهٔ کتاب فارسی چهارم':s.id==='dictation'?'تمرین املای واژه‌های منتخب از متن کتاب و فایل واژگان':s.id==='science'?'آموزش و تمرین علوم تجربی':s.id==='social'?'مفاهیم و تمرین مطالعات اجتماعی':'آموزش و تمرین هدیه‌های آسمانی',count:fa(s.lessons.length)+' مبحث آغازین'}))
     ];
     box.innerHTML=subjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const enabled=cfg.courseEnabled!==false;const title=cfg.courseTitle||s.name;const catalog=courseLessonCatalog(s.id);const total=catalog.length;const openCount=catalog.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-student-subject="'+s.id+'" '+(enabled&&openCount?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(title)+'</b><small>'+escapeHtml(s.description)+'</small><small>'+(!enabled?'🔒 کتاب موقتاً بسته است':openCount+' از '+total+' درس باز است')+'</small></button>'}).join('');
     box.querySelectorAll('[data-student-subject]').forEach(b=>b.onclick=()=>{
@@ -2539,7 +2543,12 @@ loadExpandedPersianVocabulary();
   function renderOtherSubjectPicker(){
     const box=$('otherSubjectPicker');if(!box)return;
     const progress=readOtherProgress();
-    box.innerHTML=otherSubjectData.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;const open=s.lessons.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(cfg.courseEnabled!==false&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(s.lessons.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
+    const availableSubjects=[
+      {id:'persian',name:'فارسی و نگارش',icon:'📖',lessons:persianLessons},
+      {id:'dictation',name:'املای فارسی',icon:'✍️',lessons:persianLessons},
+      ...otherSubjectData
+    ];
+    box.innerHTML=availableSubjects.map(s=>{const cfg=courseSettingsBySubject[s.id]||{};const done=s.lessons.filter(l=>progress[s.id+'-'+l.id]?.correct).length;const open=s.lessons.filter(l=>isCourseLessonOpen(s.id,l.id)).length;return '<button type="button" class="subject" data-other-subject="'+s.id+'" '+(cfg.courseEnabled!==false&&open?'':'disabled')+'><span class="subjectIcon">'+s.icon+'</span><b>'+escapeHtml(cfg.courseTitle||s.name)+'</b><small>'+fa(open)+' از '+fa(s.lessons.length)+' درس باز · '+fa(done)+' پاسخ درست ثبت‌شده</small></button>'}).join('');
     box.querySelectorAll('[data-other-subject]').forEach(b=>b.onclick=()=>openOtherSubject(b.dataset.otherSubject));
   }
   function openOtherSubject(id){
@@ -2550,7 +2559,7 @@ loadExpandedPersianVocabulary();
       ?{id:subjectId,name:subjectId==='dictation'?'املای فارسی':'فارسی و نگارش',icon:subjectId==='dictation'?'✍️':'📖',lessons:persianLessons}
       :otherSubjectData.find(s=>s.id===subjectId);
     const baseSubject=catalogSource;selectedOtherLesson=null;if(!baseSubject)return;if(courseSettingsBySubject[subjectId]?.courseEnabled===false){alert('این کتاب فعلاً توسط معلم غیرفعال شده است.');return}
-    selectedOtherSubject={...baseSubject,id:subjectId,lessons:courseLessonCatalog(subjectId).map(item=>{const existing=baseSubject.lessons.find(l=>Number(l.id)===Number(item.id));if(existing)return {...existing,id:Number(existing.id),isFreeLesson:existing.isFreeLesson===true||['persian','dictation'].includes(subjectId)};const custom=(courseSettingsBySubject[subjectId]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));return {id:item.id,title:custom?.title||item.title.replace(/^(?:درس|املای درس)\s*[۰-۹0-9]+\s*[·.]\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(subjectId),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}}})};
+    selectedOtherSubject={...baseSubject,id:subjectId,lessons:courseLessonCatalog(subjectId).map(item=>{const existing=baseSubject.lessons.find(l=>Number(l.id)===Number(item.id));if(existing)return {...existing,id:Number(existing.id),isFreeLesson:existing.isFreeLesson===true};const custom=(courseSettingsBySubject[subjectId]?.customLessons||[]).find(l=>Number(l.id)===Number(item.id));return {id:item.id,title:custom?.title||item.title.replace(/^(?:درس|املای درس)\s*[۰-۹0-9]+\s*[·.]\s*/,''),page:custom?.page||item.page||'',content:'',isFreeLesson:['persian','dictation'].includes(subjectId),spellingWords:[],meanings:[],synonyms:[],opposites:[],families:[],wordTopic:{title:'واژه‌آموزی از متن درس',source:'متن انتخابی کلاس',explain:'متن درس و واژه‌های منتخب را با کتاب بررسی کن.',examples:[]},languageTopic:{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های همین درس برای تمرین دانش زبانی استفاده کن.',examples:[]}}})};
     activeStudentSubject=selectedOtherSubject.id;$('otherSubjectPicker').classList.add('hidden');
     $('otherSubjectPageHeading').textContent=selectedOtherSubject.icon+' '+selectedOtherSubject.name;
     $('otherSubjectLessons').classList.remove('hidden');$('otherSubjectLessonBody').classList.add('hidden');
