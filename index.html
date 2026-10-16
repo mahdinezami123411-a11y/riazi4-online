@@ -808,6 +808,18 @@ a{color:#d7ff76}
 .teacher-report-metric{border:1px solid #425982!important;background:linear-gradient(145deg,#222f52,#17223e)!important}
 .teacher-report-metric strong{color:#8bf0e5!important}
 @media(max-width:560px){.teacher-topic-row{grid-template-columns:1fr auto}.teacher-topic-row .progress-track{grid-column:1/-1;grid-row:2}.teacher-topic-row button{grid-column:2;grid-row:1}}
+
+/* مسیر کهکشانی فصل‌ها؛ ناوبری آموزشی، نه سیستم نشان و امتیاز */
+.chapter-planet-route{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;position:relative;margin:12px 0}
+.chapter-planet-node{min-width:0;position:relative;border:1px solid #3f527a;border-radius:16px;background:linear-gradient(150deg,#202a4b,#151e37);padding:12px 7px;text-align:center;box-shadow:0 4px 0 #0b1228!important;color:#eff5ff!important}
+.chapter-planet-orb{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 7px;border:2px solid #7387ce;border-radius:50%;font-size:25px;background:radial-gradient(circle at 30% 28%,#c0d8ff,#5e63c9 48%,#28295b 78%);box-shadow:inset -6px -5px 10px #10152eaa,0 0 16px #7d8bff20}
+.chapter-planet-node:nth-child(3n+2) .chapter-planet-orb{background:radial-gradient(circle at 30% 28%,#d5fff5,#369caa 52%,#173955 80%);border-color:#6fe6df}
+.chapter-planet-node:nth-child(3n) .chapter-planet-orb{background:radial-gradient(circle at 30% 28%,#ffe4bf,#c76e8c 50%,#53294e 80%);border-color:#eca2d3}
+.chapter-planet-node b{display:block;font-size:12px;color:#f4f6ff;line-height:1.7}
+.chapter-planet-node small{display:block;font-size:10px;color:#afc1e1;line-height:1.7}
+.chapter-planet-node.active-chapter{border-color:#68eadf;box-shadow:0 0 0 2px #68eadf1c,0 4px 0 #0b1228!important}
+.chapter-planet-node.needs-review .chapter-planet-orb{border-color:#ffc47a;box-shadow:0 0 0 3px #ffc47a13,0 0 17px #ffc47a25}
+@media(max-width:560px){.chapter-planet-route{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.chapter-planet-node{padding:10px 6px}.chapter-planet-orb{width:47px;height:47px;font-size:23px}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -848,7 +860,7 @@ a{color:#d7ff76}
 <div id="studentDashboard" class="card progress-dashboard">
   <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
   <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
-  <h3>مسیر یادگیری هفت فصل ریاضی</h3><div id="chapterProgressMap" class="chapter-progress-map"></div>
+  <h3>🪐 مسیر کهکشانی ریاضی</h3><p class="muted">هر سیاره یک فصل است. روی هر سیاره بزن تا مستقیم به تمرین همان فصل بروی؛ هیچ امتیاز یا نشان رقابتی در این مسیر وجود ندارد.</p><div id="chapterPlanetRoute" class="chapter-planet-route"></div><h3 style="margin-top:16px">جزئیات پیشرفت فصل‌ها</h3><div id="chapterProgressDetails" class="chapter-progress-map"></div>
   <p class="muted">نتایج آنلاین حساب دانش‌آموز همگام‌سازی می‌شوند؛ اگر تمرینی آفلاین انجام شود، تا زمان اتصال در همین دستگاه می‌ماند.</p>
 
 </div>
@@ -1821,12 +1833,13 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const total=studentProgress.attempts||0,correct=studentProgress.correct||0,pct=total?Math.round(correct/total*100):0;
     $('studentWelcome').textContent='آماده‌ای '+(activeStudentName||'دانش‌آموز چهارمی')+'؟ اینجا می‌توانی پیشرفت واقعی خودت را در همهٔ کتاب‌ها ببینی.';
     $('progressAttempts').textContent=fa(total);$('progressCorrect').textContent=fa(correct);$('progressPercent').textContent=fa(pct)+'٪';
-    $('chapterProgressMap').innerHTML=chapters.filter(c=>c.id<=7).map(c=>{
+    $('chapterProgressDetails').innerHTML=chapters.filter(c=>c.id<=7).map(c=>{
       const st=studentProgress.byChapter[String(c.id)]||{attempts:0,correct:0};
       const cp=st.attempts?Math.round(st.correct/st.attempts*100):0;
       const mastered=st.attempts>=5&&cp>=80;
       return '<div class="progress-chapter"><span class="pc-icon">'+(mastered?'🪐':'🧭')+'</span><div><b>فصل '+fa(c.id)+': '+escapeHtml(c.title)+'</b><small>'+fa(st.correct)+' پاسخ درست از '+fa(st.attempts)+' تلاش'+(mastered?' · عملکرد پایدار':'')+'</small><div class="progress-track"><span style="width:'+cp+'%"></span></div></div></div>';
     }).join('');
+    renderPlanetaryChapterRoute();
     renderUnifiedLearningReport();
   }
   $('studentEnter').onclick=()=>{show('studentNamePage');$('studentLoginError').classList.add('hidden');$('studentNameInput').value='';$('studentPasswordInput').value='';setTimeout(()=>$('studentNameInput').focus(),80)};
@@ -4688,6 +4701,23 @@ const persianBookPageMap={
     answerRows.forEach(r=>{if(!r.student_id)return;if(!byStudent.has(r.student_id))byStudent.set(r.student_id,{total:0,correct:0});const g=byStudent.get(r.student_id);g.total++;if(r.is_correct)g.correct++});
     const weakStudents=[...byStudent.values()].filter(g=>g.total>=3&&g.correct/g.total<.6).length;
     grid.innerHTML='<div class="metric teacher-report-metric"><span class="muted">دانش‌آموزان دارای پاسخ</span><strong>'+fa(byStudent.size)+'</strong></div><div class="metric teacher-report-metric"><span class="muted">درستی پاسخ‌های قابل‌تحلیل</span><strong>'+(pct===null?'—':fa(pct)+'٪')+'</strong></div><div class="metric teacher-report-metric"><span class="muted">نیازمند بررسی بیشتر (۳ پاسخ یا بیشتر)</span><strong>'+fa(weakStudents)+'</strong></div>';
+  }
+
+
+  function renderPlanetaryChapterRoute(){
+    const box=$('chapterPlanetRoute');if(!box)return;
+    box.innerHTML=chapters.filter(c=>c.id<=7).map(chapter=>{
+      const stat=studentProgress.byChapter[String(chapter.id)]||{attempts:0,correct:0};
+      const attempts=Number(stat.attempts)||0,correct=Number(stat.correct)||0;
+      const percent=attempts?Math.round(correct/attempts*100):0;
+      const status=attempts===0?'هنوز آغاز نشده':attempts<3?'در حال یادگیری':percent<70?'پیشنهاد مرور':'عملکرد خوب';
+      const cls=(attempts>0&&attempts>=2&&percent<70?' needs-review':'')+(activeChapter===chapter.id?' active-chapter':'');
+      return '<button type="button" class="chapter-planet-node'+cls+'" data-planet-chapter="'+chapter.id+'" aria-label="رفتن به تمرین فصل '+fa(chapter.id)+'"><span class="chapter-planet-orb">'+['🌎','🪐','🌙','☄️','🔵','🟣','🌌'][chapter.id-1]+'</span><b>فصل '+fa(chapter.id)+'</b><small>'+escapeHtml(chapter.title)+'</small><small>'+status+(attempts?' · '+fa(percent)+'٪':'')+'</small></button>';
+    }).join('');
+    box.querySelectorAll('[data-planet-chapter]').forEach(button=>button.onclick=()=>{
+      const id=Number(button.dataset.planetChapter);
+      startFocusedPractice('math',id);
+    });
   }
 
 })();
