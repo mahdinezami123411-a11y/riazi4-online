@@ -159,7 +159,8 @@ for (const subject of ['persian','science','social','gifts']) {
 assert.equal(lessonUi.allBookMapCount, ['math','persian','science','social','gifts'].reduce((sum,subject)=>sum+lessonUi.catalogCounts[subject],0), 'نقشهٔ پروفایل باید سیاره‌های هر پنج کتاب را داشته باشد');
 assert.equal(lessonUi.placement.homeInsideProfile, false, 'صفحهٔ انتخاب درس نباید داخل بخش پنهان پروفایل باشد');
 assert.equal(lessonUi.placement.reportInsideProfile, false, 'کارنامه باید جدا از پروفایل باشد');
-assert.equal(lessonUi.placement.mapInsideProfile, true, 'نقشهٔ پیشرفت باید در پروفایل نمایش داده شود');
+assert.equal(lessonUi.placement.mapInsideHome, true, 'نقشهٔ کامل پیشرفت باید در صفحهٔ خانه باقی بماند');
+assert.equal(lessonUi.placement.profileChartInsideProfile, true, 'نمودار خلاصهٔ پیشرفت باید در پروفایل نمایش داده شود');
 assert.equal(lessonUi.reportNav, true, 'بخش کارنامه باید در نوار پیمایش وجود داشته باشد');
 
 assert.deepEqual(pageErrors, [], 'برنامه هنگام اجرا خطای JavaScript داد: ' + pageErrors.join(' | '));
