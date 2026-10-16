@@ -3419,12 +3419,13 @@ function getSourceQuestionBankQuizzes(subjectId,lessonId){
  for(let start=0;start+3<matchable.length;start+=4){
   const group=matchable.slice(start,start+4);
   if(new Set(group.map(qa=>sourceQuestionNormalize(qa.answer))).size!==4||new Set(group.map(qa=>sourceQuestionNormalize(qa.question))).size!==4)continue;
-  const options=shuffleSourceValues(group.map(qa=>String(qa.answer||'').trim()));
+  const left=group.map(qa=>String(qa.question||'')),right=shuffleSourceValues(group.map(qa=>String(qa.answer||'').trim()));
+  const options=[...left,...right];
   quizzes.push({
    kind:'جورکردنی پرسش و پاسخ',type:'matching',
    question:'هر پرسش را با پاسخ درست در ستون مقابل جور کن.',
-   pairs:group.map(qa=>String(qa.question||'')),options,
-   answer:group.map(qa=>options.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(qa.answer))),
+   pairs:left,options,
+   answer:left.map((_,i)=>right.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(group[i].answer))+4),
    analysis:'هر ردیف باید با پاسخ همان پرسش جور شود. پس از ثبت پاسخ، جفت‌های صحیح نمایش داده می‌شوند.',
    sourceIndex:'matching-'+start
   });
@@ -3453,8 +3454,8 @@ function buildPersianMatchingQuizzes(lesson){
  for(const set of sets){
   const group=set.pairs.filter(p=>p.left&&p.right).slice(0,4);
   if(group.length!==4||new Set(group.map(p=>sourceQuestionNormalize(p.left))).size!==4||new Set(group.map(p=>sourceQuestionNormalize(p.right))).size!==4)continue;
-  const options=shuffleSourceValues(group.map(p=>p.right));
-  return [{kind:set.kind,type:'matching',question:'هر مورد را با معنی یا واژهٔ مرتبط در ستون مقابل جور کن.',pairs:group.map(p=>p.left),options,answer:group.map(p=>options.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(p.right))),analysis:'جفت‌ها از واژه‌نامه و فهرست واژگان همین درس انتخاب شده‌اند.'}];
+  const right=shuffleSourceValues(group.map(p=>p.right)),options=[...group.map(p=>p.left),...right];
+  return [{kind:set.kind,type:'matching',question:'هر مورد را با معنی یا واژهٔ مرتبط در ستون مقابل جور کن.',pairs:group.map(p=>p.left),options,answer:group.map(p=>right.findIndex(v=>sourceQuestionNormalize(v)===sourceQuestionNormalize(p.right))+4),analysis:'جفت‌ها از واژه‌نامه و فهرست واژگان همین درس انتخاب شده‌اند.'}];
  }
  return [];
 }
