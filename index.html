@@ -2859,7 +2859,8 @@ loadExpandedPersianVocabulary();
     const practiceAllowed=courseSettingsBySubject[progressPrefix]?.allowPractice!==false;
     const rawQuizzes=isDictationOnly?(l.isFreeLesson?buildPersianLessonQuizzes(l):[{kind:'املای واژه',...(l.spellingCheck||{})}]):buildPersianLessonQuizzes(l);
     const quizzes=(Array.isArray(rawQuizzes)?rawQuizzes:[]).filter(q=>q&&Array.isArray(q.options)&&q.options.length>=2&&Number.isInteger(Number(q.answer))&&Number(q.answer)>=0&&Number(q.answer)<q.options.length);
-    const examQuizzes=selectPersianExamQuestions(quizzes,Math.min(15,quizzes.length));
+    const examAllowed=courseSettingsBySubject[progressPrefix]?.allowExam!==false;
+    const examQuizzes=selectPersianExamQuestions(practiceAllowed&&examAllowed?quizzes:[],Math.min(15,quizzes.length));
     if(!practiceAllowed)quizzes.length=0;
     content.innerHTML='<div id="lessonBookSection"></div>'+lessonTeachingBlock+
       (isDictationOnly?
