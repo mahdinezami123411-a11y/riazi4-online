@@ -3269,10 +3269,10 @@ function renderOtherSubjectPicker(){
   function sourceQuestionBankSubjectRows(subjectId){
     const bank=sourceQuestionBanks&&sourceQuestionBanks[subjectId];
     if(!bank||typeof bank!=='object')return [];
-    return Object.entries(bank).filter(([key,value])=>/^\\d+$/.test(key)&&Array.isArray(value)).flatMap(([lessonId,rows])=>rows.map((q,index)=>({...q,lessonId:Number(lessonId),sourceIndex:index})));
+    return Object.entries(bank).filter(([key,value])=>/^\d+$/.test(key)&&Array.isArray(value)).flatMap(([lessonId,rows])=>rows.map((q,index)=>({...q,lessonId:Number(lessonId),sourceIndex:index})));
   }
   function sourceQuestionNormalize(value){
-    return String(value??'').toLocaleLowerCase('fa').replace(/[\\s\\u200c\\u200f]+/g,'').replace(/[؛،,.!?؟:()«»"']/g,'').trim();
+    return String(value??'').toLocaleLowerCase('fa').replace(/[\s\u200c\u200f]+/g,'').replace(/[؛،,.!?؟:()«»"']/g,'').trim();
   }
   function shuffleSourceValues(values){
     const out=[...values];
