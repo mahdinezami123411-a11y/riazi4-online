@@ -31,8 +31,16 @@ jobs:
           npm init -y >/dev/null
           npm install --no-audit --no-fund playwright
           npx playwright install --with-deps chromium
+      - name: Instrument temporary test page
+        run: |
+          node tests/instrument-test-page.mjs index.html "$RUNNER_TEMP/quiz-site/index.html"
+          mkdir -p "$RUNNER_TEMP/quiz-site/assets"
+          cp assets/source-question-banks.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
+          cp assets/persian-vocabulary.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
+          cp sw.js manifest.webmanifest "$RUNNER_TEMP/quiz-site/"
       - name: Run browser checks
         run: |
+          cd "$RUNNER_TEMP/quiz-site"
           python3 -m http.server 8765 > "$RUNNER_TEMP/quiz-http.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/quiz-http.pid"
           cd "$RUNNER_TEMP/quiz-test"
