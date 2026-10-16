@@ -848,7 +848,7 @@ a{color:#d7ff76}
 @media(max-width:560px){.book-planet-route-grid,.chapter-planet-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.chapter-planet-node{min-height:126px;padding:8px 5px}.book-planet-section{padding:8px}}
 
 /* پروفایل فقط یک نمای نموداری از پیشرفت نگه می‌دارد؛ داشبورد کامل در خانه است */
-#profileProgressMount .profile-progress-chart{display:grid;gap:10px;margin-top:10px}
+#profileProgressMount .profile-progress-chart,#allBooksProgressMount .profile-progress-chart{display:grid;gap:10px;margin-top:10px}
 .profile-progress-chart .profile-progress-row{display:grid;grid-template-columns:minmax(95px,1fr) minmax(100px,1.8fr) 44px;gap:9px;align-items:center;padding:9px 10px;border:1px solid #3c5077;border-radius:12px;background:linear-gradient(145deg,#202b4a,#151e35)}
 .profile-progress-chart .profile-progress-label{color:#eef4ff;font-size:12px;font-weight:800}
 .profile-progress-chart .profile-progress-track{height:10px;border-radius:99px;background:#0b1328;border:1px solid #3b4c72;overflow:hidden}
@@ -876,7 +876,7 @@ a{color:#d7ff76}
 <section id="student" class="hidden">
 <div class="card student-identity-card"><div class="row"><h2>🎒 محیط دانش‌آموز</h2><button class="outline" id="studentBack">خروج</button></div><p class="muted">از نوار پایین برای انتخاب کتاب، یادگیری، تمرین، کارنامه یا پروفایل استفاده کن.</p></div>
 <nav id="studentAppNav" class="student-app-nav" aria-label="بخش‌های برنامه">
-<button type="button" data-app-view="home" class="active"><span>📚</span><small>انتخاب درس</small></button>
+<button type="button" data-app-view="home" class="active"><span>📚</span><small>انتخاب کتاب</small></button>
 <button type="button" data-app-view="reminders"><span>🧠</span><small>یادآوری</small></button>
 <button type="button" data-app-view="learn"><span>📘</span><small>آموزش</small></button>
 <button type="button" data-app-view="practice"><span>✏️</span><small>تمرین</small></button>
@@ -909,8 +909,8 @@ a{color:#d7ff76}
 <div id="studentDashboard" class="card progress-dashboard">
   <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
   <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
-  <h3>🌌 نقشهٔ کهکشانی کتاب‌ها</h3><p class="muted">هر سیاره یک فصل یا درس است. سیاره‌های قفل‌شده هنوز در دسترس نیستند؛ سیاره‌های دیگر را باز کن تا آموزش یا تمرین همان درس را ببینی.</p><div id="chapterPlanetRoute" class="all-books-planet-map"></div>
-  <p class="muted">نتایج آنلاین حساب دانش‌آموز همگام‌سازی می‌شوند؛ اگر تمرینی آفلاین انجام شود، تا زمان اتصال در همین دستگاه می‌ماند.</p>
+  <h3>📚 پیشرفت در همهٔ کتاب‌ها</h3><p class="muted">برای هر کتاب، تعداد پاسخ‌ها، پاسخ‌های درست و درصد پیشرفت ثبت‌شده را ببین.</p><div id="allBooksProgressMount" aria-live="polite"><p class="muted">در حال آماده‌سازی گزارش پیشرفت کتاب‌ها…</p></div>
+  <p class="muted">این گزارش بر اساس پاسخ‌هایی است که در هر کتاب ثبت کرده‌ای؛ با انجام تمرین‌های بیشتر، آمار تو به‌روز می‌شود.</p>
 
 </div>
 </div>
@@ -977,7 +977,7 @@ a{color:#d7ff76}
 <section class="learn-section item"><h3>۴. جمع عددهای دو، سه و چهاررقمی</h3><p>برای جمع، رقم‌های هم‌ارزش را زیر هم می‌نویسیم: یکان زیر یکان، دهگان زیر دهگان، صدگان زیر صدگان و هزارگان زیر هزارگان. از ستون یکان شروع می‌کنیم. اگر حاصل یک ستون ۱۰ یا بیشتر شد، ده‌تایی را به ستون بعدی می‌بریم.</p><div class="concept-grid"><div class="concept-box"><b>جمع دورقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۷</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۵</span></div><div class="stack-rule"></div><div class="stack-result">۴۲</div></div><p class="muted">از یکان شروع می‌کنیم: ۷+۵=۱۲؛ ۲ را می‌نویسیم و ۱ دهگان را به ستون بعد می‌بریم.</p></div><div class="concept-box"><b>جمع سه‌رقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۳۳۴</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۵۶۸</span></div><div class="stack-rule"></div><div class="stack-result">۹۰۲</div></div><p class="muted">یکان زیر یکان، دهگان زیر دهگان و صدگان زیر صدگان قرار می‌گیرد.</p></div><div class="concept-box"><b>جمع چهاررقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۳۴۵</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۲۸۷</span></div><div class="stack-rule"></div><div class="stack-result">۳۶۳۲</div></div><p class="muted">در هر ستون، اگر حاصل ۱۰ یا بیشتر شد، رقم یکان را می‌نویسیم و دهگان را انتقال می‌دهیم.</p></div><div class="concept-box"><b>یادت باشد</b><p>عددها را مرتب بنویس و رقم‌های هم‌ارزش را دقیقاً زیر هم قرار بده. از ستون یکان شروع کن.</p></div></div></section>
 <section class="learn-section item"><h3>۵. تمرین جمع دورقمی، سه‌رقمی و چهاررقمی</h3><label class="field" for="additionDigits">نوع جمع</label><select id="additionDigits"><option value="2">دو رقمی</option><option value="3">سه رقمی</option><option value="4">چهار رقمی</option></select><button id="newAddition" style="width:100%;margin-top:9px">➕ سؤال جمع جدید</button><div id="additionBox" class="item hidden"><div id="additionQuestion" class="stack-sum stack-question" aria-live="polite"></div><input id="additionAnswer" inputmode="numeric" placeholder="حاصل جمع را بنویس"><button id="checkAddition" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="additionFeedback" class="notice hidden"></div></div></section>
 </div>
-<div id="bookView" class="card hidden"><div class="row"><h2>📘 کتاب ریاضی چهارم</h2><button class="outline" id="backToReminders">بازگشت به یادآوری</button></div><div class="book-tabs"><button class="active" data-book-tab="file">📄 فایل کتاب</button><button data-book-tab="chapters">📚 توضیح هر فصل</button><button data-book-tab="practice">✏️ تمرین کتاب</button><button data-book-tab="exam">📝 امتحان</button></div>
+<div id="bookView" class="card hidden"><div class="row"><h2>📘 کتاب ریاضی چهارم</h2><button class="outline" id="backToReminders">بازگشت به یادآوری</button></div><div class="book-tabs"><button class="active" data-book-tab="file">📄 فایل کتاب</button><button data-book-tab="chapters">📚 توضیح هر فصل</button></div>
 <div id="booktab-file" class="tabpane active"><h3>فایل کتاب ریاضی چهارم</h3><p class="muted">فایل PDF کامل کتاب ریاضی چهارم داخل همین برنامه قرار دارد و در همین صفحه نمایش داده می‌شود؛ نیازی به لینک جداگانه نیست.</p><div id="studentBookStatus" class="notice">کتاب ریاضی چهارم به‌صورت فایل PDF داخل همین برنامه قرار دارد و در این بخش نمایش داده می‌شود.</div><div id="studentPdfFrame"></div></div>
 <div id="booktab-chapters" class="tabpane"><h3>آموزش فصل‌های کتاب ریاضی چهارم</h3><p class="muted" id="chapterPickerIntro">برای دیدن آموزش، یک فصل را انتخاب کن. عنوان‌ها و ترتیب فصل‌ها از فهرست کتاب ریاضی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ برداشته شده‌اند.</p><div class="chapter-grid" id="chapterPicker"></div></div>
 <div id="booktab-practice" class="tabpane"><h3>🎯 میدان تمرین فصل‌به‌فصل</h3><p class="muted" id="practiceDescription">یک فصل را انتخاب کن و سؤال‌های همان فصل را تمرین کن؛ همچنین می‌توانی سؤال‌های نمونهٔ نوبت اول یا دوم را تک‌به‌تک پاسخ بدهی.</p><label class="field" for="practiceSetMode">نوع تمرین</label><select id="practiceSetMode"><option value="chapter">تمرین یک فصل</option><option value="term1">تمرین نمونه نوبت اول · ۱۰ سؤال</option><option value="term2">تمرین نمونه نوبت دوم · ۱۰ سؤال</option></select>
@@ -1924,8 +1924,8 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   function renderStudentDashboard(){
     if(!$('studentDashboard'))return;
-    $('studentWelcome').textContent='آماده‌ای '+(activeStudentName||'دانش‌آموز چهارمی')+'؟ مسیر یادگیری همهٔ کتاب‌ها را از این نقشه دنبال کن.';
-    renderPlanetaryChapterRoute();
+    $('studentWelcome').textContent='آماده‌ای '+(activeStudentName||'دانش‌آموز چهارمی')+'؟ پیشرفتت را در همهٔ کتاب‌ها دنبال کن.';
+    if(typeof window.__renderAllBooksProgressDashboard==='function')window.__renderAllBooksProgressDashboard();
     renderUnifiedLearningReport();
   }
   $('studentEnter').onclick=()=>{show('studentNamePage');$('studentLoginError').classList.add('hidden');$('studentNameInput').value='';$('studentPasswordInput').value='';setTimeout(()=>$('studentNameInput').focus(),80)};
@@ -4932,8 +4932,8 @@ const persianBookPageMap={
   renderAreaArrayLab();
 
 
-  function renderProfileProgressChart(){
-    const mount=$('profileProgressMount');if(!mount)return;
+  function renderProfileProgressChart(mountId='profileProgressMount',includeSummary=true){
+    const mount=$(mountId);if(!mount)return;
     const local=readOtherProgress();
     const subjects=[
       {id:'math',name:'ریاضی',keys:[]},
@@ -4955,8 +4955,10 @@ const persianBookPageMap={
       return {...subject,attempts,correct,pct:attempts?Math.round(correct/attempts*100):0};
     });
     const total=stats.reduce((n,s)=>n+s.attempts,0),totalCorrect=stats.reduce((n,s)=>n+s.correct,0);
-    mount.innerHTML='<div class="progress-summary"><div><b>'+fa(total)+'</b><span>تلاش در همهٔ کتاب‌ها</span></div><div><b>'+fa(totalCorrect)+'</b><span>پاسخ درست</span></div><div><b>'+(total?fa(Math.round(totalCorrect/total*100))+'٪':'—')+'</b><span>درصد درستی</span></div></div><div class="profile-progress-chart" aria-label="نمودار پیشرفت بر اساس کتاب">'+stats.map(item=>'<div class="profile-progress-row"><div><div class="profile-progress-label">'+item.name+'</div><div class="profile-progress-caption">'+fa(item.correct)+' درست از '+fa(item.attempts)+' پاسخ</div></div><div class="profile-progress-track" role="progressbar" aria-label="'+item.name+'" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+item.pct+'"><div class="profile-progress-fill" style="width:'+item.pct+'%"></div></div><div class="profile-progress-pct">'+(item.attempts?fa(item.pct)+'٪':'—')+'</div></div>').join('')+'</div><p class="muted">این نمودار فقط از پاسخ‌های ثبت‌شده ساخته می‌شود؛ خط خالی یعنی هنوز داده‌ای برای آن کتاب ثبت نشده است.</p>';
+    const aggregate=includeSummary?'<div class="progress-summary"><div><b>'+fa(total)+'</b><span>تلاش در همهٔ کتاب‌ها</span></div><div><b>'+fa(totalCorrect)+'</b><span>پاسخ درست</span></div><div><b>'+(total?fa(Math.round(totalCorrect/total*100))+'٪':'—')+'</b><span>درصد درستی</span></div></div>':'';
+    mount.innerHTML=aggregate+'<div class="profile-progress-chart" aria-label="نمودار پیشرفت بر اساس کتاب">'+stats.map(item=>'<div class="profile-progress-row"><div><div class="profile-progress-label">'+item.name+'</div><div class="profile-progress-caption">'+fa(item.correct)+' درست از '+fa(item.attempts)+' پاسخ</div></div><div class="profile-progress-track" role="progressbar" aria-label="'+item.name+'" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+item.pct+'"><div class="profile-progress-fill" style="width:'+item.pct+'%"></div></div><div class="profile-progress-pct">'+(item.attempts?fa(item.pct)+'٪':'—')+'</div></div>').join('')+'</div><p class="muted">این نمودار فقط از پاسخ‌های ثبت‌شده ساخته می‌شود؛ خط خالی یعنی هنوز داده‌ای برای آن کتاب ثبت نشده است.</p>';
   }
+  window.__renderAllBooksProgressDashboard=()=>renderProfileProgressChart('allBooksProgressMount',false);
 
 })();
 
