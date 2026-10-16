@@ -412,6 +412,15 @@ option{background:#111a32!important;color:#f1f5ff!important}
 @media(prefers-reduced-motion:reduce){button{transition:none!important}}
 
 
+/* نمایش جورکردنی‌ها در تمرین و آزمون */
+.question-matching-list,.other-matching-list{display:grid;gap:9px;margin:12px 0}
+.question-matching-row,.other-matching-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(135px,42%);gap:10px;align-items:center;padding:10px;border:1px solid var(--line,#55466f);border-radius:12px;background:rgba(255,255,255,.035)}
+.question-matching-row select,.other-matching-row select{min-width:0;width:100%;padding:9px;line-height:1.5}
+.other-matching-left{overflow-wrap:anywhere}
+.question-matching-row select.correct,.other-matching-row select.correct{border-color:#32c78a}
+.question-matching-row select.wrong,.other-matching-row select.wrong{border-color:#ff6688}
+@media(max-width:560px){.question-matching-row,.other-matching-row{grid-template-columns:1fr}.question-matching-row select,.other-matching-row select{width:100%}}
+
 /* خوانایی قطعی پاسخ صحیح و تحلیل‌های طولانی روی صفحهٔ گوشی */
 .visual-answer-summary{align-items:flex-start!important;flex-wrap:wrap!important}
 .visual-answer-summary span{flex:0 0 auto!important;max-width:100%!important}
@@ -845,7 +854,10 @@ function buildQuestionSpecificExplanation(q,rightAnswer,providedExplanation){
  return 'این سؤال از مبحث «'+skill+'» است. خواستهٔ دقیق آن این است: «'+prompt+'». اول اطلاعات لازم را از متن جدا کن، بعد قانون مربوط به '+skill+' را به کار ببر و در پایان نتیجه را دوباره با خواستهٔ سؤال بسنج. '+(nums.length?'عددهای مهم: '+nums.slice(0,5).map(fa).join('، ')+'. ':'')+(opts.length?'گزینهٔ درست «'+String(keyOption||ans)+'» است. ':'')+'پاسخ صحیح: '+ans+'.';
 }
 function renderQuestionFeedback(q,correct,rightAnswer,explanation){
- let answer=String(rightAnswer??'').trim();
+ let answer;
+ if(q?.type==='matching'&&Array.isArray(rightAnswer)&&Array.isArray(q.opts)&&q.opts.length>=8){
+  answer=q.opts.slice(0,4).map((left,i)=>left+' ↔ '+String(rightAnswer[i]??'')).join('؛ ');
+ }else answer=String(rightAnswer??'').trim();
  if(!answer && typeof correctAnswerText==='function')answer=String(correctAnswerText(q)||'').trim();
  if(!answer && q?.correct_answer!==undefined)answer=String(q.correct_answer);
  if(!answer && q?.answer_text!==undefined)answer=String(q.answer_text);
@@ -998,7 +1010,7 @@ function correctAnswerText(q){if(q.type==='input')return (q.answers||[q.answer])
 function newBookPractice(){const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;$('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';if(!filtered.length){currentPractice=null;$('bookPracticeSkill').textContent='این انتخاب سؤال ندارد';$('bookPracticeQuestion').textContent='برای این فصل و فیلتر انتخاب‌شده سؤالی پیدا نشد. فیلتر «همه نوع‌ها» یا «همه سطح‌ها» را انتخاب کن.';$('bookPracticeOptions').innerHTML='';$('bookPracticeOptions').classList.add('hidden');$('bookPracticeAnswer').classList.add('hidden');updatePracticeStats();return}
  let fresh=filtered.filter(q=>!practiceSeen.has(q.q));if(!fresh.length){practiceSeen.clear();fresh=filtered.slice()}const chosen=fresh[Math.floor(Math.random()*fresh.length)];practiceSeen.add(chosen.q);currentPractice=shuffledQuestion(chosen);const practiceMode=$('practiceSetMode')?.value||'chapter';const practiceScope=practiceMode==='term1'?'تمرین نوبت اول':practiceMode==='term2'?'تمرین نوبت دوم':`فصل ${faDigits($('bookPracticeTopic').value)}`;$('bookPracticeSkill').textContent=`${practiceScope} · ${currentPractice.skill||'تمرین ریاضی'} · ${questionTypeLabel(currentPractice)}${practiceMode==='chapter'?' · '+({easy:'آسان',medium:'متوسط',hard:'چالشی'})[currentPractice.difficulty||'medium']:''}`;$('bookPracticeQuestion').textContent=currentPractice.q;renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats()}
 $('newBookPractice').onclick=newBookPractice;$('nextBookPractice').onclick=newBookPractice;
-$('checkBookPractice').onclick=()=>{if(!currentPractice||practiceWasChecked)return;let response=(currentPractice.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}practiceWasChecked=true;practiceAsked++;const ok=isQuestionCorrect(currentPractice,response);if(ok)practiceCorrect++;const f=$('bookPracticeFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(currentPractice,ok,correctAnswerText(currentPractice),currentPractice.why||'');f.style.background='transparent';f.style.color=ok?'#126a49':'#72541a';$('checkBookPractice').textContent=ok?'✅ درست بود!':'📘 نکته را مرور کن';$('checkBookPractice').disabled=true;updatePracticeStats()};
+$('checkBookPractice').onclick=()=>{if(!currentPractice||practiceWasChecked)return;let response=(currentPractice.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(currentPractice.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(currentPractice.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}practiceWasChecked=true;practiceAsked++;const ok=isQuestionCorrect(currentPractice,response);if(ok)practiceCorrect++;const f=$('bookPracticeFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(currentPractice,ok,correctAnswerText(currentPractice),currentPractice.why||'');f.style.background='transparent';f.style.color=ok?'#126a49':'#72541a';$('checkBookPractice').textContent=ok?'✅ درست بود!':'📘 نکته را مرور کن';$('checkBookPractice').disabled=true;updatePracticeStats()};
 $('bookPracticeTopic').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
 $('practiceTypeFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
 $('practiceDifficultyFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
@@ -1430,7 +1442,7 @@ function finishBookExam(){const score=Math.round((examScore/Math.max(1,examItems
 $('startBookExam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('annual')};
 $('startTerm1Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term1')};
 $('startTerm2Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term2')};
-$('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}if(!examAnswered){const q=examItems[examIndex],response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}const correct=isQuestionCorrect(q,response);if(correct)examScore++;const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,correct,correctAnswerText(q),q.why||q.explanation||'');f.style.background='transparent';f.style.color=correct?'#126a49':'#ffcc7a';$('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;examAnswered=true;$('examSubmit').textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';return}if(examIndex<examItems.length-1){examIndex++;$('examAnswer').disabled=false;paintExamQuestion()}else{finishBookExam()}};
+$('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}if(!examAnswered){const q=examItems[examIndex],response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(q.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(q.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}const correct=isQuestionCorrect(q,response);if(correct)examScore++;const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,correct,correctAnswerText(q),q.why||q.explanation||'');f.style.background='transparent';f.style.color=correct?'#126a49':'#ffcc7a';$('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;examAnswered=true;$('examSubmit').textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';return}if(examIndex<examItems.length-1){examIndex++;$('examAnswer').disabled=false;paintExamQuestion()}else{finishBookExam()}};
 
 
 // Online CSV export is bound after Supabase report data has loaded.
@@ -2051,7 +2063,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function answerForServer(q,response){
     if((q?.type||'mc')==='input')return String(response??'').trim();
     if(q?.type==='matching')return Array.isArray(response)?response.map(i=>Number.isInteger(i)&&i>=4?String(q.opts?.[i]??''):''):[];
-    if(q?.type==='multi')return Array.isArray(response)?response.map(i=>String(q.opts?.Number(i)]??'')) : [];
+    if(q?.type==='multi')return Array.isArray(response)?response.map(i=>String(q.opts?.[Number(i)]??'')):[];
     return Number.isInteger(response)?String(q.opts?.[response]??''):String(response??'');
   }
   async function submitServerAnswer(q,response,source,groupId=null){
@@ -2063,7 +2075,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   $('checkBookPractice').onclick=async function(){
     if(!currentPractice||practiceWasChecked)return;
     const response=(currentPractice.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;
-    if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
+    if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(currentPractice.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(currentPractice.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
     setBusy(this,true,'در حال بررسی پاسخ…');
     try{
       const mode=$('practiceSetMode')?.value||'chapter';const source=mode==='chapter'?'practice:chapter':`practice:${mode}`;
@@ -2071,7 +2083,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       practiceWasChecked=true;practiceAsked++;if(result.correct)practiceCorrect++;
       awardProgress(Number(currentPractice.chapter||$('bookPracticeTopic').value),!!result.correct);
       const f=$('bookPracticeFeedback');f.classList.remove('hidden');
-       f.innerHTML=renderQuestionFeedback(currentPractice,!!result.correct,result.correct_answer||correctAnswerText(currentPractice),result.explanation||currentPractice.why||'');
+       f.innerHTML=renderQuestionFeedback(currentPractice,!!result.correct,currentPractice.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(currentPractice)),result.explanation||currentPractice.why||'');
        f.style.background='transparent';f.style.color=result.correct?'#126a49':'#72541a';
       this.textContent=result.correct?'✅ درست بود!':'📘 نکته را مرور کن';this.disabled=true;updatePracticeStats();
       setCloudStatus('پاسخ تمرین در Supabase ثبت و در سمت سرور بررسی شد.');
@@ -2085,13 +2097,13 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}
     if(!examAnswered){
       const q=examItems[examIndex];const response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;
-      if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)){alert((q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
+      if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(q.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(q.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
       setBusy(this,true,'در حال ثبت پاسخ…');
       try{
         const result=await submitServerAnswer(q,response,`exam:${String(examMode).replace(/[^a-zA-Z0-9:_-]/g,'').slice(0,40)}`,currentCloudAttemptGroup);
         if(result.correct)examScore++;
         examAnswered=true;awardProgress(Number(q.chapter||0),!!result.correct);
-        const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,!!result.correct,result.correct_answer||correctAnswerText(q),result.explanation||q.why||q.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
+        const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,!!result.correct,q.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(q)),result.explanation||q.why||q.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
         $('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;
         this.textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';
       }catch(e){alert('پاسخ آزمون ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ آزمون ناموفق بود: '+cloudMessage(e),true)}
@@ -2365,11 +2377,17 @@ $('teacherBankChapter').innerHTML=chapters.filter(c=>c.id<=7).map(c=>'<option va
 $('teacherBankSubject').onchange=()=>{populateTeacherBankLessons();renderCloudQuestionList()};
 $('teacherBankChapter').onchange=renderCloudQuestionList;
 $('teacherQuestionSearch').oninput=renderCloudQuestionList;
+function syncTeacherQuestionEditorType(){
+ const type=$('teacherEditorType').value;
+ $('teacherEditorOptionsGrid').classList.toggle('hidden',type==='input'||type==='matching');
+ $('teacherEditorMatchingGrid').classList.toggle('hidden',type!=='matching');
+ $('teacherEditorAnswer').placeholder=type==='input'?'متن پاسخ صحیح یا چند پاسخ پذیرفته‌شده':type==='matching'?'شمارهٔ پاسخ ستون راست برای هر مورد چپ، به‌ترتیب؛ نمونه: ۲،۱،۴،۳':type==='multi'?'شمارهٔ پاسخ‌های صحیح، مانند ۱،۳':'شمارهٔ گزینهٔ صحیح از ۱ تا ۴';
+}
 function resetCloudQuestionEditor(){
  $('teacherEditingIndex').value='-1';$('teacherQuestionEditorTitle').textContent='سؤال جدید';
- for(const id of ['teacherEditorSkill','teacherEditorPrompt','teacherEditorAnswer','teacherEditorWhy','teacherEditorOpt0','teacherEditorOpt1','teacherEditorOpt2','teacherEditorOpt3'])$(id).value='';
+ for(const id of ['teacherEditorSkill','teacherEditorPrompt','teacherEditorAnswer','teacherEditorWhy','teacherEditorOpt0','teacherEditorOpt1','teacherEditorOpt2','teacherEditorOpt3','teacherEditorMatchLeft0','teacherEditorMatchLeft1','teacherEditorMatchLeft2','teacherEditorMatchLeft3','teacherEditorMatchRight0','teacherEditorMatchRight1','teacherEditorMatchRight2','teacherEditorMatchRight3'])$(id).value='';
  $('teacherEditorType').value='mc';$('teacherEditorDifficulty').value='medium';$('teacherEditorMessage').classList.add('hidden');
- $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorOptionsGrid').classList.remove('hidden');
+ $('teacherQuestionEditor').classList.remove('hidden');syncTeacherQuestionEditorType();
 }
 $('teacherAddQuestion').onclick=()=>resetCloudQuestionEditor();
 $('teacherCancelQuestionEdit').onclick=()=>{$('teacherQuestionEditor').classList.add('hidden')};
@@ -2378,30 +2396,50 @@ $('teacherQuestionList').addEventListener('click',async e=>{
  const button=e.target.closest('[data-edit-cloud-question]');if(!button)return;
  try{
   const result=await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:{action:'get',id:button.dataset.editCloudQuestion}});
-  const q=result.question,key=result.answer_key;const subject=q.subject||'math',lessonId=Number(q.lesson_id??q.chapter_id);
+  const q=result.question,key=result.answer_key,subject=q.subject||'math',lessonId=Number(q.lesson_id??q.chapter_id);
   $('teacherEditingIndex').value=q.id;$('teacherQuestionEditorTitle').textContent='ویرایش سؤال آنلاین';
   $('teacherBankSubject').value=subject;populateTeacherBankLessons(lessonId);$('teacherBankChapter').value=String(lessonId);
   $('teacherEditorSkill').value=q.skill||'';$('teacherEditorPrompt').value=q.prompt||'';$('teacherEditorType').value=q.question_type;$('teacherEditorDifficulty').value=q.difficulty||'medium';$('teacherEditorWhy').value=key.explanation||'';
-  for(let i=0;i<4;i++)$('teacherEditorOpt'+i).value=(q.options||[])[i]||'';
-  if(q.question_type==='input'){$('teacherEditorAnswer').value=(key.accepted||[]).join(' یا ');$('teacherEditorOptionsGrid').classList.add('hidden')}
-  else{$('teacherEditorOptionsGrid').classList.remove('hidden');const indices=(key.accepted||[]).map(a=>(q.options||[]).indexOf(a)+1).filter(n=>n>0);$('teacherEditorAnswer').value=indices.join('، ')}
-  $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorMessage').classList.add('hidden');
+  for(let i=0;i<4;i++){
+   $('teacherEditorOpt'+i).value=(q.options||[])[i]||'';
+   $('teacherEditorMatchLeft'+i).value=(q.options||[])[i]||'';
+   $('teacherEditorMatchRight'+i).value=(q.options||[])[i+4]||'';
+  }
+  if(q.question_type==='input')$('teacherEditorAnswer').value=(key.accepted||[]).join(' یا ');
+  else if(q.question_type==='matching'){
+   const right=(q.options||[]).slice(4,8),indices=(key.accepted||[]).map(a=>right.findIndex(v=>normalizeAnswer(v)===normalizeAnswer(a))+1);
+   $('teacherEditorAnswer').value=indices.join('، ');
+  }else{
+   const indices=(key.accepted||[]).map(a=>(q.options||[]).indexOf(a)+1).filter(n=>n>0);
+   $('teacherEditorAnswer').value=indices.join('، ');
+  }
+  $('teacherQuestionEditor').classList.remove('hidden');$('teacherEditorMessage').classList.add('hidden');syncTeacherQuestionEditorType();
  }catch(err){alert('خواندن سؤال از پایگاه داده انجام نشد: '+friendlyAuthError(err))}
 });
-$('teacherEditorType').addEventListener('change',()=>{$('teacherEditorOptionsGrid').classList.toggle('hidden',$('teacherEditorType').value==='input')});
+$('teacherEditorType').addEventListener('change',syncTeacherQuestionEditorType);
 $('teacherSaveQuestion').onclick=async()=>{
  if(!cloudSession||cloudSession.role!=='teacher'){alert('برای ذخیره بانک سؤال وارد حساب معلم شو.');return}
  const subject=$('teacherBankSubject').value||'math',lessonId=Number($('teacherBankChapter').value||1);
  const type=$('teacherEditorType').value,prompt=$('teacherEditorPrompt').value.trim(),skill=$('teacherEditorSkill').value.trim(),explanation=$('teacherEditorWhy').value.trim(),difficulty=$('teacherEditorDifficulty').value;
  let options=[],accepted=[];
- if(type==='input')accepted=$('teacherEditorAnswer').value.split(/\s*(?:یا|\||;|\n)\s*/).map(x=>x.trim()).filter(Boolean);
- else{
+ const message=$('teacherEditorMessage');message.classList.remove('hidden');
+ if(type==='input'){
+  accepted=$('teacherEditorAnswer').value.split(/\s*(?:یا|\||;|\n)\s*/).map(x=>x.trim()).filter(Boolean);
+ }else if(type==='matching'){
+  const left=Array.from({length:4},(_,i)=>$('teacherEditorMatchLeft'+i).value.trim());
+  const right=Array.from({length:4},(_,i)=>$('teacherEditorMatchRight'+i).value.trim());
+  options=[...left,...right];
+  const nums=$('teacherEditorAnswer').value.split(/[,،\s]+/).filter(Boolean).map(x=>Number(normalizeAnswer(x)));
+  if(nums.length!==4||nums.some(n=>!Number.isInteger(n)||n<1||n>4)||new Set(nums).size!==4){message.textContent='برای جورکردنی دقیقاً چهار شمارهٔ متفاوت بین ۱ تا ۴ وارد کن.';return}
+  accepted=nums.map(n=>right[n-1]);
+  if(options.some(x=>!x)||new Set(options.map(normalizeAnswer)).size!==8){message.textContent='در جورکردنی، هر هشت مورد باید غیرخالی و یکتا باشند.';return}
+ }else{
   const count=type==='tf'?2:4;options=Array.from({length:count},(_,i)=>$('teacherEditorOpt'+i).value.trim());
   const nums=$('teacherEditorAnswer').value.split(/[,،\s]+/).filter(Boolean).map(x=>Number(normalizeAnswer(x)));
   accepted=[...new Set(nums)].filter(n=>Number.isInteger(n)&&n>=1&&n<=options.length).map(n=>options[n-1]);
  }
- const message=$('teacherEditorMessage');message.classList.remove('hidden');
  if(!prompt||!skill||!accepted.length||options.some(x=>!x&&type!=='input')){message.textContent='متن سؤال، مبحث، گزینه‌ها و پاسخ صحیح را کامل کن.';return}
+ if(type==='blank_mc'&&!/_{2,}|…{2,}|□|جای خالی/.test(prompt)){message.textContent='در متن سؤال، محل جای خالی را با ______ مشخص کن.';return}
  const payload={action:'save',id:$('teacherEditingIndex').value==='-1'?null:$('teacherEditingIndex').value,subject,lesson_id:lessonId,chapter_id:subject==='math'?lessonId:Math.min(7,lessonId),skill,prompt,question_type:type,options,accepted,explanation,difficulty};
  setBusy($('teacherSaveQuestion'),true,'در حال ذخیره…');
  try{await cloudFetch('/functions/v1/manage-question-bank',{method:'POST',body:payload});message.textContent='سؤال برای «'+courseName(subject)+' / '+courseLessonTitle(subject,lessonId)+'» ذخیره شد.';$('teacherQuestionEditor').classList.add('hidden');await loadTeacherQuestionBank()}
@@ -2409,7 +2447,7 @@ $('teacherSaveQuestion').onclick=async()=>{
  finally{setBusy($('teacherSaveQuestion'),false)}
 };
 
-  let studentAssignmentState=null;
+let studentAssignmentState=null;
   async function loadTeacherAssignments(){
  if(!cloudSession||cloudSession.role!=='teacher')return;
  try{
