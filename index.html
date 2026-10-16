@@ -571,6 +571,145 @@ a{color:#d7ff76}
 .teacher-student-detail h4{margin:10px 0 6px}.teacher-student-detail .detail-row{background:#fff;border:1px solid #dce8f7;border-radius:11px;padding:10px;margin:7px 0;font-size:12px}
 .teacher-student-detail .detail-meta{color:#637b98;font-size:11px}
 @media(max-width:560px){.teacher-student-grid{grid-template-columns:1fr 1fr}.teacher-student-card{padding:9px;gap:7px}.teacher-student-avatar{width:32px;height:32px;min-width:32px}}
+
+/* یکپارچه‌سازی نهایی تم کهکشانی؛ حذف پنل‌های سفید ناخواسته با حفظ خوانایی */
+:root{
+  --space-panel:#1b2341;
+  --space-panel-deep:#151d36;
+  --space-panel-raised:#222d50;
+  --space-border:#465982;
+  --space-text:#f0f4ff;
+  --space-muted:#b5c3e1;
+  --space-glow:#6ee7f2;
+}
+.persian-source-note,
+.persian-pair,
+.persian-quiz-card,
+.teacher-student-detail,
+.teacher-student-detail .detail-row,
+.lesson-bulk-tools,
+.book-page-item{
+  background:linear-gradient(145deg,var(--space-panel),var(--space-panel-deep))!important;
+  color:var(--space-text)!important;
+  border-color:var(--space-border)!important;
+  box-shadow:0 3px 0 #0b1228, inset 0 1px #ffffff08!important;
+}
+.persian-source-note p,
+.persian-source-note b,
+.persian-source-note li,
+.persian-source-note .muted,
+.persian-pair span,
+.persian-pair b,
+.persian-quiz-card>p,
+.persian-quiz-card b,
+.persian-quiz-card label,
+.teacher-student-detail,
+.teacher-student-detail h4,
+.teacher-student-detail .detail-meta,
+.teacher-student-detail .detail-row,
+.book-page-item summary,
+.lesson-text-section,
+.lesson-text-section h4,
+.lesson-main-text{
+  color:var(--space-text)!important;
+}
+.persian-source-note .muted,
+.teacher-student-card small,
+.teacher-student-detail .detail-meta{
+  color:var(--space-muted)!important;
+}
+.persian-word-chip{
+  background:linear-gradient(135deg,#263253,#1b2542)!important;
+  color:#eaf5ff!important;
+  border:1px solid #596b96!important;
+  box-shadow:0 2px 0 #0d1428!important;
+}
+.persian-pair{
+  background:linear-gradient(125deg,#222d4d,#19233e)!important;
+}
+.persian-pair b{color:#86eee2!important}
+.persian-quiz-card .other-answer,
+.persian-quiz-card button.other-answer,
+.other-answer{
+  background:linear-gradient(145deg,#243253,#1a2542)!important;
+  color:#edf4ff!important;
+  border:1px solid #4b628d!important;
+  box-shadow:0 2px 0 #0d1428!important;
+}
+.persian-quiz-card .other-answer.selected,
+.other-answer.selected{
+  background:linear-gradient(135deg,#354b82,#2a4770)!important;
+  color:#fff!important;
+  border-color:#82b7ff!important;
+  box-shadow:0 0 0 2px #6da8ff25!important;
+}
+.persian-quiz-card .other-answer.correct,
+.other-answer.correct{
+  background:linear-gradient(135deg,#174f49,#1c3b43)!important;
+  color:#baffdf!important;
+  border-color:#43c99a!important;
+}
+.persian-quiz-card .other-answer.wrong,
+.other-answer.wrong{
+  background:linear-gradient(135deg,#51293d,#38233d)!important;
+  color:#ffd6df!important;
+  border-color:#e77a9c!important;
+}
+.persian-quiz-feedback{
+  background:linear-gradient(145deg,#202e50,#182540)!important;
+  color:#eaf3ff!important;
+  border:1px solid #5577a8!important;
+}
+.persian-quiz-feedback p,
+.persian-quiz-feedback b{color:#eaf3ff!important}
+.teacher-student-card{
+  background:linear-gradient(145deg,#202b4b,#17213b)!important;
+  color:#eff5ff!important;
+  border:1px solid #455982!important;
+  box-shadow:0 3px 0 #0b1228, inset 0 1px #ffffff08!important;
+}
+.teacher-student-card:hover,
+.teacher-student-card.active{
+  background:linear-gradient(130deg,#353269,#1b4562)!important;
+  color:#fff!important;
+  border-color:#8b8bea!important;
+  box-shadow:0 0 0 2px #8a8aff20,0 4px 0 #0b1228!important;
+}
+.teacher-student-avatar{
+  background:linear-gradient(145deg,#423879,#255b75)!important;
+  color:#bdf7f2!important;
+  border:1px solid #718cce!important;
+}
+.teacher-student-card b{color:#f5f5ff!important}
+.teacher-student-card small{color:#b5c3e1!important}
+.teacher-student-detail .detail-row{
+  background:linear-gradient(145deg,#222e4f,#18223d)!important;
+}
+.book-page-item summary{color:#f0f4ff!important}
+.book-page-item[open] summary{color:#8ff0e9!important}
+.lesson-bulk-tools .muted{color:#b5c3e1!important}
+.lesson-bulk-tools input,
+.lesson-bulk-tools select,
+.lesson-bulk-tools textarea{
+  background:#10182f!important;
+  color:#f0f4ff!important;
+  border-color:#465982!important;
+}
+.lesson-book-pages code{
+  background:#0f1830!important;
+  color:#a7f3e8!important;
+  border:1px solid #405579!important;
+}
+:where(.card,.item,.chapter-manager,.teacher-chapter-row,.accessrow,.option,.concept-box):focus-within{
+  border-color:#6d91d8!important;
+  box-shadow:0 0 0 2px #6ee7f218,0 7px 22px #0003!important;
+}
+:where(button,input,select,textarea,summary,a):focus-visible{
+  outline:2px solid #73e9f0!important;
+  outline-offset:3px!important;
+}
+/* اسناد و تصویر صفحات کتاب عمداً مانند کاغذ روشن می‌مانند تا متن چاپی خوانا باشد. */
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
