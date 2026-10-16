@@ -1,4 +1,4 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v55';
+const CACHE_NAME = 'riazi4-pwa-shell-v56';
 const APP_SHELL = [
   './',
   './index.html',
