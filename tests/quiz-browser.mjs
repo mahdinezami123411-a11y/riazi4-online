@@ -171,31 +171,33 @@ const semanticChoiceAudit = await page.evaluate(() => {
 assert.equal(semanticChoiceAudit.issues.length, 0,
   'گزینه‌های هم‌ارزش در سؤال تک‌پاسخی بانک‌های منبع پیدا شد: '+JSON.stringify(semanticChoiceAudit.issues.slice(0,20)));
 
-const multiAnswerClarity = await page.evaluate(() => {
+const singleAnswerPolicy = await page.evaluate(() => {
   const api = window.__quizTestApi;
+  const practiceFilter = document.getElementById('practiceTypeFilter');
+  const editorType = document.getElementById('teacherEditorType');
   const q = {type:'multi',opts:['6/36','8/48','2/13','3/12'],as:[0,1],a:0};
   let selection = null;
-  api.renderAnswerControls(q,'bookPracticeOptions','bookPracticeAnswer','multiAnswerAudit',value=>{selection=value;});
+  api.renderAnswerControls(q,'bookPracticeOptions','bookPracticeAnswer','legacySingleAnswerAudit',value=>{selection=value;});
+  const controls = [...document.querySelectorAll('#bookPracticeOptions input')];
   const help = document.querySelector('#bookPracticeOptions .multi-answer-help')?.textContent || '';
-  const checkboxes = [...document.querySelectorAll('#bookPracticeOptions input[type="checkbox"]')];
-  checkboxes[0]?.click();
-  const oneAnswerWasInsufficient = !api.isQuestionCorrect(q, [0]);
-  checkboxes[1]?.click();
-  const bothAnswersAreCorrect = api.isQuestionCorrect(q, [0,1]);
   return {
-    helpVisible: help.includes('چندپاسخی') && help.includes('تنها یکی'),
-    checkboxCount: checkboxes.length,
-    oneAnswerWasInsufficient,
-    bothAnswersAreCorrect,
+    practiceFilterOffersMulti:[...(practiceFilter?.options||[])].some(option=>option.value==='multi'),
+    teacherEditorOffersMulti:[...(editorType?.options||[])].some(option=>option.value==='multi'),
+    radioCount:controls.filter(input=>input.type==='radio').length,
+    checkboxCount:controls.filter(input=>input.type==='checkbox').length,
+    multiHelpShown:help.length>0,
+    firstOptionCorrect:api.isQuestionCorrect(q,0),
+    secondLegacyCorrectOptionAccepted:api.isQuestionCorrect(q,1),
     selection
   };
 });
-assert.equal(multiAnswerClarity.helpVisible, true, 'برای سؤال چندپاسخی باید پیام روشن نمایش داده شود');
-assert.equal(multiAnswerClarity.checkboxCount, 4, 'سؤال چندپاسخی باید چهار گزینه داشته باشد');
-assert.equal(multiAnswerClarity.oneAnswerWasInsufficient, true, 'انتخاب تنها یک پاسخ از دو پاسخ درست نباید پاسخ کامل حساب شود');
-assert.equal(multiAnswerClarity.bothAnswersAreCorrect, true, 'انتخاب هر دو پاسخ درست باید پذیرفته شود');
-
-
+assert.equal(singleAnswerPolicy.practiceFilterOffersMulti,false,'فیلتر تمرین نباید نوع چندپاسخی داشته باشد');
+assert.equal(singleAnswerPolicy.teacherEditorOffersMulti,false,'معلم نباید بتواند سؤال چندپاسخی بسازد');
+assert.equal(singleAnswerPolicy.radioCount,4,'سؤال قدیمی باید فقط چهار انتخاب تک‌پاسخی نمایش دهد');
+assert.equal(singleAnswerPolicy.checkboxCount,0,'کنترل چندانتخابی نباید در سؤال قدیمی باقی بماند');
+assert.equal(singleAnswerPolicy.multiHelpShown,false,'پیام انتخاب چند پاسخ نباید نمایش داده شود');
+assert.equal(singleAnswerPolicy.firstOptionCorrect,true,'کلید تک‌پاسخی قدیمی باید گزینهٔ اول را بپذیرد');
+assert.equal(singleAnswerPolicy.secondLegacyCorrectOptionAccepted,false,'گزینهٔ دوم قدیمی نباید هم‌زمان به‌عنوان پاسخ صحیح پذیرفته شود');
 
 const interaction = await page.evaluate(() => {
   const api = window.__quizTestApi;
