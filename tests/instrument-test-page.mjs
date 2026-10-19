@@ -24,6 +24,8 @@ const bridge = `
       setCourseLessonOpen: fn => { isCourseLessonOpen = fn; },
       getSelectedOtherSubject: () => selectedOtherSubject,
       setSelectedOtherSubject: value => { selectedOtherSubject = value; },
+      renderAnswerControls,
+      isQuestionCorrect,
       renderOtherSubjectActivity,
       getCourseCatalog: subject => courseLessonCatalog(subject),
       refreshCourseLessonSelectors: () => typeof refreshAllCourseLessonSelectors === 'function' ? refreshAllCourseLessonSelectors() : null,
