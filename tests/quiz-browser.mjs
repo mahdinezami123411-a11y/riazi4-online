@@ -35,7 +35,9 @@ const mathVisualAidReport = await page.evaluate(() => {
     {tag:'probability', q:'اگر در کیسه ۵ مهره‌ی آبی و ۱ مهره‌ی قرمز باشد، قرمز به احتمال بیشتر انتخاب می‌شود؟', chapter:7, skill:'احتمال'},
     {tag:'chart', q:'داده‌ها ۱۳، ۱۶، ۲۷ هستند. بیشترین مقدار کدام است؟', chapter:7, skill:'بیشترین و کمترین داده'},
     {tag:'place-value', q:'عدد ۳۴۵٬۲۱۸ را به شکل گسترده بنویس.', chapter:1, skill:'شکل گسترده'},
-    {tag:'number-line', q:'عدد ۱/۲ را روی محور عددی نشان بده.', chapter:2, skill:'محور عددی'}
+    {tag:'number-line', q:'عدد ۱/۲ را روی محور عددی نشان بده.', chapter:2, skill:'محور عددی'},
+    {tag:'multiplication', q:'۲۴ × ۳ برابر است با:', chapter:3, skill:'ضرب'},
+    {tag:'division', q:'در تقسیم ۱۳ بر ۶، باقی‌مانده چند است؟', chapter:3, skill:'باقی‌مانده'}
   ];
   return cases.map(test => {
     const markup = render(test, false);
@@ -49,7 +51,9 @@ const mathVisualAidReport = await page.evaluate(() => {
       probability:'mqv-data-balls',
       chart:'mqv-line-chart',
       'place-value':'mqv-place-table',
-      'number-line':'↔️ محور عددی'
+      'number-line':'↔️ محور عددی',
+      multiplication:'mqv-multiplication',
+      division:'mqv-division'
     })[test.tag];
     return {tag:test.tag, hasMarkup:!!markup, expectedPresent:!!markup && markup.includes(expected)};
   });
