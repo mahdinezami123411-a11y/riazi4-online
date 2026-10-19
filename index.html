@@ -1549,7 +1549,8 @@ function renderAnswerControls(q,containerId,inputId,name,setSelected){
   box.querySelectorAll('select').forEach((el,i)=>el.onchange=()=>{picked[i]=el.value===''?-1:Number(el.value);setSelected([...picked]);box.querySelectorAll('select').forEach((other,j)=>[...other.options].forEach(option=>{if(option.value!=='')option.disabled=picked.some((value,k)=>k!==j&&value>=4&&value===Number(option.value))}))});
   return;
  }
- box.innerHTML=q.opts.map((o,i)=>'<label class="'+(name==='practiceOption'?'practice-option':'exam-option')+'"><input type="'+(multi?'checkbox':'radio')+'" name="'+name+'" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
+ const multiHelp=multi?'<p class="multi-answer-help" role="note" style="margin:0 0 10px;padding:9px 11px;border:1px solid #7a6bb2;border-radius:10px;background:rgba(79,65,130,.2);color:#eee7ff;font-size:13px;line-height:1.8">☑️ این سؤال چندپاسخی است؛ برای پاسخ کامل، همهٔ گزینه‌های درست را انتخاب کن. انتخاب تنها یکی از جواب‌های درست کافی نیست.</p>':'';
+ box.innerHTML=multiHelp+q.opts.map((o,i)=>'<label class="'+(name==='practiceOption'?'practice-option':'exam-option')+'"><input type="'+(multi?'checkbox':'radio')+'" name="'+name+'" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
  box.querySelectorAll('input').forEach(el=>el.onchange=()=>{let selection;if(multi)selection=[...box.querySelectorAll('input:checked')].map(r=>Number(r.value)).sort((a,b)=>a-b);else selection=Number(el.value);box.querySelectorAll('label').forEach((item,i)=>item.classList.toggle('selected',multi?[...box.querySelectorAll('input:checked')].some(r=>Number(r.value)===i):i===selection));setSelected(selection)});
 }
 function isQuestionCorrect(q,response){if((q.type||'mc')==='input'){const val=normalizeAnswer(response);const accepted=(q.answers||[q.answer]).map(normalizeAnswer);return val!==''&&accepted.includes(val)}if(q.type==='matching'){if(!Array.isArray(response)||!Array.isArray(q.answer))return false;return response.length===q.answer.length&&response.every((v,i)=>v===q.answer[i])}if(q.type==='multi'){if(!Array.isArray(response))return false;const a=[...(q.as||[])].sort((x,y)=>x-y),b=[...response].sort((x,y)=>x-y);return a.length===b.length&&a.every((v,i)=>v===b[i])}return response===q.a}
@@ -5148,7 +5149,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v62',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v63',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
