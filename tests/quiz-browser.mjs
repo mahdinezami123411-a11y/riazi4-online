@@ -166,10 +166,12 @@ const semanticChoiceAudit = await page.evaluate(() => {
       }
     }
   }
-  return {questionCount:rows.length, issues};
+  return {questionCount:rows.length, issues, multiAnswerQuestions:rows.filter(row=>String(row.q?.type||'')==='multi').map(row=>({subject:row.subject,lesson:row.lesson,question:row.q?.q||row.q?.question||''}))};
 });
 assert.equal(semanticChoiceAudit.issues.length, 0,
   'گزینه‌های هم‌ارزش در سؤال تک‌پاسخی بانک‌های منبع پیدا شد: '+JSON.stringify(semanticChoiceAudit.issues.slice(0,20)));
+assert.equal(semanticChoiceAudit.multiAnswerQuestions.length, 0,
+  'سؤال چندپاسخی نباید در بانک هیچ‌یک از کتاب‌ها باقی بماند: '+JSON.stringify(semanticChoiceAudit.multiAnswerQuestions.slice(0,20)));
 
 const singleAnswerPolicy = await page.evaluate(() => {
   const api = window.__quizTestApi;
