@@ -21,6 +21,46 @@ try {
 }
 await page.evaluate(async () => { await window.__quizTestApi.loadSourceQuestionBanks(); });
 
+const mathVisualAidReport = await page.evaluate(() => {
+  const render = window.renderMathQuestionVisualMarkup;
+  if (typeof render !== 'function') return { unavailable: true };
+  const cases = [
+    {tag:'machine', q:'قانون ماشین «دو برابر کن و ۱ اضافه کن» است. خروجی ورودی ۵ چیست؟', chapter:1, skill:'ماشین ورودی ـ خروجی'},
+    {tag:'sequence', q:'عدد بعدی الگو چیست؟ ۷، ۱۲، ۱۷، ۲۲، ؟', chapter:1, skill:'الگوها'},
+    {tag:'shape-sequence', q:'الگوی شکلی را ادامه بده: شکل بعدی چیست؟', chapter:1, skill:'الگوی شکلی'},
+    {tag:'fractions', q:'یک شکل به ۶ قسمت مساوی تقسیم شده و ۲ قسمت رنگ شده است. کسر قسمت رنگ‌شده چیست؟', chapter:2, skill:'شناخت کسر'},
+    {tag:'geometry', q:'در کارت هندسی شماره‌ی ۴ شکل مربع دیده می‌شود. کدام ویژگی آن درست است؟', chapter:6, skill:'چهارضلعی‌ها'},
+    {tag:'geometry', q:'دو خط عمود بر هم زاویه‌ی ۸۰ درجه می‌سازند.', chapter:6, skill:'خط‌های عمود'},
+    {tag:'time', q:'۱ ساعت و ۴۵ دقیقه چند دقیقه است؟', chapter:4, skill:'تبدیل زمان'},
+    {tag:'probability', q:'اگر در کیسه ۵ مهره‌ی آبی و ۱ مهره‌ی قرمز باشد، قرمز به احتمال بیشتر انتخاب می‌شود؟', chapter:7, skill:'احتمال'},
+    {tag:'chart', q:'داده‌ها ۱۳، ۱۶، ۲۷ هستند. بیشترین مقدار کدام است؟', chapter:7, skill:'بیشترین و کمترین داده'},
+    {tag:'place-value', q:'عدد ۳۴۵٬۲۱۸ را به شکل گسترده بنویس.', chapter:1, skill:'شکل گسترده'},
+    {tag:'number-line', q:'عدد ۱/۲ را روی محور عددی نشان بده.', chapter:2, skill:'محور عددی'}
+  ];
+  return cases.map(test => {
+    const markup = render(test, false);
+    const expected = ({
+      machine:'mqv-machine',
+      sequence:'mqv-sequence',
+      'shape-sequence':'mqv-shape-sequence',
+      fractions:'mqv-fractions',
+      geometry:'mqv-geometry',
+      time:'mqv-time-track',
+      probability:'mqv-data-balls',
+      chart:'mqv-line-chart',
+      'place-value':'mqv-place-table',
+      'number-line':'↔️ محور عددی'
+    })[test.tag];
+    return {tag:test.tag, hasMarkup:!!markup, expectedPresent:!!markup && markup.includes(expected)};
+  });
+});
+assert.equal(mathVisualAidReport.unavailable, undefined, 'تابع رسم کمکی سؤال‌های ریاضی در صفحهٔ آزمون موجود نیست');
+for (const aid of mathVisualAidReport) {
+  assert.equal(aid.hasMarkup, true, 'شکل کمکی برای مورد ' + aid.tag + ' ساخته نشد');
+  assert.equal(aid.expectedPresent, true, 'خروجی شکل کمکی برای مورد ' + aid.tag + ' درست نیست');
+}
+
+
 const sourceReport = await page.evaluate(() => {
   const api = window.__quizTestApi;
   const report = {};
