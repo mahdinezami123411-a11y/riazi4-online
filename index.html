@@ -856,6 +856,97 @@ a{color:#d7ff76}
 .profile-progress-chart .profile-progress-pct{color:#a9f1e8;font-size:12px;font-weight:900;text-align:left}
 .profile-progress-chart .profile-progress-caption{color:#adbfdf;font-size:10px}
 @media(max-width:480px){.profile-progress-chart .profile-progress-row{grid-template-columns:1fr 40px;gap:6px}.profile-progress-chart .profile-progress-track{grid-column:1/-1;grid-row:2}.profile-progress-chart .profile-progress-pct{grid-column:2;grid-row:1}}
+/* ماشین ورودی ـ خروجی؛ کاملاً توکار در صفحهٔ چهارمی‌ها و بدون اتصال مستقل */
+.nm-machine-host{direction:rtl;max-width:100%;margin:12px 0 2px;padding:11px;border:1px solid #4d5b91;border-radius:17px;background:radial-gradient(ellipse at 8% 0%,#243c68 0,transparent 38%),linear-gradient(145deg,#101a35,#1e1738);color:#f4f6ff;font-family:Tahoma,Arial,sans-serif;line-height:1.7;overflow:hidden}
+.nm-machine-host *{box-sizing:border-box}
+.nm-machine-heading{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
+.nm-machine-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border:1px solid #6079ad;border-radius:13px;background:#27345e;font-size:23px}
+.nm-machine-heading b{display:block;color:#d9ff83;font-size:15px}
+.nm-machine-heading p{margin:2px 0 0;color:#c4d2f1;font-size:11px;line-height:1.8}
+.nm-machine-tags{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 10px}
+.nm-machine-tags span{padding:2px 7px;border:1px solid #495b87;border-radius:999px;background:#202b4a;color:#e1eaff;font-size:10px}
+.nm-machine-playbar{padding:10px;border:1px solid #43527e;border-radius:14px;background:#111b36}
+.nm-machine-playbar strong{display:block;font-size:13px;color:#d8f8ff}
+.nm-machine-playbar small{display:block;font-size:11px;color:#bdcbed;line-height:1.8}
+.nm-machine-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.nm-machine-host .nm-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:39px;margin:0;padding:8px 11px;border:1px solid #596e9a!important;border-radius:11px;background:#26375c!important;color:#f6f7ff!important;font-family:Tahoma,Arial,sans-serif;font-size:12px;font-weight:850;line-height:1.5;white-space:normal;box-shadow:0 3px 0 #0b1328!important;cursor:pointer}
+.nm-machine-host .nm-btn.nm-primary{background:linear-gradient(120deg,#65e4ed,#8bf1c4)!important;border-color:#91f5e0!important;color:#10213a!important}
+.nm-machine-host .nm-btn.nm-soft{background:linear-gradient(120deg,#3a2b58,#293960)!important;border-color:#6c5c9c!important}
+.nm-machine-host .nm-btn:active{transform:translateY(2px);box-shadow:none!important}
+.nm-machine-instructions{margin:8px 1px 0;color:#d5e1ff;font-size:11px;line-height:1.85}
+.nm-machine-notice{margin-top:9px;padding:9px 10px;border:1px solid #5e779f;border-radius:11px;background:#172849;color:#e7f2ff;font-size:12px;line-height:1.9}
+.nm-machine-shell{margin-top:11px;overflow:hidden;border:1px solid #445786;border-radius:16px;background:linear-gradient(180deg,#121d3b,#0e1730)}
+.nm-machine-top{padding:10px 11px;border-bottom:1px solid #33466f;background:#192647}
+.nm-machine-top b{display:block;color:#f0f4ff;font-size:14px}
+.nm-machine-top p{margin:3px 0 0;color:#c1d0f1;font-size:11px;line-height:1.75}
+.nm-machine-grid{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);align-items:stretch;width:100%;min-width:0;direction:ltr;padding:8px 5px 10px;overflow:hidden}
+.nm-machine-grid .nm-head-cell{min-width:0;direction:rtl;display:flex;align-items:flex-end;justify-content:center;padding:3px 1px 7px;text-align:center;color:#bdcbed;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+.nm-machine-grid .nm-op-head{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding:0 1px 7px;direction:rtl}
+.nm-machine-grid .nm-op-badge{max-width:100%;padding:3px 3px;border:1px solid #7166a6;border-radius:8px;background:#2b2858;color:#fff;font-size:11px;font-weight:900;line-height:1.4;text-align:center;overflow-wrap:anywhere}
+.nm-machine-grid .nm-arrow{color:#70edf2;font-size:18px;line-height:1}
+.nm-machine-grid .nm-subop{color:#b2c2e8;font-size:9px;line-height:1.25;text-align:center}
+.nm-machine-grid .nm-cell{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:53px;margin:3px 1px;padding:4px 2px;border:1px solid #3d507d;border-radius:9px;background:#172543;direction:rtl}
+.nm-machine-grid .nm-cell.nm-given{border-color:#61cbd3;background:linear-gradient(145deg,#1b3a57,#193449);box-shadow:inset 0 0 0 1px #61cbd322}
+.nm-machine-grid .nm-given-number{color:#a7f7f1;font-size:18px;font-weight:950;text-align:center;font-variant-numeric:tabular-nums;line-height:1.5;overflow-wrap:anywhere}
+.nm-machine-grid .nm-given-stamp{position:absolute;top:0;right:3px;color:#8ce5e9;font-size:7px;line-height:1.2}
+.nm-machine-grid .nm-answer{display:block;width:100%;min-width:0;min-height:42px;padding:5px 0;border:1px dashed #7889b7!important;border-radius:7px;background:#0b142b!important;color:#fff!important;font-family:Tahoma,Arial,sans-serif;font-size:17px;font-weight:900;text-align:center;direction:ltr;box-shadow:none!important}
+.nm-machine-grid .nm-answer::placeholder{color:#8294bd}
+.nm-machine-grid .nm-answer:focus{border-color:#75edf2!important;box-shadow:0 0 0 2px #65e4ed24!important}
+.nm-machine-grid .nm-answer.nm-correct{border:1px solid #81edb6!important;background:#12362e!important;color:#9bffd0!important}
+.nm-machine-grid .nm-answer.nm-wrong{border:1px solid #ff9fbd!important;background:#3a1b30!important;color:#ffd9e5!important}
+.nm-machine-grid .nm-row-no{position:absolute;z-index:1;top:-5px;left:-4px;display:grid;place-items:center;width:19px;height:19px;border:1px solid #5c74aa;border-radius:50%;background:#26345b;color:#f0f4ff;font-size:10px}
+.nm-machine-grid .nm-arrow-spacer{min-width:0;min-height:53px;margin:3px 0}
+.nm-machine-grid .nm-row-tools{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:7px 2px 4px;direction:rtl}
+.nm-machine-grid .nm-row-label{color:#c0ceec;font-size:10px}
+.nm-machine-host .nm-guide-btn{width:100%;min-height:43px;border:2px solid #8470cc!important;border-radius:12px;background:linear-gradient(100deg,#293d75,#412d65)!important;color:#fff!important;box-shadow:0 3px 0 #171d43!important;font-size:11px}
+.nm-machine-host .nm-guide-btn .nm-sticker{font-size:21px;line-height:1;filter:drop-shadow(0 1px 1px #0008)}
+.nm-machine-grid .nm-explain{display:none;grid-column:1/-1;min-width:0;margin:4px 0 10px;padding:9px;border:1px solid #465d91;border-radius:13px;background:linear-gradient(135deg,#14284b,#211d47);direction:rtl}
+.nm-machine-grid .nm-explain.nm-open{display:block}
+.nm-machine-grid .nm-explain-top{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap}
+.nm-machine-grid .nm-explain h4{margin:0;color:#f3f5ff;font-size:12px}
+.nm-machine-grid .nm-step-label{color:#7de9ed;font-size:10px}
+.nm-machine-grid .nm-path{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:9px 0;direction:ltr}
+.nm-machine-grid .nm-path-node{min-width:32px;padding:5px 4px;border:1px solid #52699c;border-radius:8px;background:#0b1531;color:#edf4ff;font-size:13px;font-weight:900;text-align:center}
+.nm-machine-grid .nm-path-node.nm-focus{border-color:#ffd66b;color:#ffd66b;box-shadow:0 0 0 2px #ffd66b28}
+.nm-machine-grid .nm-path-arrow{color:#75edf1;font-size:11px}
+.nm-machine-grid .nm-reason{margin:7px 0;color:#e4ecff;font-size:11px;line-height:1.9;overflow-wrap:anywhere}
+.nm-machine-grid .nm-visual{display:flex;min-height:38px;flex-direction:column;gap:5px;margin-top:7px;padding:8px;border-radius:10px;background:#09132a;color:#e9f3ff}
+.nm-machine-grid .nm-visual-title{color:#b8c8ed;font-size:10px}
+.nm-machine-grid .nm-visual-line{display:flex;align-items:center;gap:4px;flex-wrap:wrap;direction:ltr}
+.nm-machine-grid .nm-dot{display:inline-block;width:8px;height:8px;border-radius:3px;background:#68dfe8}
+.nm-machine-grid .nm-dot.nm-alt{background:#ffd66b}.nm-machine-grid .nm-dot.nm-pink{background:#ff9bbf}
+.nm-machine-grid .nm-dots-wrap{display:flex;gap:3px;flex-wrap:wrap;max-width:100%}
+.nm-machine-grid .nm-mini-eq{color:#e5f8ff;font-size:11px;font-weight:900;overflow-wrap:anywhere}
+.nm-machine-grid .nm-step-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px}
+.nm-machine-grid .nm-step-controls .nm-btn{flex:1 1 94px;min-height:36px;padding:6px;font-size:10px}
+.nm-machine-grid .nm-full-path-list{margin-top:9px;padding:9px;border:1px solid #5a6f9c;border-radius:11px;background:#101a34}
+.nm-machine-grid .nm-full-path-heading{color:#d9ff83;font-size:12px;font-weight:900}
+.nm-machine-grid .nm-full-path-intro{margin:4px 0 8px;color:#c1d0f1;font-size:10px;line-height:1.8}
+.nm-machine-grid .nm-full-path-step{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;margin:7px 0;padding:8px;border:1px solid #40557f;border-radius:9px;background:#172543}
+.nm-machine-grid .nm-full-path-number{align-self:start;padding:4px 6px;border:1px solid #536992;border-radius:7px;background:#213158;color:#a4f0ed;font-size:10px;text-align:center}
+.nm-machine-grid .nm-full-path-body{min-width:0}
+.nm-machine-grid .nm-full-path-body strong{display:block;color:#e6f1ff;font-size:11px}
+.nm-machine-grid .nm-full-path-equation{margin:4px 0;color:#ffe08a;font-size:14px;font-weight:950;direction:ltr;text-align:left;overflow-wrap:anywhere}
+.nm-machine-grid .nm-full-path-body p{margin:3px 0 0;color:#c8d6f2;font-size:10px;line-height:1.8}
+.nm-machine-grid .nm-full-path-end{margin-top:8px;color:#9cf4bf;font-size:11px;font-weight:900}
+.nm-machine-summary{margin:0;padding:0 6px 10px;color:#d6e3ff;font-size:11px;line-height:1.85}
+@media(max-width:420px){
+ .nm-machine-host{padding:8px;border-radius:14px}
+ .nm-machine-heading b{font-size:13px}
+ .nm-machine-grid{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr);padding:7px 3px 8px}
+ .nm-machine-grid .nm-op-badge{font-size:10px;padding:3px 1px}
+ .nm-machine-grid .nm-subop{display:none}
+ .nm-machine-grid .nm-cell{min-height:48px;padding:3px 1px}
+ .nm-machine-grid .nm-answer{min-height:39px;font-size:15px}
+ .nm-machine-grid .nm-given-number{font-size:16px}
+ .nm-machine-grid .nm-head-cell{font-size:9px}
+ .nm-machine-grid .nm-row-tools{gap:6px}
+ .nm-machine-grid .nm-row-label{font-size:9px}
+ .nm-machine-grid .nm-guide-btn{font-size:10px;padding:7px 5px}
+ .nm-machine-grid .nm-full-path-step{grid-template-columns:1fr;gap:5px}
+ .nm-machine-grid .nm-full-path-number{justify-self:start}
+ .nm-machine-actions .nm-btn{flex:1 1 105px}
+}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -4682,100 +4773,7 @@ const persianBookPageMap={
     return '<div class="print-exam-paper" dir="rtl"><h2>'+escapeHtml(state.title)+'</h2><div class="exam-meta"><span>کتاب: '+escapeHtml(printableSubjectNames[state.subject]||state.subject)+'</span><span>نام و نام‌خانوادگی: ....................................</span><span>تاریخ: ....................</span><span>نمره: ....................</span></div>'+body+key+'</div>';
   }
   function printableStandaloneHtml(includeKey){
-    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}
-/* ماشین ورودی ـ خروجی؛ کاملاً توکار در صفحهٔ چهارمی‌ها و بدون اتصال مستقل */
-.nm-machine-host{direction:rtl;max-width:100%;margin:12px 0 2px;padding:11px;border:1px solid #4d5b91;border-radius:17px;background:radial-gradient(ellipse at 8% 0%,#243c68 0,transparent 38%),linear-gradient(145deg,#101a35,#1e1738);color:#f4f6ff;font-family:Tahoma,Arial,sans-serif;line-height:1.7;overflow:hidden}
-.nm-machine-host *{box-sizing:border-box}
-.nm-machine-heading{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
-.nm-machine-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border:1px solid #6079ad;border-radius:13px;background:#27345e;font-size:23px}
-.nm-machine-heading b{display:block;color:#d9ff83;font-size:15px}
-.nm-machine-heading p{margin:2px 0 0;color:#c4d2f1;font-size:11px;line-height:1.8}
-.nm-machine-tags{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 10px}
-.nm-machine-tags span{padding:2px 7px;border:1px solid #495b87;border-radius:999px;background:#202b4a;color:#e1eaff;font-size:10px}
-.nm-machine-playbar{padding:10px;border:1px solid #43527e;border-radius:14px;background:#111b36}
-.nm-machine-playbar strong{display:block;font-size:13px;color:#d8f8ff}
-.nm-machine-playbar small{display:block;font-size:11px;color:#bdcbed;line-height:1.8}
-.nm-machine-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
-.nm-machine-host .nm-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:39px;margin:0;padding:8px 11px;border:1px solid #596e9a!important;border-radius:11px;background:#26375c!important;color:#f6f7ff!important;font-family:Tahoma,Arial,sans-serif;font-size:12px;font-weight:850;line-height:1.5;white-space:normal;box-shadow:0 3px 0 #0b1328!important;cursor:pointer}
-.nm-machine-host .nm-btn.nm-primary{background:linear-gradient(120deg,#65e4ed,#8bf1c4)!important;border-color:#91f5e0!important;color:#10213a!important}
-.nm-machine-host .nm-btn.nm-soft{background:linear-gradient(120deg,#3a2b58,#293960)!important;border-color:#6c5c9c!important}
-.nm-machine-host .nm-btn:active{transform:translateY(2px);box-shadow:none!important}
-.nm-machine-instructions{margin:8px 1px 0;color:#d5e1ff;font-size:11px;line-height:1.85}
-.nm-machine-notice{margin-top:9px;padding:9px 10px;border:1px solid #5e779f;border-radius:11px;background:#172849;color:#e7f2ff;font-size:12px;line-height:1.9}
-.nm-machine-shell{margin-top:11px;overflow:hidden;border:1px solid #445786;border-radius:16px;background:linear-gradient(180deg,#121d3b,#0e1730)}
-.nm-machine-top{padding:10px 11px;border-bottom:1px solid #33466f;background:#192647}
-.nm-machine-top b{display:block;color:#f0f4ff;font-size:14px}
-.nm-machine-top p{margin:3px 0 0;color:#c1d0f1;font-size:11px;line-height:1.75}
-.nm-machine-grid{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);align-items:stretch;width:100%;min-width:0;direction:ltr;padding:8px 5px 10px;overflow:hidden}
-.nm-machine-grid .nm-head-cell{min-width:0;direction:rtl;display:flex;align-items:flex-end;justify-content:center;padding:3px 1px 7px;text-align:center;color:#bdcbed;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
-.nm-machine-grid .nm-op-head{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding:0 1px 7px;direction:rtl}
-.nm-machine-grid .nm-op-badge{max-width:100%;padding:3px 3px;border:1px solid #7166a6;border-radius:8px;background:#2b2858;color:#fff;font-size:11px;font-weight:900;line-height:1.4;text-align:center;overflow-wrap:anywhere}
-.nm-machine-grid .nm-arrow{color:#70edf2;font-size:18px;line-height:1}
-.nm-machine-grid .nm-subop{color:#b2c2e8;font-size:9px;line-height:1.25;text-align:center}
-.nm-machine-grid .nm-cell{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:53px;margin:3px 1px;padding:4px 2px;border:1px solid #3d507d;border-radius:9px;background:#172543;direction:rtl}
-.nm-machine-grid .nm-cell.nm-given{border-color:#61cbd3;background:linear-gradient(145deg,#1b3a57,#193449);box-shadow:inset 0 0 0 1px #61cbd322}
-.nm-machine-grid .nm-given-number{color:#a7f7f1;font-size:18px;font-weight:950;text-align:center;font-variant-numeric:tabular-nums;line-height:1.5;overflow-wrap:anywhere}
-.nm-machine-grid .nm-given-stamp{position:absolute;top:0;right:3px;color:#8ce5e9;font-size:7px;line-height:1.2}
-.nm-machine-grid .nm-answer{display:block;width:100%;min-width:0;min-height:42px;padding:5px 0;border:1px dashed #7889b7!important;border-radius:7px;background:#0b142b!important;color:#fff!important;font-family:Tahoma,Arial,sans-serif;font-size:17px;font-weight:900;text-align:center;direction:ltr;box-shadow:none!important}
-.nm-machine-grid .nm-answer::placeholder{color:#8294bd}
-.nm-machine-grid .nm-answer:focus{border-color:#75edf2!important;box-shadow:0 0 0 2px #65e4ed24!important}
-.nm-machine-grid .nm-answer.nm-correct{border:1px solid #81edb6!important;background:#12362e!important;color:#9bffd0!important}
-.nm-machine-grid .nm-answer.nm-wrong{border:1px solid #ff9fbd!important;background:#3a1b30!important;color:#ffd9e5!important}
-.nm-machine-grid .nm-row-no{position:absolute;z-index:1;top:-5px;left:-4px;display:grid;place-items:center;width:19px;height:19px;border:1px solid #5c74aa;border-radius:50%;background:#26345b;color:#f0f4ff;font-size:10px}
-.nm-machine-grid .nm-arrow-spacer{min-width:0;min-height:53px;margin:3px 0}
-.nm-machine-grid .nm-row-tools{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:7px 2px 4px;direction:rtl}
-.nm-machine-grid .nm-row-label{color:#c0ceec;font-size:10px}
-.nm-machine-host .nm-guide-btn{width:100%;min-height:43px;border:2px solid #8470cc!important;border-radius:12px;background:linear-gradient(100deg,#293d75,#412d65)!important;color:#fff!important;box-shadow:0 3px 0 #171d43!important;font-size:11px}
-.nm-machine-host .nm-guide-btn .nm-sticker{font-size:21px;line-height:1;filter:drop-shadow(0 1px 1px #0008)}
-.nm-machine-grid .nm-explain{display:none;grid-column:1/-1;min-width:0;margin:4px 0 10px;padding:9px;border:1px solid #465d91;border-radius:13px;background:linear-gradient(135deg,#14284b,#211d47);direction:rtl}
-.nm-machine-grid .nm-explain.nm-open{display:block}
-.nm-machine-grid .nm-explain-top{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap}
-.nm-machine-grid .nm-explain h4{margin:0;color:#f3f5ff;font-size:12px}
-.nm-machine-grid .nm-step-label{color:#7de9ed;font-size:10px}
-.nm-machine-grid .nm-path{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:9px 0;direction:ltr}
-.nm-machine-grid .nm-path-node{min-width:32px;padding:5px 4px;border:1px solid #52699c;border-radius:8px;background:#0b1531;color:#edf4ff;font-size:13px;font-weight:900;text-align:center}
-.nm-machine-grid .nm-path-node.nm-focus{border-color:#ffd66b;color:#ffd66b;box-shadow:0 0 0 2px #ffd66b28}
-.nm-machine-grid .nm-path-arrow{color:#75edf1;font-size:11px}
-.nm-machine-grid .nm-reason{margin:7px 0;color:#e4ecff;font-size:11px;line-height:1.9;overflow-wrap:anywhere}
-.nm-machine-grid .nm-visual{display:flex;min-height:38px;flex-direction:column;gap:5px;margin-top:7px;padding:8px;border-radius:10px;background:#09132a;color:#e9f3ff}
-.nm-machine-grid .nm-visual-title{color:#b8c8ed;font-size:10px}
-.nm-machine-grid .nm-visual-line{display:flex;align-items:center;gap:4px;flex-wrap:wrap;direction:ltr}
-.nm-machine-grid .nm-dot{display:inline-block;width:8px;height:8px;border-radius:3px;background:#68dfe8}
-.nm-machine-grid .nm-dot.nm-alt{background:#ffd66b}.nm-machine-grid .nm-dot.nm-pink{background:#ff9bbf}
-.nm-machine-grid .nm-dots-wrap{display:flex;gap:3px;flex-wrap:wrap;max-width:100%}
-.nm-machine-grid .nm-mini-eq{color:#e5f8ff;font-size:11px;font-weight:900;overflow-wrap:anywhere}
-.nm-machine-grid .nm-step-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px}
-.nm-machine-grid .nm-step-controls .nm-btn{flex:1 1 94px;min-height:36px;padding:6px;font-size:10px}
-.nm-machine-grid .nm-full-path-list{margin-top:9px;padding:9px;border:1px solid #5a6f9c;border-radius:11px;background:#101a34}
-.nm-machine-grid .nm-full-path-heading{color:#d9ff83;font-size:12px;font-weight:900}
-.nm-machine-grid .nm-full-path-intro{margin:4px 0 8px;color:#c1d0f1;font-size:10px;line-height:1.8}
-.nm-machine-grid .nm-full-path-step{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;margin:7px 0;padding:8px;border:1px solid #40557f;border-radius:9px;background:#172543}
-.nm-machine-grid .nm-full-path-number{align-self:start;padding:4px 6px;border:1px solid #536992;border-radius:7px;background:#213158;color:#a4f0ed;font-size:10px;text-align:center}
-.nm-machine-grid .nm-full-path-body{min-width:0}
-.nm-machine-grid .nm-full-path-body strong{display:block;color:#e6f1ff;font-size:11px}
-.nm-machine-grid .nm-full-path-equation{margin:4px 0;color:#ffe08a;font-size:14px;font-weight:950;direction:ltr;text-align:left;overflow-wrap:anywhere}
-.nm-machine-grid .nm-full-path-body p{margin:3px 0 0;color:#c8d6f2;font-size:10px;line-height:1.8}
-.nm-machine-grid .nm-full-path-end{margin-top:8px;color:#9cf4bf;font-size:11px;font-weight:900}
-.nm-machine-summary{margin:0;padding:0 6px 10px;color:#d6e3ff;font-size:11px;line-height:1.85}
-@media(max-width:420px){
- .nm-machine-host{padding:8px;border-radius:14px}
- .nm-machine-heading b{font-size:13px}
- .nm-machine-grid{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr);padding:7px 3px 8px}
- .nm-machine-grid .nm-op-badge{font-size:10px;padding:3px 1px}
- .nm-machine-grid .nm-subop{display:none}
- .nm-machine-grid .nm-cell{min-height:48px;padding:3px 1px}
- .nm-machine-grid .nm-answer{min-height:39px;font-size:15px}
- .nm-machine-grid .nm-given-number{font-size:16px}
- .nm-machine-grid .nm-head-cell{font-size:9px}
- .nm-machine-grid .nm-row-tools{gap:6px}
- .nm-machine-grid .nm-row-label{font-size:9px}
- .nm-machine-grid .nm-guide-btn{font-size:10px;padding:7px 5px}
- .nm-machine-grid .nm-full-path-step{grid-template-columns:1fr;gap:5px}
- .nm-machine-grid .nm-full-path-number{justify-self:start}
- .nm-machine-actions .nm-btn{flex:1 1 105px}
-}
-
-</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
   }
   async function buildPrintableExam(){
     const status=$('printExamStatus'),subject=$('printExamSubject')?.value||'math';
