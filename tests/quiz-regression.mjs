@@ -72,4 +72,11 @@ for (const match of bundledAssetsMatch[1].matchAll(/['"]([^'"]+)['"]/g)) {
   }
 }
 assert.match(html, /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false/, 'نباید تصاویر صفحه‌های کتابِ منتشرنشده درخواست شوند');
+assert.match(html, /function renderMathQuestionVisualMarkup\(q,printMode\)/, 'رسم‌های کمکی سؤال‌های ریاضی ثبت نشده‌اند');
+assert.match(html, /id="bookPracticeVisualAid"/, 'جای نمایش شکل در تمرین وجود ندارد');
+assert.match(html, /id="examQuestionVisualAid"/, 'جای نمایش شکل در آزمون وجود ندارد');
+assert.match(html, /renderMathQuestionVisualMarkup\(q,true\)/, 'خروجی چاپی آزمون شکل کمکی را نمایش نمی‌دهد');
+assert.match(html, /class="nm-arrow-op-label"/, 'عملیات ماشین در فلش بین ستون‌ها نمایش داده نمی‌شود');
+assert.doesNotMatch(html, /chapterMachinePracticePanel|chapterMachinePracticeMount/, 'ماشین تعاملی نباید در بخش تمرین تکرار شود');
+assert.doesNotMatch(html, /machine-ha\.html/, 'برنامه نباید به صفحه جداگانه ماشین وابسته باشد');
 console.log('Static syntax and deployment checks passed: ' + compiled + ' inline script(s), ' + shellPaths.length + ' precached assets, service-worker version ' + cacheVersion[1] + '.');
