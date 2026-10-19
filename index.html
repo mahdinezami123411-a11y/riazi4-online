@@ -895,7 +895,7 @@ a{color:#d7ff76}
 .nm-machine-grid .nm-answer.nm-correct{border:1px solid #81edb6!important;background:#12362e!important;color:#9bffd0!important}
 .nm-machine-grid .nm-answer.nm-wrong{border:1px solid #ff9fbd!important;background:#3a1b30!important;color:#ffd9e5!important}
 .nm-machine-grid .nm-row-no{position:absolute;z-index:1;top:-5px;left:-4px;display:grid;place-items:center;width:19px;height:19px;border:1px solid #5c74aa;border-radius:50%;background:#26345b;color:#f0f4ff;font-size:10px}
-.nm-machine-grid .nm-arrow-spacer{min-width:0;min-height:53px;margin:3px 0}
+.nm-machine-grid .nm-arrow-spacer{display:flex;min-width:0;min-height:53px;margin:3px 0;flex-direction:column;align-items:center;justify-content:center;gap:0;overflow:visible;direction:ltr}.nm-machine-grid .nm-arrow-op-label{display:block;max-width:100%;padding:1px 2px;border:1px solid #7f75b8;border-radius:5px;background:#36305e;color:#fff2a6;font-size:10px;font-weight:950;line-height:1.25;text-align:center;white-space:nowrap}.nm-machine-grid .nm-arrow-icon{display:block;color:#77f1f4;font-size:17px;font-weight:1000;line-height:1.1}.nm-machine-grid .nm-blank-head{opacity:0;pointer-events:none}
 .nm-machine-grid .nm-row-tools{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:7px 2px 4px;direction:rtl}
 .nm-machine-grid .nm-row-label{color:#c0ceec;font-size:10px}
 .nm-machine-host .nm-guide-btn{width:100%;min-height:43px;border:2px solid #8470cc!important;border-radius:12px;background:linear-gradient(100deg,#293d75,#412d65)!important;color:#fff!important;box-shadow:0 3px 0 #171d43!important;font-size:11px}
@@ -933,8 +933,8 @@ a{color:#d7ff76}
 @media(max-width:420px){
  .nm-machine-host{padding:8px;border-radius:14px}
  .nm-machine-heading b{font-size:13px}
- .nm-machine-grid{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr);padding:7px 3px 8px}
- .nm-machine-grid .nm-op-badge{font-size:10px;padding:3px 1px}
+ .nm-machine-grid{grid-template-columns:minmax(0,1fr) minmax(32px,.68fr) minmax(0,1fr) minmax(32px,.68fr) minmax(0,1fr) minmax(32px,.68fr) minmax(0,1fr);padding:7px 3px 8px}
+ .nm-machine-grid .nm-op-badge{font-size:10px;padding:3px 1px}.nm-machine-grid .nm-arrow-op-label{font-size:9px;padding:1px 1px}.nm-machine-grid .nm-arrow-icon{font-size:15px}
  .nm-machine-grid .nm-subop{display:none}
  .nm-machine-grid .nm-cell{min-height:48px;padding:3px 1px}
  .nm-machine-grid .nm-answer{min-height:39px;font-size:15px}
@@ -947,6 +947,57 @@ a{color:#d7ff76}
  .nm-machine-grid .nm-full-path-number{justify-self:start}
  .nm-machine-actions .nm-btn{flex:1 1 105px}
 }
+
+/* شکل‌های کمکی سؤال‌های ریاضی پایه چهارم؛ بدون تصویر یا سرویس خارجی */
+.math-question-visual{margin:10px 0 12px;padding:10px;border:1px solid #50648e;border-radius:15px;background:linear-gradient(145deg,#182642,#211b35);color:#f4f6ff;overflow:hidden}
+.math-question-visual[hidden],.math-question-visual.hidden{display:none!important}
+.mqv-figure{margin:0;min-width:0}
+.mqv-figure figcaption{margin:0 0 9px;color:#bff4f0;font-size:12px;font-weight:900;line-height:1.8}
+.mqv-caption{margin:7px 0 0;color:#bdcbed;font-size:10px;line-height:1.8}
+.mqv-machine{display:grid;grid-template-columns:minmax(0,1fr) minmax(30px,.7fr) minmax(0,1fr) minmax(30px,.7fr) minmax(0,1fr);align-items:center;gap:4px;direction:ltr;max-width:680px;margin:7px auto}
+.mqv-stage{min-width:0;min-height:62px;padding:7px 3px;border:1.5px solid #5b76a8;border-radius:11px;background:#101b34;text-align:center;direction:rtl}
+.mqv-stage small{display:block;color:#a9c0e9;font-size:10px;line-height:1.7}
+.mqv-stage b{display:block;color:#f7fcff;font-size:20px;line-height:1.5;overflow-wrap:anywhere}
+.mqv-op{min-width:0;text-align:center;direction:ltr}
+.mqv-op span{display:inline-block;max-width:100%;padding:3px 2px;border:1px solid #8579bc;border-radius:6px;background:#342d59;color:#fff1a8;font-size:10px;font-weight:950;white-space:nowrap}
+.mqv-op b{display:block;color:#77f0f3;font-size:20px;line-height:1}
+.mqv-sequence{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;direction:ltr;margin:9px 0}
+.mqv-seq-cell{min-width:40px;padding:7px 6px;border:1px solid #617aa7;border-radius:9px;background:#111b34;color:#f2f7ff;font-size:16px;font-weight:900;text-align:center}
+.mqv-seq-cell.mqv-blank{border:2px dashed #e9bd63;background:#342b38;color:#ffe1a0}
+.mqv-seq-arrow{display:flex;flex-direction:column;align-items:center;gap:0;color:#72edee;font-size:16px;line-height:1.1}
+.mqv-seq-arrow small{color:#ffe294;font-size:10px;font-weight:900}
+.mqv-shape-sequence{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}
+.mqv-shape-card{min-width:0;padding:6px 3px;border:1px solid #4c638c;border-radius:11px;background:#101b34;text-align:center}
+.mqv-shape-card b{display:block;margin-top:3px;color:#d9ff9c;font-size:10px}
+.mqv-shape-card svg{display:block;width:100%;max-width:106px;height:56px;margin:auto}
+.mqv-fractions{display:grid;gap:9px;margin:7px 0}
+.mqv-frac-row{display:grid;grid-template-columns:56px minmax(0,1fr);gap:8px;align-items:center}
+.mqv-frac-label{color:#f7e49b;font-size:13px;font-weight:950;text-align:center;direction:ltr}
+.mqv-frac-bar{display:flex;direction:ltr;gap:2px;min-width:0;height:24px}
+.mqv-frac-piece{flex:1 1 0;min-width:2px;border:1px solid #6682ae;border-radius:3px;background:#101a32}
+.mqv-frac-piece.filled{border-color:#8df0db;background:linear-gradient(145deg,#54decb,#6d91ee)}
+.mqv-place-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;margin:8px 0}
+.mqv-place-table th,.mqv-place-table td{padding:5px 1px;border:1px solid #516a92;border-radius:6px;background:#111c35;color:#eef5ff;text-align:center;overflow-wrap:anywhere}
+.mqv-place-table th{font-size:9px;color:#b9cbef}.mqv-place-table td{font-size:16px;font-weight:950;color:#ffe39a}
+.mqv-geometry{display:block;width:100%;max-width:390px;height:auto;max-height:190px;margin:5px auto}
+.mqv-line-chart{display:block;width:100%;max-width:430px;height:auto;margin:5px auto}
+.mqv-time-track{display:flex;gap:5px;align-items:stretch;margin:8px 0;direction:ltr}
+.mqv-hour-block{display:flex;align-items:center;justify-content:center;min-width:0;min-height:40px;flex:1;border:1px solid #5c7bad;border-radius:7px;background:#1a3654;color:#eaf4ff;font-size:11px;text-align:center;direction:rtl}
+.mqv-hour-block.mqv-minutes{background:#342b4b;border-color:#8774b5;color:#f9e8ff}
+.mqv-data-balls{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:10px auto}
+.mqv-ball{display:grid;place-items:center;width:27px;height:27px;border:2px solid #e6f4ff;border-radius:50%;background:#4687ed;color:#fff;font-size:11px;font-weight:950}
+.mqv-ball.red{background:#ed5878}
+.mqv-array{display:grid;gap:4px;justify-content:center;max-width:100%;margin:10px auto}
+.mqv-array span{width:16px;height:16px;border-radius:50%;background:#65e4ed;border:1px solid #c0fffb;box-shadow:0 2px 0 #0d1429}
+@media(max-width:430px){
+ .math-question-visual{padding:8px}
+ .mqv-machine{grid-template-columns:minmax(0,1fr) minmax(29px,.68fr) minmax(0,1fr) minmax(29px,.68fr) minmax(0,1fr);gap:2px}
+ .mqv-stage{min-height:55px;padding:5px 1px}.mqv-stage b{font-size:17px}.mqv-stage small{font-size:9px}.mqv-op span{font-size:9px;padding:2px 1px}.mqv-op b{font-size:17px}
+ .mqv-seq-cell{min-width:32px;padding:5px 3px;font-size:14px}
+ .mqv-frac-row{grid-template-columns:46px minmax(0,1fr)}
+ .mqv-place-table th{font-size:8px}.mqv-place-table td{font-size:14px}
+}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -1072,9 +1123,9 @@ a{color:#d7ff76}
 <div id="booktab-file" class="tabpane active"><h3>فایل کتاب ریاضی چهارم</h3><p class="muted">فایل PDF کامل کتاب ریاضی چهارم داخل همین برنامه قرار دارد و در همین صفحه نمایش داده می‌شود؛ نیازی به لینک جداگانه نیست.</p><div id="studentBookStatus" class="notice">کتاب ریاضی چهارم به‌صورت فایل PDF داخل همین برنامه قرار دارد و در این بخش نمایش داده می‌شود.</div><div id="studentPdfFrame"></div></div>
 <div id="booktab-chapters" class="tabpane"><h3>آموزش فصل‌های کتاب ریاضی چهارم</h3><p class="muted" id="chapterPickerIntro">برای دیدن آموزش، یک فصل را انتخاب کن. عنوان‌ها و ترتیب فصل‌ها از فهرست کتاب ریاضی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ برداشته شده‌اند.</p><div class="chapter-grid" id="chapterPicker"></div></div>
 <div id="booktab-practice" class="tabpane"><h3>🎯 میدان تمرین فصل‌به‌فصل</h3><p class="muted" id="practiceDescription">یک فصل را انتخاب کن و سؤال‌های همان فصل را تمرین کن؛ همچنین می‌توانی سؤال‌های نمونهٔ نوبت اول یا دوم را تک‌به‌تک پاسخ بدهی.</p><label class="field" for="practiceSetMode">نوع تمرین</label><select id="practiceSetMode"><option value="chapter">تمرین یک فصل</option><option value="term1">تمرین نمونه نوبت اول · ۱۰ سؤال</option><option value="term2">تمرین نمونه نوبت دوم · ۱۰ سؤال</option></select>
-<div id="practiceChapterSelector"><label class="field" for="bookPracticeTopic">انتخاب فصل</label><select id="bookPracticeTopic"><option value="1">فصل ۱: اعداد و الگوها</option><option value="2">فصل ۲: کسر</option><option value="3">فصل ۳: ضرب و تقسیم</option><option value="4">فصل ۴: اندازه‌گیری</option><option value="5">فصل ۵: عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶: شکل‌های هندسی</option><option value="7">فصل ۷: آمار و احتمال</option></select></div><div class="grid" id="practiceFilters" style="margin-top:8px"><div><label class="field" for="practiceTypeFilter">نوع سؤال</label><select id="practiceTypeFilter"><option value="all">همه نوع‌ها</option><option value="mc">چهارگزینه‌ای</option><option value="input">پاسخ کوتاه</option><option value="tf">درست / نادرست</option><option value="multi">انتخاب چند پاسخ</option></select></div><div><label class="field" for="practiceDifficultyFilter">سطح دشواری</label><select id="practiceDifficultyFilter"><option value="all">همه سطح‌ها</option><option value="easy">آسان</option><option value="medium">متوسط</option><option value="hard">چالشی</option></select></div></div><div class="practice-stats"><div class="practice-stat"><b id="practicePoolCount">۱۰۰</b><span>سؤال این فیلتر</span></div><div class="practice-stat"><b id="practiceAskedCount">۰</b><span>تلاش‌ها</span></div><div class="practice-stat"><b id="practiceCorrectCount">۰</b><span>پاسخ درست</span></div></div><button id="newBookPractice" style="width:100%;margin-top:4px">🎯 شروع مأموریت / سؤال جدید</button><div id="bookPracticeBox" class="item hidden"><p class="muted" id="bookPracticeSkill"></p><p id="bookPracticeQuestion" class="big-math"></p><div id="bookPracticeOptions"></div><input id="bookPracticeAnswer" inputmode="text" placeholder="پاسخت را بنویس" class="hidden"><button id="checkBookPractice" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="bookPracticeFeedback" class="notice hidden"></div><button class="outline" id="nextBookPractice" style="width:100%;margin-top:8px">⏭ سؤال بعدی</button></div></div>
+<div id="practiceChapterSelector"><label class="field" for="bookPracticeTopic">انتخاب فصل</label><select id="bookPracticeTopic"><option value="1">فصل ۱: اعداد و الگوها</option><option value="2">فصل ۲: کسر</option><option value="3">فصل ۳: ضرب و تقسیم</option><option value="4">فصل ۴: اندازه‌گیری</option><option value="5">فصل ۵: عدد مخلوط و عدد اعشاری</option><option value="6">فصل ۶: شکل‌های هندسی</option><option value="7">فصل ۷: آمار و احتمال</option></select></div><div class="grid" id="practiceFilters" style="margin-top:8px"><div><label class="field" for="practiceTypeFilter">نوع سؤال</label><select id="practiceTypeFilter"><option value="all">همه نوع‌ها</option><option value="mc">چهارگزینه‌ای</option><option value="input">پاسخ کوتاه</option><option value="tf">درست / نادرست</option><option value="multi">انتخاب چند پاسخ</option></select></div><div><label class="field" for="practiceDifficultyFilter">سطح دشواری</label><select id="practiceDifficultyFilter"><option value="all">همه سطح‌ها</option><option value="easy">آسان</option><option value="medium">متوسط</option><option value="hard">چالشی</option></select></div></div><div class="practice-stats"><div class="practice-stat"><b id="practicePoolCount">۱۰۰</b><span>سؤال این فیلتر</span></div><div class="practice-stat"><b id="practiceAskedCount">۰</b><span>تلاش‌ها</span></div><div class="practice-stat"><b id="practiceCorrectCount">۰</b><span>پاسخ درست</span></div></div><button id="newBookPractice" style="width:100%;margin-top:4px">🎯 شروع مأموریت / سؤال جدید</button><div id="bookPracticeBox" class="item hidden"><p class="muted" id="bookPracticeSkill"></p><p id="bookPracticeQuestion" class="big-math"></p><div id="bookPracticeVisualAid" class="math-question-visual hidden" aria-live="polite"></div><div id="bookPracticeOptions"></div><input id="bookPracticeAnswer" inputmode="text" placeholder="پاسخت را بنویس" class="hidden"><button id="checkBookPractice" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="bookPracticeFeedback" class="notice hidden"></div><button class="outline" id="nextBookPractice" style="width:100%;margin-top:8px">⏭ سؤال بعدی</button></div></div>
 <div id="booktab-exam" class="tabpane"><h3>امتحان ریاضی چهارم</h3><p class="muted">می‌توانی آزمون نمونهٔ نوبت اول یا دوم (هرکدام ۱۰ سؤال از PDF)، آزمون مستقل هر فصل، یا آزمون ترکیبی ۲۰ سؤالی را انتخاب کنی. ترتیب سؤال‌ها و گزینه‌ها تغییر می‌کند؛ پاسخ هر سؤال به‌صورت سمت‌سروری بررسی و برای گزارش معلم در Supabase ثبت می‌شود؛ پاسخ‌نامه داخل فایل HTML قرار ندارد.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0"><div class="item" style="margin:0"><h4 style="margin-top:0">📝 نوبت اول</h4><p class="muted">۱۰ سؤال نمونه مطابق فایل PDF؛ این پرسش‌ها از بانک اصلی سؤال‌ها انتخاب می‌شوند.</p><button id="startTerm1Exam" style="width:100%">شروع آزمون نوبت اول</button></div><div class="item" style="margin:0"><h4 style="margin-top:0">🏆 نوبت دوم</h4><p class="muted">۱۰ سؤال نمونه مطابق فایل PDF؛ این پرسش‌ها از بانک اصلی سؤال‌ها انتخاب می‌شوند.</p><button id="startTerm2Exam" style="width:100%">شروع آزمون نوبت دوم</button></div></div>
-<div class="item" style="margin:12px 0"><h4 style="margin-top:0">📚 آزمون یک فصل</h4><p class="muted">یک فصل را انتخاب کن و در آزمون مستقل ۲۰ سؤالی همان فصل شرکت کن.</p><label class="field" for="examChapterSelect">فصل موردنظر</label><select id="examChapterSelect"></select><button id="startChapterExam" style="width:100%;margin-top:8px">شروع آزمون این فصل</button></div><p class="muted">آزمون ۲۰ سؤالی ترکیبی هم باقی می‌ماند.</p><div class="metric"><span class="muted">سؤال</span><strong id="examProgress">۰ از ۲۰</strong></div><div id="examQuestionBox" class="item"><p id="examQuestion" class="big-math">برای شروع امتحان دکمه را بزن.</p><div id="examOptions"></div><input id="examAnswer" class="hidden" inputmode="text" placeholder="پاسخ را وارد کن"><button id="examSubmit" style="width:100%;margin-top:8px">ثبت پاسخ</button><div id="examFeedback" class="notice hidden"></div></div><button id="startBookExam" style="width:100%">🚀 شروع آزمون ۲۰ سؤالی</button><div id="examResult" class="notice hidden"></div></div>
+<div class="item" style="margin:12px 0"><h4 style="margin-top:0">📚 آزمون یک فصل</h4><p class="muted">یک فصل را انتخاب کن و در آزمون مستقل ۲۰ سؤالی همان فصل شرکت کن.</p><label class="field" for="examChapterSelect">فصل موردنظر</label><select id="examChapterSelect"></select><button id="startChapterExam" style="width:100%;margin-top:8px">شروع آزمون این فصل</button></div><p class="muted">آزمون ۲۰ سؤالی ترکیبی هم باقی می‌ماند.</p><div class="metric"><span class="muted">سؤال</span><strong id="examProgress">۰ از ۲۰</strong></div><div id="examQuestionBox" class="item"><p id="examQuestion" class="big-math">برای شروع امتحان دکمه را بزن.</p><div id="examQuestionVisualAid" class="math-question-visual hidden" aria-live="polite"></div><div id="examOptions"></div><input id="examAnswer" class="hidden" inputmode="text" placeholder="پاسخ را وارد کن"><button id="examSubmit" style="width:100%;margin-top:8px">ثبت پاسخ</button><div id="examFeedback" class="notice hidden"></div></div><button id="startBookExam" style="width:100%">🚀 شروع آزمون ۲۰ سؤالی</button><div id="examResult" class="notice hidden"></div></div>
 </div>
 </section>
 </section>
@@ -1921,7 +1972,7 @@ function startBookExam(mode='annual'){
  $('startTerm2Exam').textContent='🔁 شروع دوباره آزمون نوبت دوم';
  paintExamQuestion();
 }
-function paintExamQuestion(){examSelectedAnswer=null;examAnswered=false;const q=examItems[examIndex];if(!q){finishBookExam();return}$('examProgress').textContent=`${(examIndex+1).toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent=`فصل ${q.chapter} · ${questionTypeLabel(q)} · ${q.q}`;$('examAnswer').value='';$('examAnswer').disabled=false;renderAnswerControls(q,'examOptions','examAnswer','examChoice',v=>examSelectedAnswer=v);$('examFeedback').classList.add('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ'}
+function paintExamQuestion(){examSelectedAnswer=null;examAnswered=false;const q=examItems[examIndex];if(!q){finishBookExam();return}$('examProgress').textContent=`${(examIndex+1).toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent=`فصل ${q.chapter} · ${questionTypeLabel(q)} · ${q.q}`;paintMathQuestionVisual(q,$('examQuestionVisualAid'));$('examAnswer').value='';$('examAnswer').disabled=false;renderAnswerControls(q,'examOptions','examAnswer','examChoice',v=>examSelectedAnswer=v);$('examFeedback').classList.add('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ'}
 function finishBookExam(){const score=Math.round((examScore/Math.max(1,examItems.length))*20);const level=score>=17?'خیلی خوب':score>=13?'خوب':score>=10?'قابل قبول':'نیاز به تلاش';$('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent='🏁 آزمون به پایان رسید!';$('examOptions').innerHTML='';$('examAnswer').classList.add('hidden');$('examFeedback').classList.add('hidden');$('examSubmit').classList.add('hidden');$('examResult').classList.remove('hidden');const examName=examMode==='term1'?'نوبت اول':examMode==='term2'?'نوبت دوم':String(examMode).startsWith('chapter:')?`آزمون فصل ${faDigits(String(examMode).split(':')[1])}`:'آزمون تمرینی سالانه';$('examResult').innerHTML=`<b>${examName} به پایان رسید.</b><p>پاسخ درست: <strong>${examScore.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}</strong></p><p>نمرهٔ معادل از ۲۰: <strong>${score.toLocaleString('fa-IR')} از ۲۰</strong></p><p>سطح عملکرد: <strong>${level}</strong></p><p>برای تقویت مهارت‌ها، از بخش آموزش و تمرین فصل‌هایی را که نیاز به مرور دارند دوباره انجام بده.</p>`;$('examQuestionBox').classList.remove('hidden')}
 $('startBookExam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('annual')};
 $('startTerm1Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term1')};
@@ -1961,7 +2012,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     let fresh=filtered.filter(q=>!practiceSeen.has(q.q));if(!fresh.length){practiceSeen.clear();fresh=filtered.slice()}
     const chosen=fresh[Math.floor(Math.random()*fresh.length)];practiceSeen.add(chosen.q);currentPractice=shuffledQuestion(chosen);
     $('bookPracticeSkill').textContent=`فصل ${fa($('bookPracticeTopic').value)} · ${currentPractice.skill||'تمرین ریاضی'} · ${questionTypeLabel(currentPractice)}`;
-    $('bookPracticeQuestion').textContent=currentPractice.q;renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats();
+    $('bookPracticeQuestion').textContent=currentPractice.q;paintMathQuestionVisual(currentPractice,$('bookPracticeVisualAid'));renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats();
   };
   if($('newBookPractice'))$('newBookPractice').onclick=newBookPractice;
   if($('nextBookPractice'))$('nextBookPractice').onclick=newBookPractice;
@@ -4763,7 +4814,7 @@ const persianBookPageMap={
     }else{
       body='<div class="print-exam-options">'+(q.options||[]).map((x,j)=>'<div class="print-exam-option">□ '+fa(j+1)+') '+escapeHtml(x)+'</div>').join('')+'</div>';
     }
-    return '<article class="print-exam-question"><b>'+number+'. '+escapeHtml(q.prompt)+'</b><small>'+escapeHtml(q.lessonTitle||'')+(q.skill?' · '+escapeHtml(q.skill):'')+'</small>'+body+'</article>';
+    const visual=renderMathQuestionVisualMarkup(q,true);return '<article class="print-exam-question"><b>'+number+'. '+escapeHtml(q.prompt)+'</b>'+visual+'<small>'+escapeHtml(q.lessonTitle||'')+(q.skill?' · '+escapeHtml(q.skill):'')+'</small>'+body+'</article>';
   }
   function printableExamDocumentHtml(includeKey){
     if(!printableExamCurrent)return '';
@@ -4773,7 +4824,7 @@ const persianBookPageMap={
     return '<div class="print-exam-paper" dir="rtl"><h2>'+escapeHtml(state.title)+'</h2><div class="exam-meta"><span>کتاب: '+escapeHtml(printableSubjectNames[state.subject]||state.subject)+'</span><span>نام و نام‌خانوادگی: ....................................</span><span>تاریخ: ....................</span><span>نمره: ....................</span></div>'+body+key+'</div>';
   }
   function printableStandaloneHtml(includeKey){
-    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.math-question-visual{margin:7px 0;padding:7px;border:1px solid #9ca3af;border-radius:8px;background:#fff;color:#111}.mqv-figure figcaption{color:#173a78;font-size:10px;margin-bottom:4px}.mqv-caption{color:#374151;font-size:9px}.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-place-table th,.mqv-place-table td{background:#fff;color:#111;border-color:#6b7280}.mqv-stage small,.mqv-place-table th{color:#374151}.mqv-stage b,.mqv-seq-cell{color:#111}.mqv-op span,.mqv-frac-label{color:#111;background:#f3f4f6;border-color:#6b7280}.mqv-op b,.mqv-seq-arrow,.mqv-seq-arrow small{color:#111}.mqv-frac-piece{background:#fff;border-color:#6b7280}.mqv-frac-piece.filled{background:#bfdbfe;border-color:#1d4ed8}.mqv-ball{border-color:#374151}.mqv-time-track,.mqv-fractions,.mqv-sequence{break-inside:avoid}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
   }
   async function buildPrintableExam(){
     const status=$('printExamStatus'),subject=$('printExamSubject')?.value||'math';
@@ -5066,7 +5117,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261020-v58',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v59',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
@@ -5130,18 +5181,18 @@ function mountEmbeddedNumberMachine(host,prefix){
  function operationText(o){return o.symbol+faDigits(o.k)}
  function answerInput(ri,ci){return '<input class="nm-answer" id="'+prefix+'a-'+ri+'-'+ci+'" type="number" inputmode="numeric" min="2" max="200" step="1" placeholder="؟" aria-label="پاسخ ردیف '+faDigits(ri+1)+' خانهٔ '+faDigits(ci+1)+'" autocomplete="off">'}
  function renderMachine(){
-  const grid=$('grid');grid.style.gridTemplateColumns='minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr)';
+  const grid=$('grid');grid.style.gridTemplateColumns='minmax(0,1fr) minmax(39px,.72fr) minmax(0,1fr) minmax(39px,.72fr) minmax(0,1fr) minmax(39px,.72fr) minmax(0,1fr)';
   let html='<div class="nm-head-cell">ورودی</div>';
   for(let i=0;i<ops.length;i++){
-   html+='<div class="nm-op-head"><span class="nm-arrow">⟶</span><span class="nm-op-badge">'+operationText(ops[i])+'</span><span class="nm-subop">'+names[ops[i].symbol]+'</span></div>'+
-    '<div class="nm-head-cell">'+(i===ops.length-1?'خروجی':'پس از عملیات '+faDigits(i+1))+'</div>';
+   html+='<div class="nm-head-cell nm-blank-head" aria-hidden="true"></div>'+
+    '<div class="nm-head-cell">'+(i===ops.length-1?'خروجی':'پس از عمل '+faDigits(i+1))+'</div>';
   }
   rows.forEach((r,ri)=>{
    html+='<div class="nm-cell '+(r.clue===0?'nm-given':'')+'">'+
     '<span class="nm-row-no">'+faDigits(ri+1)+'</span>'+
     (r.clue===0?'<span class="nm-given-stamp">راهنما</span><span class="nm-given-number">'+faDigits(r.vals[0])+'</span>':answerInput(ri,0))+'</div>';
    for(let ci=1;ci<r.vals.length;ci++){
-    html+='<div aria-hidden="true" class="nm-arrow-spacer"></div><div class="nm-cell '+(r.clue===ci?'nm-given':'')+'">'+
+    html+='<div class="nm-arrow-spacer" aria-label="عملیات '+names[ops[ci-1].symbol]+' '+faDigits(ops[ci-1].k)+'"><span class="nm-arrow-op-label">'+operationText(ops[ci-1])+'</span><span class="nm-arrow-icon">⟶</span></div><div class="nm-cell '+(r.clue===ci?'nm-given':'')+'">'+
      (r.clue===ci?'<span class="nm-given-stamp">راهنما</span><span class="nm-given-number">'+faDigits(r.vals[ci])+'</span>':answerInput(ri,ci))+'</div>';
    }
    html+='<div class="nm-row-tools"><span class="nm-row-label">ردیف '+faDigits(ri+1)+' · یک عدد راهنما</span><button type="button" class="nm-btn nm-guide-btn" data-explain="'+ri+'"><span class="nm-sticker">👇</span><span>راهنمای تصویری این ردیف</span><span class="nm-sticker">✨</span></button></div>'+
@@ -5265,26 +5316,214 @@ window.__mountChapterMachineLesson=function(){
  if(!mount){mount=document.createElement('div');mount.id='chapterMachineExampleMount';example.appendChild(mount)}
  mountEmbeddedNumberMachine(mount,'nmex-');
 };
-(function(){
- const newQuestionButton=document.getElementById('newBookPractice');
- if(!newQuestionButton||!newQuestionButton.parentElement)return;
- const panel=document.createElement('section');
- panel.id='chapterMachinePracticePanel';panel.className='item hidden';
- panel.innerHTML='<div class="row" style="align-items:flex-start;flex-wrap:wrap"><h3 style="margin:0">🚀 ماشین ورودی ـ خروجی · تمرین تعاملی</h3><span class="pill">فصل ۱</span></div><p class="muted" style="line-height:1.9">این همان ماشین سه‌عملیاتی است: سه ردیف، یک عدد راهنما در هر ردیف، ورودی در چپ و خروجی در راست. خانه‌های خالی را کامل کن و پاسخ هر سه ردیف را یک‌جا بررسی کن.</p><div id="chapterMachinePracticeMount"></div>';
- newQuestionButton.parentElement.insertBefore(panel,newQuestionButton);
- let mounted=false;
- function sync(){
-  const mode=document.getElementById('practiceSetMode')?.value||'chapter';
-  const chapter=Number(document.getElementById('bookPracticeTopic')?.value||1);
-  const show=mode==='chapter'&&chapter===1;
-  panel.classList.toggle('hidden',!show);
-  if(show&&!mounted){mounted=true;mountEmbeddedNumberMachine(document.getElementById('chapterMachinePracticeMount'),'nmpr-')}
+
+
+
+/* رسم کمکی برای سؤال‌های ریاضی: در تمرین، آزمون فصل/نوبت و برگهٔ چاپی استفاده می‌شود. */
+function renderMathQuestionVisualMarkup(q,printMode){
+ if(!q)return '';
+ if(printMode&&q.subject&&String(q.subject).toLowerCase()!=='math'&&String(q.subject)!=='ریاضی')return '';
+ var raw=String(q.q||q.prompt||q.question||q.text||'');
+ var skill=String(q.skill||q.topic||q.lessonTitle||'');
+ var latin=raw.replace(/[۰-۹]/g,function(d){return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))}).replace(/[٠-٩]/g,function(d){return String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))});
+ var low=raw.toLowerCase(),lowSkill=skill.toLowerCase(),compact=latin;
+ function faNum(v){return String(v).replace(/[0-9]/g,function(d){return '۰۱۲۳۴۵۶۷۸۹'[Number(d)]})}
+ function esc(v){return typeof escapeHtml==='function'?escapeHtml(String(v)):String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+ function figure(title,body,caption,kind){return '<div class="mqv-figure mqv-'+kind+'"><figure class="mqv-figure"><figcaption>'+title+'</figcaption>'+body+(caption?'<p class="mqv-caption">'+caption+'</p>':'')+'</figure></div>'}
+ function parseWordNum(v){var words={'یک':1,'دو':2,'سه':3,'چهار':4,'پنج':5,'شش':6,'هفت':7,'هشت':8,'نه':9,'ده':10};return /^\d+$/.test(String(v))?Number(v):(words[String(v)]||null)}
+ function svgPolygon(points,fill){return '<polygon points="'+points+'" fill="'+fill+'" stroke="#77e9ee" stroke-width="2.5" stroke-linejoin="round"/>'}
+ function shapeSvg(type,count){
+  var shapes='';
+  if(type==='triangle'){
+   for(var i=0;i<count;i++){var x=7+i*31;shapes+=svgPolygon((x+12)+',5 '+(x+25)+',29 '+(x)+',29',i%2?'#6d91ee':'#62dacc')}
+  }else if(type==='circle'){
+   for(var j=0;j<count;j++)shapes+='<circle cx="'+(14+j*27)+'" cy="18" r="8" fill="'+(j%2?'#ffd16a':'#62dacc')+'" stroke="#efffff" stroke-width="1.4"/>';
+  }else{
+   for(var k=0;k<count;k++){var x2=5+k*27;shapes+='<rect x="'+x2+'" y="5" width="24" height="24" rx="1" fill="'+(k%2?'#6d91ee':'#62dacc')+'" stroke="#efffff" stroke-width="1.5"/>'}
+  }
+  return '<svg viewBox="0 0 '+(type==='triangle'?105:type==='circle'?80:90)+' 36" role="img" aria-label="'+esc(faNum(count)+' '+(type==='triangle'?'مثلث':type==='circle'?'دایره':'مربع'))+'"><title>'+esc(faNum(count)+' '+(type==='triangle'?'مثلث':type==='circle'?'دایره':'مربع'))+'</title>'+shapes+'</svg>';
  }
- document.getElementById('practiceSetMode')?.addEventListener('change',sync);
- document.getElementById('bookPracticeTopic')?.addEventListener('change',sync);
- document.getElementById('chapterToPractice')?.addEventListener('click',sync);
- document.querySelectorAll('[data-book-tab]').forEach(button=>button.addEventListener('click',sync));
- sync();
-})();
+ var machineCue=/(ماشین|ورودی\s*[ـ\-]?\s*خروجی|خروجی\s*[ـ\-]?\s*ورودی)/.test(raw+' '+skill)||lowSkill.includes('ماشین ورودی');
+ if(machineCue){
+  var machineText=latin.replace(/[٬،]/g,' ');
+  var inputMatch=machineText.match(/ورودی(?:\s*(?:عدد)?)?\s*(\d+)/);
+  var inputValue=inputMatch?faNum(inputMatch[1]):'؟';
+  var wordPattern='(\\d+|یک|دو|سه|چهار|پنج|شش|هفت|هشت|نه|ده)';
+  var mulMatch=machineText.match(new RegExp(wordPattern+'\\s*(?:برابر|بار)'))||machineText.match(new RegExp('در\\s*'+wordPattern+'\\s*ضرب'));
+  var mult=mulMatch?parseWordNum(mulMatch[1]):null;
+  var addMatch=machineText.match(new RegExp(wordPattern+'\\s*(?:واحد\\s*)?(?:اضافه|می\\s*افزاید|افزوده|افزایش)'));
+  var subMatch=machineText.match(new RegExp(wordPattern+'\\s*(?:واحد\\s*)?(?:کم|کسر|تفریق)'));
+  var divMatch=machineText.match(new RegExp('بر\\s*'+wordPattern+'\\s*تقسیم'));
+  var secondOp=addMatch?'+ '+faNum(parseWordNum(addMatch[1])):subMatch?'- '+faNum(parseWordNum(subMatch[1])):divMatch?'÷ '+faNum(parseWordNum(divMatch[1])):'+ ؟';
+  var firstOp=mult?'× '+faNum(mult):divMatch?'÷ '+faNum(parseWordNum(divMatch[1])):'عمل اول';
+  var middle=inputValue!=='؟'&&mult?'؟':'؟';
+  var body='<div class="mqv-machine" role="img" aria-label="ماشین با خانه‌های ورودی، میانی و خروجی و عملیات نوشته‌شده روی فلش‌ها">'+
+   '<div class="mqv-stage"><small>ورودی</small><b>'+inputValue+'</b></div>'+
+   '<div class="mqv-op"><span>'+firstOp+'</span><b>→</b></div>'+
+   '<div class="mqv-stage"><small>عدد میانی</small><b>'+middle+'</b></div>'+
+   '<div class="mqv-op"><span>'+secondOp+'</span><b>→</b></div>'+
+   '<div class="mqv-stage"><small>خروجی</small><b>؟</b></div></div>';
+  return figure('🧩 راهنمای تصویری ماشین ورودی ـ خروجی',body,'عملیات را روی فلش‌ها از چپ به راست بخوان؛ خانه‌های خالی را خودت حساب کن.','machine');
+ }
+ var shapeCard=raw.match(/کارت\s*هندسی\s*شماره.{0,6}?(\d+).{0,30}?(مستطیل|مربع|متوازی‌الاضلاع|لوزی|مثلث)/);
+ if(shapeCard){
+  var cardShape=shapeCard[2],shapeBody='';
+  if(cardShape==='مستطیل')shapeBody='<rect x="42" y="20" width="148" height="72" rx="2" fill="#5bd7ca" fill-opacity=".22" stroke="#66e8e5" stroke-width="3"/>';
+  else if(cardShape==='مربع')shapeBody='<rect x="72" y="12" width="78" height="78" fill="#6d91ee" fill-opacity=".3" stroke="#9ac5ff" stroke-width="3"/>';
+  else if(cardShape==='متوازی‌الاضلاع')shapeBody='<polygon points="72,18 202,18 165,91 35,91" fill="#63dacc" fill-opacity=".25" stroke="#66e8e5" stroke-width="3"/>';
+  else if(cardShape==='لوزی')shapeBody='<polygon points="115,8 190,55 115,102 40,55" fill="#8c78ed" fill-opacity=".28" stroke="#c1b2ff" stroke-width="3"/>';
+  else shapeBody=svgPolygon('115,8 190,96 40,96','#63dacc');
+  var geomBody='<svg class="mqv-geometry" viewBox="0 0 230 112" role="img" aria-label="کارت هندسی شماره '+esc(shapeCard[1])+'، شکل '+esc(cardShape)+'"><title>کارت هندسی شماره '+esc(shapeCard[1])+'</title>'+shapeBody+'</svg>';
+  return figure('📐 شکل کارت هندسی شماره '+faNum(shapeCard[1]),geomBody,'برای پاسخ، تعداد ضلع‌ها، برابر بودن ضلع‌ها و زاویه‌ها را از روی شکل بررسی کن.','geometry');
+ }
+ var numberPattern=/(الگو|الگوی|عدد بعدی الگو|ادامه بده)/.test(raw+' '+skill)&&!/(شکل گسترده|ارزش مکانی)/.test(raw+' '+skill);
+ if(numberPattern){
+  var seqMatch=latin.match(/(\d{1,6}(?:\s*[،,]\s*\d{1,6}){2,5})/);
+  if(seqMatch){
+   var sequence=seqMatch[1].split(/[،,]/).map(function(v){return Number(v.trim())}).filter(function(v){return Number.isFinite(v)});
+   if(sequence.length>=3){
+    var missing=/[؟?]|بعدی|ادامه بده/.test(raw);
+    var sequenceHtml='';
+    sequence.forEach(function(value,i){
+     sequenceHtml+='<span class="mqv-seq-cell">'+faNum(value)+'</span>';
+     if(i<sequence.length-1){var delta=sequence[i+1]-value;sequenceHtml+='<span class="mqv-seq-arrow"><b>→</b><small>'+ (delta>=0?'+':'−')+faNum(Math.abs(delta))+'</small></span>'}
+    });
+    if(missing)sequenceHtml+='<span class="mqv-seq-arrow"><b>→</b><small>؟</small></span><span class="mqv-seq-cell mqv-blank">؟</span>';
+    return figure('🔢 الگوی عددی؛ فاصلهٔ عددها را مقایسه کن','<div class="mqv-sequence">'+sequenceHtml+'</div>','اختلاف هر دو عدد پیاپی را ببین؛ قانون را از روی چند گام بررسی کن.','sequence');
+   }
+  }
+ }
+ var shapePattern=/(الگوی شکلی|الگوی هندسی|شکل بعدی|شکل.?های بعدی|چوب.?کبریت|در شکل.?های|روند شکل|الگوی شکل)/.test(raw+' '+skill)&&!/(کارت هندسی|شکل گسترده)/.test(raw+' '+skill);
+ if(shapePattern){
+  var sh=/مثلث/.test(raw+' '+skill)?'triangle':/دایره|مهره|نقطه/.test(raw+' '+skill)?'circle':'square';
+  var cards='';
+  for(var si=1;si<=3;si++)cards+='<div class="mqv-shape-card">'+shapeSvg(sh,si)+'<b>شکل '+faNum(si)+'</b></div>';
+  cards+='<div class="mqv-shape-card">'+shapeSvg(sh,3)+'<b>مرحلهٔ بعد؟</b></div>';
+  return figure('🔷 الگوی شکلی؛ تعداد اجزا را در هر مرحله بشمار','<div class="mqv-shape-sequence">'+cards+'</div>','این شکل‌ها نمونهٔ شماتیک‌اند؛ تعداد و قاعدهٔ دقیق خواسته‌شده را با متن سؤال تطبیق بده.','shape-sequence');
+ }
+ var fractions=[];
+ var fractionRegex=/(\d{1,2})\s*\/\s*(\d{1,2})/g,fmatch;
+ while((fmatch=fractionRegex.exec(latin))!==null&&fractions.length<3){
+  var numerator=Number(fmatch[1]),denominator=Number(fmatch[2]);
+  if(denominator>=2&&denominator<=20&&numerator<=denominator)fractions.push({n:numerator,d:denominator});
+ }
+ var fractionCue=/(کسر|صورت|مخرج|نصف|ربع|چهارم|سوم|کسرها)/.test(raw+' '+skill);
+ if(fractionCue){
+  if(!fractions.length){
+   if(/نصف/.test(raw+' '+skill))fractions.push({n:1,d:2});
+   else if(/ربع|یک.?چهارم/.test(raw+' '+skill))fractions.push({n:1,d:4});
+  }
+  if(fractions.length){
+   var fracRows=fractions.map(function(fr){
+    var pieces='';
+    for(var j=0;j<fr.d;j++)pieces+='<span class="mqv-frac-piece'+(j<fr.n?' filled':'')+'"></span>';
+    return '<div class="mqv-frac-row"><div class="mqv-frac-label">'+faNum(fr.n)+'/'+faNum(fr.d)+'</div><div class="mqv-frac-bar" role="img" aria-label="'+faNum(fr.n)+' قسمت از '+faNum(fr.d)+' قسمت مساوی">'+pieces+'</div></div>';
+   }).join('');
+   return figure('🍰 راهنمای دیداری کسرها','<div class="mqv-fractions">'+fracRows+'</div>','هر نوار یک کل را نشان می‌دهد؛ قسمت‌های رنگی، صورت کسر هستند و تعداد کل قسمت‌ها مخرج است.','fractions');
+  }
+ }
+ var perpendicular=/(خط.?های عمود|عمود بر هم|زاویه.?ی قائمه|زاویه قائمه)/.test(raw+' '+skill);
+ if(perpendicular){
+  var angleMatch=latin.match(/(\d{1,3})\s*درجه/);
+  var angleBody='<svg class="mqv-geometry" viewBox="0 0 260 126" role="img" aria-label="دو خط عمود و زاویهٔ قائمهٔ نود درجه"><title>خط‌های عمود</title><line x1="25" y1="60" x2="235" y2="60" stroke="#6ce4ed" stroke-width="4" stroke-linecap="round"/><line x1="130" y1="15" x2="130" y2="112" stroke="#9b8aff" stroke-width="4" stroke-linecap="round"/><path d="M130 60 L151 60 L151 39 L130 39" fill="none" stroke="#ffd166" stroke-width="3"/><text x="158" y="34" fill="#ffd166" font-size="13" font-weight="bold" direction="rtl">۹۰°</text><text x="130" y="123" fill="#cbd8f4" text-anchor="middle" font-size="10">دو خط عمود</text></svg>';
+  return figure('📐 شکل کمکی زاویهٔ قائمه',angleBody,'دو خط عمود همیشه زاویهٔ ۹۰ درجه می‌سازند؛ ادعای عددی سؤال را با شکل مقایسه کن.','geometry');
+ }
+ var geometryCue=/(محیط|مساحت|مستطیل|مربع|متوازی.?الاضلاع|لوزی|مثلث|چهارضلعی|ضلع|زاویه|شکل هندسی|تقارن|محور تقارن)/.test(raw+' '+skill);
+ if(geometryCue){
+  var rectMatch=latin.match(/طول\s*(?:برابر با)?\s*(\d+)/),widthMatch=latin.match(/عرض\s*(?:برابر با)?\s*(\d+)/),sideMatch=latin.match(/ضلع\s*(?:برابر با)?\s*(\d+)/);
+  var isSquare=/مربع/.test(raw+' '+skill),isTriangle=/مثلث/.test(raw+' '+skill),isPara=/متوازی.?الاضلاع/.test(raw+' '+skill),isRhombus=/لوزی/.test(raw+' '+skill);
+  var dimensionBody='';
+  if(isTriangle)dimensionBody=svgPolygon('130,12 218,105 42,105','#63dacc');
+  else if(isPara)dimensionBody='<polygon points="72,20 218,20 176,100 30,100" fill="#63dacc" fill-opacity=".22" stroke="#66e8e5" stroke-width="3"/>';
+  else if(isRhombus)dimensionBody='<polygon points="130,8 211,60 130,112 49,60" fill="#9b8aff" fill-opacity=".25" stroke="#c1b2ff" stroke-width="3"/>';
+  else if(isSquare)dimensionBody='<rect x="68" y="12" width="104" height="104" fill="#6d91ee" fill-opacity=".25" stroke="#9ac5ff" stroke-width="3"/>';
+  else dimensionBody='<rect x="38" y="26" width="184" height="75" fill="#63dacc" fill-opacity=".2" stroke="#66e8e5" stroke-width="3"/>';
+  var labelOne=sideMatch?faNum(sideMatch[1]):rectMatch?faNum(rectMatch[1]):isSquare?'ضلع':'طول';
+  var labelTwo=sideMatch?faNum(sideMatch[1]):widthMatch?faNum(widthMatch[1]):isSquare?'ضلع':'عرض';
+  var svgDim='<svg class="mqv-geometry" viewBox="0 0 260 132" role="img" aria-label="شکل هندسی کمکی با اندازه‌های برچسب‌گذاری‌شده"><title>شکل هندسی</title>'+dimensionBody+'<text x="130" y="18" fill="#ffe39a" font-size="12" text-anchor="middle">'+esc(labelOne)+'</text><text x="128" y="126" fill="#ffe39a" font-size="12" text-anchor="middle">'+esc(labelTwo)+'</text></svg>';
+  return figure('📐 شکل هندسی کمکی',svgDim,'اگر عدد اندازه در متن نیامده، برچسب فقط نام ضلع است و مقدار آن را از سؤال حدس نزن.','geometry');
+ }
+ var timeCue=/(ساعت|دقیقه|تبدیل زمان|زمان|تقویم)/.test(raw+' '+skill);
+ if(timeCue){
+  var duration=latin.match(/(\d+)\s*ساعت\s*(?:و\s*)?(\d+)\s*دقیقه/);
+  var singleHours=latin.match(/(\d+)\s*ساعت/),singleMinutes=latin.match(/(\d+)\s*دقیقه/);
+  var timeHtml='<div class="mqv-time-track"><div class="mqv-hour-block">۶۰ دقیقه = ۱ ساعت</div><div class="mqv-hour-block mqv-minutes">دقایق باقی‌مانده</div></div>';
+  if(duration){
+   var hs=Number(duration[1]),ms=Number(duration[2]),parts='';
+   for(var hi=0;hi<Math.min(hs,4);hi++)parts+='<div class="mqv-hour-block">۱ ساعت<br>۶۰ دقیقه</div>';
+   if(ms>0)parts+='<div class="mqv-hour-block mqv-minutes">'+faNum(ms)+' دقیقه</div>';
+   timeHtml='<div class="mqv-time-track">'+parts+'</div>';
+  }else if(singleHours&&!singleMinutes){
+   var hh=Math.min(4,Number(singleHours[1])),parts2='';
+   for(var h2=0;h2<hh;h2++)parts2+='<div class="mqv-hour-block">۶۰ دقیقه</div>';
+   timeHtml='<div class="mqv-time-track">'+parts2+'</div>';
+  }else if(singleMinutes){
+   timeHtml+='<p class="mqv-caption">عدد دقیقه‌ها را به دسته‌های ۶۰تایی (هر دسته یک ساعت) تقسیم کن؛ بخش باقی‌مانده دقیقه می‌ماند.</p>';
+  }
+  return figure('⏰ راهنمای تصویری اندازه‌گیری زمان',timeHtml,'هر ساعت ۶۰ دقیقه است. شکل راهنما روش تبدیل را یادآوری می‌کند، نه پاسخ نهایی را.','time');
+ }
+ var probabilityCue=/(احتمال|کیسه|مهره.?ی آبی|مهره.?ی قرمز)/.test(raw+' '+skill);
+ if(probabilityCue){
+  var blueMatch=latin.match(/(\d+)\s*مهره.{0,15}آبی/),redMatch=latin.match(/(\d+)\s*مهره.{0,15}قرمز/);
+  if(blueMatch&&redMatch){
+   var balls='',blueCount=Math.min(12,Number(blueMatch[1])),redCount=Math.min(12,Number(redMatch[1]));
+   for(var bc=0;bc<blueCount;bc++)balls+='<span class="mqv-ball" aria-label="مهره آبی"></span>';
+   for(var rc=0;rc<redCount;rc++)balls+='<span class="mqv-ball red" aria-label="مهره قرمز"></span>';
+   return figure('🎲 وسایل داخل کیسه را ببین','<div class="mqv-data-balls" role="img" aria-label="'+faNum(blueCount)+' مهره آبی و '+faNum(redCount)+' مهره قرمز">'+balls+'</div>','تعداد مهره‌های هر رنگ را بشمار و سپس احتمال انتخاب را مقایسه کن.','probability');
+  }
+ }
+ var chartCue=/(نمودار|بیشترین مقدار|کمترین مقدار|داده.?ها|داده.?ی|افزایش چند واحد|مقدار کاهش|خط نمودار)/.test(raw+' '+skill);
+ if(chartCue){
+  var dataMatch=latin.match(/(?:داده.?ها|از|به)\s*[:：]?\s*(\d{1,5}(?:\s*[،,]\s*\d{1,5}){2,5})/);
+  var nums=dataMatch?dataMatch[1].split(/[،,]/).map(function(v){return Number(v.trim())}):[];
+  if(nums.length<2){
+   var fromTo=latin.match(/از\s*(\d{1,5})\s*به\s*(\d{1,5})/);
+   if(fromTo)nums=[Number(fromTo[1]),Number(fromTo[2])];
+  }
+  if(nums.length>=2&&nums.length<=6){
+   var maxValue=Math.max.apply(null,nums),plot='';
+   nums.forEach(function(v,i){var height=Math.max(7,Math.round(v/Math.max(1,maxValue)*64)),x=30+i*48;plot+='<rect x="'+x+'" y="'+(88-height)+'" width="28" height="'+height+'" rx="3" fill="'+(i%2?'#9b8aff':'#60dbc9')+'"/><text x="'+(x+14)+'" y="'+(83-height)+'" fill="#eaf4ff" font-size="10" font-weight="bold" text-anchor="middle">'+faNum(v)+'</text><text x="'+(x+14)+'" y="105" fill="#cbd8f4" font-size="10" text-anchor="middle">'+faNum(i+1)+'</text>'});
+   var chart='<svg class="mqv-line-chart" viewBox="0 0 '+(nums.length*48+10)+' 118" role="img" aria-label="نمودار ستونی داده‌های سؤال"><title>نمودار سادهٔ داده‌ها</title><line x1="18" y1="15" x2="18" y2="91" stroke="#cfdbf4" stroke-width="1.5"/><line x1="18" y1="91" x2="'+(nums.length*48+1)+'" y2="91" stroke="#cfdbf4" stroke-width="1.5"/>'+plot+'</svg>';
+   return figure('📊 نمودار کمکی داده‌ها',chart,'ستون‌ها مقدارهای گفته‌شده در متن را نشان می‌دهند؛ مقایسه را از روی ارتفاع ستون‌ها انجام بده.','chart');
+  }
+  var genericChart='<svg class="mqv-line-chart" viewBox="0 0 300 105" role="img" aria-label="نمونهٔ نمودار خط شکسته با محور افقی و عمودی"><title>نمودار خط شکسته</title><line x1="28" y1="12" x2="28" y2="80" stroke="#d7e3fa" stroke-width="2"/><line x1="28" y1="80" x2="278" y2="80" stroke="#d7e3fa" stroke-width="2"/><polyline points="40,65 98,42 158,54 216,25 270,36" fill="none" stroke="#65e4ed" stroke-width="3"/><circle cx="40" cy="65" r="4" fill="#ffd166"/><circle cx="98" cy="42" r="4" fill="#ffd166"/><circle cx="158" cy="54" r="4" fill="#ffd166"/><circle cx="216" cy="25" r="4" fill="#ffd166"/><circle cx="270" cy="36" r="4" fill="#ffd166"/></svg>';
+  return figure('📈 راهنمای دیداری نمودار خط شکسته',genericChart,'بالا رفتن خط یعنی افزایش مقدار؛ پایین آمدن خط یعنی کاهش مقدار.','chart');
+ }
+ var pvCue=/(ارزش مکانی|شکل گسترده|یکان|دهگان|صدگان|هزارگان|معرفی میلیون)/.test(raw+' '+skill);
+ if(pvCue){
+  var nmatch=latin.replace(/٬/g,'').match(/\d{4,7}/);
+  var number=nmatch?nmatch[0]:(/میلیون/.test(raw+' '+skill)?'1000000':'');
+  var places=['میلیون','صد هزار','ده هزار','هزار','صدگان','دهگان','یکان'];
+  var digits=number?number.split(''):['','','','','','','1'];
+  var offset=7-digits.length;
+  var tbl='<table class="mqv-place-table" aria-label="جدول ارزش مکانی"><thead><tr>';
+  for(var pi=offset;pi<7;pi++)tbl+='<th>'+places[pi]+'</th>';
+  tbl+='</tr></thead><tbody><tr>';
+  for(var pd=0;pd<digits.length;pd++)tbl+='<td>'+faNum(digits[pd])+'</td>';
+  tbl+='</tr></tbody></table>';
+  return figure('🔢 جدول کمک‌آموزشی ارزش مکانی',tbl,'هر رقم در جایگاه خودش ارزش پیدا می‌کند؛ صفر جایگاه خالی را نگه می‌دارد.','place-value');
+ }
+ var axisCue=/(محور عدد|خط اعداد|روی محور|محور اعداد)/.test(raw+' '+skill);
+ if(axisCue){
+  var ticks='';
+  for(var ti=0;ti<=10;ti++){var tx=18+ti*24;ticks+='<line x1="'+tx+'" y1="34" x2="'+tx+'" y2="'+(ti%5===0?48:43)+'" stroke="#dce7ff" stroke-width="1.5"/>'+(ti%2===0?'<text x="'+tx+'" y="65" font-size="10" fill="#e8f2ff" text-anchor="middle">'+faNum(ti)+'</text>':'')}
+  var axis='<svg class="mqv-line-chart" viewBox="0 0 280 76" role="img" aria-label="محور عدد از صفر تا ده"><title>محور اعداد</title><line x1="18" y1="34" x2="258" y2="34" stroke="#70e6e7" stroke-width="3"/><polygon points="258,34 249,29 249,39" fill="#70e6e7"/>'+ticks+'</svg>';
+  return figure('↔️ محور عددی برای نشان دادن جای عدد',axis,'عدد موردنظر را نسبت به عددهای اطرافش پیدا کن.','number-line');
+ }
+ var arrayCue=/(ردیف.?ها و ستون.?ها|ردیف.?ها|ستون.?ها|گروه.?های مساوی|آرایه.?ی ضرب)/.test(raw+' '+skill);
+ if(arrayCue){
+  var factors=latin.match(/(\d{1,2})\s*[×x*]\s*(\d{1,2})/),rows=factors?Math.min(8,Number(factors[1])):3,cols=factors?Math.min(8,Number(factors[2])):4;
+  var dots='';
+  for(var ar=0;ar<rows;ar++)for(var ac=0;ac<cols;ac++)dots+='<span></span>';
+  return figure('🟢 مدل تصویری ردیف‌ها و ستون‌ها','<div class="mqv-array" role="img" aria-label="'+faNum(rows)+' ردیف و '+faNum(cols)+' ستون" style="grid-template-columns:repeat('+cols+',16px)">'+dots+'</div>','هر ردیف را بشمار؛ سپس تعداد ردیف‌ها را در تعداد ستون‌ها ضرب کن.','array');
+ }
+ return '';
+}
+function paintMathQuestionVisual(q,target){
+ if(!target)return;
+ var markup=renderMathQuestionVisualMarkup(q,false);
+ target.innerHTML=markup;
+ target.classList.toggle('hidden',!markup);
+}
 
 </script></body></html>
