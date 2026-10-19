@@ -33,6 +33,10 @@ assert.ok(compiled >= 1, 'هیچ اسکریپت جاوااسکریپتی در in
 assert.match(html, /value="blank_mc"/, 'نوع جای‌خالی در فرم معلم ثبت نشده است');
 assert.match(html, /value="matching"/, 'نوع جورکردنی در فرم معلم ثبت نشده است');
 assert.match(html, /question_type.*matching|matching.*question_type/s, 'پشتیبانی جورکردنی در برنامه پیدا نشد');
+assert.doesNotMatch(html, /<option\s+value=["']multi["']>\s*انتخاب چند پاسخ<\/option>/, 'نوع سؤال چندپاسخی نباید در پنل معلم یا فیلتر تمرین باشد');
+assert.match(html, /isText=type==='input',isMatching=type==='matching',multi=false/, 'کنترل سؤال‌های قدیمی باید تک‌پاسخی نمایش داده شود');
+assert.match(html, /برای هر سؤال گزینه‌ای فقط یک شمارهٔ پاسخ صحیح وارد کن/, 'ذخیرهٔ سؤال باید دقیقاً یک گزینهٔ صحیح را اجباری کند');
+
 
 // Readiness guard: the service-worker cache and its registration query must move together.
 const serviceWorker = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
