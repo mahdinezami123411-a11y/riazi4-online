@@ -948,6 +948,27 @@ a{color:#d7ff76}
  .nm-machine-actions .nm-btn{flex:1 1 105px}
 }
 
+
+.mqv-set-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:6px;margin:9px 0}
+.mqv-set-group{display:flex;align-content:flex-start;justify-content:center;gap:4px;flex-wrap:wrap;min-height:40px;padding:7px 4px;border:1px solid #536a97;border-radius:9px;background:#101a32}
+.mqv-set-group.selected{border-color:#7ae9d4;background:#173d4a}
+.mqv-set-group span{display:inline-block;width:11px;height:11px;border-radius:50%;background:#8c9fc4;border:1px solid #d8e7ff}
+.mqv-set-group.selected span{background:#63e3c9;border-color:#e1fff9}
+.mqv-set-group small{flex-basis:100%;color:#c5d7f4;font-size:9px;text-align:center}
+.mqv-decimal-table{width:100%;border-collapse:separate;border-spacing:3px;table-layout:fixed;margin:8px 0}
+.mqv-decimal-table th,.mqv-decimal-table td{padding:7px 2px;border:1px solid #536b94;border-radius:7px;background:#111c35;color:#eff5ff;text-align:center}
+.mqv-decimal-table th{font-size:10px;color:#bdd0ef}.mqv-decimal-table td{font-size:18px;font-weight:950;color:#ffe39a}
+.mqv-unit-ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:10px 0;direction:rtl}
+.mqv-unit-step{min-width:0;padding:8px 2px;border:1px solid #5873a4;border-radius:9px;background:#121e39;text-align:center}
+.mqv-unit-step b{display:block;color:#e7f3ff;font-size:12px}.mqv-unit-step small{display:block;color:#a9c4e9;font-size:9px;line-height:1.6}
+.mqv-unit-step.active{border-color:#80ead9;background:#183a49}
+.mqv-clock{display:block;width:100%;max-width:220px;height:auto;margin:8px auto}
+@media print{
+ .mqv-set-group,.mqv-unit-step,.mqv-decimal-table td,.mqv-decimal-table th{background:#fff;color:#111;border-color:#6b7280}
+ .mqv-set-group small,.mqv-unit-step small,.mqv-decimal-table th{color:#374151}
+ .mqv-set-group span{background:#dbeafe;border-color:#374151}.mqv-set-group.selected{background:#eff6ff;border-color:#1d4ed8}
+}
+
 /* شکل‌های کمکی سؤال‌های ریاضی پایه چهارم؛ بدون تصویر یا سرویس خارجی */
 .math-question-visual{margin:10px 0 12px;padding:10px;border:1px solid #50648e;border-radius:15px;background:linear-gradient(145deg,#182642,#211b35);color:#f4f6ff;overflow:hidden}
 .math-question-visual[hidden],.math-question-visual.hidden{display:none!important}
@@ -5419,6 +5440,16 @@ function renderMathQuestionVisualMarkup(q,printMode){
     for(var j=0;j<fr.d;j++)pieces+='<span class="mqv-frac-piece'+(j<fr.n?' filled':'')+'"></span>';
     return '<div class="mqv-frac-row"><div class="mqv-frac-label">'+faNum(fr.n)+'/'+faNum(fr.d)+'</div><div class="mqv-frac-bar" role="img" aria-label="'+faNum(fr.n)+' قسمت از '+faNum(fr.d)+' قسمت مساوی">'+pieces+'</div></div>';
    }).join('');
+   var setTotalMatch=latin.match(/(\d+)\s*(?:مهره|مداد|شکلات|سیب|توپ|کتاب)/);
+   if(setTotalMatch&&/(مجموعه|مهره|مداد|شکلات|چندتاست|چند تاست)/.test(raw+' '+skill)){
+    var totalItems=Math.min(40,Number(setTotalMatch[1])),setFrac=fractions[0],groups='',groupSize=Math.floor(totalItems/setFrac.d),remainder=totalItems%setFrac.d,cursor=0;
+    for(var gi=0;gi<setFrac.d;gi++){
+     var itemsInGroup=groupSize+(gi<remainder?1:0),inside='';
+     for(var gitem=0;gitem<itemsInGroup;gitem++){inside+='<span></span>';cursor++}
+     groups+='<div class="mqv-set-group'+(gi<setFrac.n?' selected':'')+'">'+inside+'<small>گروه '+faNum(gi+1)+'</small></div>';
+    }
+    return figure('🍬 نمایش کسرِ یک مجموعه','<div class="mqv-fractions">'+fracRows+'</div><div class="mqv-set-groups">'+groups+'</div>','کل مهره‌ها را به '+faNum(setFrac.d)+' گروه برابر تقسیم کن؛ سپس به تعداد صورت، گروه‌ها را انتخاب کن.','fractions');
+   }
    return figure('🍰 راهنمای دیداری کسرها','<div class="mqv-fractions">'+fracRows+'</div>','هر نوار یک کل را نشان می‌دهد؛ قسمت‌های رنگی، صورت کسر هستند و تعداد کل قسمت‌ها مخرج است.','fractions');
   }
  }
@@ -5428,9 +5459,30 @@ function renderMathQuestionVisualMarkup(q,printMode){
   var angleBody='<svg class="mqv-geometry" viewBox="0 0 260 126" role="img" aria-label="دو خط عمود و زاویهٔ قائمهٔ نود درجه"><title>خط‌های عمود</title><line x1="25" y1="60" x2="235" y2="60" stroke="#6ce4ed" stroke-width="4" stroke-linecap="round"/><line x1="130" y1="15" x2="130" y2="112" stroke="#9b8aff" stroke-width="4" stroke-linecap="round"/><path d="M130 60 L151 60 L151 39 L130 39" fill="none" stroke="#ffd166" stroke-width="3"/><text x="158" y="34" fill="#ffd166" font-size="13" font-weight="bold" direction="rtl">۹۰°</text><text x="130" y="123" fill="#cbd8f4" text-anchor="middle" font-size="10">دو خط عمود</text></svg>';
   return figure('📐 شکل کمکی زاویهٔ قائمه',angleBody,'دو خط عمود همیشه زاویهٔ ۹۰ درجه می‌سازند؛ ادعای عددی سؤال را با شکل مقایسه کن.','geometry');
  }
+ var angleCue=/(زاویه|درجه)/.test(raw+' '+skill);
+ if(angleCue){
+  var degreeMatch=latin.match(/(\d{1,3})\s*درجه/),degreeValue=degreeMatch?Math.max(0,Math.min(180,Number(degreeMatch[1]))):65;
+  var a0x=28,a0y=100,baseX=220,rayLength=150,rad=degreeValue*Math.PI/180,rayX=a0x+rayLength*Math.cos(rad),rayY=a0y-rayLength*Math.sin(rad);
+  var arcX=a0x+35*Math.cos(rad),arcY=a0y-35*Math.sin(rad);
+  var angleSvg='<svg class="mqv-geometry" viewBox="0 0 250 132" role="img" aria-label="زاویه به اندازه '+faNum(degreeValue)+' درجه"><title>اندازهٔ زاویه</title><line x1="'+a0x+'" y1="'+a0y+'" x2="'+baseX+'" y2="'+a0y+'" stroke="#70e9ee" stroke-width="3" stroke-linecap="round"/><line x1="'+a0x+'" y1="'+a0y+'" x2="'+rayX.toFixed(1)+'" y2="'+rayY.toFixed(1)+'" stroke="#a99aff" stroke-width="3" stroke-linecap="round"/><path d="M '+(a0x+32)+' '+a0y+' A 32 32 0 0 0 '+arcX.toFixed(1)+' '+arcY.toFixed(1)+'" fill="none" stroke="#ffd166" stroke-width="3"/><circle cx="'+a0x+'" cy="'+a0y+'" r="4" fill="#ffd166"/><text x="133" y="22" fill="#ffe39a" font-size="13" text-anchor="middle">'+faNum(degreeValue)+'°</text></svg>';
+  var angleHint=degreeValue<90?'این زاویه از ۹۰ درجه کوچک‌تر است.':degreeValue===90?'این زاویه قائمه است.':degreeValue<180?'این زاویه باز است.':'این زاویه نیم‌صفحه است.';
+  return figure('📐 شکل کمکی اندازهٔ زاویه',angleSvg,degreeMatch?'اندازهٔ رسم‌شده را با ۹۰ و ۱۸۰ درجه مقایسه کن.':angleHint,'geometry');
+ }
+ var parallelCue=/(خط.?های موازی|خطوط موازی|موازی)/.test(raw+' '+skill);
+ if(parallelCue){
+  var parallelSvg='<svg class="mqv-geometry" viewBox="0 0 260 110" role="img" aria-label="دو خط موازی که یکدیگر را قطع نمی‌کنند"><title>خط‌های موازی</title><line x1="24" y1="30" x2="236" y2="30" stroke="#68e5db" stroke-width="4" stroke-linecap="round"/><line x1="24" y1="78" x2="236" y2="78" stroke="#a99aff" stroke-width="4" stroke-linecap="round"/><path d="M112 23 l8 7 -8 7 M142 23 l8 7 -8 7 M112 71 l8 7 -8 7 M142 71 l8 7 -8 7" stroke="#ffe19a" stroke-width="2" fill="none"/></svg>';
+  return figure('↔️ دو خط موازی',parallelSvg,'خط‌های موازی در یک صفحه با هم برخورد نمی‌کنند و فاصلهٔ آن‌ها ثابت می‌ماند.','geometry');
+ }
+ var polygonMatch=latin.match(/(\d{1,2})\s*ضلع/);
+ if(polygonMatch&&/(چندضلعی|شکل|ضلعی)/.test(raw+' '+skill)){
+  var sideCount=Math.max(3,Math.min(12,Number(polygonMatch[1]))),points=[];
+  for(var pt=0;pt<sideCount;pt++){var theta=(Math.PI*2*pt/sideCount)-Math.PI/2;points.push((130+75*Math.cos(theta)).toFixed(1)+','+(62+48*Math.sin(theta)).toFixed(1))}
+  var polygonSvg='<svg class="mqv-geometry" viewBox="0 0 260 124" role="img" aria-label="چندضلعی با '+faNum(sideCount)+' ضلع"><title>چندضلعی</title><polygon points="'+points.join(' ')+'" fill="#65dfd0" fill-opacity=".23" stroke="#6ce7ee" stroke-width="3"/><text x="130" y="119" text-anchor="middle" fill="#ffe19a" font-size="12">'+faNum(sideCount)+' ضلع</text></svg>';
+  return figure('🔷 شکل کمکی چندضلعی',polygonSvg,'تعداد ضلع‌ها و رأس‌های شکل را بشمار و با عبارت سؤال مقایسه کن.','geometry');
+ }
  var geometryCue=/(محیط|مساحت|مستطیل|مربع|متوازی.?الاضلاع|لوزی|مثلث|چهارضلعی|ضلع|زاویه|شکل هندسی|تقارن|محور تقارن)/.test(raw+' '+skill);
  if(geometryCue){
-  var rectMatch=latin.match(/طول\s*(?:برابر با)?\s*(\d+)/),widthMatch=latin.match(/عرض\s*(?:برابر با)?\s*(\d+)/),sideMatch=latin.match(/ضلع\s*(?:برابر با)?\s*(\d+)/);
+  var rectMatch=latin.match(/طول(?:\s+\S+){0,2}?\s*(\d+)/),widthMatch=latin.match(/عرض(?:\s+\S+){0,2}?\s*(\d+)/),sideMatch=latin.match(/ضلع(?:\s+\S+){0,3}?\s*(\d+)/),baseMatch=latin.match(/قاعده(?:\s+\S+){0,2}?\s*(\d+)/),heightMatch=latin.match(/ارتفاع(?:\s+\S+){0,2}?\s*(\d+)/);
   var isSquare=/مربع/.test(raw+' '+skill),isTriangle=/مثلث/.test(raw+' '+skill),isPara=/متوازی.?الاضلاع/.test(raw+' '+skill),isRhombus=/لوزی/.test(raw+' '+skill);
   var dimensionBody='';
   if(isTriangle)dimensionBody=svgPolygon('130,12 218,105 42,105','#63dacc');
@@ -5438,8 +5490,8 @@ function renderMathQuestionVisualMarkup(q,printMode){
   else if(isRhombus)dimensionBody='<polygon points="130,8 211,60 130,112 49,60" fill="#9b8aff" fill-opacity=".25" stroke="#c1b2ff" stroke-width="3"/>';
   else if(isSquare)dimensionBody='<rect x="68" y="12" width="104" height="104" fill="#6d91ee" fill-opacity=".25" stroke="#9ac5ff" stroke-width="3"/>';
   else dimensionBody='<rect x="38" y="26" width="184" height="75" fill="#63dacc" fill-opacity=".2" stroke="#66e8e5" stroke-width="3"/>';
-  var labelOne=sideMatch?faNum(sideMatch[1]):rectMatch?faNum(rectMatch[1]):isSquare?'ضلع':'طول';
-  var labelTwo=sideMatch?faNum(sideMatch[1]):widthMatch?faNum(widthMatch[1]):isSquare?'ضلع':'عرض';
+  var labelOne=sideMatch?faNum(sideMatch[1]):rectMatch?faNum(rectMatch[1]):baseMatch?faNum(baseMatch[1]):isSquare?'ضلع':'طول';
+  var labelTwo=sideMatch?faNum(sideMatch[1]):widthMatch?faNum(widthMatch[1]):heightMatch?faNum(heightMatch[1]):isSquare?'ضلع':'عرض';
   var svgDim='<svg class="mqv-geometry" viewBox="0 0 260 132" role="img" aria-label="شکل هندسی کمکی با اندازه‌های برچسب‌گذاری‌شده"><title>شکل هندسی</title>'+dimensionBody+'<text x="130" y="18" fill="#ffe39a" font-size="12" text-anchor="middle">'+esc(labelOne)+'</text><text x="128" y="126" fill="#ffe39a" font-size="12" text-anchor="middle">'+esc(labelTwo)+'</text></svg>';
   return figure('📐 شکل هندسی کمکی',svgDim,'اگر عدد اندازه در متن نیامده، برچسب فقط نام ضلع است و مقدار آن را از سؤال حدس نزن.','geometry');
  }
@@ -5447,6 +5499,15 @@ function renderMathQuestionVisualMarkup(q,printMode){
  if(timeCue){
   var duration=latin.match(/(\d+)\s*ساعت\s*(?:و\s*)?(\d+)\s*دقیقه/);
   var singleHours=latin.match(/(\d+)\s*ساعت/),singleMinutes=latin.match(/(\d+)\s*دقیقه/);
+  var clockMatch=latin.match(/ساعت\s*(\d{1,2})\s*[:٫.]\s*(\d{1,2})/);
+  if(clockMatch){
+   var clockHour=Number(clockMatch[1])%12,clockMinute=Math.min(59,Number(clockMatch[2])),cx=100,cy=100,radius=77,ticks='';
+   for(var ck=0;ck<12;ck++){var ca=(ck*30-90)*Math.PI/180,ix=cx+radius*.82*Math.cos(ca),iy=cy+radius*.82*Math.sin(ca),ox=cx+radius*.94*Math.cos(ca),oy=cy+radius*.94*Math.sin(ca);ticks+='<line x1="'+ix.toFixed(1)+'" y1="'+iy.toFixed(1)+'" x2="'+ox.toFixed(1)+'" y2="'+oy.toFixed(1)+'" stroke="#dce8ff" stroke-width="2"/>'}
+   var ma=(clockMinute*6-90)*Math.PI/180,ha=((clockHour*30)+(clockMinute*.5)-90)*Math.PI/180;
+   var clockSvg='<svg class="mqv-clock" viewBox="0 0 200 200" role="img" aria-label="ساعت '+faNum(clockHour||12)+':'+faNum(String(clockMinute).padStart(2,'0'))+'"><title>صورت ساعت</title><circle cx="100" cy="100" r="78" fill="#101b34" stroke="#72e5e5" stroke-width="3"/>'+ticks+'<line x1="100" y1="100" x2="'+(100+42*Math.cos(ha)).toFixed(1)+'" y2="'+(100+42*Math.sin(ha)).toFixed(1)+'" stroke="#a99aff" stroke-width="5" stroke-linecap="round"/><line x1="100" y1="100" x2="'+(100+61*Math.cos(ma)).toFixed(1)+'" y2="'+(100+61*Math.sin(ma)).toFixed(1)+'" stroke="#ffd166" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="100" r="4" fill="#fff"/></svg>';
+   var durationMatch=latin.match(/(\d{1,3})\s*دقیقه/),durationText=durationMatch?'<div class="mqv-hour-block mqv-minutes">مدت فعالیت: '+faNum(durationMatch[1])+' دقیقه</div>':'';
+   return figure('🕒 ساعت شروع و مدت زمان',clockSvg+'<div class="mqv-time-track"><div class="mqv-hour-block">شروع: '+faNum(clockHour||12)+':'+faNum(String(clockMinute).padStart(2,'0'))+'</div>'+durationText+'</div>','زمان شروع را از عقربهٔ کوتاه (ساعت) و بلند (دقیقه) بخوان؛ مدت فعالیت را جداگانه اضافه کن.','time');
+  }
   var timeHtml='<div class="mqv-time-track"><div class="mqv-hour-block">۶۰ دقیقه = ۱ ساعت</div><div class="mqv-hour-block mqv-minutes">دقایق باقی‌مانده</div></div>';
   if(duration){
    var hs=Number(duration[1]),ms=Number(duration[2]),parts='';
@@ -5461,6 +5522,13 @@ function renderMathQuestionVisualMarkup(q,printMode){
    timeHtml+='<p class="mqv-caption">عدد دقیقه‌ها را به دسته‌های ۶۰تایی (هر دسته یک ساعت) تقسیم کن؛ بخش باقی‌مانده دقیقه می‌ماند.</p>';
   }
   return figure('⏰ راهنمای تصویری اندازه‌گیری زمان',timeHtml,'هر ساعت ۶۰ دقیقه است. شکل راهنما روش تبدیل را یادآوری می‌کند، نه پاسخ نهایی را.','time');
+ }
+ var lengthCue=/(تبدیل طول|کیلومتر|سانتی.?متر|میلی.?متر|متر چند|چند متر|واحد طول)/.test(raw+' '+skill);
+ if(lengthCue){
+  var mixedLength=latin.match(/(\d+)\s*متر\s*و\s*(\d+)\s*سانتی.?متر/);
+  var ladder='<div class="mqv-unit-ladder"><div class="mqv-unit-step"><b>کیلومتر</b><small>۱ km</small></div><div class="mqv-unit-step active"><b>متر</b><small>۱۰۰۰ متر = ۱ km</small></div><div class="mqv-unit-step active"><b>سانتی‌متر</b><small>۱۰۰ cm = ۱ m</small></div><div class="mqv-unit-step"><b>میلی‌متر</b><small>۱۰ mm = ۱ cm</small></div></div>';
+  if(mixedLength)ladder+='<div class="mqv-time-track"><div class="mqv-hour-block">'+faNum(mixedLength[1])+' متر</div><div class="mqv-hour-block mqv-minutes">+</div><div class="mqv-hour-block">'+faNum(mixedLength[2])+' سانتی‌متر</div></div>';
+  return figure('📏 نردبان تبدیل واحد طول',ladder,'از پلهٔ درست حرکت کن: به واحد کوچک‌تر می‌رویم، تعداد واحدها بیشتر می‌شود؛ پاسخ نهایی را خودت بنویس.','length');
  }
  var probabilityCue=/(احتمال|کیسه|مهره.?ی آبی|مهره.?ی قرمز)/.test(raw+' '+skill);
  if(probabilityCue){
@@ -5488,6 +5556,21 @@ function renderMathQuestionVisualMarkup(q,printMode){
   }
   var genericChart='<svg class="mqv-line-chart" viewBox="0 0 300 105" role="img" aria-label="نمونهٔ نمودار خط شکسته با محور افقی و عمودی"><title>نمودار خط شکسته</title><line x1="28" y1="12" x2="28" y2="80" stroke="#d7e3fa" stroke-width="2"/><line x1="28" y1="80" x2="278" y2="80" stroke="#d7e3fa" stroke-width="2"/><polyline points="40,65 98,42 158,54 216,25 270,36" fill="none" stroke="#65e4ed" stroke-width="3"/><circle cx="40" cy="65" r="4" fill="#ffd166"/><circle cx="98" cy="42" r="4" fill="#ffd166"/><circle cx="158" cy="54" r="4" fill="#ffd166"/><circle cx="216" cy="25" r="4" fill="#ffd166"/><circle cx="270" cy="36" r="4" fill="#ffd166"/></svg>';
   return figure('📈 راهنمای دیداری نمودار خط شکسته',genericChart,'بالا رفتن خط یعنی افزایش مقدار؛ پایین آمدن خط یعنی کاهش مقدار.','chart');
+ }
+ var decimalCue=/(اعشار|دهم|صدم|اعشاری|عدد اعشاری)/.test(raw+' '+skill);
+ if(decimalCue){
+  var decimalMatch=latin.match(/(\d+)\s*[٫.]\s*(\d+)/);
+  if(decimalMatch){
+   var whole=decimalMatch[1].split(''),decimal=decimalMatch[2].split(''),labels=[];
+   for(var wi=0;wi<whole.length;wi++)labels.push(wi===whole.length-1?'یکان':wi===whole.length-2?'دهگان':'صدگان+');
+   for(var di=0;di<decimal.length;di++)labels.push(di===0?'دهم':di===1?'صدم':'هزارم');
+   var vals=whole.concat(decimal),table='<table class="mqv-decimal-table" aria-label="جدول ارزش مکانی عدد اعشاری"><thead><tr>';
+   for(var li=0;li<labels.length;li++)table+='<th>'+labels[li]+'</th>';
+   table+='</tr></thead><tbody><tr>';
+   for(var vi=0;vi<vals.length;vi++)table+='<td>'+faNum(vals[vi])+'</td>';
+   table+='</tr></tbody></table>';
+   return figure('🔢 جدول ارزش مکانی اعشاری',table,'از چپ به راست، مرتبه‌های صحیح را بخوان؛ بعد از ممیز، دهم و صدم و هزارم قرار می‌گیرند.','decimal-table');
+  }
  }
  var pvCue=/(ارزش مکانی|شکل گسترده|یکان|دهگان|صدگان|هزارگان|معرفی میلیون)/.test(raw+' '+skill);
  if(pvCue){
