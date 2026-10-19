@@ -1343,7 +1343,7 @@ function renderChapter(id){
   const example=o.example?`<div class="lesson-example"><b>✏️ مثال حل‌شده</b><p>${escapeHtml(o.example)}</p></div>`:'';
   const mistake=o.mistake?`<div class="lesson-mistake"><b>⚠️ اشتباه رایج</b><p>${escapeHtml(o.mistake)}</p></div>`:'';
   const check=o.check?`<div class="lesson-check"><b>🧠 خودت را بسنج</b><p>${escapeHtml(o.check)}</p><details><summary>دیدن پاسخ و توضیح</summary><p>${escapeHtml(o.answer||"ابتدا نکته‌های کلیدی این مبحث را مرور کن و مثال را دوباره حل کن.")}</p></details></div>`:'';
-  return `<article class="lesson-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${activeChapter===1&&i===3?`<div class="lesson-example" style="margin:12px 0;border:2px solid #65e4ed;background:linear-gradient(135deg,#17264a,#102d40)"><b>🚀 تمرین تعاملی ماشین‌های ورودی ـ خروجی</b><p>از همین بخش توضیحات وارد تمرین شو؛ سه مرحلهٔ ماشین را دنبال کن و خانه‌های خالی را کامل کن.</p><a href="./machine-ha.html" class="primary" style="display:block;text-align:center;text-decoration:none;padding:12px;border-radius:12px;margin-top:10px">🎲 شروع تمرین ماشین‌ها ↗</a></div>`:""}${steps}${example}${keys}${mistake}${check}</article>`;
+  return `<article class="lesson-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}</article>`;
  }).join('');
  $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب بخوان، مثال حل‌شده را بدون نگاه کردن دوباره حل کن، به سؤال «خودت را بسنج» پاسخ بده و سپس از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
  renderChapterPicker();updatePracticeTopicOptions();
@@ -1899,6 +1899,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     }).join('');
     const videoMarkup=window.__studentChapterVideoMarkup?window.__studentChapterVideoMarkup(id):'';
     $('chapterLessonBody').innerHTML=intro+goals+sections+videoMarkup+`<div class="notice"><b>روش پیشنهادی:</b> هر نکته را جداگانه باز کن، مثال را خودت حل کن و بعد پاسخ «خودت را بسنج» را ببین.</div>`;
+    if(window.__mountChapterMachineLesson)window.__mountChapterMachineLesson();
     renderChapterPicker();updatePracticeTopicOptions();
   };
   renderChapterPicker();updatePracticeTopicOptions();$('chapterLesson').classList.add('hidden');$('mathChapterLessonView').classList.add('hidden');
@@ -4681,7 +4682,100 @@ const persianBookPageMap={
     return '<div class="print-exam-paper" dir="rtl"><h2>'+escapeHtml(state.title)+'</h2><div class="exam-meta"><span>کتاب: '+escapeHtml(printableSubjectNames[state.subject]||state.subject)+'</span><span>نام و نام‌خانوادگی: ....................................</span><span>تاریخ: ....................</span><span>نمره: ....................</span></div>'+body+key+'</div>';
   }
   function printableStandaloneHtml(includeKey){
-    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}
+/* ماشین ورودی ـ خروجی؛ کاملاً توکار در صفحهٔ چهارمی‌ها و بدون اتصال مستقل */
+.nm-machine-host{direction:rtl;max-width:100%;margin:12px 0 2px;padding:11px;border:1px solid #4d5b91;border-radius:17px;background:radial-gradient(ellipse at 8% 0%,#243c68 0,transparent 38%),linear-gradient(145deg,#101a35,#1e1738);color:#f4f6ff;font-family:Tahoma,Arial,sans-serif;line-height:1.7;overflow:hidden}
+.nm-machine-host *{box-sizing:border-box}
+.nm-machine-heading{display:flex;align-items:flex-start;gap:9px;margin-bottom:10px}
+.nm-machine-icon{display:grid;place-items:center;flex:0 0 39px;width:39px;height:39px;border:1px solid #6079ad;border-radius:13px;background:#27345e;font-size:23px}
+.nm-machine-heading b{display:block;color:#d9ff83;font-size:15px}
+.nm-machine-heading p{margin:2px 0 0;color:#c4d2f1;font-size:11px;line-height:1.8}
+.nm-machine-tags{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0 10px}
+.nm-machine-tags span{padding:2px 7px;border:1px solid #495b87;border-radius:999px;background:#202b4a;color:#e1eaff;font-size:10px}
+.nm-machine-playbar{padding:10px;border:1px solid #43527e;border-radius:14px;background:#111b36}
+.nm-machine-playbar strong{display:block;font-size:13px;color:#d8f8ff}
+.nm-machine-playbar small{display:block;font-size:11px;color:#bdcbed;line-height:1.8}
+.nm-machine-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.nm-machine-host .nm-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:39px;margin:0;padding:8px 11px;border:1px solid #596e9a!important;border-radius:11px;background:#26375c!important;color:#f6f7ff!important;font-family:Tahoma,Arial,sans-serif;font-size:12px;font-weight:850;line-height:1.5;white-space:normal;box-shadow:0 3px 0 #0b1328!important;cursor:pointer}
+.nm-machine-host .nm-btn.nm-primary{background:linear-gradient(120deg,#65e4ed,#8bf1c4)!important;border-color:#91f5e0!important;color:#10213a!important}
+.nm-machine-host .nm-btn.nm-soft{background:linear-gradient(120deg,#3a2b58,#293960)!important;border-color:#6c5c9c!important}
+.nm-machine-host .nm-btn:active{transform:translateY(2px);box-shadow:none!important}
+.nm-machine-instructions{margin:8px 1px 0;color:#d5e1ff;font-size:11px;line-height:1.85}
+.nm-machine-notice{margin-top:9px;padding:9px 10px;border:1px solid #5e779f;border-radius:11px;background:#172849;color:#e7f2ff;font-size:12px;line-height:1.9}
+.nm-machine-shell{margin-top:11px;overflow:hidden;border:1px solid #445786;border-radius:16px;background:linear-gradient(180deg,#121d3b,#0e1730)}
+.nm-machine-top{padding:10px 11px;border-bottom:1px solid #33466f;background:#192647}
+.nm-machine-top b{display:block;color:#f0f4ff;font-size:14px}
+.nm-machine-top p{margin:3px 0 0;color:#c1d0f1;font-size:11px;line-height:1.75}
+.nm-machine-grid{display:grid;grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr);align-items:stretch;width:100%;min-width:0;direction:ltr;padding:8px 5px 10px;overflow:hidden}
+.nm-machine-grid .nm-head-cell{min-width:0;direction:rtl;display:flex;align-items:flex-end;justify-content:center;padding:3px 1px 7px;text-align:center;color:#bdcbed;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+.nm-machine-grid .nm-op-head{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;padding:0 1px 7px;direction:rtl}
+.nm-machine-grid .nm-op-badge{max-width:100%;padding:3px 3px;border:1px solid #7166a6;border-radius:8px;background:#2b2858;color:#fff;font-size:11px;font-weight:900;line-height:1.4;text-align:center;overflow-wrap:anywhere}
+.nm-machine-grid .nm-arrow{color:#70edf2;font-size:18px;line-height:1}
+.nm-machine-grid .nm-subop{color:#b2c2e8;font-size:9px;line-height:1.25;text-align:center}
+.nm-machine-grid .nm-cell{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:53px;margin:3px 1px;padding:4px 2px;border:1px solid #3d507d;border-radius:9px;background:#172543;direction:rtl}
+.nm-machine-grid .nm-cell.nm-given{border-color:#61cbd3;background:linear-gradient(145deg,#1b3a57,#193449);box-shadow:inset 0 0 0 1px #61cbd322}
+.nm-machine-grid .nm-given-number{color:#a7f7f1;font-size:18px;font-weight:950;text-align:center;font-variant-numeric:tabular-nums;line-height:1.5;overflow-wrap:anywhere}
+.nm-machine-grid .nm-given-stamp{position:absolute;top:0;right:3px;color:#8ce5e9;font-size:7px;line-height:1.2}
+.nm-machine-grid .nm-answer{display:block;width:100%;min-width:0;min-height:42px;padding:5px 0;border:1px dashed #7889b7!important;border-radius:7px;background:#0b142b!important;color:#fff!important;font-family:Tahoma,Arial,sans-serif;font-size:17px;font-weight:900;text-align:center;direction:ltr;box-shadow:none!important}
+.nm-machine-grid .nm-answer::placeholder{color:#8294bd}
+.nm-machine-grid .nm-answer:focus{border-color:#75edf2!important;box-shadow:0 0 0 2px #65e4ed24!important}
+.nm-machine-grid .nm-answer.nm-correct{border:1px solid #81edb6!important;background:#12362e!important;color:#9bffd0!important}
+.nm-machine-grid .nm-answer.nm-wrong{border:1px solid #ff9fbd!important;background:#3a1b30!important;color:#ffd9e5!important}
+.nm-machine-grid .nm-row-no{position:absolute;z-index:1;top:-5px;left:-4px;display:grid;place-items:center;width:19px;height:19px;border:1px solid #5c74aa;border-radius:50%;background:#26345b;color:#f0f4ff;font-size:10px}
+.nm-machine-grid .nm-arrow-spacer{min-width:0;min-height:53px;margin:3px 0}
+.nm-machine-grid .nm-row-tools{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:7px 2px 4px;direction:rtl}
+.nm-machine-grid .nm-row-label{color:#c0ceec;font-size:10px}
+.nm-machine-host .nm-guide-btn{width:100%;min-height:43px;border:2px solid #8470cc!important;border-radius:12px;background:linear-gradient(100deg,#293d75,#412d65)!important;color:#fff!important;box-shadow:0 3px 0 #171d43!important;font-size:11px}
+.nm-machine-host .nm-guide-btn .nm-sticker{font-size:21px;line-height:1;filter:drop-shadow(0 1px 1px #0008)}
+.nm-machine-grid .nm-explain{display:none;grid-column:1/-1;min-width:0;margin:4px 0 10px;padding:9px;border:1px solid #465d91;border-radius:13px;background:linear-gradient(135deg,#14284b,#211d47);direction:rtl}
+.nm-machine-grid .nm-explain.nm-open{display:block}
+.nm-machine-grid .nm-explain-top{display:flex;align-items:center;justify-content:space-between;gap:7px;flex-wrap:wrap}
+.nm-machine-grid .nm-explain h4{margin:0;color:#f3f5ff;font-size:12px}
+.nm-machine-grid .nm-step-label{color:#7de9ed;font-size:10px}
+.nm-machine-grid .nm-path{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:9px 0;direction:ltr}
+.nm-machine-grid .nm-path-node{min-width:32px;padding:5px 4px;border:1px solid #52699c;border-radius:8px;background:#0b1531;color:#edf4ff;font-size:13px;font-weight:900;text-align:center}
+.nm-machine-grid .nm-path-node.nm-focus{border-color:#ffd66b;color:#ffd66b;box-shadow:0 0 0 2px #ffd66b28}
+.nm-machine-grid .nm-path-arrow{color:#75edf1;font-size:11px}
+.nm-machine-grid .nm-reason{margin:7px 0;color:#e4ecff;font-size:11px;line-height:1.9;overflow-wrap:anywhere}
+.nm-machine-grid .nm-visual{display:flex;min-height:38px;flex-direction:column;gap:5px;margin-top:7px;padding:8px;border-radius:10px;background:#09132a;color:#e9f3ff}
+.nm-machine-grid .nm-visual-title{color:#b8c8ed;font-size:10px}
+.nm-machine-grid .nm-visual-line{display:flex;align-items:center;gap:4px;flex-wrap:wrap;direction:ltr}
+.nm-machine-grid .nm-dot{display:inline-block;width:8px;height:8px;border-radius:3px;background:#68dfe8}
+.nm-machine-grid .nm-dot.nm-alt{background:#ffd66b}.nm-machine-grid .nm-dot.nm-pink{background:#ff9bbf}
+.nm-machine-grid .nm-dots-wrap{display:flex;gap:3px;flex-wrap:wrap;max-width:100%}
+.nm-machine-grid .nm-mini-eq{color:#e5f8ff;font-size:11px;font-weight:900;overflow-wrap:anywhere}
+.nm-machine-grid .nm-step-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:9px}
+.nm-machine-grid .nm-step-controls .nm-btn{flex:1 1 94px;min-height:36px;padding:6px;font-size:10px}
+.nm-machine-grid .nm-full-path-list{margin-top:9px;padding:9px;border:1px solid #5a6f9c;border-radius:11px;background:#101a34}
+.nm-machine-grid .nm-full-path-heading{color:#d9ff83;font-size:12px;font-weight:900}
+.nm-machine-grid .nm-full-path-intro{margin:4px 0 8px;color:#c1d0f1;font-size:10px;line-height:1.8}
+.nm-machine-grid .nm-full-path-step{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;margin:7px 0;padding:8px;border:1px solid #40557f;border-radius:9px;background:#172543}
+.nm-machine-grid .nm-full-path-number{align-self:start;padding:4px 6px;border:1px solid #536992;border-radius:7px;background:#213158;color:#a4f0ed;font-size:10px;text-align:center}
+.nm-machine-grid .nm-full-path-body{min-width:0}
+.nm-machine-grid .nm-full-path-body strong{display:block;color:#e6f1ff;font-size:11px}
+.nm-machine-grid .nm-full-path-equation{margin:4px 0;color:#ffe08a;font-size:14px;font-weight:950;direction:ltr;text-align:left;overflow-wrap:anywhere}
+.nm-machine-grid .nm-full-path-body p{margin:3px 0 0;color:#c8d6f2;font-size:10px;line-height:1.8}
+.nm-machine-grid .nm-full-path-end{margin-top:8px;color:#9cf4bf;font-size:11px;font-weight:900}
+.nm-machine-summary{margin:0;padding:0 6px 10px;color:#d6e3ff;font-size:11px;line-height:1.85}
+@media(max-width:420px){
+ .nm-machine-host{padding:8px;border-radius:14px}
+ .nm-machine-heading b{font-size:13px}
+ .nm-machine-grid{grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr);padding:7px 3px 8px}
+ .nm-machine-grid .nm-op-badge{font-size:10px;padding:3px 1px}
+ .nm-machine-grid .nm-subop{display:none}
+ .nm-machine-grid .nm-cell{min-height:48px;padding:3px 1px}
+ .nm-machine-grid .nm-answer{min-height:39px;font-size:15px}
+ .nm-machine-grid .nm-given-number{font-size:16px}
+ .nm-machine-grid .nm-head-cell{font-size:9px}
+ .nm-machine-grid .nm-row-tools{gap:6px}
+ .nm-machine-grid .nm-row-label{font-size:9px}
+ .nm-machine-grid .nm-guide-btn{font-size:10px;padding:7px 5px}
+ .nm-machine-grid .nm-full-path-step{grid-template-columns:1fr;gap:5px}
+ .nm-machine-grid .nm-full-path-number{justify-self:start}
+ .nm-machine-actions .nm-btn{flex:1 1 105px}
+}
+
+</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
   }
   async function buildPrintableExam(){
     const status=$('printExamStatus'),subject=$('printExamSubject')?.value||'math';
@@ -4979,4 +5073,220 @@ if('serviceWorker' in navigator){
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
 }
+
+/* ماشین سه‌عملیاتی داخل خود برنامه؛ هیچ فایل یا سرویس جداگانه‌ای را دریافت نمی‌کند. */
+function mountEmbeddedNumberMachine(host,prefix){
+ if(!host)return;
+ host.innerHTML='<div class="nm-machine-host" dir="rtl">'+
+  '<div class="nm-machine-heading"><span class="nm-machine-icon">🚀</span><div><b>ماشین ورودی ـ خروجی</b><p>سه عمل پشت سر هم؛ سه ردیف برای تمرین از ورودی، خروجی و خانهٔ میانی</p></div></div>'+
+  '<div class="nm-machine-tags"><span>＋ جمع</span><span>− تفریق</span><span>× ضرب</span><span>÷ تقسیم دقیق</span><span>بدون امتیاز</span></div>'+
+  '<div class="nm-machine-playbar"><strong>🎲 ماشین تازه بساز!</strong><small>هر بار سه عملیات تصادفی ساخته می‌شود؛ در هر ردیف فقط یک عدد راهنماست.</small>'+
+  '<div class="nm-machine-actions"><button type="button" class="nm-btn nm-primary" id="'+prefix+'newBtn">🎲 ماشین تازه</button><button type="button" class="nm-btn" id="'+prefix+'checkBtn">✓ بررسی همهٔ جواب‌ها</button><button type="button" class="nm-btn nm-soft" id="'+prefix+'resetBtn">↺ پاک کردن پاسخ‌ها</button></div>'+
+  '<p class="nm-machine-instructions">هر سه ردیف را کامل کن و سپس همهٔ جواب‌ها را یک‌جا بررسی کن. عددها مثبت و حداکثر ۲۰۰ هستند؛ تقسیم‌ها بدون باقی‌مانده‌اند.</p></div>'+
+  '<div class="nm-machine-notice hidden" id="'+prefix+'notice" role="status"></div>'+
+  '<div class="nm-machine-shell"><div class="nm-machine-top"><b>🧩 مسیر عددها</b><p>ورودی در سمت چپ است و خروجی در سمت راست؛ فلش‌ها و عملیات فقط یک بار در بالای ستون مشترک نمایش داده می‌شوند.</p></div>'+
+  '<div id="'+prefix+'grid" class="nm-machine-grid"></div><p id="'+prefix+'summaryLine" class="nm-machine-summary">هر ردیف را کامل کن؛ امتیازی شمرده نمی‌شود.</p></div></div>';
+ const $=id=>host.querySelector('#'+prefix+id);
+ const symbols=['+','-','×','÷'],names={'+':'جمع','-':'تفریق','×':'ضرب','÷':'تقسیم'};
+ let ops=[],rows=[],submitted=false;
+ const faDigits=s=>String(s).replace(/[0-9]/g,d=>'۰۱۲۳۴۵۶۷۸۹'[Number(d)]);
+ const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+ function calc(n,op,k){if(op==='+')return n+k;if(op==='-')return n-k;if(op==='×')return n*k;if(op==='÷')return n%k===0?n/k:NaN;return NaN}
+ function operandRange(op){return (op==='×'||op==='÷')?[2,10]:[2,35]}
+ function runValues(input,operations){const vals=[input];let n=input;for(const o of operations){n=calc(n,o.symbol,o.k);if(!Number.isInteger(n)||n<2||n>200)return null;vals.push(n)}return vals}
+ function randomSymbols(){return Array.from({length:3},()=>symbols[rand(0,symbols.length-1)])}
+ function makePuzzle(){
+  let valid=false,operations=null,found=[];
+  for(let attempt=0;attempt<1400&&!valid;attempt++){
+   const ss=randomSymbols();
+   const os=ss.map(symbol=>{const range=operandRange(symbol);return {symbol:symbol,k:rand(range[0],range[1])}});
+   const candidates=[];
+   for(let x=2;x<=200;x++){const vals=runValues(x,os);if(vals)candidates.push(vals)}
+   if(candidates.length>=3){operations=os;found=candidates;valid=true}
+  }
+  if(!valid){
+   const fallbacks=[
+    [{symbol:'+',k:4},{symbol:'×',k:2},{symbol:'-',k:3}],
+    [{symbol:'-',k:4},{symbol:'÷',k:2},{symbol:'+',k:5}],
+    [{symbol:'×',k:2},{symbol:'+',k:3},{symbol:'÷',k:3}],
+    [{symbol:'÷',k:2},{symbol:'×',k:3},{symbol:'+',k:4}]
+   ];
+   for(const os of fallbacks.sort(()=>Math.random()-.5)){
+    const candidates=[];for(let x=2;x<=200;x++){const vals=runValues(x,os);if(vals)candidates.push(vals)}
+    if(candidates.length>=3){operations=os;found=candidates;valid=true;break}
+   }
+  }
+  if(!valid){operations=[{symbol:'+',k:4},{symbol:'×',k:2},{symbol:'-',k:3}];found=[];for(let x=2;x<=200;x++){const vals=runValues(x,operations);if(vals)found.push(vals)}}
+  ops=operations;
+  const selected=[];
+  if(found.length){
+   selected.push(found[rand(0,found.length-1)]);
+   let guard=0;
+   while(selected.length<3&&guard++<500){const vals=found[rand(0,found.length-1)];if(!selected.some(row=>row[0]===vals[0]))selected.push(vals)}
+  }
+  while(selected.length<3&&found.length)selected.push(found[selected.length%found.length]);
+  rows=selected.slice(0,3).map((vals,i)=>({vals:vals,clue:[0,vals.length-1,2][i],step:0}));
+  submitted=false;$('summaryLine').textContent='در هر ردیف فقط یک عدد راهنما داده شده است. خانه‌های خالی را کامل کن و همهٔ جواب‌ها را یک‌جا بررسی کن.';
+  $('notice').classList.add('hidden');renderMachine();
+ }
+ function operationText(o){return o.symbol+faDigits(o.k)}
+ function answerInput(ri,ci){return '<input class="nm-answer" id="'+prefix+'a-'+ri+'-'+ci+'" type="number" inputmode="numeric" min="2" max="200" step="1" placeholder="؟" aria-label="پاسخ ردیف '+faDigits(ri+1)+' خانهٔ '+faDigits(ci+1)+'" autocomplete="off">'}
+ function renderMachine(){
+  const grid=$('grid');grid.style.gridTemplateColumns='minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr)';
+  let html='<div class="nm-head-cell">ورودی</div>';
+  for(let i=0;i<ops.length;i++){
+   html+='<div class="nm-op-head"><span class="nm-arrow">⟶</span><span class="nm-op-badge">'+operationText(ops[i])+'</span><span class="nm-subop">'+names[ops[i].symbol]+'</span></div>'+
+    '<div class="nm-head-cell">'+(i===ops.length-1?'خروجی':'پس از عملیات '+faDigits(i+1))+'</div>';
+  }
+  rows.forEach((r,ri)=>{
+   html+='<div class="nm-cell '+(r.clue===0?'nm-given':'')+'">'+
+    '<span class="nm-row-no">'+faDigits(ri+1)+'</span>'+
+    (r.clue===0?'<span class="nm-given-stamp">راهنما</span><span class="nm-given-number">'+faDigits(r.vals[0])+'</span>':answerInput(ri,0))+'</div>';
+   for(let ci=1;ci<r.vals.length;ci++){
+    html+='<div aria-hidden="true" class="nm-arrow-spacer"></div><div class="nm-cell '+(r.clue===ci?'nm-given':'')+'">'+
+     (r.clue===ci?'<span class="nm-given-stamp">راهنما</span><span class="nm-given-number">'+faDigits(r.vals[ci])+'</span>':answerInput(ri,ci))+'</div>';
+   }
+   html+='<div class="nm-row-tools"><span class="nm-row-label">ردیف '+faDigits(ri+1)+' · یک عدد راهنما</span><button type="button" class="nm-btn nm-guide-btn" data-explain="'+ri+'"><span class="nm-sticker">👇</span><span>راهنمای تصویری این ردیف</span><span class="nm-sticker">✨</span></button></div>'+
+    '<div class="nm-explain" id="'+prefix+'explain-'+ri+'"><div class="nm-explain-top"><h4>ردیابی تصویری عددها</h4><span class="nm-step-label" id="'+prefix+'step-label-'+ri+'">عدد راهنما</span></div>'+
+    '<div class="nm-path" id="'+prefix+'path-'+ri+'"></div><p class="nm-reason" id="'+prefix+'reason-'+ri+'"></p><div class="nm-visual" id="'+prefix+'visual-'+ri+'"></div>'+
+    '<div class="nm-step-controls"><button type="button" class="nm-btn" data-stepnext="'+ri+'"><span>مرحلهٔ بعد</span><span>➡️</span></button><button type="button" class="nm-btn" data-stepback="'+ri+'"><span>⬅️</span><span>مرحلهٔ قبل</span></button><button type="button" class="nm-btn" data-stepall="'+ri+'"><span>🧭</span><span>نمایش مسیر کامل</span><span>👇</span></button></div></div>';
+  });
+  grid.innerHTML=html;grid.style.gridTemplateColumns='minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr) 30px minmax(0,1fr)';
+  grid.querySelectorAll('[data-explain]').forEach(button=>button.addEventListener('click',()=>toggleExplanation(Number(button.dataset.explain))));
+  grid.querySelectorAll('[data-stepnext]').forEach(button=>button.addEventListener('click',()=>advanceStep(Number(button.dataset.stepnext),1)));
+  grid.querySelectorAll('[data-stepback]').forEach(button=>button.addEventListener('click',()=>advanceStep(Number(button.dataset.stepback),-1)));
+  grid.querySelectorAll('[data-stepall]').forEach(button=>button.addEventListener('click',()=>{const i=Number(button.dataset.stepall);rows[i].step=ops.length;updateExplanation(i);renderFullPath(i)}));
+ }
+ function toggleExplanation(i){const box=$('explain-'+i),opening=!box.classList.contains('nm-open');box.classList.toggle('nm-open',opening);if(opening){rows[i].step=0;updateExplanation(i)}}
+ function advanceStep(i,delta){const box=$('explain-'+i);box.classList.add('nm-open');rows[i].step=Math.max(0,Math.min(ops.length,rows[i].step+delta));updateExplanation(i);const old=$('full-path-'+i);if(old)old.remove()}
+ function inverseOperation(o){return ({'+':'-','-':'+','×':'÷','÷':'×'})[o.symbol]}
+ function stepPlan(r){
+  const plan=[],n=ops.length,clue=r.clue;
+  if(clue===0){for(let j=0;j<n;j++)plan.push({idx:j,dir:'forward'})}
+  else if(clue===n){for(let j=n-1;j>=0;j--)plan.push({idx:j,dir:'reverse'})}
+  else{for(let j=clue;j<n;j++)plan.push({idx:j,dir:'forward'});for(let j=clue-1;j>=0;j--)plan.push({idx:j,dir:'reverse'})}
+  return plan;
+ }
+ function renderFullPath(i){
+  const r=rows[i],plan=stepPlan(r),visual=$('visual-'+i),old=$('full-path-'+i);if(old)old.remove();
+  const wrap=document.createElement('div');wrap.className='nm-full-path-list';wrap.id=prefix+'full-path-'+i;
+  const heading=document.createElement('div');heading.className='nm-full-path-heading';heading.textContent='🧭 مسیر کامل، مرحله‌به‌مرحله';wrap.appendChild(heading);
+  const intro=document.createElement('p');intro.className='nm-full-path-intro';intro.textContent='از عدد راهنما شروع کن و هر مرحله را به‌ترتیب از بالا به پایین بخوان:';wrap.appendChild(intro);
+  plan.forEach((item,n)=>{
+   const operation=ops[item.idx],symbol=item.dir==='forward'?operation.symbol:inverseOperation(operation);
+   const fromIndex=item.dir==='forward'?item.idx:item.idx+1,toIndex=item.dir==='forward'?item.idx+1:item.idx;
+   const card=document.createElement('div');card.className='nm-full-path-step';
+   const badge=document.createElement('span');badge.className='nm-full-path-number';badge.textContent='مرحلهٔ '+faDigits(n+1);card.appendChild(badge);
+   const body=document.createElement('div');body.className='nm-full-path-body';
+   const direction=document.createElement('strong');direction.textContent=item.dir==='forward'?'➡️ حرکت به سمت راست':'⬅️ حرکت به سمت چپ با عمل وارونه';body.appendChild(direction);
+   const equation=document.createElement('div');equation.className='nm-full-path-equation';equation.textContent=faDigits(r.vals[fromIndex])+' '+symbol+' '+faDigits(operation.k)+' = '+faDigits(r.vals[toIndex]);body.appendChild(equation);
+   const why=document.createElement('p');why.textContent=item.dir==='reverse'?'برای برگرداندن '+names[operation.symbol]+'، از '+names[symbol]+' استفاده می‌کنیم.':(symbol==='+'?'به عدد '+faDigits(operation.k)+' واحد اضافه کن.':symbol==='-'?'از عدد '+faDigits(operation.k)+' واحد کم کن.':symbol==='×'?'عدد را '+faDigits(operation.k)+' برابر کن؛ یعنی '+faDigits(operation.k)+' گروه مساوی.':'عدد را به '+faDigits(operation.k)+' قسمت مساوی تقسیم کن.');body.appendChild(why);
+   card.appendChild(body);wrap.appendChild(card);
+  });
+  const end=document.createElement('div');end.className='nm-full-path-end';end.textContent='✅ همهٔ مراحل را از بالا به پایین دنبال کن.';wrap.appendChild(end);visual.appendChild(wrap);
+ }
+ function updateExplanation(i){
+  const r=rows[i],step=r.step,box=$('explain-'+i);if(!box)return;box.classList.add('nm-open');
+  const plan=stepPlan(r),active=step>0?plan[step-1]:null,path=$('path-'+i);path.innerHTML='';
+  r.vals.forEach((value,idx)=>{
+   const node=document.createElement('div');node.className='nm-path-node'+((step===0?idx===r.clue:active&&(idx===active.idx||idx===active.idx+1))?' nm-focus':'');
+   node.textContent=(submitted||idx===r.clue)?faDigits(value):'□';path.appendChild(node);
+   if(idx<ops.length){const arrow=document.createElement('span');arrow.className='nm-path-arrow';arrow.textContent='⟶ '+operationText(ops[idx]);path.appendChild(arrow)}
+  });
+  let message='';
+  if(!active){
+   if(r.clue===0)message='عدد راهنما در ورودی است: '+faDigits(r.vals[0])+'. از چپ به راست حرکت کن و هر بار عملیاتی را که بالای فلش نوشته شده انجام بده؛ نتیجه را در خانهٔ خالی بنویس.';
+   else if(r.clue===ops.length)message='عدد راهنما در خروجی است: '+faDigits(r.vals[r.clue])+'. برای حرکت از راست به چپ، عملیات وارونه را انجام بده: جمع و تفریق وارونهٔ هم‌اند و ضرب و تقسیم هم وارونهٔ یکدیگرند.';
+   else message='عدد راهنما در خانهٔ میانی است: '+faDigits(r.vals[r.clue])+'. ابتدا از این عدد به سمت راست برو؛ سپس برای پیدا کردن خانه‌های سمت چپ، عملیات وارونه را به کار ببر.';
+  }else{
+   const operation=ops[active.idx],applied=active.dir==='forward'?operation.symbol:inverseOperation(operation),sourceIndex=active.dir==='forward'?active.idx:active.idx+1;
+   const known=submitted||sourceIndex===r.clue,source=known?faDigits(r.vals[sourceIndex]):'□',direction=active.dir==='forward'?'به سمت راست':'به سمت چپ';
+   let concept='';
+   if(applied==='+')concept=' '+faDigits(operation.k)+' واحد اضافه کن.';
+   else if(applied==='-')concept=' از عدد '+faDigits(operation.k)+' واحد کم کن.';
+   else if(applied==='×')concept=' عدد را در '+faDigits(operation.k)+' ضرب کن؛ یعنی '+faDigits(operation.k)+' گروه مساوی بساز.';
+   else concept=' عدد را بر '+faDigits(operation.k)+' تقسیم کن؛ گروه‌ها مساوی‌اند و باقی‌مانده‌ای نمی‌ماند.';
+   message='مرحلهٔ '+faDigits(step)+': از خانهٔ '+(active.dir==='forward'?'سمت چپ':'سمت راست')+' به سمت '+(active.dir==='forward'?'راست':'چپ')+' حرکت کن. '+source+' '+applied+' '+faDigits(operation.k)+' = □.'+concept;
+   if(active.dir==='reverse')message+=' چون از روی '+names[operation.symbol]+' '+faDigits(operation.k)+' به عقب می‌رویم، از '+names[applied]+' استفاده می‌کنیم؛ این عمل وارونهٔ '+names[operation.symbol]+' است.';
+   if(submitted)message+=' نتیجهٔ این مرحله '+faDigits(r.vals[active.dir==='forward'?active.idx+1:active.idx])+' است؛ با اجرای عملیات اصلی می‌توانی درستی مسیر را بررسی کنی.';
+  }
+  $('reason-'+i).textContent=message;
+  const visual=$('visual-'+i);visual.innerHTML='';
+  const title=document.createElement('div');title.className='nm-visual-title';title.textContent=!active?'نقشهٔ مسیر: خانهٔ راهنما را پیدا کن؛ خانه‌های دیگر تا زمان بررسی خالی می‌مانند':'مدل تصویری '+names[active.dir==='forward'?ops[active.idx].symbol:inverseOperation(ops[active.idx])]+' '+faDigits(ops[active.idx].k);visual.appendChild(title);
+  const line=document.createElement('div');line.className='nm-visual-line';
+  if(!active){
+   const clue=document.createElement('span');clue.className='nm-mini-eq';clue.textContent='★ '+faDigits(r.vals[r.clue])+' ← عدد راهنما';line.appendChild(clue);
+   const note=document.createElement('span');note.className='nm-mini-eq';note.textContent=' · هر □ را با محاسبهٔ خودت کامل کن';line.appendChild(note);
+  }else{
+   const operation=ops[active.idx],symbol=active.dir==='forward'?operation.symbol:inverseOperation(operation),sourceIndex=active.dir==='forward'?active.idx:active.idx+1;
+   const from=(submitted||sourceIndex===r.clue)?faDigits(r.vals[sourceIndex]):'□';
+   const equation=document.createElement('span');equation.className='nm-mini-eq';equation.textContent=from+' '+symbol+' '+faDigits(operation.k)+' = '+(submitted?faDigits(r.vals[active.dir==='forward'?active.idx+1:active.idx]):'□');line.appendChild(equation);
+   if(symbol==='+'||symbol==='-'){
+    const rail=document.createElement('span');rail.style.display='inline-flex';rail.style.alignItems='center';rail.style.gap='3px';rail.style.marginInlineStart='7px';
+    for(let j=0;j<Math.min(operation.k,20);j++){const dot=document.createElement('i');dot.className='nm-dot'+(symbol==='-'?' nm-pink':' nm-alt');rail.appendChild(dot)}line.appendChild(rail);
+   }else{
+    const groups=document.createElement('span');groups.className='nm-dots-wrap';groups.style.marginInlineStart='7px';
+    for(let g=0;g<Math.min(operation.k,10);g++){
+     const group=document.createElement('span');group.style.display='inline-flex';group.style.flexDirection='column';group.style.gap='2px';group.style.padding='3px';group.style.border='1px solid #51649a';group.style.borderRadius='5px';
+     for(let j=0;j<3;j++){const dot=document.createElement('i');dot.className='nm-dot'+(symbol==='÷'?' nm-pink':'');dot.style.width='7px';dot.style.height='7px';group.appendChild(dot)}groups.appendChild(group);
+    }
+    line.appendChild(groups);
+   }
+  }
+  visual.appendChild(line);$('step-label-'+i).textContent=step===0?'عدد راهنما':'مرحلهٔ '+faDigits(step)+' از '+faDigits(ops.length);
+ }
+ function checkAnswers(){
+  submitted=true;
+  rows.forEach((row,ri)=>{
+   row.vals.forEach((value,ci)=>{
+    if(ci===row.clue)return;
+    const input=$('a-'+ri+'-'+ci);if(!input)return;const raw=input.value.trim();input.classList.remove('nm-correct','nm-wrong');
+    if(raw!==''&&Number(raw)===value){input.classList.add('nm-correct');input.title='درست است'}
+    else{input.classList.add('nm-wrong');input.value=value;input.title='پاسخ درست: '+value}
+   });
+   const explanation=$('explain-'+ri);if(explanation.classList.contains('nm-open'))updateExplanation(ri);
+  });
+  $('summaryLine').textContent='پاسخ‌ها بررسی شدند: خانه‌های سبز درست‌اند و خانه‌های صورتی پاسخ درست را نشان می‌دهند. این فعالیت امتیاز ثبت نمی‌کند.';
+  $('notice').textContent='بررسی تمام شد. اگر خانه‌ای صورتی است، پاسخ درست در آن نمایش داده شده؛ حالا راهنمای تصویری همان ردیف را باز کن و مسیر را مرحله‌به‌مرحله دنبال کن.';
+  $('notice').classList.remove('hidden');
+ }
+ function resetAnswers(){
+  submitted=false;
+  rows.forEach((row,ri)=>{row.vals.forEach((value,ci)=>{if(ci===row.clue)return;const input=$('a-'+ri+'-'+ci);if(input){input.value='';input.classList.remove('nm-correct','nm-wrong');input.title=''}});row.step=0});
+  $('summaryLine').textContent='پاسخ‌ها پاک شدند. هر سه ردیف را کامل کن و سپس یک‌جا بررسی کن.';$('notice').classList.add('hidden');
+ }
+ $('newBtn').addEventListener('click',makePuzzle);$('checkBtn').addEventListener('click',checkAnswers);$('resetBtn').addEventListener('click',resetAnswers);
+ makePuzzle();
+}
+window.__mountChapterMachineLesson=function(){
+ const body=document.getElementById('chapterLessonBody');if(!body)return;
+ const lesson=[...body.querySelectorAll('.lesson-accordion')].find(item=>/ماشین ورودی/.test(item.querySelector('summary')?.textContent||''));
+ if(!lesson)return;
+ const example=lesson.querySelector('.lesson-example');if(!example)return;
+ let mount=example.querySelector('#chapterMachineExampleMount');
+ if(!mount){mount=document.createElement('div');mount.id='chapterMachineExampleMount';example.appendChild(mount)}
+ mountEmbeddedNumberMachine(mount,'nmex-');
+};
+(function(){
+ const newQuestionButton=document.getElementById('newBookPractice');
+ if(!newQuestionButton||!newQuestionButton.parentElement)return;
+ const panel=document.createElement('section');
+ panel.id='chapterMachinePracticePanel';panel.className='item hidden';
+ panel.innerHTML='<div class="row" style="align-items:flex-start;flex-wrap:wrap"><h3 style="margin:0">🚀 ماشین ورودی ـ خروجی · تمرین تعاملی</h3><span class="pill">فصل ۱</span></div><p class="muted" style="line-height:1.9">این همان ماشین سه‌عملیاتی است: سه ردیف، یک عدد راهنما در هر ردیف، ورودی در چپ و خروجی در راست. خانه‌های خالی را کامل کن و پاسخ هر سه ردیف را یک‌جا بررسی کن.</p><div id="chapterMachinePracticeMount"></div>';
+ newQuestionButton.parentElement.insertBefore(panel,newQuestionButton);
+ let mounted=false;
+ function sync(){
+  const mode=document.getElementById('practiceSetMode')?.value||'chapter';
+  const chapter=Number(document.getElementById('bookPracticeTopic')?.value||1);
+  const show=mode==='chapter'&&chapter===1;
+  panel.classList.toggle('hidden',!show);
+  if(show&&!mounted){mounted=true;mountEmbeddedNumberMachine(document.getElementById('chapterMachinePracticeMount'),'nmpr-')}
+ }
+ document.getElementById('practiceSetMode')?.addEventListener('change',sync);
+ document.getElementById('bookPracticeTopic')?.addEventListener('change',sync);
+ document.getElementById('chapterToPractice')?.addEventListener('click',sync);
+ document.querySelectorAll('[data-book-tab]').forEach(button=>button.addEventListener('click',sync));
+ sync();
+})();
+
 </script></body></html>
