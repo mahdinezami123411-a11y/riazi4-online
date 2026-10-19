@@ -117,6 +117,61 @@ assert.ok(sourceReport.persian.lessonCount > 0, 'فهرست درس‌های فا
 assert.ok(sourceReport.persian.questionCount > 0, 'از داده‌های فارسی سؤال ساخته نشد');
 assert.equal(sourceReport.persian.invalidQuestions, 0, 'سؤال فارسی یا جورکردنی فارسی نامعتبر است');
 
+// Detect numerically equivalent choices in every single-answer source question.
+// This catches cases such as 8/48 and 6/36 appearing together in a single-choice item.
+const semanticChoiceAudit = await page.evaluate(() => {
+  const api = window.__quizTestApi;
+  const ascii = value => String(value)
+    .replace(/[۰-۹]/g, d => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))
+    .replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))
+    .replace(/[٫٬،]/g, d => d === '٫' ? '.' : ',')
+    .replace(/\u200c/g, '').trim();
+  const numericValue = value => {
+    const text = ascii(value).replace(/,/g, '').replace(/\s+/g, '');
+    let match = text.match(/^(-?\d+(?:\.\d+)?)$/);
+    if (match) return Number(match[1]);
+    match = text.match(/^(-?\d+)\/(\d+)$/);
+    if (match && Number(match[2]) !== 0) return Number(match[1]) / Number(match[2]);
+    return null;
+  };
+  const rows = [];
+  for (const subject of ['science', 'social', 'gifts']) {
+    const bank = api.getSourceBank()[subject] || {};
+    const lessons = Object.keys(bank).filter(key => /^\d+$/.test(key));
+    for (const lesson of lessons) {
+      for (const q of api.getSourceQuizzes(subject, Number(lesson))) {
+        rows.push({subject, lesson, q});
+      }
+    }
+  }
+  for (const lesson of api.getPersianLessons()) {
+    for (const q of api.getPersianQuizzes(lesson)) {
+      rows.push({subject:'persian', lesson:lesson.id || lesson, q});
+    }
+  }
+  const issues = [];
+  for (const row of rows) {
+    const q = row.q || {};
+    const type = String(q.type || 'mc');
+    if (type === 'matching' || type === 'multi') continue;
+    const options = Array.isArray(q.options) ? q.options : [];
+    for (let i=0; i<options.length; i++) {
+      const a = numericValue(options[i]);
+      if (a === null) continue;
+      for (let j=i+1; j<options.length; j++) {
+        const b = numericValue(options[j]);
+        if (b !== null && Math.abs(a-b)<1e-10) {
+          issues.push({subject:row.subject,lesson:row.lesson,type,question:q.q||q.question||'',a:options[i],b:options[j]});
+        }
+      }
+    }
+  }
+  return {questionCount:rows.length, issues};
+});
+assert.equal(semanticChoiceAudit.issues.length, 0,
+  'گزینه‌های هم‌ارزش در سؤال تک‌پاسخی بانک‌های منبع پیدا شد: '+JSON.stringify(semanticChoiceAudit.issues.slice(0,20)));
+
+
 const interaction = await page.evaluate(() => {
   const api = window.__quizTestApi;
   const oldGetter = api.getOtherSubjectQuestions();
