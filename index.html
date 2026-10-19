@@ -969,6 +969,16 @@ a{color:#d7ff76}
  .mqv-set-group span{background:#dbeafe;border-color:#374151}.mqv-set-group.selected{background:#eff6ff;border-color:#1d4ed8}
 }
 
+
+.mqv-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:6px;margin:9px 0}
+.mqv-group-card{min-width:0;padding:6px 3px;border:1px solid #50678f;border-radius:9px;background:#101a32;text-align:center}
+.mqv-group-card b{display:block;color:#ffe29a;font-size:13px;line-height:1.6}
+.mqv-group-card small{display:block;color:#bdcbed;font-size:9px;line-height:1.6}
+.mqv-group-dots{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;min-height:15px;margin:3px 0}
+.mqv-group-dots span{width:8px;height:8px;border-radius:50%;background:#62dbcd;border:1px solid #c0fff7}
+.mqv-remainder{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin-top:7px;padding:7px;border:1px dashed #dca66b;border-radius:9px;background:#312531;color:#ffe0aa;font-size:11px}
+@media print{.mqv-group-card{background:#fff;border-color:#777}.mqv-group-card b,.mqv-group-card small{color:#111}.mqv-group-dots span{background:#dbeafe;border-color:#374151}.mqv-remainder{background:#fff;color:#111;border-color:#777}}
+
 /* شکل‌های کمکی سؤال‌های ریاضی پایه چهارم؛ بدون تصویر یا سرویس خارجی */
 .math-question-visual{margin:10px 0 12px;padding:10px;border:1px solid #50648e;border-radius:15px;background:linear-gradient(145deg,#182642,#211b35);color:#f4f6ff;overflow:hidden}
 .math-question-visual[hidden],.math-question-visual.hidden{display:none!important}
@@ -5138,7 +5148,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v60',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v61',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
@@ -5594,6 +5604,43 @@ function renderMathQuestionVisualMarkup(q,printMode){
   for(var ti=0;ti<=10;ti++){var tx=18+ti*24;ticks+='<line x1="'+tx+'" y1="34" x2="'+tx+'" y2="'+(ti%5===0?48:43)+'" stroke="#dce7ff" stroke-width="1.5"/>'+(ti%2===0?'<text x="'+tx+'" y="65" font-size="10" fill="#e8f2ff" text-anchor="middle">'+faNum(ti)+'</text>':'')}
   var axis='<svg class="mqv-line-chart" viewBox="0 0 280 76" role="img" aria-label="محور عدد از صفر تا ده"><title>محور اعداد</title><line x1="18" y1="34" x2="258" y2="34" stroke="#70e6e7" stroke-width="3"/><polygon points="258,34 249,29 249,39" fill="#70e6e7"/>'+ticks+'</svg>';
   return figure('↔️ محور عددی برای نشان دادن جای عدد',axis,'عدد موردنظر را نسبت به عددهای اطرافش پیدا کن.','number-line');
+ }
+ var divisionCue=/(تقسیم|باقی.?مانده|سهم هر نفر|به.?طور مساوی)/.test(raw+' '+skill);
+ if(divisionCue){
+  var divisionMatch=latin.match(/(\d{1,3})\s*(?:بر|÷)\s*(\d{1,2})/);
+  if(!divisionMatch){
+   var divisionWordMatch=latin.match(/(\d{1,3})\s*(?:مداد|مهره|شکلات|سیب|توپ|کتاب)[\s\S]{0,70}?(?:بین|تقسیم میان)\s*(\d{1,2})/);
+   if(divisionWordMatch)divisionMatch=[divisionWordMatch[0],divisionWordMatch[1],divisionWordMatch[2]];
+  }
+  if(divisionMatch){
+   var totalObjects=Number(divisionMatch[1]),groupSize=Number(divisionMatch[2]);
+   if(totalObjects>0&&totalObjects<=60&&groupSize>0&&groupSize<=10){
+    var fullGroups=Math.floor(totalObjects/groupSize),leftover=totalObjects%groupSize,groupMarkup='';
+    for(var dg=0;dg<fullGroups;dg++){
+     var groupDots='';
+     for(var dd=0;dd<groupSize;dd++)groupDots+='<span></span>';
+     groupMarkup+='<div class="mqv-group-card"><b>گروه '+faNum(dg+1)+'</b><div class="mqv-group-dots">'+groupDots+'</div><small>'+faNum(groupSize)+' مورد</small></div>';
+    }
+    var restMarkup=leftover?'<div class="mqv-remainder">باقی‌مانده: '+faNum(leftover)+' مورد</div>':'';
+    return figure('➗ شکل کمکی تقسیم به گروه‌های برابر','<div class="mqv-groups">'+groupMarkup+'</div>'+restMarkup,'کل موردها را در گروه‌های هم‌اندازه قرار بده؛ اگر چیزی بیرون بماند، باقی‌مانده است.','division');
+   }
+  }
+ }
+ var multiplicationCue=/(ضرب|حاصل.?ضرب|×|گروه.?های مساوی)/.test(raw+' '+skill)&&!/(تقریب|برآورد|گرد کردن)/.test(raw+' '+skill);
+ if(multiplicationCue){
+  var multiplyMatch=latin.match(/(\d{1,3})\s*[×x*]\s*(\d{1,3})/);
+  if(multiplyMatch){
+   var amountPerGroup=Number(multiplyMatch[1]),groupCount=Number(multiplyMatch[2]);
+   if(amountPerGroup>0&&amountPerGroup<=200&&groupCount>0&&groupCount<=10){
+    var multiplicationGroups='';
+    for(var mg=0;mg<groupCount;mg++){
+     var itemDots='';
+     if(amountPerGroup<=12){for(var md=0;md<amountPerGroup;md++)itemDots+='<span></span>';}
+     multiplicationGroups+='<div class="mqv-group-card"><b>گروه '+faNum(mg+1)+'</b>'+(itemDots?'<div class="mqv-group-dots">'+itemDots+'</div>':'')+'<small>'+faNum(amountPerGroup)+' مورد</small></div>';
+    }
+    return figure('✖️ مدل تصویری ضرب به‌صورت گروه‌های مساوی','<div class="mqv-groups">'+multiplicationGroups+'</div><div class="mqv-remainder">'+faNum(groupCount)+' گروه × '+faNum(amountPerGroup)+' مورد در هر گروه = ؟</div>','تعداد گروه‌ها را در تعداد موردهای هر گروه ضرب کن.','multiplication');
+   }
+  }
  }
  var arrayCue=/(ردیف.?ها و ستون.?ها|ردیف.?ها|ستون.?ها|گروه.?های مساوی|آرایه.?ی ضرب)/.test(raw+' '+skill);
  if(arrayCue){
