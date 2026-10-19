@@ -3034,7 +3034,8 @@ $('teacherSaveQuestion').onclick=async()=>{
  }else{
   const count=type==='tf'?2:4;options=Array.from({length:count},(_,i)=>$('teacherEditorOpt'+i).value.trim());
   const nums=$('teacherEditorAnswer').value.split(/[,،\s]+/).filter(Boolean).map(x=>Number(normalizeAnswer(x)));
-  accepted=[...new Set(nums)].filter(n=>Number.isInteger(n)&&n>=1&&n<=options.length).map(n=>options[n-1]);
+  if(nums.length!==1||!Number.isInteger(nums[0])||nums[0]<1||nums[0]>options.length){message.textContent='برای هر سؤال گزینه‌ای فقط یک شمارهٔ پاسخ صحیح وارد کن.';return}
+  accepted=[options[nums[0]-1]];
  }
  if(!prompt||!skill||!accepted.length||options.some(x=>!x&&type!=='input')){message.textContent='متن سؤال، مبحث، گزینه‌ها و پاسخ صحیح را کامل کن.';return}
  if(type==='blank_mc'&&!/_{2,}|…{2,}|□|جای خالی/.test(prompt)){message.textContent='در متن سؤال، محل جای خالی را با ______ مشخص کن.';return}
