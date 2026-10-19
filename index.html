@@ -5138,7 +5138,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261016-v59',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261016-v60',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
@@ -5431,7 +5431,7 @@ function renderMathQuestionVisualMarkup(q,printMode){
  var fractionCue=/(کسر|صورت|مخرج|نصف|ربع|چهارم|سوم|کسرها)/.test(raw+' '+skill);
  if(fractionCue){
   if(!fractions.length){
-   var coloredParts=latin.match(/(\\d+)\\s*قسمت مساوی.{0,65}?(\\d+)\\s*قسمت رنگ/);
+   var coloredParts=latin.match(/(\d+)\s*قسمت مساوی.{0,65}?(\d+)\s*قسمت رنگ/);
    if(coloredParts)fractions.push({n:Number(coloredParts[2]),d:Number(coloredParts[1])});
    else if(/نصف/.test(raw+' '+skill))fractions.push({n:1,d:2});
    else if(/ربع|یک.?چهارم/.test(raw+' '+skill))fractions.push({n:1,d:4});
