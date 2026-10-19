@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'sw.js'
       - 'assets/source-question-banks.json.gz.b64'
       - 'assets/persian-vocabulary.json.gz.b64'
       - 'tests/**'
