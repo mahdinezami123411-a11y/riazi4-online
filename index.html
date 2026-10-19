@@ -1343,7 +1343,7 @@ function renderChapter(id){
   const example=o.example?`<div class="lesson-example"><b>✏️ مثال حل‌شده</b><p>${escapeHtml(o.example)}</p></div>`:'';
   const mistake=o.mistake?`<div class="lesson-mistake"><b>⚠️ اشتباه رایج</b><p>${escapeHtml(o.mistake)}</p></div>`:'';
   const check=o.check?`<div class="lesson-check"><b>🧠 خودت را بسنج</b><p>${escapeHtml(o.check)}</p><details><summary>دیدن پاسخ و توضیح</summary><p>${escapeHtml(o.answer||"ابتدا نکته‌های کلیدی این مبحث را مرور کن و مثال را دوباره حل کن.")}</p></details></div>`:'';
-  return `<article class="lesson-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}</article>`;
+  return `<article class="lesson-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}${activeChapter===1&&i===3?`<div class="lesson-example" style="margin-top:14px;border:2px solid #65e4ed"><b>🚀 تمرین تعاملی ماشین‌های فصل اول</b><p>ماشین تازه بساز، سه عملیات را دنبال کن و خانه‌های خالی را کامل کن. این تمرین روی گوشی هم قابل استفاده است.</p><a href="machine-ha.html" target="_blank" rel="noopener" class="primary" style="display:block;text-align:center;text-decoration:none;padding:12px;border-radius:12px;margin-top:10px">🎲 شروع تمرین ماشین‌ها ↗</a></div>`:""}</article>`;
  }).join('');
  $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب بخوان، مثال حل‌شده را بدون نگاه کردن دوباره حل کن، به سؤال «خودت را بسنج» پاسخ بده و سپس از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
  renderChapterPicker();updatePracticeTopicOptions();
