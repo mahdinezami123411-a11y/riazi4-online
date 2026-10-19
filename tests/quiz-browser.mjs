@@ -171,6 +171,31 @@ const semanticChoiceAudit = await page.evaluate(() => {
 assert.equal(semanticChoiceAudit.issues.length, 0,
   'گزینه‌های هم‌ارزش در سؤال تک‌پاسخی بانک‌های منبع پیدا شد: '+JSON.stringify(semanticChoiceAudit.issues.slice(0,20)));
 
+const multiAnswerClarity = await page.evaluate(() => {
+  const api = window.__quizTestApi;
+  const q = {type:'multi',opts:['6/36','8/48','2/13','3/12'],as:[0,1],a:0};
+  let selection = null;
+  api.renderAnswerControls(q,'bookPracticeOptions','bookPracticeAnswer','multiAnswerAudit',value=>{selection=value;});
+  const help = document.querySelector('#bookPracticeOptions .multi-answer-help')?.textContent || '';
+  const checkboxes = [...document.querySelectorAll('#bookPracticeOptions input[type="checkbox"]')];
+  checkboxes[0]?.click();
+  const oneAnswerWasInsufficient = !api.isQuestionCorrect(q, [0]);
+  checkboxes[1]?.click();
+  const bothAnswersAreCorrect = api.isQuestionCorrect(q, [0,1]);
+  return {
+    helpVisible: help.includes('چندپاسخی') && help.includes('تنها یکی'),
+    checkboxCount: checkboxes.length,
+    oneAnswerWasInsufficient,
+    bothAnswersAreCorrect,
+    selection
+  };
+});
+assert.equal(multiAnswerClarity.helpVisible, true, 'برای سؤال چندپاسخی باید پیام روشن نمایش داده شود');
+assert.equal(multiAnswerClarity.checkboxCount, 4, 'سؤال چندپاسخی باید چهار گزینه داشته باشد');
+assert.equal(multiAnswerClarity.oneAnswerWasInsufficient, true, 'انتخاب تنها یک پاسخ از دو پاسخ درست نباید پاسخ کامل حساب شود');
+assert.equal(multiAnswerClarity.bothAnswersAreCorrect, true, 'انتخاب هر دو پاسخ درست باید پذیرفته شود');
+
+
 
 const interaction = await page.evaluate(() => {
   const api = window.__quizTestApi;
