@@ -5900,22 +5900,61 @@ const persianBookPageMap={
       return;
     }
     if(subject.id==='science'){
-      panel.innerHTML='<section class="explore-tool"><h4>🌱 آزمایشگاه رشد گیاه</h4><p>مقدار آب و نور را کم‌وزیاد کن و تغییر وضعیت گیاه را ببین. این یک مدل آموزشی ساده است؛ اندازه‌گیری واقعی رشد گیاه نیست.</p><div class="explore-range-row"><label for="plantWater">آب دریافتی</label><strong id="plantWaterValue">۲ از ۳</strong></div><input id="plantWater" type="range" min="0" max="3" value="2" step="1"><div class="explore-range-row"><label for="plantLight">نور دریافتی</label><strong id="plantLightValue">۲ از ۳</strong></div><input id="plantLight" type="range" min="0" max="3" value="2" step="1"><div id="plantSimStage" class="plant-sim-stage"><span>🌿</span></div><div id="plantSimFeedback" class="explore-feedback" role="status"></div><button id="plantSimReset" type="button" class="outline" style="width:100%">بازگرداندن شرایط به حالت معمول</button></section>';
-      const updatePlant=()=>{
-        const water=Number($('plantWater').value),light=Number($('plantLight').value),stage=Math.min(water,light);
-        $('plantWaterValue').textContent=fa(water)+' از ۳';$('plantLightValue').textContent=fa(light)+' از ۳';
-        const icons=['🥀','🌱','🌿','🌳'],messages=[
-          'یکی از نیازهای اصلی گیاه بسیار کم است. گیاه برای رشد مناسب به آب و نور کافی نیاز دارد.',
-          'گیاه در این مدل رشد محدودی دارد؛ تغییر یک عامل به‌تنهایی کافی نیست اگر عامل دیگر کم باشد.',
-          'در این مدل شرایط برای رشد متوسط در نظر گرفته شده است؛ مشاهدهٔ واقعی به نوع گیاه و محیط وابسته است.',
-          'در این مدل هر دو عامل در سطح بالاتری قرار دارند. در دنیای واقعی، خاک، دما و نوع گیاه هم اثر دارند.'
-        ];
-        $('plantSimStage').innerHTML='<span class="'+(stage>=2?'grow':'')+'">'+icons[stage]+'</span>';
-        $('plantSimFeedback').textContent=messages[stage];
+      panel.innerHTML='<section class="explore-tool"><h4>🔬 آزمایشگاه تصویری علوم</h4><p>یک آزمایش را انتخاب کن، شرایط را تغییر بده و نتیجه را مشاهده کن. این مدل‌ها برای یادگیری هستند و جای آزمایش واقعی و ایمن با راهنمایی معلم را نمی‌گیرند.</p><div class="explore-tool-grid" role="group" aria-label="انتخاب آزمایش"><button type="button" class="explore-choice active" data-science-lab="plant">🌱 نیازهای گیاه</button><button type="button" class="explore-choice" data-science-lab="shadow">☀️ نور و سایه</button><button type="button" class="explore-choice" data-science-lab="water">💧 شناوری اجسام</button></div><div id="scienceLabExperiment" aria-live="polite"></div></section>';
+      const experiment=$('scienceLabExperiment');
+      const renderPlant=()=>{
+        experiment.innerHTML='<h4>🌱 گیاه به چه چیزهایی نیاز دارد؟</h4><p>آب و نور را تغییر بده و ببین در این مدل، وضعیت گیاه چگونه عوض می‌شود.</p><div class="explore-range-row"><label for="plantWater">آب دریافتی</label><strong id="plantWaterValue">۲ از ۳</strong></div><input id="plantWater" type="range" min="0" max="3" value="2" step="1"><div class="explore-range-row"><label for="plantLight">نور دریافتی</label><strong id="plantLightValue">۲ از ۳</strong></div><input id="plantLight" type="range" min="0" max="3" value="2" step="1"><div id="plantSimStage" class="plant-sim-stage"><span>🌿</span></div><div id="plantSimFeedback" class="explore-feedback" role="status"></div><button id="plantSimReset" type="button" class="outline" style="width:100%">بازگرداندن شرایط به حالت معمول</button>';
+        const updatePlant=()=>{
+          const water=Number($('plantWater').value),light=Number($('plantLight').value),stage=Math.min(water,light);
+          $('plantWaterValue').textContent=fa(water)+' از ۳';$('plantLightValue').textContent=fa(light)+' از ۳';
+          const icons=['🥀','🌱','🌿','🌳'],messages=[
+            'یکی از نیازهای اصلی گیاه بسیار کم است. گیاه برای رشد مناسب به آب و نور کافی نیاز دارد.',
+            'در این مدل رشد گیاه محدود است؛ اگر عامل دیگر کم باشد، افزایش یک عامل به‌تنهایی کافی نیست.',
+            'در این مدل شرایط برای رشد متوسط در نظر گرفته شده است. نتیجهٔ واقعی به نوع گیاه و محیط وابسته است.',
+            'در این مدل آب و نور هر دو کافی‌اند. در دنیای واقعی، خاک، دما و نوع گیاه هم اثر دارند.'
+          ];
+          $('plantSimStage').innerHTML='<span class="'+(stage>=2?'grow':'')+'">'+icons[stage]+'</span>';
+          $('plantSimFeedback').textContent=messages[stage];
+        };
+        $('plantWater').addEventListener('input',updatePlant);$('plantLight').addEventListener('input',updatePlant);
+        $('plantSimReset').onclick=()=>{$('plantWater').value='2';$('plantLight').value='2';updatePlant()};
+        updatePlant();
       };
-      $('plantWater').addEventListener('input',updatePlant);$('plantLight').addEventListener('input',updatePlant);
-      $('plantSimReset').onclick=()=>{$('plantWater').value='2';$('plantLight').value='2';updatePlant()};
-      updatePlant();return;
+      const renderShadow=()=>{
+        experiment.innerHTML='<h4>☀️ فاصلهٔ نور چه اثری بر سایه دارد؟</h4><p>جای منبع نور را تغییر بده و اندازهٔ سایهٔ جسم را در این مدل مقایسه کن.</p><div class="explore-range-row"><label for="shadowDistance">فاصلهٔ نور از جسم</label><strong id="shadowDistanceValue">۲ از ۳</strong></div><input id="shadowDistance" type="range" min="1" max="3" value="2" step="1"><div class="plant-sim-stage" style="display:flex;align-items:center;justify-content:space-around;gap:12px;min-height:130px"><span id="shadowSun" style="font-size:2rem">☀️</span><span style="font-size:2.5rem">🧍</span><span id="shadowShape" aria-label="اندازهٔ سایه" style="display:inline-block;height:14px;width:70px;border-radius:50%;background:#344054;transform:scaleX(1.5);transition:transform .2s"></span></div><div id="shadowFeedback" class="explore-feedback" role="status"></div>';
+        const updateShadow=()=>{
+          const distance=Number($('shadowDistance').value);
+          $('shadowDistanceValue').textContent=fa(distance)+' از ۳';
+          $('shadowShape').style.transform='scaleX('+(distance===1?2.1:distance===2?1.5:0.85)+')';
+          $('shadowFeedback').textContent=distance===1?'در این مدل، منبع نور نزدیک‌تر است و سایه بزرگ‌تر دیده می‌شود.':distance===2?'فاصله متوسط است؛ اندازهٔ سایه بین دو حالت دیگر قرار دارد.':'در این مدل، منبع نور دورتر است و سایه کوچک‌تر نمایش داده می‌شود.';
+        };
+        $('shadowDistance').addEventListener('input',updateShadow);updateShadow();
+      };
+      const renderWater=()=>{
+        const objects=[{id:'wood',name:'تکه چوب',icon:'🪵',floats:true},{id:'rock',name:'سنگ',icon:'🪨',floats:false},{id:'cork',name:'چوب‌پنبه',icon:'🟤',floats:true},{id:'spoon',name:'قاشق فلزی',icon:'🥄',floats:false}];
+        experiment.innerHTML='<h4>💧 کدام جسم روی آب می‌ماند؟</h4><p>اول پیش‌بینی کن، سپس روی «آزمایش کن» بزن و نتیجهٔ مدل را ببین.</p><div class="explore-tool-grid">'+objects.map(o=>'<button type="button" class="explore-choice" data-water-object="'+o.id+'">'+o.icon+' '+o.name+'</button>').join('')+'</div><div class="explore-tool-grid" role="group" aria-label="پیش‌بینی"><button type="button" class="explore-choice" data-water-prediction="float">روی آب می‌ماند</button><button type="button" class="explore-choice" data-water-prediction="sink">ته‌نشین می‌شود</button></div><button type="button" id="waterExperimentRun" style="width:100%;margin-top:10px">🧪 آزمایش کن</button><div id="waterSimStage" class="plant-sim-stage" style="min-height:120px;text-align:center"><span style="font-size:2.4rem">💧</span><p>یک جسم و پیش‌بینی خودت را انتخاب کن.</p></div><div id="waterSimFeedback" class="explore-feedback" role="status">در دنیای واقعی، شناوری به چگالی جسم و مایع و شکل جسم هم وابسته است.</div>';
+        let chosenObject=null,prediction=null;
+        experiment.querySelectorAll('[data-water-object]').forEach(button=>button.onclick=()=>{
+          chosenObject=objects.find(o=>o.id===button.dataset.waterObject);
+          experiment.querySelectorAll('[data-water-object]').forEach(b=>b.classList.toggle('active',b===button));
+        });
+        experiment.querySelectorAll('[data-water-prediction]').forEach(button=>button.onclick=()=>{
+          prediction=button.dataset.waterPrediction;
+          experiment.querySelectorAll('[data-water-prediction]').forEach(b=>b.classList.toggle('active',b===button));
+        });
+        $('waterExperimentRun').onclick=()=>{
+          if(!chosenObject||!prediction){$('waterSimFeedback').textContent='اول یک جسم و سپس پیش‌بینی خودت را انتخاب کن.';return}
+          const floats=chosenObject.floats;
+          $('waterSimStage').innerHTML='<div style="font-size:2.3rem">'+(floats?'💧':'🌊')+'</div><div style="font-size:2.4rem;transform:'+(floats?'translateY(-8px)':'translateY(18px)')+'">'+chosenObject.icon+'</div><div style="font-size:.8rem">'+(floats?'سطح آب':'کف ظرف')+'</div>';
+          $('waterSimFeedback').textContent=(prediction===(floats?'float':'sink')?'آفرین، پیش‌بینی‌ات درست بود! ':'نتیجه با پیش‌بینی تو فرق داشت. ')+chosenObject.name+(floats?' در این مدل روی آب می‌ماند.':' در این مدل ته‌نشین می‌شود.')+' این یک مدل ساده است؛ جنس و شکل اجسام واقعی می‌تواند نتیجه را تغییر دهد.';
+        };
+      };
+      const showExperiment=kind=>{
+        panel.querySelectorAll('[data-science-lab]').forEach(b=>b.classList.toggle('active',b.dataset.scienceLab===kind));
+        if(kind==='shadow')renderShadow();else if(kind==='water')renderWater();else renderPlant();
+      };
+      panel.querySelectorAll('[data-science-lab]').forEach(button=>button.onclick=()=>showExperiment(button.dataset.scienceLab));
+      showExperiment('plant');return;
     }
     if(subject.id==='social'){
       const regions={
