@@ -4760,12 +4760,7 @@ async function loadSourceQuestionBanks(){
         });
       });
     }
-    // Keep the earlier curated entries only as supplemental entries, deduplicated against the uploaded vocabulary file.
-    (pgDictionaryEntries[Number(lessonId)]||[]).forEach(entry=>{
-      if(!out.some(x=>pgNormalize(x.answer)===pgNormalize(entry.answer)&&pgNormalize(x.clue)===pgNormalize(entry.clue))){
-        out.push({...entry,category:'واژه‌نامهٔ تکمیلی'});
-      }
-    });
+    // No legacy/manual vocabulary is appended: only pairs from the supplied Persian vocabulary source are used.
     return out;
   }
   function pgBuildQuestionPool(lessons){
