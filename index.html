@@ -1483,6 +1483,13 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
   #persianGamesPanel .pg-action-grid{gap:8px!important}
   #persianGamesPanel .pg-letter-tile{min-height:48px!important}
 }
+
+/* بازخورد لمسی و رنگ انتخاب در باشگاه واژه‌ها */
+#persianGamesPanel button{transition:background .16s ease,border-color .16s ease,color .16s ease,transform .12s ease,box-shadow .16s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+#persianGamesPanel button:not(:disabled):active{filter:brightness(.88)!important;transform:translateY(1px) scale(.985)!important}
+#persianGamesPanel #pgModeTabs [data-pg-mode].active{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#d5ffff!important;box-shadow:0 2px 0 #24536c!important}
+#persianGamesPanel .pg-letter-tile.selected{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#d5ffff!important;box-shadow:0 2px 0 #24536c!important;opacity:1!important}
+#persianGamesPanel #pgClozeOptions button.selected{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#d5ffff!important;box-shadow:0 2px 0 #24536c!important}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -5096,14 +5103,13 @@ async function loadSourceQuestionBanks(){
     });
     $('pgLetterTiles').innerHTML='';
     pgState.tiles.forEach(tile=>{
-      const button=document.createElement('button');button.type='button';button.className='pg-letter-tile';button.textContent=tile.letter;button.dataset.pgTileId=tile.id;
-      button.disabled=pgState.selectedTileIds.includes(tile.id)||pgState.answered;
+      const button=document.createElement('button');button.type='button';const tileSelected=pgState.selectedTileIds.includes(tile.id);button.className='pg-letter-tile'+(tileSelected?' selected':'');button.textContent=tile.letter;button.dataset.pgTileId=tile.id;button.setAttribute('aria-pressed',tileSelected?'true':'false');
+      button.disabled=tileSelected||pgState.answered;
       button.onclick=()=>{if(pgState.answered||pgState.selectedTileIds.length>=letters.length)return;pgState.selectedTileIds.push(tile.id);pgRenderBuilder()};
       $('pgLetterTiles').appendChild(button);
     });
     $('pgCheckBuild').disabled=pgState.answered;
     $('pgClearLetter').disabled=pgState.answered||pgState.selectedTileIds.length===0;
-    $('pgShuffleTiles').disabled=pgState.answered;
   }
   function pgFeedback(correct,message){
     const box=$('pgFeedback');box.classList.remove('hidden','correct','incorrect','info');box.classList.add(correct===true?'correct':correct===false?'incorrect':'info');box.textContent=message;
@@ -5197,16 +5203,11 @@ async function loadSourceQuestionBanks(){
     };
     $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
     $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
-    $('pgAnotherMode').onclick=()=>{if(!pgState.lesson){$('pgLessonSelect')?.focus();return}pgSetGameVisible('games');$('pgModeTabs')?.scrollIntoView({behavior:'smooth',block:'center'})};
     $('pgNext').onclick=()=>pgNextQuestion(pgState.mode);
     $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
     $('pgClearLetter').onclick=()=>{
       if(pgState.answered||!pgState.selectedTileIds.length)return;
       pgState.selectedTileIds.pop();pgRenderBuilder();pgFeedback(null,'آخرین حرف پاک شد؛ بقیهٔ حروف سر جای خود باقی ماندند.');
-    };
-    $('pgShuffleTiles').onclick=()=>{
-      if(pgState.answered)return;
-      pgState.tiles=pgShuffle(pgState.tiles);pgRenderBuilder();pgFeedback(null,'حروف جابه‌جا شدند. حروف انتخاب‌شده پاک نشدند.');
     };
     $('pgFixAnswer').addEventListener('keydown',event=>{if(event.key==='Enter')pgCheckFix()});
   }
