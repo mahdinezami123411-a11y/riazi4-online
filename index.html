@@ -1085,6 +1085,42 @@ a{color:#d7ff76}
  .pg-game-stats span{font-size:10px;padding:5px 7px}
 }
 
+
+/* readable light-theme controls for Persian word games */
+#persianLanding,#persianGamesPanel{color:var(--ink)!important;background:linear-gradient(155deg,#fff 0%,#fff 72%,#f3f8ff 100%)!important;border:1px solid var(--line)!important;border-radius:21px!important;box-shadow:0 7px 20px #22558a0b!important}
+#persianLanding .muted,#persianGamesPanel .muted{color:#637b98!important}
+#persianLanding h3,#persianGamesPanel h3,#persianGamesPanel .pg-question-head strong{color:#163f76!important}
+#persianLanding .pg-entry-grid{grid-template-columns:1fr 1fr;gap:12px}
+#persianLanding .pg-entry-card{color:#183354!important;background:linear-gradient(145deg,#f8fbff,#e8f3ff)!important;border:1px solid #c9def4!important;border-radius:16px!important;box-shadow:0 3px 0 #d9e8f8!important;text-align:right;align-items:flex-start;min-height:100px}
+#persianLanding .pg-entry-card:nth-child(2){background:linear-gradient(145deg,#fff,#eef6ff)!important;border-color:#c9def4!important;box-shadow:0 3px 0 #d9e8f8!important}
+#persianLanding .pg-entry-card strong{color:#174783!important}#persianLanding .pg-entry-card small{color:#526d8d!important}
+#persianGamesPanel .pg-game-select .field{color:#315578!important}
+#persianGamesPanel #pgLessonSelect{background:#fbfdff!important;color:#183354!important;border:1px solid #c9dff5!important;min-height:48px}
+#persianGamesPanel .pg-lesson-prompt{background:#eff7ff!important;color:#214c7d!important;border:1px solid #c8def8!important;border-radius:14px!important;padding:12px!important;line-height:1.9}
+#persianGamesPanel .pg-selected-lesson{color:#466687!important;font-weight:700}
+#persianGamesPanel .pg-mode-tabs{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+#persianGamesPanel .pg-mode-tabs button{color:#24517f!important;background:linear-gradient(145deg,#f7fbff,#e8f2ff)!important;border:1px solid #d1e2f6!important;box-shadow:0 3px 0 #d9e7f8!important;border-radius:13px!important;min-width:0;padding:9px 6px;white-space:normal}
+#persianGamesPanel .pg-mode-tabs button.active{color:#fff!important;background:linear-gradient(135deg,#1456b8,#2679e8)!important;border-color:#2679e8!important;box-shadow:0 3px 0 #0b438e!important}
+#persianGamesPanel .pg-mode-tabs button small{color:inherit!important}
+#persianGamesPanel .pg-game-stats span{color:#28527f!important;background:#f0f7ff!important;border-color:#d4e5f8!important}
+#persianGamesPanel .pg-game-card{color:#183354!important;background:linear-gradient(155deg,#fff 0%,#f7fbff 100%)!important;border:1px solid #cbdff5!important;box-shadow:0 4px 12px #22558a0d!important;border-radius:17px!important}
+#persianGamesPanel .pg-game-card *{color:inherit}
+#persianGamesPanel .pg-prompt{color:#163f76!important;font-weight:800;line-height:1.95}
+#persianGamesPanel .pg-context{color:#263e5a!important;background:#fff!important;border-color:#c6dbf2!important;line-height:2}
+#persianGamesPanel .pg-context u{color:#a1273c!important;background:#fff1f3!important}
+#persianGamesPanel .pg-word-slots{background:#eaf3ff!important;border-color:#a9c9f0!important}
+#persianGamesPanel .pg-word-slot{color:#174a8c!important;background:#fff!important;border-color:#9ebfe8!important}
+#persianGamesPanel .pg-word-slot.filled{color:#583b08!important;background:#fff5d6!important;border-color:#e9bf4b!important}
+#persianGamesPanel .pg-letter-tile{color:#3b2a08!important;background:linear-gradient(145deg,#ffe9a4,#ffd05b)!important;border-color:#e6b94a!important;box-shadow:0 3px 0 #c99e31!important}
+#persianGamesPanel .pg-subtle-button,#persianGamesPanel .pg-cloze-option{color:#24517f!important;background:linear-gradient(145deg,#fff,#eff6ff)!important;border:1px solid #c9def5!important;box-shadow:0 3px 0 #dce9f8!important}
+#persianGamesPanel .pg-cloze-option.selected{color:#fff!important;background:linear-gradient(135deg,#1456b8,#2679e8)!important;border-color:#2679e8!important}
+#persianGamesPanel .pg-answer-input{color:#183354!important;background:#fbfdff!important;border-color:#c9dff5!important}
+#persianGamesPanel .pg-feedback.correct{color:#096843!important;background:#e6fff2!important;border-color:#83dcb4!important}
+#persianGamesPanel .pg-feedback.incorrect{color:#78500c!important;background:#fff4e2!important;border-color:#f5c976!important}
+#persianGamesPanel .pg-feedback.info{color:#24518b!important;background:#eff6ff!important;border-color:#c5dcff!important}
+#persianGamesPanel .pg-source-note{color:#637b98!important;line-height:1.9}
+@media(max-width:560px){#persianLanding .pg-entry-grid{grid-template-columns:1fr}#persianLanding .pg-entry-card{min-height:85px}#persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr;gap:7px}#persianGamesPanel .pg-mode-tabs button{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:6px;min-height:48px;text-align:right;padding:8px 11px;font-size:13px}#persianGamesPanel .pg-mode-tabs button b{grid-row:span 2;display:grid;place-items:center;font-size:20px}#persianGamesPanel .pg-mode-tabs button small{grid-column:2;text-align:right;font-size:10px!important}#persianGamesPanel .pg-letter-tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}#persianGamesPanel .pg-letter-tile{min-height:51px}#persianGamesPanel .pg-game-card{padding:12px}}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -1184,15 +1220,17 @@ a{color:#d7ff76}
   <div class="row pg-games-head"><div><h3>🪐 باشگاه واژه‌ها</h3><p class="muted">هر بار ورود، پرسش‌ها و گزینه‌ها به ترتیب تازه‌ای نمایش داده می‌شوند.</p></div><button type="button" id="persianGamesBack" class="outline">↩ بازگشت</button></div>
   <div class="pg-game-select">
     <label class="field" for="pgLessonSelect">محدودهٔ تمرین</label>
-    <select id="pgLessonSelect"><option value="all">همهٔ درس‌های دارای متن ثابت</option></select>
+    <select id="pgLessonSelect"><option value="">ابتدا درس را انتخاب کن…</option></select>
+    <div id="pgLessonPrompt" class="pg-lesson-prompt">برای شروع، یکی از درس‌های کتاب را انتخاب کن. سؤال‌ها فقط از همان درس نمایش داده می‌شوند.</div>
+    <p id="pgSelectedLessonName" class="pg-selected-lesson muted hidden"></p>
   </div>
-  <div id="pgModeTabs" class="pg-mode-tabs" aria-label="انتخاب بازی">
+  <div id="pgModeTabs" class="pg-mode-tabs hidden" aria-label="انتخاب بازی">
     <button type="button" data-pg-mode="build" class="active"><b>🔤</b>ساختن کلمه</button>
     <button type="button" data-pg-mode="fix"><b>✍️</b>شکار غلط املایی</button>
     <button type="button" data-pg-mode="cloze"><b>🧩</b>جای خالی املایی</button>
   </div>
-  <div class="pg-game-stats"><span id="pgPoolCount">در حال آماده‌سازی بانک سؤال…</span><span id="pgScore">۰ درست از ۰</span></div>
-  <div class="pg-game-card">
+  <div class="pg-game-stats hidden"><span id="pgPoolCount">در حال آماده‌سازی بانک سؤال…</span><span id="pgScore">۰ درست از ۰</span></div>
+  <div class="pg-game-card hidden">
     <div class="pg-question-head"><strong id="pgModeLabel">🔤 ساختن کلمه</strong><span id="pgQuestionNumber">پرسش ۱</span></div>
     <p id="pgPrompt" class="pg-prompt">در حال آماده‌سازی سؤال…</p>
     <section id="pgBuilder" class="hidden">
@@ -4401,7 +4439,7 @@ async function loadSourceQuestionBanks(){
   };
   const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه']];
   const pgExtraTextVocabulary={2:['تغییرات'],3:['گذشته'],4:['تخته‌پاره‌ای'],10:['تصویری'],11:['تسخیرناپذیر'],13:['طغیان'],17:['اندازه‌گیری']};
-  const pgState = {mode:'build',lesson:'all',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
+  const pgState = {mode:'build',lesson:'',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
   function pgNormalize(value){
     return String(value==null?'':value).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[\s\u200c\u200d‌‎‏\-‐‑–—،,؛;:.!؟?«»"'(){}\[\]\/]/g,'').toLowerCase();
   }
@@ -4417,10 +4455,10 @@ async function loadSourceQuestionBanks(){
     return persianLessons.filter(l=>![8,9].includes(Number(l.id))&&l.isFreeLesson!==true&&Array.isArray(l.spellingWords)&&l.spellingWords.length>0);
   }
   function pgSelectedLessons(){
-    const all=pgGameLessons();
-    if(pgState.lesson==='all')return all;
-    return all.filter(l=>Number(l.id)===Number(pgState.lesson));
+    if(!pgState.lesson)return [];
+    return pgGameLessons().filter(l=>Number(l.id)===Number(pgState.lesson));
   }
+  
   function pgSentenceTokens(sentence){
     return (String(sentence||'').match(/[\u0600-\u06FF]+(?:[\u200c][\u0600-\u06FF]+)*/g)||[])
       .map(w=>pgCleanDisplayWord(w)).filter(w=>pgWordLetters(w).length>=3);
@@ -4591,18 +4629,35 @@ async function loadSourceQuestionBanks(){
   }
   function pgStartSession(){
     pgState.pools={build:[],fix:[],cloze:[]};pgState.queues={build:[],fix:[],cloze:[]};pgState.indices={build:0,fix:0,cloze:0};pgState.questionNo={build:0,fix:0,cloze:0};pgState.current=null;pgState.selectedTileIds=[];pgState.tiles=[];pgState.selectedCloze=-1;pgState.answered=false;pgState.score=0;pgState.attempts=0;
-    const lessons=pgSelectedLessons(),builder=pgBuildQuestionPool(lessons),spelling=pgBuildSpellingPools(lessons);
+    const lessons=pgSelectedLessons();pgSetLessonBoardVisible(lessons.length===1);
+    if(lessons.length!==1){
+      $('pgLessonPrompt').textContent='برای شروع، یکی از درس‌های کتاب را انتخاب کن. سؤال‌ها فقط از همان درس نمایش داده می‌شوند.';
+      $('pgSelectedLessonName')?.classList.add('hidden');$('pgPrompt').textContent='ابتدا درس را از فهرست بالا انتخاب کن.';
+      $('pgPoolCount').textContent='ابتدا درس را انتخاب کن';$('pgQuestionNumber').textContent='بدون درس';pgUpdateStats();return;
+    }
+    const lesson=lessons[0];$('pgLessonPrompt')?.classList.add('hidden');
+    $('pgSelectedLessonName').textContent='📘 درس '+(typeof fa==='function'?fa(lesson.id):lesson.id)+' · '+lesson.title+' — بانک پرسش همین درس';
+    $('pgSelectedLessonName').classList.remove('hidden');
+    const builder=pgBuildQuestionPool(lessons),spelling=pgBuildSpellingPools(lessons);
     pgState.pools={build:builder,fix:spelling.fix,cloze:spelling.cloze};
-    ['build','fix','cloze'].forEach(mode=>{pgState.queues[mode]=pgPrepareQueue(mode,pgState.pools[mode],null,'fourmiha-persian-first-'+pgState.lesson+'-'+mode)});
+    ['build','fix','cloze'].forEach(mode=>{
+      pgState.queues[mode]=pgPrepareQueue(mode,pgState.pools[mode],null,'fourmiha-persian-first-'+pgState.lesson+'-'+mode+'-'+Date.now());
+      pgState.indices[mode]=0;
+    });
     pgUpdateStats();
-    if($('pgModeTabs'))$('pgModeTabs').querySelectorAll('[data-pg-mode]').forEach(b=>{const count=pgState.pools[b.dataset.pgMode]?.length||0;const name=b.dataset.pgMode==='build'?'🔤 ساختن کلمه':b.dataset.pgMode==='fix'?'✍️ شکار غلط املایی':'🧩 جای خالی املایی';b.innerHTML='<b>'+({build:'🔤',fix:'✍️',cloze:'🧩'}[b.dataset.pgMode])+'</b>'+name.replace(/^.{2}\s?/,'')+'<small style="display:block;font-size:10px;font-weight:700;opacity:.85">'+(typeof fa==='function'?fa(count):count)+' سؤال آماده</small>'});
+    if($('pgModeTabs'))$('pgModeTabs').querySelectorAll('[data-pg-mode]').forEach(b=>{
+      const count=pgState.pools[b.dataset.pgMode]?.length||0,icon={build:'🔤',fix:'✍️',cloze:'🧩'}[b.dataset.pgMode],label={build:'ساختن کلمه',fix:'شکار غلط املایی',cloze:'جای خالی املایی'}[b.dataset.pgMode];
+      b.innerHTML='<b>'+icon+'</b>'+label+'<small style="display:block;font-size:10px;font-weight:700">'+(typeof fa==='function'?fa(count):count)+' سؤال این درس</small>';
+    });
   }
+  
   function pgUpdateStats(){
     const score=$('pgScore');if(score)score.textContent=(typeof fa==='function'?fa(pgState.score):pgState.score)+' درست از '+(typeof fa==='function'?fa(pgState.attempts):pgState.attempts);
   }
   function pgModeTitle(mode){return mode==='build'?'🔤 ساختن کلمه':mode==='fix'?'✍️ شکار غلط املایی':'🧩 جای خالی املایی'}
   function pgSetMode(mode){
     if(!['build','fix','cloze'].includes(mode))mode='build';
+    if(!pgState.lesson||!pgSelectedLessons().length){pgSetLessonBoardVisible(false);$('pgLessonSelect')?.focus();return}
     pgState.mode=mode;
     $('pgModeTabs')?.querySelectorAll('[data-pg-mode]').forEach(b=>b.classList.toggle('active',b.dataset.pgMode===mode));
     $('pgBuilder')?.classList.toggle('hidden',mode!=='build');$('pgFix')?.classList.toggle('hidden',mode!=='fix');$('pgCloze')?.classList.toggle('hidden',mode!=='cloze');
@@ -4618,7 +4673,7 @@ async function loadSourceQuestionBanks(){
     mode=mode||pgState.mode;
     const pool=pgState.pools[mode]||[];
     if(!pool.length){
-      pgState.current=null;$('pgPrompt').textContent='برای این محدوده هنوز سؤال کافی از متن و واژه‌نامهٔ درسی پیدا نشده است. «همهٔ درس‌های دارای متن ثابت» را انتخاب کن.';
+      pgState.current=null;$('pgPrompt').textContent='برای این بازی در درس انتخاب‌شده پرسش کافی پیدا نشد. بازی دیگر یا درس دیگری را انتخاب کن.';
       $('pgWordSlots').innerHTML='';$('pgLetterTiles').innerHTML='';$('pgFaultSentence').textContent='';$('pgClozeSentence').textContent='';$('pgClozeOptions').innerHTML='';$('pgFeedback').classList.add('hidden');
       $('pgPoolCount').textContent='بانک این بازی: ۰ سؤال';$('pgQuestionNumber').textContent='بانک خالی';return;
     }
@@ -4627,7 +4682,7 @@ async function loadSourceQuestionBanks(){
     pgState.current=Object.assign({},q,{mode});pgState.questionNo[mode]=(pgState.questionNo[mode]||0)+1;pgState.answered=false;pgState.selectedTileIds=[];pgState.selectedCloze=-1;
     $('pgFeedback').classList.add('hidden');$('pgFeedback').textContent='';$('pgFixAnswer').value='';$('pgFixAnswer').disabled=false;$('pgCheckFix').disabled=false;$('pgCheckCloze').disabled=false;$('pgCheckBuild').disabled=false;
     const poolCount=pgState.pools[mode].length;
-    $('pgPoolCount').textContent='بانک این بازی: '+(typeof fa==='function'?fa(poolCount):poolCount)+' پرسش؛ پس از پایان، دور تازه آغاز می‌شود.';
+    $('pgPoolCount').textContent='درس '+(typeof fa==='function'?fa(pgState.lesson):pgState.lesson)+' · '+(typeof fa==='function'?fa(poolCount):poolCount)+' پرسش؛ با پایان دور، ترتیب تازه می‌شود.';
     $('pgQuestionNumber').textContent='پرسش '+(typeof fa==='function'?fa(pgState.questionNo[mode]):pgState.questionNo[mode]);
     $('pgPrompt').textContent=q.prompt||'پرسش را بخوان.';
     $('pgSourceNote').textContent=q.lessonTitle+' · منبع: '+(q.source||'واژه‌نامه و متن کتاب')+' · گزینه‌ها و ترتیب سؤال‌ها تصادفی‌اند.';
@@ -4741,22 +4796,39 @@ async function loadSourceQuestionBanks(){
       pgFeedback(null,'راهنما: هر گزینه همان واژه است و فقط یک یا چند حرف هم‌آوا در نوشتار تغییر کرده است.');
     }
   }
+  function pgSetLessonBoardVisible(showBoard){
+    $('pgModeTabs')?.classList.toggle('hidden',!showBoard);
+    document.querySelectorAll('#persianGamesPanel .pg-game-stats,#persianGamesPanel .pg-game-card').forEach(el=>el.classList.toggle('hidden',!showBoard));
+    $('pgLessonPrompt')?.classList.toggle('hidden',!!showBoard);
+  }
   function pgSetGameVisible(which){
     $('persianLanding')?.classList.toggle('hidden',which!=='landing');
     $('persianGamesPanel')?.classList.toggle('hidden',which!=='games');
     if(which==='landing'){
       $('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');
     }
+    if(which==='games')pgSetLessonBoardVisible(!!pgState.lesson&&pgSelectedLessons().length===1);
   }
+  
   if($('pgLessonSelect')){
     const choices=pgGameLessons();
-    $('pgLessonSelect').innerHTML='<option value="all">همهٔ درس‌های دارای متن ثابت</option>'+choices.map(l=>'<option value="'+Number(l.id)+'">درس '+(typeof fa==='function'?fa(l.id):l.id)+' · '+escapeHtml(l.title)+'</option>').join('');
+    $('pgLessonSelect').innerHTML='<option value="">ابتدا درس را انتخاب کن…</option>'+choices.map(l=>'<option value="'+Number(l.id)+'">درس '+(typeof fa==='function'?fa(l.id):l.id)+' · '+escapeHtml(l.title)+'</option>').join('');
+    $('pgLessonSelect').value='';pgState.lesson='';pgSetLessonBoardVisible(false);
     $('pgLessonSelect').addEventListener('change',()=>{
-      pgState.lesson=$('pgLessonSelect').value;pgStartSession();pgSetMode(pgState.mode);
+      pgState.lesson=$('pgLessonSelect').value;
+      if(!pgState.lesson){pgStartSession();return}
+      pgStartSession();pgSetMode('build');
     });
-    document.querySelectorAll('#pgModeTabs [data-pg-mode]').forEach(button=>button.addEventListener('click',()=>pgSetMode(button.dataset.pgMode)));
+    document.querySelectorAll('#pgModeTabs [data-pg-mode]').forEach(button=>button.addEventListener('click',()=>{
+      if(!pgState.lesson){pgSetLessonBoardVisible(false);$('pgLessonSelect')?.focus();return}
+      pgSetMode(button.dataset.pgMode);
+    }));
     $('persianOpenWordGames').onclick=()=>{
-      pgState.lesson=$('pgLessonSelect').value||'all';pgStartSession();pgSetGameVisible('games');pgSetMode('build');
+      pgSetGameVisible('games');
+      if(!pgState.lesson||!pgSelectedLessons().length){
+        pgSetLessonBoardVisible(false);$('pgLessonPrompt').textContent='اول درس موردنظرت را از فهرست انتخاب کن؛ بعد بازی‌ها فقط از همان درس پرسش می‌سازند.';
+        $('pgLessonSelect').focus();
+      }else{pgStartSession();pgSetMode('build')}
       window.scrollTo({top:0,behavior:'smooth'});
     };
     $('persianChooseLesson').onclick=()=>{
@@ -4765,8 +4837,8 @@ async function loadSourceQuestionBanks(){
     };
     $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
     $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
-    $('pgAnotherMode').onclick=()=>{pgSetGameVisible('games');$('pgModeTabs')?.scrollIntoView({behavior:'smooth',block:'center'})};
-    $('pgNext').onclick=()=>{if(pgState.mode==='fix')$('pgFixAnswer').disabled=false;pgNextQuestion(pgState.mode)};
+    $('pgAnotherMode').onclick=()=>{if(!pgState.lesson){$('pgLessonSelect')?.focus();return}pgSetGameVisible('games');$('pgModeTabs')?.scrollIntoView({behavior:'smooth',block:'center'})};
+    $('pgNext').onclick=()=>pgNextQuestion(pgState.mode);
     $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
     $('pgClearLetter').onclick=()=>{
       if(pgState.answered||!pgState.selectedTileIds.length)return;
@@ -4778,7 +4850,7 @@ async function loadSourceQuestionBanks(){
     };
     $('pgFixAnswer').addEventListener('keydown',event=>{if(event.key==='Enter')pgCheckFix()});
   }
-
+  
   function escapeForHtmlText(s){return escapeHtml(String(s??''))}
   function persianQuizOptions(correct,candidates,rotation){
     const wrongs=[];
