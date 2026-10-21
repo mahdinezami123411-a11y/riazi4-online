@@ -1149,6 +1149,7 @@ a{color:#d7ff76}
   <nav id="otherSubjectTabs" class="book-tabs hidden" aria-label="بخش‌های کتاب"><button type="button" class="active" data-other-subject-tab="lessons">📖 درس‌ها</button><button type="button" data-other-subject-tab="explore">🧩 فعالیت تعاملی</button><button type="button" data-other-subject-tab="practice">✏️ تمرین</button><button type="button" data-other-subject-tab="exam">📝 آزمون و امتحان</button></nav>
   <div id="otherSubjectPicker" class="subjects"></div>
   <div id="otherSubjectLessons" class="hidden">
+    <div id="persianLessonBackRow" class="row hidden" style="margin-top:10px"><button type="button" id="persianLessonsBack" class="outline">↩ بازگشت به صفحهٔ فارسی</button></div>
     <div class="row" style="margin-top:14px"><h3 id="otherSubjectTitle">درس</h3><span class="pill" id="otherSubjectProgress">۰ پاسخ</span></div>
     <div id="otherSubjectLessonPicker" class="chapter-grid"></div>
   </div>
@@ -4376,7 +4377,7 @@ async function loadSourceQuestionBanks(){
     box.querySelectorAll('[data-other-lesson]').forEach(button=>button.onclick=()=>renderOtherLesson(button.dataset.otherLesson));
     const completed=selectedOtherSubject.lessons.filter(lesson=>statusForLesson(lesson).attempts>0&&statusForLesson(lesson).rate>=80).length;
     $('otherSubjectProgress').textContent=fa(completed)+' از '+fa(selectedOtherSubject.lessons.length)+' درس با عملکرد خوب';
-    if(subjectId==='persian'){pgSetGameVisible('landing')}else{pgSetGameVisible('none')}
+    if(subjectId==='persian'){pgSetGameVisible('landing');$('persianLessonBackRow')?.classList.add('hidden')}else{pgSetGameVisible('none');$('persianLessonBackRow')?.classList.add('hidden')}
   }
 
 
@@ -4392,9 +4393,9 @@ async function loadSourceQuestionBanks(){
     10:['من کودکی کنجکاو و فعّال بودم.','هر کاغذپاره‌ای که به دستم می‌رسید، تصویری از گل و درخت یا کوه و جنگل بر آن نقاشی می‌کردم.','پدرم در ساختن طاق مسجد استاد بود.','در زمستان‌های سرد و طولانی، قنادی رونق نداشت.'],
     11:['بچه‌های کوچک شهدا او را دوست داشتند.','او قصه‌ها را ناتمام می‌گذاشت تا بچه‌ها منتظر دیدار بعدی و شنیدن بقیهٔ قصه باشند.','مردم خرمشهر را خونین‌شهر می‌نامیدند.'],
     12:['نامه از جبههٔ جنوب آمده بود.','یک قطره شبنم از گل، بر روی برگ غلتید.','یک قطره روی شیشه، مثل تگرگ غلتید.','یک اتفاق ساده در چشم مادر افتاد.'],
-    13:['مادر موسی، چون موسی را به نیل درافکند.','ما به دریا حکم طوفان می‌دهیم.','رودها از خود نه طغیان می‌کنند.','مادر موسی به لطف خدا اعتماد داشت.'],
+    13:['مادر موسی، چون موسی را به نیل درافکند.','ما به دریا حکم طوفان می‌دهیم.','رودها از خود نه طغیان می‌کنند.'],
     14:['دو کس رنج بیهوده بردند و سعی بی‌فایده کردند.','یکی اندوخت و نخورد و دیگری آموخت و نکرد.','عالم بی‌عمل، به زنبور بی‌عسل می‌ماند.'],
-    15:['موشکی کرد خواب شیر آشفته.','شیر شد بیدار و گرفت موشک را.','موش بیچاره از هراس افتاد.','شیر از این ماجرا آموخت که کوچک‌ترها هم می‌توانند کمک کنند.'],
+    15:['موشکی کرد خواب شیر آشفته.','شیر شد بیدار و گرفت موشک را.','موش بیچاره از هراس افتاد.'],
     16:['هزاران سؤال وجود دارد که در مغز زمان می‌چرخد و می‌چرخد.','دانشمندان و پژوهشگران همواره به دنبال پرسش‌های خود می‌روند تا پاسخ آن‌ها را پیدا کنند.','او به کشف چیزهای ناشناخته علاقهٔ بسیاری داشت.'],
     17:['باران، نم‌نم می‌بارید.','مهتاب از خانه بیرون آمد و به مدرسهٔ جدید می‌رفت.','روی تختهٔ هوشمند می‌توانی دایره رسم کنی.','با نقاله و خط‌کش واقعی، زاویه‌ها را اندازه‌گیری کن.','دانش‌آموزان به کلاس وارد شدند.']
   };
@@ -4423,7 +4424,7 @@ async function loadSourceQuestionBanks(){
     return (String(sentence||'').match(/[\u0600-\u06FF]+(?:[\u200c][\u0600-\u06FF]+)*/g)||[])
       .map(w=>pgCleanDisplayWord(w)).filter(w=>pgWordLetters(w).length>=3);
   }
-  function pgVocabularyForLesson(lesson){
+  function pgReferenceVocabularyForLesson(lesson){
     const out=[];
     function add(v){if(typeof v!=='string')return;const w=pgCleanDisplayWord(v);if(pgWordLetters(w).length<2||/\s/.test(w)||/[،,؛;:!?؟]/.test(w))return;if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w)}
     (lesson.spellingWords||[]).forEach(add);
@@ -4433,7 +4434,13 @@ async function loadSourceQuestionBanks(){
     (lesson.synonyms||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);const v=String(p[1]||'').split(/[،,;]/)[0].trim();add(v)}});
     (lesson.opposites||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(p[1])}});
     (lesson.families||[]).forEach(f=>{if(f&&typeof f==='object'){add(f.root);(f.words||[]).forEach(add)}});
-    (pgTextExcerpts[Number(lesson.id)]||[]).forEach(sentence=>pgSentenceTokens(sentence).forEach(add));
+    return out;
+  }
+  function pgVocabularyForLesson(lesson){
+    const out=pgReferenceVocabularyForLesson(lesson);
+    (pgTextExcerpts[Number(lesson.id)]||[]).forEach(sentence=>{
+      pgSentenceTokens(sentence).forEach(w=>{if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w)});
+    });
     return out;
   }
   function pgAllCorrectWordSet(){
@@ -4442,8 +4449,8 @@ async function loadSourceQuestionBanks(){
     return set;
   }
   function pgIsSimpleWord(word){
-    const letters=pgWordLetters(word);
-    return letters.length>=2&&letters.length<=14&&letters.every(ch=>/[\u0600-\u06FF]/.test(ch));
+    const letters=pgWordLetters(word),valid=/[\u0621-\u063A\u0641-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06BE\u06C0-\u06C3\u06CC\u06D2\u06D5]/;
+    return letters.length>=2&&letters.length<=14&&letters.every(ch=>valid.test(ch));
   }
   function pgHasConfusable(word){
     return pgWordLetters(word).some(ch=>pgSimilarFamilies.some(f=>f.includes(ch)));
@@ -4478,11 +4485,11 @@ async function loadSourceQuestionBanks(){
   function pgWordInSentence(word,sentence){
     const raw=String(sentence||''),needle=String(word||'');
     let at=raw.indexOf(needle);
+    const letter=/[\u0621-\u063A\u0641-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06BE\u06C0-\u06C3\u06CC\u06D2\u06D5]/;
     while(at>=0){
       const before=at>0?raw[at-1]:'',after=raw[at+needle.length]||'';
-      const letter=/[\u0600-\u06FF]/;
-      const beforeIsLetter=before&&letter.test(before)&&before!=='‌'&&before!=='\u200c';
-      const afterIsLetter=after&&letter.test(after)&&after!=='‌'&&after!=='\u200c';
+      const beforeIsLetter=before&&letter.test(before);
+      const afterIsLetter=after&&letter.test(after);
       if(!beforeIsLetter&&!afterIsLetter)return true;
       at=raw.indexOf(needle,at+1);
     }
@@ -4609,7 +4616,7 @@ async function loadSourceQuestionBanks(){
     if(!pgState.queues[mode]||pgState.indices[mode]>=pgState.queues[mode].length)pgRefillQueue(mode);
     const q=pgState.queues[mode][pgState.indices[mode]++];
     pgState.current=Object.assign({},q,{mode});pgState.questionNo[mode]=(pgState.questionNo[mode]||0)+1;pgState.answered=false;pgState.selectedTileIds=[];pgState.selectedCloze=-1;
-    $('pgFeedback').classList.add('hidden');$('pgFeedback').textContent='';$('pgFixAnswer').value='';
+    $('pgFeedback').classList.add('hidden');$('pgFeedback').textContent='';$('pgFixAnswer').value='';$('pgFixAnswer').disabled=false;$('pgCheckFix').disabled=false;$('pgCheckCloze').disabled=false;$('pgCheckBuild').disabled=false;
     const poolCount=pgState.pools[mode].length;
     $('pgPoolCount').textContent='بانک این بازی: '+(typeof fa==='function'?fa(poolCount):poolCount)+' پرسش؛ پس از پایان، دور تازه آغاز می‌شود.';
     $('pgQuestionNumber').textContent='پرسش '+(typeof fa==='function'?fa(pgState.questionNo[mode]):pgState.questionNo[mode]);
@@ -4686,7 +4693,7 @@ async function loadSourceQuestionBanks(){
     const old=progress[key]&&typeof progress[key]==='object'?progress[key]:{};
     progress[key]={correct:correct===true,selected:String(submitted||''),questionText:String(q.prompt||q.sentence||''),activityType:'باشگاه واژه‌ها · '+q.mode,attemptCount:(Number(old.attemptCount)||0)+1,correctCount:(Number(old.correctCount)||0)+(correct?1:0),updatedAt:new Date().toISOString()};
     if(typeof writeOtherProgress==='function')writeOtherProgress(progress);
-    pgRenderBuilder();
+    if(q.mode==='build')pgRenderBuilder();
   }
   function pgCheckBuild(){
     const q=pgState.current;if(!q||pgState.answered)return;
@@ -4744,9 +4751,10 @@ async function loadSourceQuestionBanks(){
       window.scrollTo({top:0,behavior:'smooth'});
     };
     $('persianChooseLesson').onclick=()=>{
-      pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');setOtherSubjectTabActive('lessons');
+      pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');$('persianLessonBackRow')?.classList.remove('hidden');setOtherSubjectTabActive('lessons');
       window.scrollTo({top:0,behavior:'smooth'});
     };
+    $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
     $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
     $('pgAnotherMode').onclick=()=>{pgSetGameVisible('games');$('pgModeTabs')?.scrollIntoView({behavior:'smooth',block:'center'})};
     $('pgNext').onclick=()=>{if(pgState.mode==='fix')$('pgFixAnswer').disabled=false;pgNextQuestion(pgState.mode)};
