@@ -4784,7 +4784,7 @@ async function loadSourceQuestionBanks(){
     return pool;
   }
   function pgBuildSpellingPools(lessons){
-    const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet(),safeKnown=pgAllSourceWordSet();
+    const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet();
     lessons.forEach(lesson=>{
       const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
       const excerpts=pgTextExcerpts[id]||[],vocab=pgReferenceVocabularyForLesson(lesson);
@@ -4792,7 +4792,7 @@ async function loadSourceQuestionBanks(){
         const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence))
           .sort((a,b)=>pgWordLetters(b).length-pgWordLetters(a).length);
         words.forEach(word=>{
-          const variants=pgShuffle(pgVariants(word,safeKnown))
+          const variants=pgShuffle(pgVariants(word,known))
             .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
           if(variants.length){
             const wrong=variants[0],faulty=sentence.replace(word,wrong);
@@ -4823,17 +4823,20 @@ async function loadSourceQuestionBanks(){
           }
         });
       });
-      // Fill gaps without inventing book sentences: fallback questions are clearly marked as spelling-list items.
+      // For list-only spelling words, only create questions when the same lesson's dictionary supplies a grounded clue.
       vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)).forEach(word=>{
-        const variants=pgShuffle(pgVariants(word,safeKnown))
+        const hint=(pgDictionaryEntries[id]||[]).find(entry=>pgNormalize(entry.answer)===pgNormalize(word)&&String(entry.clue||'').trim());
+        if(!hint)return;
+        const clue=String(hint.clue).trim();
+        const variants=pgShuffle(pgVariants(word,known))
           .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
         const hasFix=fixPool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
         if(!hasFix&&variants.length){
           const wrong=variants[0];
           pgAddUnique(fixPool,fixSeen,{
-            id:'fix:word-only:'+id+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
-            target:word,wrong,sentence:wrong,source:'فهرست املایی تأییدشده، درس '+id,
-            prompt:'این واژه از فهرست املایی درس است؛ یک حرف هم‌آوا در شکل نمایش‌داده‌شده اشتباه شده است. املای درست را بنویس.'
+            id:'fix:dictionary:'+id+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
+            target:word,wrong,sentence:wrong,source:'فهرست املایی و واژه‌نامهٔ همان درس',
+            prompt:'سرنخ «'+clue+'» در واژه‌نامهٔ این درس آمده است. واژهٔ نمایش‌داده‌شده با حرف هم‌آوا اشتباه شده؛ شکل درست را بنویس.'
           });
         }
         const hasCloze=clozePool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
@@ -4842,10 +4845,10 @@ async function loadSourceQuestionBanks(){
           const optionKeys=options.map(o=>pgNormalize(o.text));
           if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
             pgAddUnique(clozePool,clozeSeen,{
-              id:'cloze:word-only:'+id+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
-              target:word,sentence:'واژهٔ املایی این درس: ______',options,
-              source:'فهرست املایی تأییدشده، درس '+id,
-              prompt:'کدام گزینه املای درستِ واژهٔ مورد تمرین است؟'
+              id:'cloze:dictionary:'+id+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
+              target:word,sentence:'سرنخ واژه‌نامه: «'+clue+'» — واژهٔ موردنظر: ______',
+              options,source:'فهرست املایی و واژه‌نامهٔ همان درس',
+              prompt:'واژه‌ای را انتخاب کن که در واژه‌نامه کنار این سرنخ آمده و املای درست دارد.'
             });
           }
         }
