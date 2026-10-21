@@ -1490,6 +1490,15 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 #persianGamesPanel #pgModeTabs [data-pg-mode].active{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#d5ffff!important;box-shadow:0 2px 0 #24536c!important}
 #persianGamesPanel .pg-letter-tile.selected{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#d5ffff!important;box-shadow:0 2px 0 #24536c!important;opacity:1!important}
 #persianGamesPanel #pgClozeOptions button.selected{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#d5ffff!important;box-shadow:0 2px 0 #24536c!important}
+
+/* Interactive visual science lab — scoped to the science lesson card */
+.science-lab{border:1px solid #426b9b!important;background:linear-gradient(145deg,rgba(15,35,72,.96),rgba(20,58,91,.92))!important;color:#edf7ff!important;border-radius:18px;padding:15px!important}
+.science-lab h4{color:#9cecff!important}.science-lab p{line-height:1.9}.science-lab-scenes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
+.science-lab-scene{display:flex;align-items:center;flex-direction:column;gap:6px;padding:12px 6px;border:1px solid #50749d;border-radius:14px;background:rgba(7,20,45,.6);text-align:center}
+.science-lab-sun{font-size:27px;filter:drop-shadow(0 0 8px #ffcc5c)}.science-lab-cup{width:66px;height:58px;border-radius:8px 8px 18px 18px;display:grid;place-items:center;border:3px solid #b7d9ed;box-shadow:inset 0 -9px 0 rgba(255,255,255,.12)}
+.science-lab-cup.dark{background:linear-gradient(#303b4e,#111827);color:#fff}.science-lab-cup.light{background:linear-gradient(#fff,#dbeafe);color:#164e8a}.science-lab-cup span{font-size:25px}.science-lab-scene small{color:#c5d9f2}
+.science-lab-actions{display:flex;gap:8px;flex-wrap:wrap}.science-lab-actions button{flex:1;min-width:130px;background:#203e68;color:#f2fbff;border:1px solid #79bce8;border-radius:12px;padding:10px;cursor:pointer}
+.science-lab-actions button.selected{background:#8af1ed;color:#09213b;border-color:#d5ffff;box-shadow:0 0 0 2px rgba(138,241,237,.18)}.science-lab-result{margin-top:12px;padding:12px;border-radius:12px;background:rgba(5,18,40,.7);border:1px solid #5f98bf}.science-lab-result p{margin-bottom:0}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -5555,7 +5564,15 @@ const persianBookPageMap={
       }else{
         $('otherLessonQuestion').closest('.lesson-note').classList.remove('hidden');
         const lessonExplainBlock=(['science','social','gifts'].includes(subject.id)&&l.content)?('<section class="lesson-note"><h4>📘 توضیح کامل درس</h4>'+formatCourseLessonExplanation(l.content)+'<p class="muted">صفحهٔ کتاب: '+fa(l.page||'—')+'</p></section>'):'';
-        $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div>'+lessonExplainBlock+renderSourceQuestionBankPanel(subject.id,l.id,'student');
+        const scienceLabBlock=subject.id==='science'&&Number(l.id)===1?'<section class="science-lab lesson-note" aria-labelledby="scienceLabTitle"><h4 id="scienceLabTitle">🔬 آزمایشگاه تصویری: کدام سطح گرم‌تر می‌شود؟</h4><p>تصور کن دو ظرف یکسان، یکی سیاه و دیگری سفید، زیر نور خورشید قرار گرفته‌اند. پیش از دیدن نتیجه، حدست را انتخاب کن.</p><div class="science-lab-scenes"><div class="science-lab-scene"><span class="science-lab-sun">☀️</span><div class="science-lab-cup dark" aria-label="ظرف سیاه"><span>🌡️</span></div><b>ظرف سیاه</b><small>جذب نور بیشتر</small></div><div class="science-lab-scene"><span class="science-lab-sun">☀️</span><div class="science-lab-cup light" aria-label="ظرف سفید"><span>🌡️</span></div><b>ظرف سفید</b><small>بازتاب نور بیشتر</small></div></div><div class="science-lab-actions"><button type="button" data-science-guess="dark">ظرف سیاه گرم‌تر می‌شود</button><button type="button" data-science-guess="light">ظرف سفید گرم‌تر می‌شود</button></div><div class="science-lab-result hidden" id="scienceLabResult" aria-live="polite"></div><p class="muted">این یک شبیه‌سازی آموزشی است؛ در آزمایش واقعی، دما باید اندازه‌گیری شود.</p></section>':'';
+        $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div>'+lessonExplainBlock+scienceLabBlock+renderSourceQuestionBankPanel(subject.id,l.id,'student');
+        $('otherLessonContent').querySelectorAll('[data-science-guess]').forEach(button=>button.onclick=()=>{
+          const result=$('scienceLabResult');if(!result)return;
+          const correct=button.dataset.scienceGuess==='dark';
+          result.classList.remove('hidden');
+          result.innerHTML=(correct?'<b>آفرین! پیش‌بینی درستی بود. 🌟</b>':'<b>یک بار دیگر فکر کن! 🧠</b>')+'<p>معمولاً سطح سیاه نور و گرمای بیشتری جذب می‌کند؛ بنابراین اگر دو ظرف یکسان در شرایط یکسان باشند، ظرف سیاه گرم‌تر می‌شود. برای نتیجه‌گیری علمی، دمای هر دو ظرف را اندازه بگیر و مقایسه کن.</p>';
+          $('otherLessonContent').querySelectorAll('[data-science-guess]').forEach(choice=>choice.classList.toggle('selected',choice===button));
+        });
         $('otherLessonQuestion').textContent=l.question||'سؤال‌های این درس پس از ثبت پرسش‌های معتبر در بانک سؤال نمایش داده می‌شوند.';
         const options=Array.isArray(l.options)?l.options:[];
         $('otherLessonOptions').innerHTML=options.map((o,i)=>'<label class="other-answer"><input type="radio" name="otherLessonAnswer" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
