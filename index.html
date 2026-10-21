@@ -1159,6 +1159,99 @@ a{color:#d7ff76}
 #persianGamesPanel .pg-letter-tile,#persianGamesPanel .pg-word-slot,#persianGamesPanel #pgClozeOptions button{color:#f5f8ff!important;background:linear-gradient(145deg,#202e50,#17213c)!important;border:1px solid #6c84b0!important;border-radius:10px!important;font-weight:900}
 #persianGamesPanel :is(button,input[type=button],input[type=submit]):focus-visible,#persianGamesPanel select:focus-visible,#persianGamesPanel input:focus-visible{outline:3px solid #9defff!important;outline-offset:2px}#persianGamesPanel button:disabled{opacity:.55!important}
 @media(max-width:520px){#persianGamesPanel .pg-entry-grid{grid-template-columns:1fr!important;gap:9px!important}#persianGamesPanel .pg-entry-card{min-height:unset!important;padding:14px!important}#persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr!important}#persianGamesPanel .pg-games-head{align-items:stretch}#persianGamesPanel .pg-games-head button{width:100%}}
+
+/* Persian word club: match the app's galaxy theme with readable high-contrast surfaces. */
+#persianLanding,#persianGamesPanel{
+  color:#f4f7ff!important;
+  background:
+    radial-gradient(2px 2px at 8% 16%,#ffffffd9 98%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 76% 14%,#8eeeff 98%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 88% 72%,#e6cbff 98%,transparent 100%),
+    radial-gradient(2px 2px at 31% 88%,#ffffffa8 98%,transparent 100%),
+    radial-gradient(ellipse at 14% 0%,#263f89 0%,transparent 48%),
+    radial-gradient(ellipse at 90% 100%,#49205f 0%,transparent 48%),
+    linear-gradient(150deg,#080f29 0%,#111d46 55%,#170f35 100%)!important;
+  border:1px solid #4e69b4!important;border-radius:20px!important;
+  padding:12px!important;box-shadow:inset 0 0 0 1px #a8d6ff18,0 12px 28px #02061766!important;
+}
+#persianLanding h1,#persianLanding h2,#persianLanding h3,#persianLanding p,
+#persianLanding small,#persianLanding label,#persianLanding strong,
+#persianGamesPanel h1,#persianGamesPanel h2,#persianGamesPanel h3,#persianGamesPanel p,
+#persianGamesPanel small,#persianGamesPanel label,#persianGamesPanel strong,
+#persianGamesPanel span,#persianGamesPanel .muted,#persianGamesPanel .pg-source-note{
+  color:#f3f6ff!important;text-shadow:0 1px 2px #02061766;
+}
+#persianLanding .pg-entry-card,#persianGamesPanel .pg-games-head{
+  background:linear-gradient(135deg,#172a68 0%,#214da3 55%,#174c68 100%)!important;
+  color:#fff!important;border:1px solid #83cfff!important;
+  box-shadow:0 0 0 1px #9bdfff20,inset 0 0 24px #69baff16,0 8px 20px #02061765!important;
+}
+#persianLanding .pg-entry-card:nth-child(2){
+  background:linear-gradient(135deg,#2c1b62 0%,#60339b 60%,#71345f 100%)!important;
+  border-color:#c7a6ff!important;
+}
+#persianLanding .pg-entry-card strong,#persianLanding .pg-entry-card small{color:#fff!important}
+#persianGamesPanel .pg-games-head h3,#persianGamesPanel .pg-games-head p,
+#persianGamesPanel .pg-games-head .muted{color:#fff!important}
+#persianGamesPanel .pg-games-head button{
+  color:#122452!important;background:#f5f8ff!important;border:1px solid #9fcfff!important;
+}
+#persianGamesPanel .pg-game-select,#persianGamesPanel .pg-game-stats span,
+#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-context,
+#persianGamesPanel .pg-question-head span,#persianGamesPanel .pg-word-slots{
+  color:#f5f7ff!important;background:#111b3e!important;border-color:#617cc5!important;
+  box-shadow:inset 0 0 0 1px #a9c8ff10!important;
+}
+#persianGamesPanel .pg-prompt,#persianGamesPanel .pg-question-head strong,
+#persianGamesPanel .pg-game-select label,#persianGamesPanel .pg-game-select .field,
+#persianGamesPanel .pg-selected-lesson,#persianGamesPanel .pg-lesson-prompt{
+  color:#f5f7ff!important;
+}
+#persianGamesPanel .pg-game-select select,#persianGamesPanel .pg-answer-input{
+  color:#fff!important;background:#080f27!important;border:1px solid #718ee0!important;
+}
+#persianGamesPanel .pg-game-select select option{color:#fff!important;background:#111b3e!important}
+#persianGamesPanel .pg-mode-tabs button{
+  color:#f7f8ff!important;background:linear-gradient(135deg,#1a2c65,#273e82)!important;
+  border:1px solid #718ce0!important;box-shadow:0 4px 0 #0a143b!important;
+}
+#persianGamesPanel .pg-mode-tabs button.active{
+  color:#fff!important;background:linear-gradient(135deg,#236bd6,#3a3b9e 65%,#662d8e)!important;
+  border-color:#9eeeff!important;box-shadow:0 0 0 2px #7be5ff36,0 4px 0 #0a143b!important;
+}
+#persianGamesPanel .pg-mode-tabs button b{color:#fff!important;background:#ffffff20!important}
+#persianGamesPanel .pg-letter-tile{
+  color:#32204a!important;background:linear-gradient(145deg,#ffe69a,#ffbd47)!important;
+  border-color:#fff0b0!important;box-shadow:0 4px 0 #a66b1a!important;
+}
+#persianGamesPanel .pg-cloze-option,#persianGamesPanel .pg-subtle-button{
+  color:#f7f8ff!important;background:linear-gradient(145deg,#182956,#1b2148)!important;
+  border-color:#718ce0!important;box-shadow:0 3px 0 #0a143b!important;
+}
+#persianGamesPanel .pg-cloze-option.selected{
+  color:#fff!important;background:linear-gradient(135deg,#236bd6,#6036a6)!important;
+  border-color:#9eeeff!important;
+}
+#persianGamesPanel .pg-context u{
+  color:#fff!important;background:#7f1d4d!important;border-radius:4px;
+}
+#persianGamesPanel .pg-feedback.correct{
+  color:#eafff5!important;background:#0e453c!important;border-color:#4dc99e!important;
+}
+#persianGamesPanel .pg-feedback.incorrect{
+  color:#fff6e6!important;background:#50351b!important;border-color:#f0bc58!important;
+}
+#persianGamesPanel .pg-feedback.info{
+  color:#eff6ff!important;background:#163365!important;border-color:#71baf5!important;
+}
+#persianGamesPanel .pg-source-note{color:#d5defb!important}
+@media(max-width:560px){
+  #persianLanding,#persianGamesPanel{padding:10px!important}
+  #persianLanding .pg-entry-grid{grid-template-columns:1fr!important}
+  #persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr!important}
+  #persianGamesPanel .pg-mode-tabs button{min-height:58px!important}
+}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -5474,100 +5567,7 @@ const persianBookPageMap={
     return '<div class="print-exam-paper" dir="rtl"><h2>'+escapeHtml(state.title)+'</h2><div class="exam-meta"><span>کتاب: '+escapeHtml(printableSubjectNames[state.subject]||state.subject)+'</span><span>نام و نام‌خانوادگی: ....................................</span><span>تاریخ: ....................</span><span>نمره: ....................</span></div>'+body+key+'</div>';
   }
   function printableStandaloneHtml(includeKey){
-    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.math-question-visual{margin:7px 0;padding:7px;border:1px solid #9ca3af;border-radius:8px;background:#fff;color:#111}.mqv-figure figcaption{color:#173a78;font-size:10px;margin-bottom:4px}.mqv-caption{color:#374151;font-size:9px}.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-place-table th,.mqv-place-table td{background:#fff;color:#111;border-color:#6b7280}.mqv-stage small,.mqv-place-table th{color:#374151}.mqv-stage b,.mqv-seq-cell{color:#111}.mqv-op span,.mqv-frac-label{color:#111;background:#f3f4f6;border-color:#6b7280}.mqv-op b,.mqv-seq-arrow,.mqv-seq-arrow small{color:#111}.mqv-frac-piece{background:#fff;border-color:#6b7280}.mqv-frac-piece.filled{background:#bfdbfe;border-color:#1d4ed8}.mqv-ball{border-color:#374151}.mqv-time-track,.mqv-fractions,.mqv-sequence{break-inside:avoid}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}
-
-/* Persian word club: match the app's galaxy theme with readable high-contrast surfaces. */
-#persianLanding,#persianGamesPanel{
-  color:#f4f7ff!important;
-  background:
-    radial-gradient(2px 2px at 8% 16%,#ffffffd9 98%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 76% 14%,#8eeeff 98%,transparent 100%),
-    radial-gradient(1.5px 1.5px at 88% 72%,#e6cbff 98%,transparent 100%),
-    radial-gradient(2px 2px at 31% 88%,#ffffffa8 98%,transparent 100%),
-    radial-gradient(ellipse at 14% 0%,#263f89 0%,transparent 48%),
-    radial-gradient(ellipse at 90% 100%,#49205f 0%,transparent 48%),
-    linear-gradient(150deg,#080f29 0%,#111d46 55%,#170f35 100%)!important;
-  border:1px solid #4e69b4!important;border-radius:20px!important;
-  padding:12px!important;box-shadow:inset 0 0 0 1px #a8d6ff18,0 12px 28px #02061766!important;
-}
-#persianLanding h1,#persianLanding h2,#persianLanding h3,#persianLanding p,
-#persianLanding small,#persianLanding label,#persianLanding strong,
-#persianGamesPanel h1,#persianGamesPanel h2,#persianGamesPanel h3,#persianGamesPanel p,
-#persianGamesPanel small,#persianGamesPanel label,#persianGamesPanel strong,
-#persianGamesPanel span,#persianGamesPanel .muted,#persianGamesPanel .pg-source-note{
-  color:#f3f6ff!important;text-shadow:0 1px 2px #02061766;
-}
-#persianLanding .pg-entry-card,#persianGamesPanel .pg-games-head{
-  background:linear-gradient(135deg,#172a68 0%,#214da3 55%,#174c68 100%)!important;
-  color:#fff!important;border:1px solid #83cfff!important;
-  box-shadow:0 0 0 1px #9bdfff20,inset 0 0 24px #69baff16,0 8px 20px #02061765!important;
-}
-#persianLanding .pg-entry-card:nth-child(2){
-  background:linear-gradient(135deg,#2c1b62 0%,#60339b 60%,#71345f 100%)!important;
-  border-color:#c7a6ff!important;
-}
-#persianLanding .pg-entry-card strong,#persianLanding .pg-entry-card small{color:#fff!important}
-#persianGamesPanel .pg-games-head h3,#persianGamesPanel .pg-games-head p,
-#persianGamesPanel .pg-games-head .muted{color:#fff!important}
-#persianGamesPanel .pg-games-head button{
-  color:#122452!important;background:#f5f8ff!important;border:1px solid #9fcfff!important;
-}
-#persianGamesPanel .pg-game-select,#persianGamesPanel .pg-game-stats span,
-#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-context,
-#persianGamesPanel .pg-question-head span,#persianGamesPanel .pg-word-slots{
-  color:#f5f7ff!important;background:#111b3e!important;border-color:#617cc5!important;
-  box-shadow:inset 0 0 0 1px #a9c8ff10!important;
-}
-#persianGamesPanel .pg-prompt,#persianGamesPanel .pg-question-head strong,
-#persianGamesPanel .pg-game-select label,#persianGamesPanel .pg-game-select .field,
-#persianGamesPanel .pg-selected-lesson,#persianGamesPanel .pg-lesson-prompt{
-  color:#f5f7ff!important;
-}
-#persianGamesPanel .pg-game-select select,#persianGamesPanel .pg-answer-input{
-  color:#fff!important;background:#080f27!important;border:1px solid #718ee0!important;
-}
-#persianGamesPanel .pg-game-select select option{color:#fff!important;background:#111b3e!important}
-#persianGamesPanel .pg-mode-tabs button{
-  color:#f7f8ff!important;background:linear-gradient(135deg,#1a2c65,#273e82)!important;
-  border:1px solid #718ce0!important;box-shadow:0 4px 0 #0a143b!important;
-}
-#persianGamesPanel .pg-mode-tabs button.active{
-  color:#fff!important;background:linear-gradient(135deg,#236bd6,#3a3b9e 65%,#662d8e)!important;
-  border-color:#9eeeff!important;box-shadow:0 0 0 2px #7be5ff36,0 4px 0 #0a143b!important;
-}
-#persianGamesPanel .pg-mode-tabs button b{color:#fff!important;background:#ffffff20!important}
-#persianGamesPanel .pg-letter-tile{
-  color:#32204a!important;background:linear-gradient(145deg,#ffe69a,#ffbd47)!important;
-  border-color:#fff0b0!important;box-shadow:0 4px 0 #a66b1a!important;
-}
-#persianGamesPanel .pg-cloze-option,#persianGamesPanel .pg-subtle-button{
-  color:#f7f8ff!important;background:linear-gradient(145deg,#182956,#1b2148)!important;
-  border-color:#718ce0!important;box-shadow:0 3px 0 #0a143b!important;
-}
-#persianGamesPanel .pg-cloze-option.selected{
-  color:#fff!important;background:linear-gradient(135deg,#236bd6,#6036a6)!important;
-  border-color:#9eeeff!important;
-}
-#persianGamesPanel .pg-context u{
-  color:#fff!important;background:#7f1d4d!important;border-radius:4px;
-}
-#persianGamesPanel .pg-feedback.correct{
-  color:#eafff5!important;background:#0e453c!important;border-color:#4dc99e!important;
-}
-#persianGamesPanel .pg-feedback.incorrect{
-  color:#fff6e6!important;background:#50351b!important;border-color:#f0bc58!important;
-}
-#persianGamesPanel .pg-feedback.info{
-  color:#eff6ff!important;background:#163365!important;border-color:#71baf5!important;
-}
-#persianGamesPanel .pg-source-note{color:#d5defb!important}
-@media(max-width:560px){
-  #persianLanding,#persianGamesPanel{padding:10px!important}
-  #persianLanding .pg-entry-grid{grid-template-columns:1fr!important}
-  #persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr!important}
-  #persianGamesPanel .pg-mode-tabs button{min-height:58px!important}
-}
-</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.math-question-visual{margin:7px 0;padding:7px;border:1px solid #9ca3af;border-radius:8px;background:#fff;color:#111}.mqv-figure figcaption{color:#173a78;font-size:10px;margin-bottom:4px}.mqv-caption{color:#374151;font-size:9px}.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-place-table th,.mqv-place-table td{background:#fff;color:#111;border-color:#6b7280}.mqv-stage small,.mqv-place-table th{color:#374151}.mqv-stage b,.mqv-seq-cell{color:#111}.mqv-op span,.mqv-frac-label{color:#111;background:#f3f4f6;border-color:#6b7280}.mqv-op b,.mqv-seq-arrow,.mqv-seq-arrow small{color:#111}.mqv-frac-piece{background:#fff;border-color:#6b7280}.mqv-frac-piece.filled{background:#bfdbfe;border-color:#1d4ed8}.mqv-ball{border-color:#374151}.mqv-time-track,.mqv-fractions,.mqv-sequence{break-inside:avoid}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
   }
   async function buildPrintableExam(){
     const status=$('printExamStatus'),subject=$('printExamSubject')?.value||'math';
