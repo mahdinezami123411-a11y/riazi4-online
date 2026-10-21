@@ -4399,7 +4399,7 @@ async function loadSourceQuestionBanks(){
     16:['هزاران سؤال وجود دارد که در مغز زمان می‌چرخد و می‌چرخد.','دانشمندان و پژوهشگران همواره به دنبال پرسش‌های خود می‌روند تا پاسخ آن‌ها را پیدا کنند.','او به کشف چیزهای ناشناخته علاقهٔ بسیاری داشت.'],
     17:['باران، نم‌نم می‌بارید.','مهتاب از خانه بیرون آمد و به مدرسهٔ جدید می‌رفت.','روی تختهٔ هوشمند می‌توانی دایره رسم کنی.','با نقاله و خط‌کش واقعی، زاویه‌ها را اندازه‌گیری کن.','دانش‌آموزان به کلاس وارد شدند.']
   };
-  const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه'],['ع','ا']];
+  const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه']];
   const pgState = {mode:'build',lesson:'all',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
   function pgNormalize(value){
     return String(value==null?'':value).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[\s\u200c\u200d‌‎‏\-‐‑–—،,؛;:.!؟?«»"'(){}\[\]\/]/g,'').toLowerCase();
@@ -4426,12 +4426,19 @@ async function loadSourceQuestionBanks(){
   }
   function pgReferenceVocabularyForLesson(lesson){
     const out=[];
-    function add(v){if(typeof v!=='string')return;const w=pgCleanDisplayWord(v);if(pgWordLetters(w).length<2||/\s/.test(w)||/[،,؛;:!?؟]/.test(w))return;if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w)}
+    function add(v){
+      if(typeof v!=='string')return;
+      String(v).split(/\s+/).forEach(part=>{
+        const w=pgCleanDisplayWord(part).replace(/^[،,؛;:!?؟«»"'()]+|[،,؛;:!?؟«»"'()]+$/g,'');
+        if(!pgIsSimpleWord(w))return;
+        if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w);
+      });
+    }
     (lesson.spellingWords||[]).forEach(add);
     (lesson.extendedVocabulary||[]).forEach(add);
     (lesson.importantWords||[]).forEach(add);
     (lesson.meanings||[]).forEach(p=>{if(Array.isArray(p))add(p[0])});
-    (lesson.synonyms||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);const v=String(p[1]||'').split(/[،,;]/)[0].trim();add(v)}});
+    (lesson.synonyms||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(String(p[1]||'').split(/[،,;]/)[0].trim())}});
     (lesson.opposites||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(p[1])}});
     (lesson.families||[]).forEach(f=>{if(f&&typeof f==='object'){add(f.root);(f.words||[]).forEach(add)}});
     return out;
@@ -4456,7 +4463,7 @@ async function loadSourceQuestionBanks(){
     return pgWordLetters(word).some(ch=>pgSimilarFamilies.some(f=>f.includes(ch)));
   }
   function pgVariants(word,knownSet){
-    const letters=pgWordLetters(word),normal=pgNormalize(word),candidates=[],seen=new Set();
+    const letters=Array.from(pgCleanDisplayWord(word)),normal=pgNormalize(word),candidates=[],seen=new Set();
     function add(chars){
       const v=chars.join(''),key=pgNormalize(v);
       if(!key||key===normal||seen.has(key)||(knownSet&&knownSet.has(key)))return;
@@ -4488,8 +4495,8 @@ async function loadSourceQuestionBanks(){
     const letter=/[\u0621-\u063A\u0641-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06BE\u06C0-\u06C3\u06CC\u06D2\u06D5]/;
     while(at>=0){
       const before=at>0?raw[at-1]:'',after=raw[at+needle.length]||'';
-      const beforeIsLetter=before&&letter.test(before);
-      const afterIsLetter=after&&letter.test(after);
+      const beforeIsLetter=before&&(letter.test(before)||before==='\u200c');
+      const afterIsLetter=after&&(letter.test(after)||after==='\u200c');
       if(!beforeIsLetter&&!afterIsLetter)return true;
       at=raw.indexOf(needle,at+1);
     }
@@ -4547,7 +4554,7 @@ async function loadSourceQuestionBanks(){
   function pgBuildSpellingPools(lessons){
     const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet();
     lessons.forEach(lesson=>{
-      const id=Number(lesson.id),title=String(lesson.title||'درس '+id),excerpts=pgTextExcerpts[id]||[],vocab=pgVocabularyForLesson(lesson);
+      const id=Number(lesson.id),title=String(lesson.title||'درس '+id),excerpts=pgTextExcerpts[id]||[],vocab=pgReferenceVocabularyForLesson(lesson);
       excerpts.forEach((sentence,si)=>{
         const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence)).sort((a,b)=>b.length-a.length);
         words.forEach(word=>{
