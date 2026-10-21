@@ -5174,20 +5174,25 @@ async function loadSourceQuestionBanks(){
       if(!pgState.lesson){pgSetLessonBoardVisible(false);$('pgLessonSelect')?.focus();return}
       pgSetMode(button.dataset.pgMode);
     }));
-    $('persianOpenWordGames').onclick=()=>{
+    $('persianOpenWordGames').onclick=async()=>{
       pgSetGameVisible('games');
       if(!pgState.lesson||!pgSelectedLessons().length){
         pgSetLessonBoardVisible(false);$('pgLessonPrompt').textContent='اول درس موردنظرت را از فهرست انتخاب کن؛ بعد بازی‌ها فقط از همان درس پرسش می‌سازند.';
         $('pgLessonSelect').focus();
-      }else{pgStartSession();pgSetMode('build')}
-      window.scrollTo({top:0,behavior:'smooth'});
+      }else{
+        const chosenLesson=String(pgState.lesson);
+        await pgStartSession();
+        if(String(pgState.lesson)===chosenLesson&&pgSelectedLessons().length===1)pgSetMode('build');
+      }
+      // Keep the student in the Persian word club instead of jumping to the app's book picker at page top.
+      $('persianGamesPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
     };
     $('persianChooseLesson').onclick=()=>{
       pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');$('persianLessonBackRow')?.classList.remove('hidden');setOtherSubjectTabActive('lessons');
-      window.scrollTo({top:0,behavior:'smooth'});
+      $('otherSubjectLessons')?.scrollIntoView({behavior:'smooth',block:'start'});
     };
-    $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
-    $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
+    $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');$('persianLanding')?.scrollIntoView({behavior:'smooth',block:'start'})};
+    $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');$('persianLanding')?.scrollIntoView({behavior:'smooth',block:'start'})};
     $('pgNext').onclick=()=>pgNextQuestion(pgState.mode);
     $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
     $('pgClearLetter').onclick=()=>{
