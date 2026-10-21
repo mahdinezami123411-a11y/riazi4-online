@@ -1141,6 +1141,24 @@ a{color:#d7ff76}
 #persianGamesPanel .pg-source-note{color:#637b98!important;line-height:1.9}
 @media(max-width:560px){#persianLanding .pg-entry-grid{grid-template-columns:1fr}#persianLanding .pg-entry-card{min-height:85px}#persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr;gap:7px}#persianGamesPanel .pg-mode-tabs button{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;gap:6px;min-height:48px;text-align:right;padding:8px 11px;font-size:13px}#persianGamesPanel .pg-mode-tabs button b{grid-row:span 2;display:grid;place-items:center;font-size:20px}#persianGamesPanel .pg-mode-tabs button small{grid-column:2;text-align:right;font-size:10px!important}#persianGamesPanel .pg-letter-tiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}#persianGamesPanel .pg-letter-tile{min-height:51px}#persianGamesPanel .pg-game-card{padding:12px}}
 
+
+/* یکپارچه‌سازی تم کهکشانی باشگاه واژه‌ها با کنتراست بالا */
+#persianGamesPanel{color:#f1f5ff!important;background:radial-gradient(circle at 12% 8%,#9c8cff26 0 1.5px,transparent 2.5px),radial-gradient(circle at 83% 16%,#7ce7ff2b 0 1.5px,transparent 2.5px),radial-gradient(circle at 68% 78%,#d5a4ff1c 0 1.5px,transparent 2.5px),linear-gradient(155deg,#0b1025 0%,#111a37 54%,#0b172d 100%)!important;border:1px solid #34456f!important;border-radius:22px}
+#persianGamesPanel :is(h1,h2,h3,h4,label,.field,.pg-lesson-prompt,.pg-selected-lesson,.pg-games-section-title){color:#f1f5ff!important}
+#persianGamesPanel :is(p,small,.muted){color:#c7d5f2!important}
+#persianGamesPanel .pg-entry-card{position:relative;overflow:hidden;color:#fff!important;background:radial-gradient(circle at 86% 15%,#c7f4ff35 0 1.5px,transparent 2.5px),radial-gradient(circle at 14% 76%,#d9c2ff30 0 1.5px,transparent 2.5px),linear-gradient(145deg,#17254d 0%,#202c5a 52%,#153d58 100%)!important;border:1px solid #6a8bbd!important;box-shadow:0 4px 0 #080e22,0 12px 28px #0004!important;border-radius:18px!important}
+#persianGamesPanel .pg-entry-card:nth-child(2){background:radial-gradient(circle at 84% 17%,#f5d5ff38 0 1.5px,transparent 2.5px),radial-gradient(circle at 17% 76%,#8beaff24 0 1.5px,transparent 2.5px),linear-gradient(145deg,#241d50 0%,#38275e 55%,#243b65 100%)!important;border-color:#9987d8!important}
+#persianGamesPanel .pg-entry-card strong{color:#fff!important;font-weight:900}#persianGamesPanel .pg-entry-card small{color:#e2ebff!important;line-height:1.8}
+#persianGamesPanel .pg-games-head{background:radial-gradient(circle at 92% 20%,#b7f4ff32 0 1.5px,transparent 2.5px),linear-gradient(135deg,#18274d,#23366a 58%,#17455b)!important;border:1px solid #6084b7!important;color:#fff!important}
+#persianGamesPanel .pg-games-head h3,#persianGamesPanel .pg-games-head p,#persianGamesPanel .pg-games-head .muted{color:#f1f6ff!important}
+#persianGamesPanel .pg-games-head button{color:#142448!important;background:#e9f4ff!important;border:1px solid #b7d7ff!important;font-weight:900;min-height:44px;border-radius:12px!important}
+#persianGamesPanel .pg-game-select,#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-game-stats{color:#f1f5ff!important;background:linear-gradient(150deg,#141e3a,#10192f)!important;border:1px solid #394e79!important;border-radius:16px!important;box-shadow:0 4px 0 #080e20!important}
+#persianGamesPanel .pg-game-select select,#persianGamesPanel input,#persianGamesPanel select{color:#f7f9ff!important;background:#0b142b!important;border:1px solid #627da9!important;border-radius:11px!important}#persianGamesPanel select option{color:#f7f9ff;background:#111a32}
+#persianGamesPanel .pg-mode-tabs button,#persianGamesPanel [data-pg-mode]{color:#eaf1ff!important;background:linear-gradient(145deg,#172544,#202c4d)!important;border:1px solid #50658e!important;border-radius:13px!important;font-weight:850;min-height:48px}
+#persianGamesPanel .pg-mode-tabs button.active,#persianGamesPanel [data-pg-mode].active{color:#06162a!important;background:linear-gradient(135deg,#8af1ed,#9bdcff)!important;border-color:#c7ffff!important;box-shadow:0 3px 0 #24536c!important}
+#persianGamesPanel .pg-letter-tile,#persianGamesPanel .pg-word-slot,#persianGamesPanel #pgClozeOptions button{color:#f5f8ff!important;background:linear-gradient(145deg,#202e50,#17213c)!important;border:1px solid #6c84b0!important;border-radius:10px!important;font-weight:900}
+#persianGamesPanel :is(button,input[type=button],input[type=submit]):focus-visible,#persianGamesPanel select:focus-visible,#persianGamesPanel input:focus-visible{outline:3px solid #9defff!important;outline-offset:2px}#persianGamesPanel button:disabled{opacity:.55!important}
+@media(max-width:520px){#persianGamesPanel .pg-entry-grid{grid-template-columns:1fr!important;gap:9px!important}#persianGamesPanel .pg-entry-card{min-height:unset!important;padding:14px!important}#persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr!important}#persianGamesPanel .pg-games-head{align-items:stretch}#persianGamesPanel .pg-games-head button{width:100%}}
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -4457,7 +4475,7 @@ async function loadSourceQuestionBanks(){
     16:['هزاران سؤال وجود دارد که در مغز زمان می‌چرخد و می‌چرخد.','دانشمندان و پژوهشگران همواره به دنبال پرسش‌های خود می‌روند تا پاسخ آن‌ها را پیدا کنند.','او به کشف چیزهای ناشناخته علاقهٔ بسیاری داشت.'],
     17:['باران، نم‌نم می‌بارید.','مهتاب از خانه بیرون آمد و به مدرسهٔ جدید می‌رفت.','روی تختهٔ هوشمند می‌توانی دایره رسم کنی.','با نقاله و خط‌کش واقعی، زاویه‌ها را اندازه‌گیری کن.','دانش‌آموزان به کلاس وارد شدند.']
   };
-  const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه']];
+  const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ']];
   
   const pgState = {mode:'build',lesson:'',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
   function pgNormalize(value){
@@ -4599,6 +4617,18 @@ async function loadSourceQuestionBanks(){
         if(!pgIsSimpleWord(source)||!pgIsSimpleWord(target)||pgNormalize(source)===pgNormalize(target))return;
         pgAddUnique(pool,seen,{id:'build:opp:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'متضاد',prompt:'متضادِ «'+source+'» را با حروف بساز.',source:'متضادهای درس '+id});
       });
+      (lesson.families||[]).forEach((family,i)=>{
+        if(!family||typeof family!=='object')return;
+        const root=String(family.root||'').trim();
+        const related=(family.words||[]).map(w=>String(w||'').trim()).filter(w=>pgIsSimpleWord(w));
+        if(!pgIsSimpleWord(root)||!related.length)return;
+        related.forEach((target,j)=>{
+          const letters=pgWordLetters(target),first=letters[0];
+          const matching=related.filter(w=>pgWordLetters(w).length===letters.length&&pgWordLetters(w)[0]===first);
+          if(matching.length!==1)return;
+          pgAddUnique(pool,seen,{id:'build:family:'+id+':'+i+':'+j+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'هم‌خانواده',prompt:'هم‌خانوادهٔ «'+root+'» را بساز؛ این واژه با «'+first+'» شروع می‌شود و '+(typeof fa==='function'?fa(letters.length):letters.length)+' حرف دارد.',source:'هم‌خانواده‌های درس '+id});
+        });
+      });
       const words=pgVocabularyForLesson(lesson);
       excerpts.forEach((sentence,si)=>{
         words.forEach((word,wi)=>{
@@ -4617,15 +4647,23 @@ async function loadSourceQuestionBanks(){
       excerpts.forEach((sentence,si)=>{
         const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence)).sort((a,b)=>b.length-a.length);
         words.forEach(word=>{
-          const variants=pgShuffle(pgVariants(word,known));
+          const variants=pgShuffle(pgVariants(word,known)).filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
           if(variants.length){
             const wrong=variants[0],faulty=sentence.replace(word,wrong);
-            pgAddUnique(fixPool,fixSeen,{id:'fix:'+id+':'+si+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,target:word,wrong,sentence:faulty,source:'متن درس '+id,prompt:'در جملهٔ کتاب، یک واژه عمداً با حرف هم‌آوا اشتباه نوشته شده است. شکل درست را بنویس.'});
+            if(pgNormalize(wrong)!==pgNormalize(word)&&faulty!==sentence){
+              pgAddUnique(fixPool,fixSeen,{id:'fix:'+id+':'+si+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,target:word,wrong,sentence:faulty,source:'متن درس '+id,prompt:'در جملهٔ کتاب، یک واژه عمداً با حرف هم‌آوا اشتباه نوشته شده است. شکل درست را بنویس.'});
+            }
           }
-          const distractors=pgShuffle(pgVariants(word,known)).slice(0,3);
+          const distractors=pgShuffle(pgVariants(word,known)).filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i).slice(0,3);
           if(distractors.length===3){
             const options=pgShuffle([{text:word,correct:true}].concat(distractors.map(text=>({text,correct:false}))));
-            pgAddUnique(clozePool,clozeSeen,{id:'cloze:'+id+':'+si+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,target:word,sentence:pgMaskWord(sentence,word),options,source:'متن درس '+id,prompt:'جای خالی را با املای درستِ همان واژه کامل کن.'});
+            const optionKeys=options.map(o=>pgNormalize(o.text));
+            const exactlyOneCorrect=options.filter(o=>o.correct===true).length===1;
+            const allDistinct=new Set(optionKeys).size===4;
+            const sentenceWithGap=pgMaskWord(sentence,word);
+            if(exactlyOneCorrect&&allDistinct&&sentenceWithGap!==sentence){
+              pgAddUnique(clozePool,clozeSeen,{id:'cloze:'+id+':'+si+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,target:word,sentence:sentenceWithGap,options,source:'متن درس '+id,prompt:'جای خالی را با املای درستِ همان واژه کامل کن.'});
+            }
           }
         });
       });
