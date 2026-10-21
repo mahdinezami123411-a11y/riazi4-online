@@ -4253,7 +4253,7 @@ async function loadExpandedPersianVocabulary(){
   console.info('Expanded Persian vocabulary loaded from teacher PDFs.');
  }catch(error){console.warn('Using the built-in Persian vocabulary fallback:',error)}
 }
-window.__persianVocabularyReady = loadExpandedPersianVocabulary();
+loadExpandedPersianVocabulary();
 
   let selectedOtherSubject = null;
   let selectedOtherLesson = null;
@@ -4781,12 +4781,26 @@ async function loadSourceQuestionBanks(){
 
 
   /* باشگاه واژه‌های فارسی؛ داده‌ها از واژه‌نامه و فهرست املایی همان درس می‌آیند. */
-    const pgDictionaryEntries = {"1":[{"answer":"طبیعت","clue":"طبیعی"},{"answer":"ناپدید","clue":"پیدا"},{"answer":"نقاش","clue":"نقش"},{"answer":"تصمیم","clue":"مصمم"},{"answer":"داوری","clue":"قضاوت"},{"answer":"پذیرفت","clue":"قبول کرد"},{"answer":"هنرمند","clue":"هنر"},{"answer":"گلگون","clue":"سرخ رنگ"}],"2":[{"answer":"کوچ","clue":"مهاجرت"},{"answer":"معتدل","clue":"نه زیاد سرد ونه زیاد گرم"},{"answer":"سفر","clue":"مسافر"},{"answer":"شگفتی","clue":"تعجب"}],"3":[{"answer":"حیات","clue":"زندگی"},{"answer":"آسیاب","clue":"دستگاهی برای آرد کردن گندم"},{"answer":"خوار","clue":"حقیر"},{"answer":"خار","clue":"تیغ"}],"4":[{"answer":"حکیم","clue":"دانشمند"},{"answer":"سرمایه","clue":"اندوخته"},{"answer":"امیر","clue":"فرمانروا"},{"answer":"حرکت","clue":"تحرک"},{"answer":"فرمان","clue":"دستور"},{"answer":"حکیم","clue":"حکمت"},{"answer":"امواج","clue":"موج ها"}],"5":[{"answer":"ثروتمند","clue":"فقیر"},{"answer":"شادکام","clue":"خوشحال"},{"answer":"مشتاق","clue":"شوق"},{"answer":"ارمغان","clue":"هدیه"},{"answer":"مشتاق","clue":"دارای شوق"},{"answer":"تجارت","clue":"بازرگانی"},{"answer":"پیغام","clue":"پیام"},{"answer":"بازرگان","clue":"تاجر"},{"answer":"گران‌بها","clue":"با ارزش"}],"6":[{"answer":"نبرد","clue":"جنگ"},{"answer":"ناامید","clue":"امیدوار"},{"answer":"آشتی","clue":"صلح و دوستی"},{"answer":"استوار","clue":"پا برجا"},{"answer":"آشتی","clue":"قهر"},{"answer":"خاور","clue":"باختر"},{"answer":"پایداری","clue":"ایستادگی"},{"answer":"خاور","clue":"مشرق"},{"answer":"پیشنهاد","clue":"نظر"},{"answer":"بردباری","clue":"صبر"},{"answer":"افراسیاب","clue":"فرمانده سپاه توران"},{"answer":"پایداری","clue":"ایستادگی، مقاومت"},{"answer":"شجاعت","clue":"دلیری"}],"7":[{"answer":"حضور","clue":"حاضر بودن"},{"answer":"همهمه","clue":"سکوت"},{"answer":"همهمه","clue":"سر وصدا"},{"answer":"نشاط","clue":"شادی"},{"answer":"شادی","clue":"غم"},{"answer":"انتظار","clue":"منتظر"},{"answer":"انبوه","clue":"بسیار زیاد"},{"answer":"لطیف","clue":"لطافت"},{"answer":"جمعیت","clue":"جمع"},{"answer":"لطیف","clue":"نرم"},{"answer":"حضور","clue":"حاضر"},{"answer":"نسیم","clue":"باد ملایم"},{"answer":"استقبال","clue":"پیشواز"},{"answer":"منظم","clue":"نظم"}],"10":[{"answer":"فعال","clue":"فعالیت"},{"answer":"مکتب","clue":"محل درس"},{"answer":"استعداد","clue":"آمادگی"},{"answer":"اراده","clue":"خواسته"},{"answer":"فعال","clue":"پرکار"},{"answer":"تصویر","clue":"تصاویر"},{"answer":"شعر","clue":"شاعر"},{"answer":"استعداد","clue":"مستعد"},{"answer":"پشتکار","clue":"تلاش برای انجام کاری"},{"answer":"ابداع","clue":"نوآوری"}],"11":[{"answer":"آزادی","clue":"اسارت"},{"answer":"دژ","clue":"حصار"},{"answer":"اشغال","clue":"تصرف"}],"12":[{"answer":"جنوب","clue":"شمال"},{"answer":"ساده","clue":"سخت"},{"answer":"شبنم","clue":"ژاله"}],"13":[{"answer":"عشق","clue":"عاشق"},{"answer":"جلیل","clue":"جالل"},{"answer":"حسرت","clue":"اندوه"},{"answer":"باطل","clue":"صحیح"},{"answer":"لطف","clue":"لطیف"},{"answer":"باطل","clue":"ابطال"},{"answer":"باطل","clue":"بیهوده"},{"answer":"دایه","clue":"پرورش دهنده"},{"answer":"شیوه","clue":"راه"},{"answer":"لطف","clue":"محبت ومهربانی"},{"answer":"ناخدا","clue":"صاحب کشتی"},{"answer":"سراسر","clue":"همه‌جا"},{"answer":"لبالب","clue":"پر"}],"14":[{"answer":"بلندآواز","clue":"با صدای بلند"},{"answer":"تهی","clue":"خالی"},{"answer":"عطار","clue":"عطرفروش"},{"answer":"خاموش","clue":"ساکت"},{"answer":"تهی","clue":"پر"},{"answer":"رنج","clue":"درد"},{"answer":"عطار","clue":"معطر"},{"answer":"ادب","clue":"ادیب"}],"15":[{"answer":"بیشه","clue":"جنگل"},{"answer":"رحم","clue":"رحیم"},{"answer":"خواب","clue":"بیدار"},{"answer":"خطاکار","clue":"گناهکار"},{"answer":"هراس","clue":"ترس"}],"16":[{"answer":"بیماری","clue":"سالمتی"},{"answer":"دانا","clue":"نادان"},{"answer":"پاسخ","clue":"جواب"}],"17":[{"answer":"لذت","clue":"لذیذ"},{"answer":"مجازی","clue":"واقعی"},{"answer":"لمسی","clue":"قابل لمس"},{"answer":"مجازی","clue":"غیرواقعی"},{"answer":"معرفت","clue":"شناخت"},{"answer":"فناوری","clue":"استفاده از علم"}]};
-  const pgTextExcerpts = {"1":["آنها می‌گفتند خورشید جهان‌افروز را به داوری انتخاب کنند.","خورشید پذیرفت که بین آنان داوری کند. چهار هنرمند شروع به کار کردند.","خورشید از پس ابر خاکستری‌رنگ، نگاهی انداخت و از دیدن منظره‌ی طبیعت بهار، لذت برد."],"2":["پرستوها بهار و تابستان را به آسودگی به سر می‌برند؛ اما در آغاز پاییز دشواری‌هایی برای آنها پیش می‌آید.","در آن هنگام، حشرات کمیاب می‌شوند و هوا کم‌کم سرد می‌شود.","پرستوها ناچار می‌شوند به جاهای معتدل‌تری کوچ کنند.","زمان کوچ آنها که فرا می‌رسد، دسته دسته روی بام‌ها یا سیم‌های برق جمع می‌شوند."],"3":["پسر پرسید: «همان که چشم چپش کور بود؛ پای راستش می‌لنگید و بار گندم می‌برد؟»","مرد خشمگین شد و پسر را پیش حاکم برد.","پسر جواب داد: «من، الاغی ندیدم.»","پسر گفت: «من فقط خوب نگاه کردم و به آنچه دیدم، کمی اندیشیدم.»","فهمیدم پای راست الاغی که از اینجا گذشته لنگ بوده است."],"4":["کشتی چند تکه شد و مسافران در میان امواج گرفتار شدند.","حکیم هم به تخته‌پاره‌ای چسبید و دل به خدا سپرد تا چه آید.","وقتی چشم باز کرد، خود را در ساحلی دور، تنها دید.","حکیم فهمید که از بلای طوفان نجات یافته بود و باید برای زنده ماندن خود چاره‌ای بیندیشد."],"5":["طوطی ادامه داد: «ای بازرگان مهربان و ای دوست هم‌زبان، سلام مرا به طوطیان هندوستان برسان.»","بازرگان، پس از چند شبانه‌روز سفر، به هندوستان رسید.","در آنجا، چشمش به دسته‌ای از طوطیان افتاد. سلام و پیغام طوطی‌اش را به آنها داد.","او هم قول داد که سلام و پیغامش را به طوطیان هندوستان برساند."],"6":["آرش کمان‌گیر، تیرانداز ماهر ایرانی، خود را برای پرتاب این تیر آماده کرد.","همه گریان و منتظر، پای کوه بلند دماوند ایستاده بودند."],"7":["از چند روز پیش شنیده بودیم که قرار است مهمان عزیزی به شهر ما بیاید.","از چند روز پیش، شهر حال و هوای دیگری داشت.","همه جا و همه چیز به انتظار رسیدن این مهمان بود.","سرودهای نشاط‌انگیز از «صدا و سیما» شنیده می‌شد.","صبح آن روز، زودتر از همیشه با شنیدن صدای جیک‌جیک گنجشکان از خواب بیدار شدم."],"10":["من مانند کودکان دیگر در مکتب درس می‌خواندم.","مکتب، اتاقی بود بزرگ که همه گرداگرد آن روی زمین می‌نشستیم و درس می‌خواندیم.","پدرم در ساختن طاق مسجد استاد بود.","آن وقت‌ها، هنوز مدرسه‌های امروزی دایر نشده بود."],"11":["او همیشه قصه‌هایش را ناتمام می‌گذاشت تا بچه‌ها منتظر دیدار بعدی و شنیدن بقیه‌ی قصه باشند.","دست‌های کوچک خود را به آسمان می‌گرفتند و برای پیروزی رزمندگان اسلام دعا می‌کردند.","مردم می‌دانستند خرمشهر، خونین‌شهر است.","خرمشهر را تسخیرناپذیر ساخته بود."],"12":["یک اتفاق ساده، آمد به خانه‌ی ما.","نامه‌ای از جبهه‌ی جنوب آمده بود.","یک قطره از دل من، بر روی دفتر افتاد.","مادر از شدت ناراحتی به گریه افتاد."],"13":["مادر موسی وقتی گهواره‌ی او را به رود نیل سپرد، دنبال او رفت.","بر اثر بارندگی زیاد، رودخانه لبالب از آب شده بود.","سراسر دشت پر از شقایق‌های وحشی بود.","صدای تکبیر دمادم از هر سو شنیده می‌شد."],"14":["لقمان را گفتند: «ادب از که آموختی؟»","گفت: «از بی‌ادبان، هر چه از ایشان در نظرم ناپسند آمد، از آن پرهیز کردم.»","مشک آن است که خود ببوید، نه آنکه عطار بگوید.","عالم بی‌عمل، به زنبور بی‌عسل می‌ماند."],"15":["تو بزرگی و من خطاکارم.","شیر از این لابه، رحم حاصل کرد.","اتفاقاً سه چار روز دگر، از پی صید، می‌گذشت یک صیاد.","موش چون حال شیر را دریافت، بندها را جوید با دندان.","دام صیاد، گیر شیر افتاد."],"16":["می‌خواهد بداند چرا خورشید آن بالا ایستاده است و نمی‌افتد.","هزاران سؤال وجود دارد که در مغزمان می‌چرخد و می‌چرخد.","ولی دانشمندان، پژوهشگران و بسیاری دیگر، همواره به دنبال پرسش‌های خود می‌روند و آن قدر می‌گردند تا پاسخ آنها را پیدا کنند.","یکی از این دانشمندان که همیشه تشنه‌ی یادگیری و دانش‌اندوزی بود، ابوریحان بیرونی است."],"17":["وقتی وارد حیاط مدرسه شد، صدای شادی بچه‌ها او را به یاد دوستانش انداخت.","دخترک ریزنقش نزدیک او آمد و گفت: «دانش‌آموز جدید هستی؟ اسمت چیست؟»","مهتاب خود را معرفی کرد. دختر گفت: «من هم بنفشه هستم.»","در این لحظه، دانش‌آموزان برای نوشتن روی تخته‌ی هوشمند به گچ احتیاج نداشتند.","بنفشه با انگشت خود، روی تخته‌ی هوشمند، پیامی را برای خوش‌آمدگویی به مهتاب نوشت."]};
+  const pgTextExcerpts = {
+    1:['آنها تصمیم گرفتند خورشید را به داوری انتخاب کنند.','خورشید پذیرفت که بین آنان داوری کند.','خوشه‌های طلایی گندم دشت را پوشاند.','برگ‌های درختان صنوبر و کاج در کنار هم منظره‌ای دل‌انگیز می‌ساختند.','پاییز برای کار خود، نرگس‌های آتشین انتخاب کرد.'],
+    2:['در اوایل بهار، هوا لطیف و دل‌نشین می‌شود.','درختان شکوفه می‌دهند. پرستوها، این پرندگان دوست‌داشتنی، باز می‌گردند.','پرستوهای جوان باید کوچ کنند تا لانه‌ای برای خود بسازند.','هر پرستو چهار تا شش تخم سفید می‌گذارد.','پرستوها ناچار می‌شوند به جاهای معتدل‌تری کوچ کنند.','در این سفر طولانی، خطرهای بسیاری وجود دارد.','یکی از این خطرها، تغییرات هواست.'],
+    3:['مردی چند کیسهٔ گندم بر پشت الاغ گذاشته بود.','او به قهوه‌خانه‌ای رسید.','پسر جواب داد: من الاغی ندیدم.','پای راستش کمتر از جای پای چپش گود افتاده بود.','فهمیدم الاغی که از اینجا گذشته لنگ بوده است.'],
+    4:['در زمان‌های قدیم، حکیمی سفر می‌کرد.','او کنار دریا رفت و سوار کشتی شد.','کشتی با بادبان‌های برافراشته حرکت کرد.','کشتی گرفتار طوفان شد.','ناخدا هر چه کرد، نتوانست کشتی را نجات دهد.','حکیم هم به تخته‌پاره‌ای چسبید و دل به خدا سپرد تا چه آید.'],
+    5:['روزی در شهری، بازرگان ثروتمندی بود که طوطی زیبا و شیرین‌زبانی داشت.','او تصمیم گرفت برای تجارت به هندوستان سفر کند.','طوطی گفت: سلام مرا به طوطیان هندوستان برسان.','بازرگان از شنیدن این موضوع شگفت‌زده شد.'],
+    6:['نبرد طولانی و خسته‌کننده شده بود و همه نگران بودند.','سپاه توران به فرماندهی افراسیاب از رود جیحون گذشته بود.','ایرانیان در برابر تورانیان پایداری می‌کردند، اما پیروز شدن مشکل بود.','پیشنهاد کردند که پهلوانی ایرانی تیری به سوی خاور پرتاب کند.'],
+    7:['از چند روز پیش شنیده بودیم که قرار است مهمان عزیزی به شهر ما بیاید.','شادی و نشاط در چهرهٔ همهٔ مردم شهر دیده می‌شد.','همه جا و همه چیز به انتظار رسیدن این مهمان بود.','نسیم خنک و ملایم بامدادی دستی به صورتم کشید.','سرودهای نشاط‌انگیز از صدا و سیما شنیده می‌شد.'],
+    10:['من کودکی کنجکاو و فعّال بودم.','هر کاغذپاره‌ای که به دستم می‌رسید، تصویری از گل و درخت یا کوه و جنگل بر آن نقاشی می‌کردم.','پدرم در ساختن طاق مسجد استاد بود.','در زمستان‌های سرد و طولانی، قنادی رونق نداشت.'],
+    11:['بچه‌های کوچک شهدا او را دوست داشتند.','او قصه‌ها را ناتمام می‌گذاشت تا بچه‌ها منتظر دیدار بعدی و شنیدن بقیهٔ قصه باشند.','مردم خرمشهر را خونین‌شهر می‌نامیدند.','خرمشهر را تسخیرناپذیر ساخته بود.'],
+    12:['نامه از جبههٔ جنوب آمده بود.','یک قطره شبنم از گل، بر روی برگ غلتید.','یک قطره روی شیشه، مثل تگرگ غلتید.','یک اتفاق ساده در چشم مادر افتاد.'],
+    13:['مادر موسی، چون موسی را به نیل درافکند.','ما به دریا حکم طوفان می‌دهیم.','رودها از خود نه طغیان می‌کنند.'],
+    14:['دو کس رنج بیهوده بردند و سعی بی‌فایده کردند.','یکی اندوخت و نخورد و دیگری آموخت و نکرد.','عالم بی‌عمل، به زنبور بی‌عسل می‌ماند.'],
+    15:['موشکی کرد خواب شیر آشفته.','شیر شد بیدار و گرفت موشک را.','موش بیچاره از هراس افتاد.'],
+    16:['هزاران سؤال وجود دارد که در مغز زمان می‌چرخد و می‌چرخد.','دانشمندان و پژوهشگران همواره به دنبال پرسش‌های خود می‌روند تا پاسخ آن‌ها را پیدا کنند.','او به کشف چیزهای ناشناخته علاقهٔ بسیاری داشت.'],
+    17:['باران، نم‌نم می‌بارید.','مهتاب از خانه بیرون آمد و به مدرسهٔ جدید می‌رفت.','روی تختهٔ هوشمند می‌توانی دایره رسم کنی.','با نقاله و خط‌کش واقعی، زاویه‌ها را اندازه‌گیری کن.','دانش‌آموزان به کلاس وارد شدند.']
+  };
   const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه']];
   
   const pgState = {mode:'build',lesson:'',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
-  let pgSessionRun=0;
   function pgNormalize(value){
     return String(value==null?'':value).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[\s\u200c\u200d‌‎‏\-‐‑–—،,؛;:.!؟?«»"'(){}\[\]\/]/g,'').toLowerCase();
   }
@@ -4820,34 +4834,25 @@ async function loadSourceQuestionBanks(){
         if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w);
       });
     }
-    // The spelling bank is sourced only from the verified spelling PDF.
     (lesson.spellingWords||[]).forEach(add);
+    (lesson.extendedVocabulary||[]).forEach(add);
+    (lesson.importantWords||[]).forEach(add);
+    (lesson.meanings||[]).forEach(p=>{if(Array.isArray(p))add(p[0])});
+    (lesson.synonyms||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(String(p[1]||'').split(/[،,;]/)[0].trim())}});
+    (lesson.opposites||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(p[1])}});
+    (lesson.families||[]).forEach(f=>{if(f&&typeof f==='object'){add(f.root);(f.words||[]).forEach(add)}});
     return out;
   }
   function pgVocabularyForLesson(lesson){
-    // Do not mix in the legacy manually-added vocabulary or words invented from paraphrased sentences.
-    return pgReferenceVocabularyForLesson(lesson);
+    const out=pgReferenceVocabularyForLesson(lesson);
+    (pgTextExcerpts[Number(lesson.id)]||[]).forEach(sentence=>{
+      pgSentenceTokens(sentence).forEach(w=>{if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w)});
+    });
+    return out;
   }
   function pgAllCorrectWordSet(){
     const set=new Set();
     pgGameLessons().forEach(l=>pgVocabularyForLesson(l).forEach(w=>set.add(pgNormalize(w))));
-    return set;
-  }
-  function pgAllSourceWordSet(){
-    const set=pgAllCorrectWordSet();
-    function add(value){
-      if(typeof value!=='string')return;
-      String(value).split(/\s+/).forEach(part=>{
-        const word=pgCleanDisplayWord(part);
-        if(pgIsSimpleWord(word))set.add(pgNormalize(word));
-      });
-    }
-    Object.values(pgDictionaryEntries||{}).forEach(entries=>(entries||[]).forEach(entry=>{add(entry.answer);add(entry.clue)}));
-    (typeof persianLessons!=='undefined'?persianLessons:[]).forEach(lesson=>{
-      ['synonyms','opposites'].forEach(key=>(lesson[key]||[]).forEach(pair=>Array.isArray(pair)&&pair.forEach(add)));
-      (lesson.families||[]).forEach(family=>{if(family&&typeof family==='object'){add(family.root);(family.words||[]).forEach(add)}});
-    });
-    Object.values(pgTextExcerpts||{}).forEach(sentences=>(sentences||[]).forEach(sentence=>pgSentenceTokens(sentence).forEach(add)));
     return set;
   }
   function pgIsSimpleWord(word){
@@ -4890,9 +4895,8 @@ async function loadSourceQuestionBanks(){
     const letter=/[\u0621-\u063A\u0641-\u064A\u067E\u0686\u0698\u06A9\u06AF\u06BE\u06C0-\u06C3\u06CC\u06D2\u06D5]/;
     while(at>=0){
       const before=at>0?raw[at-1]:'',after=raw[at+needle.length]||'';
-      // A zero-width non-joiner may separate a suffix/compound; test actual letters only.
-      const beforeIsLetter=before&&letter.test(before);
-      const afterIsLetter=after&&letter.test(after);
+      const beforeIsLetter=before&&(letter.test(before)||before==='\u200c');
+      const afterIsLetter=after&&(letter.test(after)||after==='\u200c');
       if(!beforeIsLetter&&!afterIsLetter)return true;
       at=raw.indexOf(needle,at+1);
     }
@@ -4912,51 +4916,36 @@ async function loadSourceQuestionBanks(){
     if(!q||!q.id||seen.has(q.id))return;
     seen.add(q.id);pool.push(q);
   }
-  function pgSourceDictionaryEntries(lessonId){
-    const lex=typeof persianSourceLexicon!=='undefined'?persianSourceLexicon[Number(lessonId)]:null;
-    const out=[];
-    if(lex){
-      [['meanings','معنی'],['synonyms','هم‌معنی'],['opposites','متضاد'],['families','هم‌خانواده']].forEach(([field,label])=>{
-        (lex[field]||[]).forEach((pair,index)=>{
-          if(!Array.isArray(pair)||pair.length<2)return;
-          const answer=pgCleanDisplayWord(pair[0]),clue=String(pair[1]||'').trim();
-          if(pgIsSimpleWord(answer)&&clue)out.push({answer,clue,category:label,sourceIndex:index});
-        });
-      });
-    }
-    // No legacy/manual vocabulary is appended: only pairs from the supplied Persian vocabulary source are used.
-    return out;
-  }
   function pgBuildQuestionPool(lessons){
     const pool=[],seen=new Set();
     lessons.forEach(lesson=>{
       const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
       const excerpts=pgTextExcerpts[id]||[];
-      pgSourceDictionaryEntries(id).forEach((entry,i)=>{
-        const target=pgCleanDisplayWord(entry.answer),clue=String(entry.clue||'').trim();
-        if(!pgIsSimpleWord(target)||pgWordLetters(target).length>12||!clue||pgNormalize(clue)===pgNormalize(target))return;
-        const clueContainsTarget=pgNormalize(clue).includes(pgNormalize(target));
-        pgAddUnique(pool,seen,{
-          id:'build:dictionary:'+id+':'+(entry.category||'واژه‌نامه')+':'+i+':'+pgNormalize(target)+':'+pgNormalize(clue),
-          mode:'build',lessonId:id,lessonTitle:title,target,kind:entry.category||'واژه‌نامه',
-          prompt:clueContainsTarget
-            ?'در بخش '+(entry.category||'واژه‌نامه')+' این درس، واژهٔ پایهٔ مرتبط با «'+clue+'» را با حروف بساز.'
-            :'سرنخ «'+clue+'» در بخش '+(entry.category||'واژه‌نامه')+' به کدام واژه مربوط است؟ واژه را با حروف بساز.',
-          source:'جزوهٔ واژه‌های فارسی چهارم، '+(entry.category||'واژه‌نامه')+'، درس '+id
-        });
+      (lesson.meanings||[]).forEach((pair,i)=>{
+        if(!Array.isArray(pair)||pair.length<2)return;
+        const target=pgCleanDisplayWord(pair[0]),meaning=String(pair[1]||'').trim();
+        if(!pgIsSimpleWord(target)||!meaning||pgNormalize(meaning).includes(pgNormalize(target)))return;
+        pgAddUnique(pool,seen,{id:'build:meaning:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'معنی واژه',prompt:'در واژه‌نامهٔ این درس، معنیِ «'+meaning+'» برای یک واژه آمده است. خودِ واژه را با حروف بساز.',source:'واژه‌نامهٔ درس '+id});
+      });
+      (lesson.synonyms||[]).forEach((pair,i)=>{
+        if(!Array.isArray(pair)||pair.length<2)return;
+        const source=String(pair[0]||'').trim(),target=String(pair[1]||'').split(/[،,;]/)[0].trim();
+        if(!pgIsSimpleWord(source)||!pgIsSimpleWord(target)||pgNormalize(source)===pgNormalize(target))return;
+        if(pgNormalize(String(pair[1]||'')).includes(pgNormalize(source)))return;
+        pgAddUnique(pool,seen,{id:'build:syn:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'هم‌معنی',prompt:'هم‌معنیِ «'+source+'» را با حروف بساز.',source:'هم‌معنی‌های درس '+id});
+      });
+      (lesson.opposites||[]).forEach((pair,i)=>{
+        if(!Array.isArray(pair)||pair.length<2)return;
+        const source=String(pair[0]||'').trim(),target=String(pair[1]||'').trim();
+        if(!pgIsSimpleWord(source)||!pgIsSimpleWord(target)||pgNormalize(source)===pgNormalize(target))return;
+        pgAddUnique(pool,seen,{id:'build:opp:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'متضاد',prompt:'متضادِ «'+source+'» را با حروف بساز.',source:'متضادهای درس '+id});
       });
       const words=pgVocabularyForLesson(lesson);
       excerpts.forEach((sentence,si)=>{
-        words.forEach(word=>{
+        words.forEach((word,wi)=>{
           if(!pgIsSimpleWord(word)||!pgWordInSentence(word,sentence))return;
           const masked=pgMaskWord(sentence,word);
-          if(masked===sentence)return;
-          pgAddUnique(pool,seen,{
-            id:'build:context:'+id+':'+si+':'+pgNormalize(word),
-            mode:'build',lessonId:id,lessonTitle:title,target:word,kind:'کلمه از متن',
-            prompt:'کلمهٔ جاافتادهٔ این عبارت از کتاب را با حروف بساز: «'+masked+'»',
-            source:'متن کتاب فارسی، درس '+id,context:masked
-          });
+          pgAddUnique(pool,seen,{id:'build:context:'+id+':'+si+':'+pgNormalize(word),mode:'build',lessonId:id,lessonTitle:title,target:word,kind:'کلمه از متن',prompt:'کلمهٔ جاافتادهٔ این عبارت از کتاب را با حروف بساز: «'+masked+'»',source:'متن درس '+id,context:masked});
         });
       });
     });
@@ -4965,99 +4954,21 @@ async function loadSourceQuestionBanks(){
   function pgBuildSpellingPools(lessons){
     const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet();
     lessons.forEach(lesson=>{
-      const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
-      const excerpts=pgTextExcerpts[id]||[],vocab=pgReferenceVocabularyForLesson(lesson);
+      const id=Number(lesson.id),title=String(lesson.title||'درس '+id),excerpts=pgTextExcerpts[id]||[],vocab=pgReferenceVocabularyForLesson(lesson);
       excerpts.forEach((sentence,si)=>{
-        const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence))
-          .sort((a,b)=>pgWordLetters(b).length-pgWordLetters(a).length);
+        const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence)).sort((a,b)=>b.length-a.length);
         words.forEach(word=>{
-          const variants=pgShuffle(pgVariants(word,known))
-            .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
+          const variants=pgShuffle(pgVariants(word,known));
           if(variants.length){
             const wrong=variants[0],faulty=sentence.replace(word,wrong);
-            if(faulty!==sentence){
-              pgAddUnique(fixPool,fixSeen,{
-                id:'fix:'+id+':'+si+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
-                target:word,wrong,sentence:faulty,source:'متن کتاب فارسی، درس '+id,
-                prompt:'در این عبارت از کتاب، یک واژه با حرف هم‌آوا اشتباه نوشته شده است. شکل درست را بنویس.'
-              });
-            }
+            pgAddUnique(fixPool,fixSeen,{id:'fix:'+id+':'+si+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,target:word,wrong,sentence:faulty,source:'متن درس '+id,prompt:'در جملهٔ کتاب، یک واژه عمداً با حرف هم‌آوا اشتباه نوشته شده است. شکل درست را بنویس.'});
           }
-          const distractors=pgShuffle(variants)
-            .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i)
-            .slice(0,3);
+          const distractors=pgShuffle(pgVariants(word,known)).slice(0,3);
           if(distractors.length===3){
             const options=pgShuffle([{text:word,correct:true}].concat(distractors.map(text=>({text,correct:false}))));
-            const optionKeys=options.map(o=>pgNormalize(o.text));
-            if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
-              const sentenceWithGap=pgMaskWord(sentence,word);
-              if(sentenceWithGap!==sentence){
-                pgAddUnique(clozePool,clozeSeen,{
-                  id:'cloze:'+id+':'+si+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
-                  target:word,sentence:sentenceWithGap,options,source:'متن کتاب فارسی، درس '+id,
-                  prompt:'جای خالی را با املای درستِ همان واژه کامل کن.'
-                });
-              }
-            }
+            pgAddUnique(clozePool,clozeSeen,{id:'cloze:'+id+':'+si+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,target:word,sentence:pgMaskWord(sentence,word),options,source:'متن درس '+id,prompt:'جای خالی را با املای درستِ همان واژه کامل کن.'});
           }
         });
-      });
-      // For list-only spelling words, only create questions when the same lesson's dictionary supplies a grounded clue.
-      vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)).forEach(word=>{
-        const hint=pgSourceDictionaryEntries(id).find(entry=>pgNormalize(entry.answer)===pgNormalize(word)&&String(entry.clue||'').trim());
-        if(!hint)return;
-        const clue=String(hint.clue).trim();
-        const variants=pgShuffle(pgVariants(word,known))
-          .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
-        const hasFix=fixPool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
-        if(!hasFix&&variants.length){
-          const wrong=variants[0];
-          pgAddUnique(fixPool,fixSeen,{
-            id:'fix:dictionary:'+id+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
-            target:word,wrong,sentence:wrong,source:'فهرست املایی و واژه‌نامهٔ همان درس',
-            prompt:'سرنخ «'+clue+'» در واژه‌نامهٔ این درس آمده است. واژهٔ نمایش‌داده‌شده با حرف هم‌آوا اشتباه شده؛ شکل درست را بنویس.'
-          });
-        }
-        const hasCloze=clozePool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
-        if(!hasCloze&&variants.length>=3){
-          const options=pgShuffle([{text:word,correct:true}].concat(variants.slice(0,3).map(text=>({text,correct:false}))));
-          const optionKeys=options.map(o=>pgNormalize(o.text));
-          if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
-            pgAddUnique(clozePool,clozeSeen,{
-              id:'cloze:dictionary:'+id+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
-              target:word,sentence:'سرنخ واژه‌نامه: «'+clue+'» — واژهٔ موردنظر: ______',
-              options,source:'فهرست املایی و واژه‌نامهٔ همان درس',
-              prompt:'واژه‌ای را انتخاب کن که در واژه‌نامه کنار این سرنخ آمده و املای درست دارد.'
-            });
-          }
-        }
-      });
-      // If a lesson has no sentence-based item for a spelling word, create a word-only spelling question
-      // grounded in that lesson's verified spelling list. Distractors are altered spellings, never other correct bank words.
-      vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)).forEach(word=>{
-        const variants=pgShuffle(pgVariants(word,known))
-          .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
-        const hasFix=fixPool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
-        if(!hasFix&&variants.length){
-          pgAddUnique(fixPool,fixSeen,{
-            id:'fix:list:'+id+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
-            target:word,wrong:variants[0],sentence:variants[0],source:'فهرست املایی تأییدشده، درس '+id,
-            prompt:'این واژه از فهرست املایی همین درس است و یک حرف هم‌آوا اشتباه شده؛ شکل درست را بنویس.'
-          });
-        }
-        const hasCloze=clozePool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
-        if(!hasCloze&&variants.length>=3){
-          const options=pgShuffle([{text:word,correct:true}].concat(variants.slice(0,3).map(text=>({text,correct:false}))));
-          const optionKeys=options.map(o=>pgNormalize(o.text));
-          if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
-            pgAddUnique(clozePool,clozeSeen,{
-              id:'cloze:list:'+id+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
-              target:word,sentence:'کدام گزینه املای درستِ واژه‌ای از فهرست املایی این درس است؟ ______',
-              options,source:'فهرست املایی تأییدشده، درس '+id,
-              prompt:'شکل درست واژه را از میان گزینه‌های هم‌آوا انتخاب کن.'
-            });
-          }
-        }
       });
     });
     return {fix:fixPool,cloze:clozePool};
@@ -5076,15 +4987,7 @@ async function loadSourceQuestionBanks(){
     }
     return queue;
   }
-  async function pgStartSession(){
-    const sessionRun=++pgSessionRun;
-    const requestedLesson=String(pgState.lesson||'');
-    if(window.__persianVocabularyReady){
-      $('pgPrompt').textContent='واژه‌های مستند درس در حال آماده‌سازی هستند…';
-      try{await window.__persianVocabularyReady}catch(_){/* use the built-in source-checked fallback */}
-    }
-    // Ignore an old load if the student has changed lessons while the vocabulary file was loading.
-    if(sessionRun!==pgSessionRun||String(pgState.lesson||'')!==requestedLesson)return;
+  function pgStartSession(){
     pgState.pools={build:[],fix:[],cloze:[]};pgState.queues={build:[],fix:[],cloze:[]};pgState.indices={build:0,fix:0,cloze:0};pgState.questionNo={build:0,fix:0,cloze:0};pgState.current=null;pgState.selectedTileIds=[];pgState.tiles=[];pgState.selectedCloze=-1;pgState.answered=false;pgState.score=0;pgState.attempts=0;
     const lessons=pgSelectedLessons();pgSetLessonBoardVisible(lessons.length===1);
     if(lessons.length!==1){
@@ -5130,7 +5033,7 @@ async function loadSourceQuestionBanks(){
     mode=mode||pgState.mode;
     const pool=pgState.pools[mode]||[];
     if(!pool.length){
-      pgState.current=null;$('pgPrompt').textContent='برای این بازی در درس انتخاب‌شده پرسش کافی پیدا نشد. لطفاً درس دیگری را انتخاب کن.';
+      pgState.current=null;$('pgPrompt').textContent='برای این بازی در درس انتخاب‌شده پرسش کافی پیدا نشد. بازی دیگر یا درس دیگری را انتخاب کن.';
       $('pgWordSlots').innerHTML='';$('pgLetterTiles').innerHTML='';$('pgFaultSentence').textContent='';$('pgClozeSentence').textContent='';$('pgClozeOptions').innerHTML='';$('pgFeedback').classList.add('hidden');
       $('pgPoolCount').textContent='بانک این بازی: ۰ سؤال';$('pgQuestionNumber').textContent='بانک خالی';return;
     }
@@ -5155,25 +5058,17 @@ async function loadSourceQuestionBanks(){
       $('pgClozeSentence').textContent=q.sentence;
       $('pgClozeOptions').innerHTML='';
       q.options.forEach((option,index)=>{
-        const button=document.createElement('button');button.type='button';button.className='pg-cloze-option';button.textContent=option.text;button.dataset.pgClozeIndex=String(index);button.setAttribute('aria-pressed','false');button.onclick=()=>{
+        const button=document.createElement('button');button.type='button';button.className='pg-cloze-option';button.textContent=option.text;button.dataset.pgClozeIndex=String(index);button.onclick=()=>{
           if(pgState.answered)return;
           pgState.selectedCloze=index;
-          $('pgClozeOptions').querySelectorAll('[data-pg-cloze-index]').forEach(b=>{
-            const selected=Number(b.dataset.pgClozeIndex)===index;
-            b.classList.toggle('selected',selected);
-            b.setAttribute('aria-pressed',selected?'true':'false');
-          });
+          $('pgClozeOptions').querySelectorAll('[data-pg-cloze-index]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.pgClozeIndex)===index));
         };
         $('pgClozeOptions').appendChild(button);
       });
     }
   }
   function pgCreateTiles(q){
-    const targetLetters=pgWordLetters(q.target);
-    // Word-building always displays 12 tiles total, including the answer letters.
-    if(targetLetters.length>12)return [];
-    const decoyCount=12-targetLetters.length;
-    const lesson=pgGameLessons().find(l=>Number(l.id)===Number(q.lessonId));
+    const targetLetters=pgWordLetters(q.target),lesson=pgGameLessons().find(l=>Number(l.id)===Number(q.lessonId));
     const vocab=lesson?pgVocabularyForLesson(lesson):[];
     const extras=[];
     targetLetters.forEach(ch=>{
@@ -5183,13 +5078,13 @@ async function loadSourceQuestionBanks(){
     pgShuffle(vocab.flatMap(w=>pgWordLetters(w))).forEach(ch=>extras.push(ch));
     const chosen=[];
     for(const ch of pgShuffle(extras)){
-      if(chosen.length>=decoyCount)break;
+      if(chosen.length>=6)break;
       if(/[\u0600-\u06FF]/.test(ch))chosen.push(ch);
     }
     const filler=['س','ص','ت','ط','ز','ذ','ر','ن','م','ا','د','ق'];
-    while(chosen.length<decoyCount)chosen.push(filler[Math.floor(Math.random()*filler.length)]);
+    while(chosen.length<6)chosen.push(filler[Math.floor(Math.random()*filler.length)]);
     const tiles=targetLetters.map((letter,index)=>({id:'answer-'+index+'-'+Math.random().toString(36).slice(2,7),letter,answerTile:true}));
-    const decoys=chosen.slice(0,decoyCount).map((letter,index)=>({id:'decoy-'+index+'-'+Math.random().toString(36).slice(2,7),letter,answerTile:false}));
+    const decoys=chosen.slice(0,6).map((letter,index)=>({id:'decoy-'+index+'-'+Math.random().toString(36).slice(2,7),letter,answerTile:false}));
     return pgShuffle(tiles.concat(decoys));
   }
   function pgRenderBuilder(){
@@ -5208,6 +5103,7 @@ async function loadSourceQuestionBanks(){
     });
     $('pgCheckBuild').disabled=pgState.answered;
     $('pgClearLetter').disabled=pgState.answered||pgState.selectedTileIds.length===0;
+    $('pgShuffleTiles').disabled=pgState.answered;
   }
   function pgFeedback(correct,message){
     const box=$('pgFeedback');box.classList.remove('hidden','correct','incorrect','info');box.classList.add(correct===true?'correct':correct===false?'incorrect':'info');box.textContent=message;
@@ -5278,46 +5174,39 @@ async function loadSourceQuestionBanks(){
     const choices=pgGameLessons();
     $('pgLessonSelect').innerHTML='<option value="">ابتدا درس را انتخاب کن…</option>'+choices.map(l=>'<option value="'+Number(l.id)+'">درس '+(typeof fa==='function'?fa(l.id):l.id)+' · '+escapeHtml(l.title)+'</option>').join('');
     $('pgLessonSelect').value='';pgState.lesson='';pgSetLessonBoardVisible(false);
-    $('pgLessonSelect').addEventListener('change',async(event)=>{
-      event.stopPropagation();
-      const chosenLesson=$('pgLessonSelect').value;
-      pgState.lesson=chosenLesson;
-      if(!chosenLesson){await pgStartSession();return}
-      $('pgLessonPrompt').textContent='بانک واژه‌های این درس در حال آماده‌سازی است…';
-      pgSetLessonBoardVisible(false);
-      await pgStartSession();
-      if(String(pgState.lesson)===String(chosenLesson)&&pgSelectedLessons().length===1){
-        pgSetMode('build');
-      }
+    $('pgLessonSelect').addEventListener('change',()=>{
+      pgState.lesson=$('pgLessonSelect').value;
+      if(!pgState.lesson){pgStartSession();return}
+      pgStartSession();pgSetMode('build');
     });
     document.querySelectorAll('#pgModeTabs [data-pg-mode]').forEach(button=>button.addEventListener('click',()=>{
       if(!pgState.lesson){pgSetLessonBoardVisible(false);$('pgLessonSelect')?.focus();return}
       pgSetMode(button.dataset.pgMode);
     }));
-    $('persianOpenWordGames').onclick=async()=>{
+    $('persianOpenWordGames').onclick=()=>{
       pgSetGameVisible('games');
       if(!pgState.lesson||!pgSelectedLessons().length){
         pgSetLessonBoardVisible(false);$('pgLessonPrompt').textContent='اول درس موردنظرت را از فهرست انتخاب کن؛ بعد بازی‌ها فقط از همان درس پرسش می‌سازند.';
         $('pgLessonSelect').focus();
-      }else{
-        const chosenLesson=String(pgState.lesson);
-        await pgStartSession();
-        if(String(pgState.lesson)===chosenLesson&&pgSelectedLessons().length===1)pgSetMode('build');
-      }
-      // Keep the student in the Persian word club instead of jumping to the app's book picker at page top.
-      $('persianGamesPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+      }else{pgStartSession();pgSetMode('build')}
+      window.scrollTo({top:0,behavior:'smooth'});
     };
     $('persianChooseLesson').onclick=()=>{
       pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');$('persianLessonBackRow')?.classList.remove('hidden');setOtherSubjectTabActive('lessons');
-      $('otherSubjectLessons')?.scrollIntoView({behavior:'smooth',block:'start'});
+      window.scrollTo({top:0,behavior:'smooth'});
     };
-    $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');$('persianLanding')?.scrollIntoView({behavior:'smooth',block:'start'})};
-    $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');$('persianLanding')?.scrollIntoView({behavior:'smooth',block:'start'})};
+    $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
+    $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
+    $('pgAnotherMode').onclick=()=>{if(!pgState.lesson){$('pgLessonSelect')?.focus();return}pgSetGameVisible('games');$('pgModeTabs')?.scrollIntoView({behavior:'smooth',block:'center'})};
     $('pgNext').onclick=()=>pgNextQuestion(pgState.mode);
     $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
     $('pgClearLetter').onclick=()=>{
       if(pgState.answered||!pgState.selectedTileIds.length)return;
       pgState.selectedTileIds.pop();pgRenderBuilder();pgFeedback(null,'آخرین حرف پاک شد؛ بقیهٔ حروف سر جای خود باقی ماندند.');
+    };
+    $('pgShuffleTiles').onclick=()=>{
+      if(pgState.answered)return;
+      pgState.tiles=pgShuffle(pgState.tiles);pgRenderBuilder();pgFeedback(null,'حروف جابه‌جا شدند. حروف انتخاب‌شده پاک نشدند.');
     };
     $('pgFixAnswer').addEventListener('keydown',event=>{if(event.key==='Enter')pgCheckFix()});
   }
@@ -5907,10 +5796,7 @@ const persianBookPageMap={
     return '<div class="print-exam-paper" dir="rtl"><h2>'+escapeHtml(state.title)+'</h2><div class="exam-meta"><span>کتاب: '+escapeHtml(printableSubjectNames[state.subject]||state.subject)+'</span><span>نام و نام‌خانوادگی: ....................................</span><span>تاریخ: ....................</span><span>نمره: ....................</span></div>'+body+key+'</div>';
   }
   function printableStandaloneHtml(includeKey){
-    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.math-question-visual{margin:7px 0;padding:7px;border:1px solid #9ca3af;border-radius:8px;background:#fff;color:#111}.mqv-figure figcaption{color:#173a78;font-size:10px;margin-bottom:4px}.mqv-caption{color:#374151;font-size:9px}.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-place-table th,.mqv-place-table td{background:#fff;color:#111;border-color:#6b7280}.mqv-stage small,.mqv-place-table th{color:#374151}.mqv-stage b,.mqv-seq-cell{color:#111}.mqv-op span,.mqv-frac-label{color:#111;background:#f3f4f6;border-color:#6b7280}.mqv-op b,.mqv-seq-arrow,.mqv-seq-arrow small{color:#111}.mqv-frac-piece{background:#fff;border-color:#6b7280}.mqv-frac-piece.filled{background:#bfdbfe;border-color:#1d4ed8}.mqv-ball{border-color:#374151}.mqv-time-track,.mqv-fractions,.mqv-sequence{break-inside:avoid}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}
-
-
-</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
+    return '<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(printableExamCurrent?.title||'آزمون پایه چهارم')+'</title><style>body{font-family:Tahoma,Arial,sans-serif;color:#111;background:#fff;margin:24px;line-height:1.8}.math-question-visual{margin:7px 0;padding:7px;border:1px solid #9ca3af;border-radius:8px;background:#fff;color:#111}.mqv-figure figcaption{color:#173a78;font-size:10px;margin-bottom:4px}.mqv-caption{color:#374151;font-size:9px}.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-place-table th,.mqv-place-table td{background:#fff;color:#111;border-color:#6b7280}.mqv-stage small,.mqv-place-table th{color:#374151}.mqv-stage b,.mqv-seq-cell{color:#111}.mqv-op span,.mqv-frac-label{color:#111;background:#f3f4f6;border-color:#6b7280}.mqv-op b,.mqv-seq-arrow,.mqv-seq-arrow small{color:#111}.mqv-frac-piece{background:#fff;border-color:#6b7280}.mqv-frac-piece.filled{background:#bfdbfe;border-color:#1d4ed8}.mqv-ball{border-color:#374151}.mqv-time-track,.mqv-fractions,.mqv-sequence{break-inside:avoid}.print-exam-paper{max-width:850px;margin:auto}.print-exam-paper h2{text-align:center;margin:0 0 8px}.exam-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #aaa;padding:8px 0 12px;margin-bottom:10px;font-size:12px}.print-exam-question{border:1px solid #ddd;border-radius:7px;padding:10px;margin:9px 0;break-inside:avoid;page-break-inside:avoid}.print-exam-question>b{display:block;margin-bottom:5px}.print-exam-options{display:grid;grid-template-columns:1fr 1fr;gap:5px 15px;padding-right:12px}.print-exam-option{font-size:13px}.print-exam-answer-key{page-break-before:always;break-before:page;border-top:2px solid #555;margin-top:28px;padding-top:15px}.print-exam-answer-key li{margin:7px 0;line-height:1.8}.print-exam-matching{width:100%;border-collapse:collapse}.print-exam-matching td,.print-exam-matching th{border:1px solid #bbb;padding:6px;text-align:right}@media print{body{margin:12mm}.print-exam-answer-key{page-break-before:always}}</style></head><body>'+printableExamDocumentHtml(includeKey)+'</body></html>';
   }
   async function buildPrintableExam(){
     const status=$('printExamStatus'),subject=$('printExamSubject')?.value||'math';
