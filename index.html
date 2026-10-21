@@ -1029,6 +1029,62 @@ a{color:#d7ff76}
  .mqv-place-table th{font-size:8px}.mqv-place-table td{font-size:14px}
 }
 
+
+/* باشگاه واژه‌ها: تجربهٔ لمسی و عمودی برای گوشی */
+#persianLanding,#persianGamesPanel{margin-top:12px}
+.pg-entry-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:12px}
+.pg-entry-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-height:132px;text-align:right;padding:16px;background:linear-gradient(145deg,#172b69,#245ee0 70%,#14a7cc);color:#fff;border:2px solid #8deaff;box-shadow:0 5px 0 #112b78,0 12px 22px #173e8422}
+.pg-entry-card:nth-child(2){background:linear-gradient(145deg,#3b176e,#7540d5 70%,#e15eac);border-color:#ddc4ff;box-shadow:0 5px 0 #371466,0 12px 22px #173e8422}
+.pg-entry-card strong{font-size:16px}.pg-entry-card small{font-size:12px;line-height:1.75;color:#eef6ff;font-weight:500}
+.pg-games-head{align-items:flex-start;flex-wrap:wrap}.pg-games-head h3{margin:0;font-size:18px}
+.pg-game-select{margin:12px 0}
+.pg-game-select select{font-size:16px;min-height:48px}
+.pg-mode-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}
+.pg-mode-tabs button{min-width:0;min-height:72px;padding:9px 5px;background:linear-gradient(145deg,#edf5ff,#dceaff);color:#17458f;border:1.5px solid #c1d9ff;box-shadow:0 3px 0 #c8daf5;font-size:12px;line-height:1.55}
+.pg-mode-tabs button b{display:block;font-size:19px}
+.pg-mode-tabs button.active{background:linear-gradient(145deg,#14378b,#2776ef);color:#fff;border-color:#7be5ff;box-shadow:0 3px 0 #0b2d79,0 0 0 2px #a7eaff55}
+.pg-game-stats{display:flex;justify-content:space-between;gap:7px;flex-wrap:wrap;margin:9px 0}
+.pg-game-stats span{font-size:11px;font-weight:800;color:#2b558a;background:#edf6ff;border:1px solid #d4e6fb;border-radius:11px;padding:6px 9px}
+.pg-game-card{border:2px solid #b9d8ff;border-radius:19px;padding:13px;background:linear-gradient(150deg,#f7fbff,#eaf4ff 55%,#fff);box-shadow:inset 0 0 0 3px #fff;overflow:hidden}
+.pg-question-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}
+.pg-question-head strong{color:#174796;font-size:13px}
+.pg-question-head span{font-size:11px;background:#fff;border:1px solid #c9defb;border-radius:99px;padding:4px 8px;color:#536f94;white-space:nowrap}
+.pg-prompt{font-weight:900;font-size:16px;color:#1a376b;line-height:1.95;margin:8px 0 12px}
+.pg-context{font-size:15px;line-height:2.1;padding:11px;border-radius:14px;background:#fff;border:1.5px dashed #b8d4f6;color:#243d65;margin:10px 0;overflow-wrap:anywhere}
+.pg-context u{color:#a52244;text-decoration-thickness:3px;text-underline-offset:4px;font-weight:900;background:#fff0f2;border-radius:4px;padding:0 3px}
+.pg-word-slots{display:flex;direction:rtl;justify-content:center;gap:5px;flex-wrap:wrap;min-height:57px;margin:14px 0;padding:8px 5px;background:#e1eeff;border:1.5px dashed #8ebaf7;border-radius:15px}
+.pg-word-slot{display:grid;place-items:center;width:clamp(27px,8vw,41px);height:45px;border-radius:9px;border:2px solid #91b8ef;background:#fff;font-size:23px;font-weight:900;color:#174a9b;box-shadow:0 3px 0 #c8dcfa}
+.pg-word-slot.filled{background:#fff7d8;border-color:#ffcd58;color:#5b3b00}
+.pg-letter-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:12px 0}
+.pg-letter-tile{min-width:0;min-height:52px;padding:5px;background:linear-gradient(145deg,#ffd968,#ffb62e);color:#573400;border:1.5px solid #ffe89b;box-shadow:0 4px 0 #ca8210;font-size:22px;font-weight:900;border-radius:13px}
+.pg-letter-tile:disabled{opacity:.35;filter:grayscale(.75);transform:none;box-shadow:none}
+.pg-action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+.pg-action-grid button{font-size:12px;min-height:44px;padding:8px}
+.pg-subtle-button{background:linear-gradient(145deg,#fff,#edf5ff);color:#1a4b9c;border:1.5px solid #bed7ff;box-shadow:0 3px 0 #dce8f8}
+.pg-answer-input{font-size:18px!important;min-height:52px!important;text-align:center;letter-spacing:.4px}
+.pg-cloze-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.pg-cloze-option{min-height:52px;padding:10px 7px;background:linear-gradient(145deg,#fff,#eaf3ff);color:#174184;border:1.5px solid #bdd6fa;box-shadow:0 3px 0 #d9e6fa;font-size:17px;overflow-wrap:anywhere}
+.pg-cloze-option.selected{background:linear-gradient(135deg,#1749b7,#2988f5);color:#fff;border-color:#6ce2ff;box-shadow:0 3px 0 #103b91}
+.pg-feedback{padding:12px 13px;border-radius:14px;margin-top:12px;font-size:13px;line-height:1.9;font-weight:700}
+.pg-feedback.correct{background:#e6fff2;border:1.5px solid #83dcb4;color:#096843}
+.pg-feedback.incorrect{background:#fff2e0;border:1.5px solid #f5c976;color:#78500c}
+.pg-feedback.info{background:#eff6ff;border:1.5px solid #c5dcff;color:#24518b}
+.pg-bottom-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.pg-bottom-actions button{min-height:48px}
+.pg-source-note{font-size:11px;line-height:1.8;margin-top:10px;color:#627997}
+@media(max-width:560px){
+ .pg-entry-grid{grid-template-columns:1fr}
+ .pg-entry-card{min-height:96px}
+ .pg-mode-tabs{gap:5px}
+ .pg-mode-tabs button{font-size:10px;min-height:70px}
+ .pg-game-card{padding:9px;border-radius:16px}
+ .pg-prompt{font-size:15px}
+ .pg-context{font-size:14px;padding:9px}
+ .pg-cloze-options{gap:6px}
+ .pg-cloze-option{font-size:16px;min-height:50px}
+ .pg-game-stats span{font-size:10px;padding:5px 7px}
+}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -1115,6 +1171,57 @@ a{color:#d7ff76}
     <div id="subjectExploreContent"></div>
   </section>
   <p class="muted" style="margin-top:12px">درس‌های آزاد کتاب فارسی برای متن انتخابی معلم و کلاس در نظر گرفته شده‌اند.</p>
+
+<section id="persianLanding" class="item hidden" aria-label="بخش‌های فارسی">
+  <div class="row"><div><h3>📖 فارسی چهارم</h3><p class="muted">واژه‌های کتاب را با بازی تمرین کن یا مستقیم سراغ درس‌ها برو.</p></div><span class="pill">ویژهٔ گوشی</span></div>
+  <div class="pg-entry-grid">
+    <button type="button" id="persianOpenWordGames" class="pg-entry-card"><strong>🪐 باشگاه واژه‌ها</strong><small>ساختن کلمه، شکار غلط املایی و جای خالی املایی؛ با سؤال‌های درسی و ترتیب تصادفی.</small></button>
+    <button type="button" id="persianChooseLesson" class="pg-entry-card"><strong>📚 انتخاب درس</strong><small>برای خواندن توضیح‌ها و واژه‌آموزی یک درس مشخص از کتاب را انتخاب کن.</small></button>
+  </div>
+</section>
+<section id="persianGamesPanel" class="item hidden" aria-label="باشگاه واژه‌ها">
+  <div class="row pg-games-head"><div><h3>🪐 باشگاه واژه‌ها</h3><p class="muted">هر بار ورود، پرسش‌ها و گزینه‌ها به ترتیب تازه‌ای نمایش داده می‌شوند.</p></div><button type="button" id="persianGamesBack" class="outline">↩ بازگشت</button></div>
+  <div class="pg-game-select">
+    <label class="field" for="pgLessonSelect">محدودهٔ تمرین</label>
+    <select id="pgLessonSelect"><option value="all">همهٔ درس‌های دارای متن ثابت</option></select>
+  </div>
+  <div id="pgModeTabs" class="pg-mode-tabs" aria-label="انتخاب بازی">
+    <button type="button" data-pg-mode="build" class="active"><b>🔤</b>ساختن کلمه</button>
+    <button type="button" data-pg-mode="fix"><b>✍️</b>شکار غلط املایی</button>
+    <button type="button" data-pg-mode="cloze"><b>🧩</b>جای خالی املایی</button>
+  </div>
+  <div class="pg-game-stats"><span id="pgPoolCount">در حال آماده‌سازی بانک سؤال…</span><span id="pgScore">۰ درست از ۰</span></div>
+  <div class="pg-game-card">
+    <div class="pg-question-head"><strong id="pgModeLabel">🔤 ساختن کلمه</strong><span id="pgQuestionNumber">پرسش ۱</span></div>
+    <p id="pgPrompt" class="pg-prompt">در حال آماده‌سازی سؤال…</p>
+    <section id="pgBuilder" class="hidden">
+      <div id="pgWordSlots" class="pg-word-slots" aria-label="خانه‌های حروف"></div>
+      <div id="pgLetterTiles" class="pg-letter-tiles" aria-label="حروف قابل انتخاب"></div>
+      <div class="pg-action-grid">
+        <button type="button" id="pgClearLetter" class="pg-subtle-button">⌫ پاک کردن حرف آخر</button>
+        <button type="button" id="pgShuffleTiles" class="pg-subtle-button">🔀 جابه‌جایی حروف</button>
+        <button type="button" id="pgHint" class="pg-subtle-button">💡 راهنمایی</button>
+        <button type="button" id="pgCheckBuild">بررسی کلمه</button>
+      </div>
+    </section>
+    <section id="pgFix" class="hidden">
+      <div id="pgFaultSentence" class="pg-context"></div>
+      <label class="field" for="pgFixAnswer">شکل درست واژه را بنویس</label>
+      <input id="pgFixAnswer" class="pg-answer-input" type="text" inputmode="text" autocomplete="off" autocapitalize="off" placeholder="واژهٔ درست را وارد کن">
+      <button type="button" id="pgCheckFix" style="width:100%;margin-top:8px">بررسی املا</button>
+    </section>
+    <section id="pgCloze" class="hidden">
+      <div id="pgClozeSentence" class="pg-context"></div>
+      <p class="muted">هر چهار گزینه شکل املاییِ همان واژه‌اند؛ به حروف هم‌صدا دقت کن.</p>
+      <div id="pgClozeOptions" class="pg-cloze-options"></div>
+      <button type="button" id="pgCheckCloze" style="width:100%;margin-top:6px">بررسی پاسخ</button>
+    </section>
+    <div id="pgFeedback" class="pg-feedback hidden" role="status" aria-live="polite"></div>
+    <div class="pg-bottom-actions"><button type="button" id="pgNext">سؤال بعدی ⟵</button><button type="button" id="pgAnotherMode" class="pg-subtle-button">انتخاب بازی دیگر</button></div>
+    <p id="pgSourceNote" class="pg-source-note">سؤال‌ها از واژه‌های مرجع و عبارت‌های کوتاه کتاب انتخاب می‌شوند؛ درس‌های آزاد در این بانک ثابت نیستند.</p>
+  </div>
+</section>
+
 </div>
 <div id="remindersView" class="card hidden">
 <div class="row"><h2>🧠 یادآوری ریاضی</h2><span class="pill">مهارت‌های پایه</span></div>
@@ -4269,6 +4376,390 @@ async function loadSourceQuestionBanks(){
     box.querySelectorAll('[data-other-lesson]').forEach(button=>button.onclick=()=>renderOtherLesson(button.dataset.otherLesson));
     const completed=selectedOtherSubject.lessons.filter(lesson=>statusForLesson(lesson).attempts>0&&statusForLesson(lesson).rate>=80).length;
     $('otherSubjectProgress').textContent=fa(completed)+' از '+fa(selectedOtherSubject.lessons.length)+' درس با عملکرد خوب';
+    if(subjectId==='persian'){pgSetGameVisible('landing')}else{pgSetGameVisible('none')}
+  }
+
+
+  /* باشگاه واژه‌های فارسی؛ داده‌ها از واژه‌نامه و فهرست املایی همان درس می‌آیند. */
+  const pgTextExcerpts = {
+    1:['آنها تصمیم گرفتند خورشید را به داوری انتخاب کنند.','خورشید پذیرفت که بین آنان داوری کند.','خوشه‌های طلایی گندم دشت را پوشاند.','برگ‌های درختان صنوبر و کاج در کنار هم منظره‌ای دل‌انگیز می‌ساختند.','پاییز برای کار خود، نرگس‌های آتشین انتخاب کرد.'],
+    2:['در اوایل بهار، هوا لطیف و دل‌نشین می‌شود.','درختان شکوفه می‌دهند. پرستوها، این پرندگان دوست‌داشتنی، باز می‌گردند.','پرستوهای جوان باید کوچ کنند تا لانه‌ای برای خود بسازند.','هر پرستو چهار تا شش تخم سفید می‌گذارد.','پرستوها ناچار می‌شوند به جاهای معتدل‌تری کوچ کنند.','در این سفر طولانی، خطرهای بسیاری وجود دارد.'],
+    3:['مردی چند کیسهٔ گندم بر پشت الاغ گذاشته بود.','او به قهوه‌خانه‌ای رسید.','پسر جواب داد: من الاغی ندیدم.','پای راستش کمتر از جای پای چپش گود افتاده بود.','فهمیدم الاغی که از اینجا گذشته لنگ بوده است.'],
+    4:['در زمان‌های قدیم، حکیمی سفر می‌کرد.','او کنار دریا رفت و سوار کشتی شد.','کشتی با بادبان‌های برافراشته حرکت کرد.','کشتی گرفتار طوفان شد.','ناخدا هر چه کرد، نتوانست کشتی را نجات دهد.'],
+    5:['روزی در شهری، بازرگان ثروتمندی بود که طوطی زیبا و شیرین‌زبانی داشت.','او تصمیم گرفت برای تجارت به هندوستان سفر کند.','طوطی گفت: سلام مرا به طوطیان هندوستان برسان.','بازرگان از شنیدن این موضوع شگفت‌زده شد.'],
+    6:['نبرد طولانی و خسته‌کننده شده بود و همه نگران بودند.','سپاه توران به فرماندهی افراسیاب از رود جیحون گذشته بود.','ایرانیان در برابر تورانیان پایداری می‌کردند، اما پیروز شدن مشکل بود.','پیشنهاد کردند که پهلوانی ایرانی تیری به سوی خاور پرتاب کند.'],
+    7:['از چند روز پیش شنیده بودیم که قرار است مهمان عزیزی به شهر ما بیاید.','شادی و نشاط در چهرهٔ همهٔ مردم شهر دیده می‌شد.','همه جا و همه چیز به انتظار رسیدن این مهمان بود.','نسیم خنک و ملایم بامدادی دستی به صورتم کشید.','سرودهای نشاط‌انگیز از صدا و سیما شنیده می‌شد.'],
+    10:['من کودکی کنجکاو و فعّال بودم.','هر کاغذپاره‌ای که به دستم می‌رسید، تصویری از گل و درخت یا کوه و جنگل بر آن نقاشی می‌کردم.','پدرم در ساختن طاق مسجد استاد بود.','در زمستان‌های سرد و طولانی، قنادی رونق نداشت.'],
+    11:['بچه‌های کوچک شهدا او را دوست داشتند.','او قصه‌ها را ناتمام می‌گذاشت تا بچه‌ها منتظر دیدار بعدی و شنیدن بقیهٔ قصه باشند.','مردم خرمشهر را خونین‌شهر می‌نامیدند.'],
+    12:['نامه از جبههٔ جنوب آمده بود.','یک قطره شبنم از گل، بر روی برگ غلتید.','یک قطره روی شیشه، مثل تگرگ غلتید.','یک اتفاق ساده در چشم مادر افتاد.'],
+    13:['مادر موسی، چون موسی را به نیل درافکند.','ما به دریا حکم طوفان می‌دهیم.','رودها از خود نه طغیان می‌کنند.','مادر موسی به لطف خدا اعتماد داشت.'],
+    14:['دو کس رنج بیهوده بردند و سعی بی‌فایده کردند.','یکی اندوخت و نخورد و دیگری آموخت و نکرد.','عالم بی‌عمل، به زنبور بی‌عسل می‌ماند.'],
+    15:['موشکی کرد خواب شیر آشفته.','شیر شد بیدار و گرفت موشک را.','موش بیچاره از هراس افتاد.','شیر از این ماجرا آموخت که کوچک‌ترها هم می‌توانند کمک کنند.'],
+    16:['هزاران سؤال وجود دارد که در مغز زمان می‌چرخد و می‌چرخد.','دانشمندان و پژوهشگران همواره به دنبال پرسش‌های خود می‌روند تا پاسخ آن‌ها را پیدا کنند.','او به کشف چیزهای ناشناخته علاقهٔ بسیاری داشت.'],
+    17:['باران، نم‌نم می‌بارید.','مهتاب از خانه بیرون آمد و به مدرسهٔ جدید می‌رفت.','روی تختهٔ هوشمند می‌توانی دایره رسم کنی.','با نقاله و خط‌کش واقعی، زاویه‌ها را اندازه‌گیری کن.','دانش‌آموزان به کلاس وارد شدند.']
+  };
+  const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه'],['ع','ا']];
+  const pgState = {mode:'build',lesson:'all',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
+  function pgNormalize(value){
+    return String(value==null?'':value).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[\s\u200c\u200d‌‎‏\-‐‑–—،,؛;:.!؟?«»"'(){}\[\]\/]/g,'').toLowerCase();
+  }
+  function pgCleanDisplayWord(value){return String(value==null?'':value).replace(/[ًٌٍَُِّْـ]/g,'').trim()}
+  function pgWordLetters(value){return Array.from(pgCleanDisplayWord(value).replace(/[\s\u200c\u200d‌\-‐‑–—ـ]/g,''))}
+  function pgShuffle(list){
+    const out=(list||[]).slice();
+    for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));const v=out[i];out[i]=out[j];out[j]=v}
+    return out;
+  }
+  function pgGameLessons(){
+    if(typeof persianLessons==='undefined'||!Array.isArray(persianLessons))return [];
+    return persianLessons.filter(l=>![8,9].includes(Number(l.id))&&l.isFreeLesson!==true&&Array.isArray(l.spellingWords)&&l.spellingWords.length>0);
+  }
+  function pgSelectedLessons(){
+    const all=pgGameLessons();
+    if(pgState.lesson==='all')return all;
+    return all.filter(l=>Number(l.id)===Number(pgState.lesson));
+  }
+  function pgSentenceTokens(sentence){
+    return (String(sentence||'').match(/[\u0600-\u06FF]+(?:[\u200c][\u0600-\u06FF]+)*/g)||[])
+      .map(w=>pgCleanDisplayWord(w)).filter(w=>pgWordLetters(w).length>=3);
+  }
+  function pgVocabularyForLesson(lesson){
+    const out=[];
+    function add(v){if(typeof v!=='string')return;const w=pgCleanDisplayWord(v);if(pgWordLetters(w).length<2||/\s/.test(w)||/[،,؛;:!?؟]/.test(w))return;if(!out.some(x=>pgNormalize(x)===pgNormalize(w)))out.push(w)}
+    (lesson.spellingWords||[]).forEach(add);
+    (lesson.extendedVocabulary||[]).forEach(add);
+    (lesson.importantWords||[]).forEach(add);
+    (lesson.meanings||[]).forEach(p=>{if(Array.isArray(p))add(p[0])});
+    (lesson.synonyms||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);const v=String(p[1]||'').split(/[،,;]/)[0].trim();add(v)}});
+    (lesson.opposites||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(p[1])}});
+    (lesson.families||[]).forEach(f=>{if(f&&typeof f==='object'){add(f.root);(f.words||[]).forEach(add)}});
+    (pgTextExcerpts[Number(lesson.id)]||[]).forEach(sentence=>pgSentenceTokens(sentence).forEach(add));
+    return out;
+  }
+  function pgAllCorrectWordSet(){
+    const set=new Set();
+    pgGameLessons().forEach(l=>pgVocabularyForLesson(l).forEach(w=>set.add(pgNormalize(w))));
+    return set;
+  }
+  function pgIsSimpleWord(word){
+    const letters=pgWordLetters(word);
+    return letters.length>=2&&letters.length<=14&&letters.every(ch=>/[\u0600-\u06FF]/.test(ch));
+  }
+  function pgHasConfusable(word){
+    return pgWordLetters(word).some(ch=>pgSimilarFamilies.some(f=>f.includes(ch)));
+  }
+  function pgVariants(word,knownSet){
+    const letters=pgWordLetters(word),normal=pgNormalize(word),candidates=[],seen=new Set();
+    function add(chars){
+      const v=chars.join(''),key=pgNormalize(v);
+      if(!key||key===normal||seen.has(key)||(knownSet&&knownSet.has(key)))return;
+      seen.add(key);candidates.push(v);
+    }
+    const positions=[];
+    letters.forEach((ch,i)=>{
+      const family=pgSimilarFamilies.find(f=>f.includes(ch));
+      if(family){const alternatives=family.filter(x=>x!==ch);if(alternatives.length)positions.push({index:i,alternatives})}
+    });
+    positions.forEach(pos=>pos.alternatives.forEach(alt=>{const chars=letters.slice();chars[pos.index]=alt;add(chars)}));
+    if(candidates.length<3){
+      for(let a=0;a<positions.length;a++){
+        for(let b=a+1;b<positions.length;b++){
+          for(const x of positions[a].alternatives){
+            for(const y of positions[b].alternatives){
+              const chars=letters.slice();chars[positions[a].index]=x;chars[positions[b].index]=y;add(chars);
+              if(candidates.length>=24)return candidates;
+            }
+          }
+        }
+      }
+    }
+    return candidates;
+  }
+  function pgWordInSentence(word,sentence){
+    const raw=String(sentence||''),needle=String(word||'');
+    let at=raw.indexOf(needle);
+    while(at>=0){
+      const before=at>0?raw[at-1]:'',after=raw[at+needle.length]||'';
+      const letter=/[\u0600-\u06FF]/;
+      const beforeIsLetter=before&&letter.test(before)&&before!=='‌'&&before!=='\u200c';
+      const afterIsLetter=after&&letter.test(after)&&after!=='‌'&&after!=='\u200c';
+      if(!beforeIsLetter&&!afterIsLetter)return true;
+      at=raw.indexOf(needle,at+1);
+    }
+    return false;
+  }
+  function pgMaskWord(sentence,word){
+    const at=String(sentence||'').indexOf(String(word||''));
+    if(at<0)return String(sentence||'');
+    return String(sentence).slice(0,at)+'______'+String(sentence).slice(at+String(word).length);
+  }
+  function pgHash(text){
+    let h=2166136261;const value=String(text||'');
+    for(let i=0;i<value.length;i++){h^=value.charCodeAt(i);h=Math.imul(h,16777619)}
+    return h>>>0;
+  }
+  function pgAddUnique(pool,seen,q){
+    if(!q||!q.id||seen.has(q.id))return;
+    seen.add(q.id);pool.push(q);
+  }
+  function pgBuildQuestionPool(lessons){
+    const pool=[],seen=new Set();
+    lessons.forEach(lesson=>{
+      const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
+      const excerpts=pgTextExcerpts[id]||[];
+      (lesson.meanings||[]).forEach((pair,i)=>{
+        if(!Array.isArray(pair)||pair.length<2)return;
+        const target=pgCleanDisplayWord(pair[0]),meaning=String(pair[1]||'').trim();
+        if(!pgIsSimpleWord(target)||!meaning||pgNormalize(meaning).includes(pgNormalize(target)))return;
+        pgAddUnique(pool,seen,{id:'build:meaning:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'معنی واژه',prompt:'در واژه‌نامهٔ این درس، معنیِ «'+meaning+'» برای یک واژه آمده است. خودِ واژه را با حروف بساز.',source:'واژه‌نامهٔ درس '+id});
+      });
+      (lesson.synonyms||[]).forEach((pair,i)=>{
+        if(!Array.isArray(pair)||pair.length<2)return;
+        const source=String(pair[0]||'').trim(),target=String(pair[1]||'').split(/[،,;]/)[0].trim();
+        if(!pgIsSimpleWord(source)||!pgIsSimpleWord(target)||pgNormalize(source)===pgNormalize(target))return;
+        if(pgNormalize(String(pair[1]||'')).includes(pgNormalize(source)))return;
+        pgAddUnique(pool,seen,{id:'build:syn:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'هم‌معنی',prompt:'هم‌معنیِ «'+source+'» را با حروف بساز.',source:'هم‌معنی‌های درس '+id});
+      });
+      (lesson.opposites||[]).forEach((pair,i)=>{
+        if(!Array.isArray(pair)||pair.length<2)return;
+        const source=String(pair[0]||'').trim(),target=String(pair[1]||'').trim();
+        if(!pgIsSimpleWord(source)||!pgIsSimpleWord(target)||pgNormalize(source)===pgNormalize(target))return;
+        pgAddUnique(pool,seen,{id:'build:opp:'+id+':'+i+':'+pgNormalize(target),mode:'build',lessonId:id,lessonTitle:title,target,kind:'متضاد',prompt:'متضادِ «'+source+'» را با حروف بساز.',source:'متضادهای درس '+id});
+      });
+      const words=pgVocabularyForLesson(lesson);
+      excerpts.forEach((sentence,si)=>{
+        words.forEach((word,wi)=>{
+          if(!pgIsSimpleWord(word)||!pgWordInSentence(word,sentence))return;
+          const masked=pgMaskWord(sentence,word);
+          pgAddUnique(pool,seen,{id:'build:context:'+id+':'+si+':'+pgNormalize(word),mode:'build',lessonId:id,lessonTitle:title,target:word,kind:'کلمه از متن',prompt:'کلمهٔ جاافتادهٔ این عبارت از کتاب را با حروف بساز: «'+masked+'»',source:'متن درس '+id,context:masked});
+        });
+      });
+    });
+    return pool;
+  }
+  function pgBuildSpellingPools(lessons){
+    const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet();
+    lessons.forEach(lesson=>{
+      const id=Number(lesson.id),title=String(lesson.title||'درس '+id),excerpts=pgTextExcerpts[id]||[],vocab=pgVocabularyForLesson(lesson);
+      excerpts.forEach((sentence,si)=>{
+        const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence)).sort((a,b)=>b.length-a.length);
+        words.forEach(word=>{
+          const variants=pgShuffle(pgVariants(word,known));
+          if(variants.length){
+            const wrong=variants[0],faulty=sentence.replace(word,wrong);
+            pgAddUnique(fixPool,fixSeen,{id:'fix:'+id+':'+si+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,target:word,wrong,sentence:faulty,source:'متن درس '+id,prompt:'در جملهٔ کتاب، یک واژه عمداً با حرف هم‌آوا اشتباه نوشته شده است. شکل درست را بنویس.'});
+          }
+          const distractors=pgShuffle(pgVariants(word,known)).slice(0,3);
+          if(distractors.length===3){
+            const options=pgShuffle([{text:word,correct:true}].concat(distractors.map(text=>({text,correct:false}))));
+            pgAddUnique(clozePool,clozeSeen,{id:'cloze:'+id+':'+si+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,target:word,sentence:pgMaskWord(sentence,word),options,source:'متن درس '+id,prompt:'جای خالی را با املای درستِ همان واژه کامل کن.'});
+          }
+        });
+      });
+    });
+    return {fix:fixPool,cloze:clozePool};
+  }
+  function pgLocalGet(key){try{return localStorage.getItem(key)}catch(_){return null}}
+  function pgLocalSet(key,value){try{localStorage.setItem(key,String(value))}catch(_){}}
+  function pgPrepareQueue(mode,pool,previousId,firstKey){
+    const queue=pgShuffle(pool);
+    if(queue.length>1){
+      const oldId=previousId||pgLocalGet(firstKey);
+      if(oldId&&queue[0].id===oldId){
+        const swap=queue.findIndex((q,i)=>i>0&&q.id!==oldId);
+        if(swap>0){const temp=queue[0];queue[0]=queue[swap];queue[swap]=temp}
+      }
+      pgLocalSet(firstKey,queue[0].id);
+    }
+    return queue;
+  }
+  function pgStartSession(){
+    pgState.pools={build:[],fix:[],cloze:[]};pgState.queues={build:[],fix:[],cloze:[]};pgState.indices={build:0,fix:0,cloze:0};pgState.questionNo={build:0,fix:0,cloze:0};pgState.current=null;pgState.selectedTileIds=[];pgState.tiles=[];pgState.selectedCloze=-1;pgState.answered=false;pgState.score=0;pgState.attempts=0;
+    const lessons=pgSelectedLessons(),builder=pgBuildQuestionPool(lessons),spelling=pgBuildSpellingPools(lessons);
+    pgState.pools={build:builder,fix:spelling.fix,cloze:spelling.cloze};
+    ['build','fix','cloze'].forEach(mode=>{pgState.queues[mode]=pgPrepareQueue(mode,pgState.pools[mode],null,'fourmiha-persian-first-'+pgState.lesson+'-'+mode)});
+    pgUpdateStats();
+    if($('pgModeTabs'))$('pgModeTabs').querySelectorAll('[data-pg-mode]').forEach(b=>{const count=pgState.pools[b.dataset.pgMode]?.length||0;const name=b.dataset.pgMode==='build'?'🔤 ساختن کلمه':b.dataset.pgMode==='fix'?'✍️ شکار غلط املایی':'🧩 جای خالی املایی';b.innerHTML='<b>'+({build:'🔤',fix:'✍️',cloze:'🧩'}[b.dataset.pgMode])+'</b>'+name.replace(/^.{2}\s?/,'')+'<small style="display:block;font-size:10px;font-weight:700;opacity:.85">'+(typeof fa==='function'?fa(count):count)+' سؤال آماده</small>'});
+  }
+  function pgUpdateStats(){
+    const score=$('pgScore');if(score)score.textContent=(typeof fa==='function'?fa(pgState.score):pgState.score)+' درست از '+(typeof fa==='function'?fa(pgState.attempts):pgState.attempts);
+  }
+  function pgModeTitle(mode){return mode==='build'?'🔤 ساختن کلمه':mode==='fix'?'✍️ شکار غلط املایی':'🧩 جای خالی املایی'}
+  function pgSetMode(mode){
+    if(!['build','fix','cloze'].includes(mode))mode='build';
+    pgState.mode=mode;
+    $('pgModeTabs')?.querySelectorAll('[data-pg-mode]').forEach(b=>b.classList.toggle('active',b.dataset.pgMode===mode));
+    $('pgBuilder')?.classList.toggle('hidden',mode!=='build');$('pgFix')?.classList.toggle('hidden',mode!=='fix');$('pgCloze')?.classList.toggle('hidden',mode!=='cloze');
+    if($('pgModeLabel'))$('pgModeLabel').textContent=pgModeTitle(mode);
+    pgNextQuestion(mode);
+  }
+  function pgRefillQueue(mode){
+    const pool=pgState.pools[mode]||[],previous=pgState.current?.mode===mode?pgState.current.id:null;
+    pgState.queues[mode]=pgPrepareQueue(mode,pool,previous,'fourmiha-persian-first-'+pgState.lesson+'-'+mode+'-round-'+Math.floor((pgState.questionNo[mode]||0)/Math.max(1,pool.length)));
+    pgState.indices[mode]=0;
+  }
+  function pgNextQuestion(mode){
+    mode=mode||pgState.mode;
+    const pool=pgState.pools[mode]||[];
+    if(!pool.length){
+      pgState.current=null;$('pgPrompt').textContent='برای این محدوده هنوز سؤال کافی از متن و واژه‌نامهٔ درسی پیدا نشده است. «همهٔ درس‌های دارای متن ثابت» را انتخاب کن.';
+      $('pgWordSlots').innerHTML='';$('pgLetterTiles').innerHTML='';$('pgFaultSentence').textContent='';$('pgClozeSentence').textContent='';$('pgClozeOptions').innerHTML='';$('pgFeedback').classList.add('hidden');
+      $('pgPoolCount').textContent='بانک این بازی: ۰ سؤال';$('pgQuestionNumber').textContent='بانک خالی';return;
+    }
+    if(!pgState.queues[mode]||pgState.indices[mode]>=pgState.queues[mode].length)pgRefillQueue(mode);
+    const q=pgState.queues[mode][pgState.indices[mode]++];
+    pgState.current=Object.assign({},q,{mode});pgState.questionNo[mode]=(pgState.questionNo[mode]||0)+1;pgState.answered=false;pgState.selectedTileIds=[];pgState.selectedCloze=-1;
+    $('pgFeedback').classList.add('hidden');$('pgFeedback').textContent='';$('pgFixAnswer').value='';
+    const poolCount=pgState.pools[mode].length;
+    $('pgPoolCount').textContent='بانک این بازی: '+(typeof fa==='function'?fa(poolCount):poolCount)+' پرسش؛ پس از پایان، دور تازه آغاز می‌شود.';
+    $('pgQuestionNumber').textContent='پرسش '+(typeof fa==='function'?fa(pgState.questionNo[mode]):pgState.questionNo[mode]);
+    $('pgPrompt').textContent=q.prompt||'پرسش را بخوان.';
+    $('pgSourceNote').textContent=q.lessonTitle+' · منبع: '+(q.source||'واژه‌نامه و متن کتاب')+' · گزینه‌ها و ترتیب سؤال‌ها تصادفی‌اند.';
+    $('pgNext').textContent='سؤال بعدی ⟵';$('pgNext').disabled=false;
+    if(mode==='build'){
+      pgState.tiles=pgCreateTiles(q);
+      pgRenderBuilder();
+    }else if(mode==='fix'){
+      const safe=escapeHtml(q.sentence);
+      const wrong=escapeHtml(q.wrong);
+      $('pgFaultSentence').innerHTML=safe.replace(wrong,'<u>'+wrong+'</u>');
+    }else{
+      $('pgClozeSentence').textContent=q.sentence;
+      $('pgClozeOptions').innerHTML='';
+      q.options.forEach((option,index)=>{
+        const button=document.createElement('button');button.type='button';button.className='pg-cloze-option';button.textContent=option.text;button.dataset.pgClozeIndex=String(index);button.onclick=()=>{
+          if(pgState.answered)return;
+          pgState.selectedCloze=index;
+          $('pgClozeOptions').querySelectorAll('[data-pg-cloze-index]').forEach(b=>b.classList.toggle('selected',Number(b.dataset.pgClozeIndex)===index));
+        };
+        $('pgClozeOptions').appendChild(button);
+      });
+    }
+  }
+  function pgCreateTiles(q){
+    const targetLetters=pgWordLetters(q.target),lesson=pgGameLessons().find(l=>Number(l.id)===Number(q.lessonId));
+    const vocab=lesson?pgVocabularyForLesson(lesson):[];
+    const extras=[];
+    targetLetters.forEach(ch=>{
+      const family=pgSimilarFamilies.find(f=>f.includes(ch));
+      if(family)family.filter(v=>v!==ch).forEach(v=>extras.push(v));
+    });
+    pgShuffle(vocab.flatMap(w=>pgWordLetters(w))).forEach(ch=>extras.push(ch));
+    const chosen=[];
+    for(const ch of pgShuffle(extras)){
+      if(chosen.length>=6)break;
+      if(/[\u0600-\u06FF]/.test(ch))chosen.push(ch);
+    }
+    const filler=['س','ص','ت','ط','ز','ذ','ر','ن','م','ا','د','ق'];
+    while(chosen.length<6)chosen.push(filler[Math.floor(Math.random()*filler.length)]);
+    const tiles=targetLetters.map((letter,index)=>({id:'answer-'+index+'-'+Math.random().toString(36).slice(2,7),letter,answerTile:true}));
+    const decoys=chosen.slice(0,6).map((letter,index)=>({id:'decoy-'+index+'-'+Math.random().toString(36).slice(2,7),letter,answerTile:false}));
+    return pgShuffle(tiles.concat(decoys));
+  }
+  function pgRenderBuilder(){
+    const q=pgState.current;if(!q)return;
+    const letters=pgWordLetters(q.target),chosen=pgState.selectedTileIds.map(id=>pgState.tiles.find(t=>t.id===id)).filter(Boolean);
+    $('pgWordSlots').innerHTML='';
+    letters.forEach((_,i)=>{
+      const cell=document.createElement('span');cell.className='pg-word-slot'+(chosen[i]?' filled':'');cell.textContent=chosen[i]?.letter||'';cell.setAttribute('aria-label','جایگاه حرف '+(i+1));$('pgWordSlots').appendChild(cell);
+    });
+    $('pgLetterTiles').innerHTML='';
+    pgState.tiles.forEach(tile=>{
+      const button=document.createElement('button');button.type='button';button.className='pg-letter-tile';button.textContent=tile.letter;button.dataset.pgTileId=tile.id;
+      button.disabled=pgState.selectedTileIds.includes(tile.id)||pgState.answered;
+      button.onclick=()=>{if(pgState.answered||pgState.selectedTileIds.length>=letters.length)return;pgState.selectedTileIds.push(tile.id);pgRenderBuilder()};
+      $('pgLetterTiles').appendChild(button);
+    });
+    $('pgCheckBuild').disabled=pgState.answered;
+    $('pgClearLetter').disabled=pgState.answered||pgState.selectedTileIds.length===0;
+    $('pgShuffleTiles').disabled=pgState.answered;
+  }
+  function pgFeedback(correct,message){
+    const box=$('pgFeedback');box.classList.remove('hidden','correct','incorrect','info');box.classList.add(correct===true?'correct':correct===false?'incorrect':'info');box.textContent=message;
+  }
+  function pgRecordAnswer(correct,submitted){
+    const q=pgState.current;if(!q||pgState.answered)return;
+    pgState.answered=true;pgState.attempts++;if(correct)pgState.score++;
+    pgUpdateStats();
+    const progress=typeof readOtherProgress==='function'?readOtherProgress():{};
+    const key='persian-'+q.lessonId+'-quiz-'+(30000+(pgHash(q.id)%40000));
+    const old=progress[key]&&typeof progress[key]==='object'?progress[key]:{};
+    progress[key]={correct:correct===true,selected:String(submitted||''),questionText:String(q.prompt||q.sentence||''),activityType:'باشگاه واژه‌ها · '+q.mode,attemptCount:(Number(old.attemptCount)||0)+1,correctCount:(Number(old.correctCount)||0)+(correct?1:0),updatedAt:new Date().toISOString()};
+    if(typeof writeOtherProgress==='function')writeOtherProgress(progress);
+    pgRenderBuilder();
+  }
+  function pgCheckBuild(){
+    const q=pgState.current;if(!q||pgState.answered)return;
+    const chars=pgState.selectedTileIds.map(id=>pgState.tiles.find(t=>t.id===id)?.letter||'');
+    if(chars.length<pgWordLetters(q.target).length){pgFeedback(null,'هنوز '+(typeof fa==='function'?fa(pgWordLetters(q.target).length-chars.length):pgWordLetters(q.target).length-chars.length)+' حرف دیگر لازم است.');return}
+    const answer=chars.join('');
+    const correct=pgNormalize(answer)===pgNormalize(q.target);
+    pgRecordAnswer(correct,answer);
+    pgFeedback(correct,correct?'آفرین! واژهٔ «'+q.target+'» را درست ساختی.':'این بار شکل درست «'+q.target+'» است. به سرنخ و ترتیب حروف دوباره دقت کن.');
+  }
+  function pgCheckFix(){
+    const q=pgState.current;if(!q||pgState.answered)return;
+    const answer=$('pgFixAnswer').value.trim();
+    if(!answer){pgFeedback(null,'شکل درست واژه را بنویس.');return}
+    const correct=pgNormalize(answer)===pgNormalize(q.target);
+    pgRecordAnswer(correct,answer);
+    pgFeedback(correct,correct?'درست است! املای صحیح «'+q.target+'» است.':'املای درست «'+q.target+'» است. در این واژه به حرف هم‌آوا توجه کن.');
+    $('pgFixAnswer').disabled=true;
+  }
+  function pgCheckCloze(){
+    const q=pgState.current;if(!q||pgState.answered)return;
+    if(pgState.selectedCloze<0){pgFeedback(null,'یکی از چهار شکل املایی را انتخاب کن.');return}
+    const option=q.options[pgState.selectedCloze],correct=option.correct===true;
+    pgRecordAnswer(correct,option.text);
+    pgFeedback(correct,correct?'آفرین! «'+q.target+'» از نظر املایی درست است.':'شکل درست «'+q.target+'» است. گزینه‌های دیگر با جابه‌جایی حروف هم‌صدا ساخته شده بودند.');
+    $('pgClozeOptions').querySelectorAll('[data-pg-cloze-index]').forEach(b=>b.disabled=true);
+  }
+  function pgGiveHint(){
+    const q=pgState.current;if(!q)return;
+    if(q.mode==='build'){
+      const letter=pgWordLetters(q.target)[0]||'';
+      pgFeedback(null,'راهنما: کلمه '+(typeof fa==='function'?fa(pgWordLetters(q.target).length):pgWordLetters(q.target).length)+' حرف دارد و با «'+letter+'» شروع می‌شود.');
+    }else if(q.mode==='fix'){
+      pgFeedback(null,'راهنما: به حرف‌های هم‌صدا دقت کن؛ ممکن است شکل شنیداری یکی باشد، اما نوشتار آن با معنی واژه‌های درس سازگار نیست.');
+    }else{
+      pgFeedback(null,'راهنما: هر گزینه همان واژه است و فقط یک یا چند حرف هم‌آوا در نوشتار تغییر کرده است.');
+    }
+  }
+  function pgSetGameVisible(which){
+    $('persianLanding')?.classList.toggle('hidden',which!=='landing');
+    $('persianGamesPanel')?.classList.toggle('hidden',which!=='games');
+    if(which==='landing'){
+      $('otherSubjectTabs')?.classList.add('hidden');$('otherSubjectLessons')?.classList.add('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');
+    }
+  }
+  if($('pgLessonSelect')){
+    const choices=pgGameLessons();
+    $('pgLessonSelect').innerHTML='<option value="all">همهٔ درس‌های دارای متن ثابت</option>'+choices.map(l=>'<option value="'+Number(l.id)+'">درس '+(typeof fa==='function'?fa(l.id):l.id)+' · '+escapeHtml(l.title)+'</option>').join('');
+    $('pgLessonSelect').addEventListener('change',()=>{
+      pgState.lesson=$('pgLessonSelect').value;pgStartSession();pgSetMode(pgState.mode);
+    });
+    document.querySelectorAll('#pgModeTabs [data-pg-mode]').forEach(button=>button.addEventListener('click',()=>pgSetMode(button.dataset.pgMode)));
+    $('persianOpenWordGames').onclick=()=>{
+      pgState.lesson=$('pgLessonSelect').value||'all';pgStartSession();pgSetGameVisible('games');pgSetMode('build');
+      window.scrollTo({top:0,behavior:'smooth'});
+    };
+    $('persianChooseLesson').onclick=()=>{
+      pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');setOtherSubjectTabActive('lessons');
+      window.scrollTo({top:0,behavior:'smooth'});
+    };
+    $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
+    $('pgAnotherMode').onclick=()=>{pgSetGameVisible('games');$('pgModeTabs')?.scrollIntoView({behavior:'smooth',block:'center'})};
+    $('pgNext').onclick=()=>{if(pgState.mode==='fix')$('pgFixAnswer').disabled=false;pgNextQuestion(pgState.mode)};
+    $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
+    $('pgClearLetter').onclick=()=>{
+      if(pgState.answered||!pgState.selectedTileIds.length)return;
+      pgState.selectedTileIds.pop();pgRenderBuilder();pgFeedback(null,'آخرین حرف پاک شد؛ بقیهٔ حروف سر جای خود باقی ماندند.');
+    };
+    $('pgShuffleTiles').onclick=()=>{
+      if(pgState.answered)return;
+      pgState.tiles=pgShuffle(pgState.tiles);pgRenderBuilder();pgFeedback(null,'حروف جابه‌جا شدند. حروف انتخاب‌شده پاک نشدند.');
+    };
+    $('pgFixAnswer').addEventListener('keydown',event=>{if(event.key==='Enter')pgCheckFix()});
   }
 
   function escapeForHtmlText(s){return escapeHtml(String(s??''))}
