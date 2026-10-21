@@ -1319,6 +1319,50 @@ a{color:#d7ff76}
 #persianGamesPanel .pg-feedback.info{background:#152d50!important;color:#e8f2ff!important;border-color:#619bd9!important}
 #persianGamesPanel button{overflow-wrap:anywhere}
 @media(max-width:560px){#persianGamesPanel .pg-game-select{padding:11px!important}#persianGamesPanel .pg-prompt{font-size:15px!important;line-height:1.85}}
+
+/* Persian word club: mobile overflow and galaxy contrast fixes */
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+#persianLanding,#persianGamesPanel{
+  width:100%;max-width:100%;min-width:0;box-sizing:border-box;
+  margin-left:auto!important;margin-right:auto!important;overflow-x:clip;
+}
+#persianLanding *,#persianGamesPanel *{box-sizing:border-box;min-width:0}
+#persianGamesPanel .pg-game-select,
+#persianGamesPanel .pg-game-card,
+#persianGamesPanel .pg-game-stats{width:100%;max-width:100%;min-width:0}
+#persianGamesPanel .pg-game-select select,
+#persianGamesPanel input,#persianGamesPanel textarea,
+#persianGamesPanel button{max-width:100%;min-width:0;white-space:normal;overflow-wrap:anywhere}
+#persianGamesPanel #pgLessonSelect{
+  color:#f5f7ff!important;background-color:#0a1430!important;
+  border:1px solid #83dfff!important;color-scheme:dark;
+}
+#persianGamesPanel #pgLessonSelect option{
+  color:#f5f7ff!important;background-color:#111b3e!important;
+}
+#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-game-select,
+#persianGamesPanel .pg-game-stats span,#persianGamesPanel .pg-context,
+#persianGamesPanel .pg-word-slots,#persianGamesPanel .pg-question-head span{
+  color:#f5f7ff!important;background:#111b3e!important;border-color:#7188c8!important;
+}
+#persianGamesPanel .pg-prompt,#persianGamesPanel .pg-feedback,
+#persianGamesPanel .pg-source-note,#persianGamesPanel .pg-game-card label,
+#persianGamesPanel .pg-game-card p,#persianGamesPanel .pg-game-card .muted,
+#persianGamesPanel .pg-selected-lesson,#persianGamesPanel .pg-lesson-prompt{
+  color:#f1f5ff!important;
+}
+#persianGamesPanel .pg-letter-tile{
+  color:#32204a!important;background:linear-gradient(145deg,#ffe69a,#ffbd47)!important;
+}
+#persianGamesPanel .pg-cloze-option,#persianGamesPanel .pg-subtle-button{
+  color:#f7f8ff!important;background:linear-gradient(145deg,#182956,#1b2148)!important;
+}
+@media(max-width:520px){
+  #persianLanding .pg-entry-grid{grid-template-columns:1fr!important}
+  #persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr!important}
+  #persianLanding,#persianGamesPanel{padding:12px!important;border-radius:18px!important}
+}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -6529,13 +6573,3 @@ function paintMathQuestionVisual(q,target){
 }
 
 </script></body></html>
-/* Contrast guard: no inherited foreground color may disappear into the galaxy surfaces. */
-#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-game-select,#persianGamesPanel .pg-game-stats span,
-#persianGamesPanel .pg-context,#persianGamesPanel .pg-word-slots,#persianGamesPanel .pg-question-head span{
-  color:#f5f7ff!important;background:#111b3e!important;border-color:#7188c8!important;
-}
-#persianGamesPanel .pg-prompt,#persianGamesPanel .pg-feedback,#persianGamesPanel .pg-source-note,
-#persianGamesPanel .pg-game-card label,#persianGamesPanel .pg-game-card p,
-#persianGamesPanel .pg-game-card .muted{color:#f1f5ff!important}
-#persianGamesPanel .pg-letter-tile{color:#32204a!important;background:linear-gradient(145deg,#ffe69a,#ffbd47)!important}
-#persianGamesPanel .pg-cloze-option,#persianGamesPanel .pg-subtle-button{color:#f7f8ff!important;background:linear-gradient(145deg,#182956,#1b2148)!important}
