@@ -3930,7 +3930,7 @@ async function loadExpandedPersianVocabulary(){
   console.info('Expanded Persian vocabulary loaded from teacher PDFs.');
  }catch(error){console.warn('Using the built-in Persian vocabulary fallback:',error)}
 }
-loadExpandedPersianVocabulary();
+window.__persianVocabularyReady = loadExpandedPersianVocabulary();
 
   let selectedOtherSubject = null;
   let selectedOtherLesson = null;
@@ -4684,7 +4684,11 @@ async function loadSourceQuestionBanks(){
     }
     return queue;
   }
-  function pgStartSession(){
+  async function pgStartSession(){
+    if(window.__persianVocabularyReady){
+      $('pgPrompt').textContent='واژه‌های مستند درس در حال آماده‌سازی هستند…';
+      try{await window.__persianVocabularyReady}catch(_){/* use the built-in source-checked fallback */}
+    }
     pgState.pools={build:[],fix:[],cloze:[]};pgState.queues={build:[],fix:[],cloze:[]};pgState.indices={build:0,fix:0,cloze:0};pgState.questionNo={build:0,fix:0,cloze:0};pgState.current=null;pgState.selectedTileIds=[];pgState.tiles=[];pgState.selectedCloze=-1;pgState.answered=false;pgState.score=0;pgState.attempts=0;
     const lessons=pgSelectedLessons();pgSetLessonBoardVisible(lessons.length===1);
     if(lessons.length!==1){
