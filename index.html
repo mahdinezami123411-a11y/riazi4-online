@@ -4748,22 +4748,42 @@ async function loadSourceQuestionBanks(){
     if(!q||!q.id||seen.has(q.id))return;
     seen.add(q.id);pool.push(q);
   }
+  function pgSourceDictionaryEntries(lessonId){
+    const lex=typeof persianSourceLexicon!=='undefined'?persianSourceLexicon[Number(lessonId)]:null;
+    const out=[];
+    if(lex){
+      [['meanings','معنی'],['synonyms','هم‌معنی'],['opposites','متضاد'],['families','هم‌خانواده']].forEach(([field,label])=>{
+        (lex[field]||[]).forEach((pair,index)=>{
+          if(!Array.isArray(pair)||pair.length<2)return;
+          const answer=pgCleanDisplayWord(pair[0]),clue=String(pair[1]||'').trim();
+          if(pgIsSimpleWord(answer)&&clue)out.push({answer,clue,category:label,sourceIndex:index});
+        });
+      });
+    }
+    // Keep the earlier curated entries only as supplemental entries, deduplicated against the uploaded vocabulary file.
+    (pgDictionaryEntries[Number(lessonId)]||[]).forEach(entry=>{
+      if(!out.some(x=>pgNormalize(x.answer)===pgNormalize(entry.answer)&&pgNormalize(x.clue)===pgNormalize(entry.clue))){
+        out.push({...entry,category:'واژه‌نامهٔ تکمیلی'});
+      }
+    });
+    return out;
+  }
   function pgBuildQuestionPool(lessons){
     const pool=[],seen=new Set();
     lessons.forEach(lesson=>{
       const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
       const excerpts=pgTextExcerpts[id]||[];
-      (pgDictionaryEntries[id]||[]).forEach((entry,i)=>{
+      pgSourceDictionaryEntries(id).forEach((entry,i)=>{
         const target=pgCleanDisplayWord(entry.answer),clue=String(entry.clue||'').trim();
         if(!pgIsSimpleWord(target)||!clue||pgNormalize(clue)===pgNormalize(target))return;
         const clueContainsTarget=pgNormalize(clue).includes(pgNormalize(target));
         pgAddUnique(pool,seen,{
-          id:'build:dictionary:'+id+':'+i+':'+pgNormalize(target)+':'+pgNormalize(clue),
-          mode:'build',lessonId:id,lessonTitle:title,target,kind:'واژه‌نامه',
+          id:'build:dictionary:'+id+':'+(entry.category||'واژه‌نامه')+':'+i+':'+pgNormalize(target)+':'+pgNormalize(clue),
+          mode:'build',lessonId:id,lessonTitle:title,target,kind:entry.category||'واژه‌نامه',
           prompt:clueContainsTarget
-            ?'در واژه‌نامهٔ این درس، واژهٔ پایهٔ مرتبط با «'+clue+'» را با حروف بساز.'
-            :'در واژه‌نامهٔ این درس، سرنخ «'+clue+'» به کدام واژه مربوط است؟ واژه را با حروف بساز.',
-          source:'واژه‌نامهٔ فارسی چهارم، درس '+id
+            ?'در بخش '+(entry.category||'واژه‌نامه')+' این درس، واژهٔ پایهٔ مرتبط با «'+clue+'» را با حروف بساز.'
+            :'سرنخ «'+clue+'» در بخش '+(entry.category||'واژه‌نامه')+' به کدام واژه مربوط است؟ واژه را با حروف بساز.',
+          source:'جزوهٔ واژه‌های فارسی چهارم، '+(entry.category||'واژه‌نامه')+'، درس '+id
         });
       });
       const words=pgVocabularyForLesson(lesson);
@@ -4825,7 +4845,7 @@ async function loadSourceQuestionBanks(){
       });
       // For list-only spelling words, only create questions when the same lesson's dictionary supplies a grounded clue.
       vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)).forEach(word=>{
-        const hint=(pgDictionaryEntries[id]||[]).find(entry=>pgNormalize(entry.answer)===pgNormalize(word)&&String(entry.clue||'').trim());
+        const hint=pgSourceDictionaryEntries(id).find(entry=>pgNormalize(entry.answer)===pgNormalize(word)&&String(entry.clue||'').trim());
         if(!hint)return;
         const clue=String(hint.clue).trim();
         const variants=pgShuffle(pgVariants(word,known))
@@ -4849,6 +4869,33 @@ async function loadSourceQuestionBanks(){
               target:word,sentence:'سرنخ واژه‌نامه: «'+clue+'» — واژهٔ موردنظر: ______',
               options,source:'فهرست املایی و واژه‌نامهٔ همان درس',
               prompt:'واژه‌ای را انتخاب کن که در واژه‌نامه کنار این سرنخ آمده و املای درست دارد.'
+            });
+          }
+        }
+      });
+      // If a lesson has no sentence-based item for a spelling word, create a word-only spelling question
+      // grounded in that lesson's verified spelling list. Distractors are altered spellings, never other correct bank words.
+      vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)).forEach(word=>{
+        const variants=pgShuffle(pgVariants(word,known))
+          .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
+        const hasFix=fixPool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
+        if(!hasFix&&variants.length){
+          pgAddUnique(fixPool,fixSeen,{
+            id:'fix:list:'+id+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
+            target:word,wrong:variants[0],sentence:variants[0],source:'فهرست املایی تأییدشده، درس '+id,
+            prompt:'این واژه از فهرست املایی همین درس است و یک حرف هم‌آوا اشتباه شده؛ شکل درست را بنویس.'
+          });
+        }
+        const hasCloze=clozePool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
+        if(!hasCloze&&variants.length>=3){
+          const options=pgShuffle([{text:word,correct:true}].concat(variants.slice(0,3).map(text=>({text,correct:false}))));
+          const optionKeys=options.map(o=>pgNormalize(o.text));
+          if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
+            pgAddUnique(clozePool,clozeSeen,{
+              id:'cloze:list:'+id+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
+              target:word,sentence:'کدام گزینه املای درستِ واژه‌ای از فهرست املایی این درس است؟ ______',
+              options,source:'فهرست املایی تأییدشده، درس '+id,
+              prompt:'شکل درست واژه را از میان گزینه‌های هم‌آوا انتخاب کن.'
             });
           }
         }
@@ -6487,3 +6534,13 @@ function paintMathQuestionVisual(q,target){
 }
 
 </script></body></html>
+/* Contrast guard: no inherited foreground color may disappear into the galaxy surfaces. */
+#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-game-select,#persianGamesPanel .pg-game-stats span,
+#persianGamesPanel .pg-context,#persianGamesPanel .pg-word-slots,#persianGamesPanel .pg-question-head span{
+  color:#f5f7ff!important;background:#111b3e!important;border-color:#7188c8!important;
+}
+#persianGamesPanel .pg-prompt,#persianGamesPanel .pg-feedback,#persianGamesPanel .pg-source-note,
+#persianGamesPanel .pg-game-card label,#persianGamesPanel .pg-game-card p,
+#persianGamesPanel .pg-game-card .muted{color:#f1f5ff!important}
+#persianGamesPanel .pg-letter-tile{color:#32204a!important;background:linear-gradient(145deg,#ffe69a,#ffbd47)!important}
+#persianGamesPanel .pg-cloze-option,#persianGamesPanel .pg-subtle-button{color:#f7f8ff!important;background:linear-gradient(145deg,#182956,#1b2148)!important}
