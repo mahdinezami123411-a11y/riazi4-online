@@ -4619,7 +4619,7 @@ async function loadSourceQuestionBanks(){
 
   /* باشگاه واژه‌های فارسی؛ داده‌ها از واژه‌نامه و فهرست املایی همان درس می‌آیند. */
     const pgDictionaryEntries = {"1":[{"answer":"طبیعت","clue":"طبیعی"},{"answer":"ناپدید","clue":"پیدا"},{"answer":"نقاش","clue":"نقش"},{"answer":"تصمیم","clue":"مصمم"},{"answer":"داوری","clue":"قضاوت"},{"answer":"پذیرفت","clue":"قبول کرد"},{"answer":"هنرمند","clue":"هنر"},{"answer":"گلگون","clue":"سرخ رنگ"}],"2":[{"answer":"کوچ","clue":"مهاجرت"},{"answer":"معتدل","clue":"نه زیاد سرد ونه زیاد گرم"},{"answer":"سفر","clue":"مسافر"},{"answer":"شگفتی","clue":"تعجب"}],"3":[{"answer":"حیات","clue":"زندگی"},{"answer":"آسیاب","clue":"دستگاهی برای آرد کردن گندم"},{"answer":"خوار","clue":"حقیر"},{"answer":"خار","clue":"تیغ"}],"4":[{"answer":"حکیم","clue":"دانشمند"},{"answer":"سرمایه","clue":"اندوخته"},{"answer":"امیر","clue":"فرمانروا"},{"answer":"حرکت","clue":"تحرک"},{"answer":"فرمان","clue":"دستور"},{"answer":"حکیم","clue":"حکمت"},{"answer":"امواج","clue":"موج ها"}],"5":[{"answer":"ثروتمند","clue":"فقیر"},{"answer":"شادکام","clue":"خوشحال"},{"answer":"مشتاق","clue":"شوق"},{"answer":"ارمغان","clue":"هدیه"},{"answer":"مشتاق","clue":"دارای شوق"},{"answer":"تجارت","clue":"بازرگانی"},{"answer":"پیغام","clue":"پیام"},{"answer":"بازرگان","clue":"تاجر"},{"answer":"گران‌بها","clue":"با ارزش"}],"6":[{"answer":"نبرد","clue":"جنگ"},{"answer":"ناامید","clue":"امیدوار"},{"answer":"آشتی","clue":"صلح و دوستی"},{"answer":"استوار","clue":"پا برجا"},{"answer":"آشتی","clue":"قهر"},{"answer":"خاور","clue":"باختر"},{"answer":"پایداری","clue":"ایستادگی"},{"answer":"خاور","clue":"مشرق"},{"answer":"پیشنهاد","clue":"نظر"},{"answer":"بردباری","clue":"صبر"},{"answer":"افراسیاب","clue":"فرمانده سپاه توران"},{"answer":"پایداری","clue":"ایستادگی، مقاومت"},{"answer":"شجاعت","clue":"دلیری"}],"7":[{"answer":"حضور","clue":"حاضر بودن"},{"answer":"همهمه","clue":"سکوت"},{"answer":"همهمه","clue":"سر وصدا"},{"answer":"نشاط","clue":"شادی"},{"answer":"شادی","clue":"غم"},{"answer":"انتظار","clue":"منتظر"},{"answer":"انبوه","clue":"بسیار زیاد"},{"answer":"لطیف","clue":"لطافت"},{"answer":"جمعیت","clue":"جمع"},{"answer":"لطیف","clue":"نرم"},{"answer":"حضور","clue":"حاضر"},{"answer":"نسیم","clue":"باد ملایم"},{"answer":"استقبال","clue":"پیشواز"},{"answer":"منظم","clue":"نظم"}],"10":[{"answer":"فعال","clue":"فعالیت"},{"answer":"مکتب","clue":"محل درس"},{"answer":"استعداد","clue":"آمادگی"},{"answer":"اراده","clue":"خواسته"},{"answer":"فعال","clue":"پرکار"},{"answer":"تصویر","clue":"تصاویر"},{"answer":"شعر","clue":"شاعر"},{"answer":"استعداد","clue":"مستعد"},{"answer":"پشتکار","clue":"تلاش برای انجام کاری"},{"answer":"ابداع","clue":"نوآوری"}],"11":[{"answer":"آزادی","clue":"اسارت"},{"answer":"دژ","clue":"حصار"},{"answer":"اشغال","clue":"تصرف"}],"12":[{"answer":"جنوب","clue":"شمال"},{"answer":"ساده","clue":"سخت"},{"answer":"شبنم","clue":"ژاله"}],"13":[{"answer":"عشق","clue":"عاشق"},{"answer":"جلیل","clue":"جالل"},{"answer":"حسرت","clue":"اندوه"},{"answer":"باطل","clue":"صحیح"},{"answer":"لطف","clue":"لطیف"},{"answer":"باطل","clue":"ابطال"},{"answer":"باطل","clue":"بیهوده"},{"answer":"دایه","clue":"پرورش دهنده"},{"answer":"شیوه","clue":"راه"},{"answer":"لطف","clue":"محبت ومهربانی"},{"answer":"ناخدا","clue":"صاحب کشتی"},{"answer":"سراسر","clue":"همه‌جا"},{"answer":"لبالب","clue":"پر"}],"14":[{"answer":"بلندآواز","clue":"با صدای بلند"},{"answer":"تهی","clue":"خالی"},{"answer":"عطار","clue":"عطرفروش"},{"answer":"خاموش","clue":"ساکت"},{"answer":"تهی","clue":"پر"},{"answer":"رنج","clue":"درد"},{"answer":"عطار","clue":"معطر"},{"answer":"ادب","clue":"ادیب"}],"15":[{"answer":"بیشه","clue":"جنگل"},{"answer":"رحم","clue":"رحیم"},{"answer":"خواب","clue":"بیدار"},{"answer":"خطاکار","clue":"گناهکار"},{"answer":"هراس","clue":"ترس"}],"16":[{"answer":"بیماری","clue":"سالمتی"},{"answer":"دانا","clue":"نادان"},{"answer":"پاسخ","clue":"جواب"}],"17":[{"answer":"لذت","clue":"لذیذ"},{"answer":"مجازی","clue":"واقعی"},{"answer":"لمسی","clue":"قابل لمس"},{"answer":"مجازی","clue":"غیرواقعی"},{"answer":"معرفت","clue":"شناخت"},{"answer":"فناوری","clue":"استفاده از علم"}]};
-  const pgTextExcerpts = {"1":["آنها تصمیم گرفتند خورشید جهان‌افروز را به داوری انتخاب کنند.","خورشید پذیرفت که بین آنان داوری کند. چهار هنرمند، شروع به کار کردند.","خورشید از پس ابر خاکستری‌رنگ، نگاهی انداخت و از دیدن منظره‌ی طبیعت بهار، لذت برد.","برگ‌های درختان صنوبر و کاج در کنار هم منظره‌ای دل‌انگیز می‌ساختند.","برف، قشر نازک و سفیدی روی زمین ایجاد کرد."],"2":["پرستوها بهار و تابستان را به آسودگی به سر می‌برند؛ اما در آغاز پاییز دشواری‌هایی برای آنها پیش می‌آید.","در آن هنگام، حشرات کمیاب می‌شوند و هوا کم‌کم سرد می‌شود.","پرستوها ناچار می‌شوند به جاهای معتدل‌تری کوچ کنند.","زمان کوچ آنها که فرا می‌رسد، دسته دسته روی بام‌ها یا سیم‌های برق جمع می‌شوند.","سفر در آسمان خیلی زیباست، اما گاهی خطرهای زیادی در مسیر وجود دارد."],"3":["پسر پرسید: «همان که چشم چپش کور بود؛ پای راستش می‌لنگید و بار گندم می‌برد؟»","مرد، خوشحال شد و گفت: «نشانی‌هایش درست است. آن را کجا دیدی؟»","پسر جواب داد: «من، الاغی ندیدم.»","پسر گفت: «من فقط خوب نگاه کردم و به آنچه دیدم، کمی اندیشیدم.»","فهمیدم پای راست الاغی که از اینجا گذشته لنگ بوده است."],"4":["کشتی چند تکه شد و مسافران در میان امواج گرفتار شدند.","حکیم هم به تخته‌پاره‌ای چسبید و دل به خدا سپرد تا چه آید.","وقتی چشم باز کرد، خود را در ساحلی دور، تنها دید.","حکیم فهمید که از بلای طوفان نجات یافته است و باید برای زنده ماندن خود چاره‌ای بیندیشد."],"5":["طوطی ادامه داد: «ای بازرگان مهربان و ای دوست هم‌زبان، سلام مرا به طوطیان هند و دوستان برسان.»","بازرگان، پس از چند شبانه‌روز به هندوستان رسید.","در آنجا، چشمش به دسته‌ای از طوطیان افتاد. سلام و پیغام طوطی‌اش را به آنها داد.","بازرگان با تعجب و شگفت‌زده به طوطی نگاه کرد، اما حرف او را پذیرفت."],"6":["آرش کمان‌گیر، تیرانداز ماهر ایرانی، خود را برای پرتاب این تیر آماده کرد.","آرش کمان خود را برداشت و تیر را آماده کرد.","در کنار او، پهلوانان با بردباری به این لحظه مهم می‌نگریستند.","تیر راهی طولانی را پیمود و از کوه‌ها و مرزها گذشت."],"7":["از چند روز پیش شنیده بودیم که قرار است مهمان عزیزی به شهر ما بیاید.","از چند روز پیش، شهر حال و هوای دیگری داشت.","همه جا و همه چیز به انتظار رسیدن این مهمان بود.","سرودهای نشاط‌انگیز از «صدا و سیما» شنیده می‌شد.","صبح آن روز، زودتر از همیشه با شنیدن صدای جیک‌جیک گنجشکان از خواب بیدار شدم."],"10":["من مانند کودکان دیگر در مکتب درس می‌خواندم.","مکتب، اتاقی بود بزرگ که همه‌ی شاگردان آن روی زمین می‌نشستند و درس می‌خواندیم.","پدرم در ساختن طاق مسجد استاد بود.","آن وقت‌ها، هنوز مدرسه‌های امروزی دایر نشده بود."],"11":["او همیشه قصه‌هایش را ناتمام می‌گذاشت تا بچه‌ها منتظر دیدار بعدی و شنیدن بقیه‌ی قصه باشند.","بچه‌های کوچک خود را به آسمان می‌گرفتند و برای پیروزی رزمندگان اسلام دعا می‌کردند.","مردم خرمشهر را خونین‌شهر می‌نامیدند.","خرمشهر را تسخیرناپذیر ساخته بود."],"12":["نامه‌ای از جبهه‌ی جنوب آمده بود.","یک قطره شبنم از گل، بر روی برگ غلتید.","یک قطره روی شیشه، مثل تگرگ غلتید.","یک قطره از دل من، بر روی دفتر افتاد."],"13":["مادر موسی وقتی گهواره‌ی او را به رود نیل سپرد، دنبال او رفت.","بر اثر بارندگی زیاد، رودخانه لبالب از آب شده بود.","سراسر دشت پر از شقایق‌های وحشی بود.","صدای تکبیر دمادم از هر سو شنیده می‌شد."],"14":["لقمان را گفتند: «ادب از که آموختی؟»","گفت: «از بی‌ادبان، هر چه از ایشان در نظرم ناپسند آمد، از آن پرهیز کردم.»","مشک آن است که خود ببوید، نه آنکه عطار بگوید.","عالم بی‌عمل، به زنبور بی‌عسل می‌ماند."],"15":["تو بزرگی و من خطاکارم.","شیر از این لابه، رحم حاصل کرد.","اتفاقاً سه چار روز دگر، از پی صید، می‌گذشت یک صیاد.","موش چون حال شیر را دریافت، بندها را جوید با دندان.","شیر چون موش را رها می‌کرد، موش هیچ از پیش شاه وحوش."],"16":["می‌خواهد بداند چرا خورشید آن بالا ایستاده است و نمی‌افتد.","هزاران سؤال وجود دارد که در مغزمان می‌چرخد و می‌چرخد.","پژوهشگران و دانشمندان بسیاری دیگر، همواره به دنبال پرسش‌های خود می‌روند و آن قدر فکر می‌کنند تا پاسخ آنها را پیدا کنند.","یکی از این دانشمندان که همیشه تشنه‌ی یادگیری و دانش‌اندوزی بود، ابوریحان بیرونی است."],"17":["وقتی وارد حیاط مدرسه شد، صدای شادی بچه‌ها او را به یاد دوستانش انداخت.","دخترک ریزنقش نزدیک او آمد و گفت: «دانش‌آموز جدید هستی؟ اسمت چیست؟»","آنها به سمت کلاس حرکت کردند.","در این لحظه، دانش‌آموزان برای نوشتن روی تخته‌ی هوشمند به گچ احتیاج نداشتند.","بنفشه با انگشت خود، روی تخته‌ی هوشمند، پیامی را برای خوش‌آمدگویی به مهتاب نوشت."]};
+  const pgTextExcerpts = {"1":["آنها تصمیم گرفتند خورشید جهان‌افروز را به داوری انتخاب کنند.","خورشید پذیرفت که بین آنان داوری کند. چهار هنرمند، شروع به کار کردند.","خورشید از پس ابر خاکستری‌رنگ، نگاهی انداخت و از دیدن منظره‌ی طبیعت بهار، لذت برد.","برگ‌های درختان صنوبر و کاج در کنار هم منظره‌ای دل‌انگیز می‌ساختند.","برف، قشر نازک و سفیدی روی زمین ایجاد کرد."],"2":["پرستوها بهار و تابستان را به آسودگی به سر می‌برند؛ اما در آغاز پاییز دشواری‌هایی برای آنها پیش می‌آید.","در آن هنگام، حشرات کمیاب می‌شوند و هوا کم‌کم سرد می‌شود.","پرستوها ناچار می‌شوند به جاهای معتدل‌تری کوچ کنند.","زمان کوچ آنها که فرا می‌رسد، دسته دسته روی بام‌ها یا سیم‌های برق جمع می‌شوند."],"3":["پسر پرسید: «همان که چشم چپش کور بود؛ پای راستش می‌لنگید و بار گندم می‌برد؟»","مرد، خوشحال شد و گفت: «نشانی‌هایش درست است. آن را کجا دیدی؟»","پسر جواب داد: «من، الاغی ندیدم.»","پسر گفت: «من فقط خوب نگاه کردم و به آنچه دیدم، کمی اندیشیدم.»","فهمیدم پای راست الاغی که از اینجا گذشته لنگ بوده است."],"4":["کشتی چند تکه شد و مسافران در میان امواج گرفتار شدند.","حکیم هم به تخته‌پاره‌ای چسبید و دل به خدا سپرد تا چه آید.","وقتی چشم باز کرد، خود را در ساحلی دور، تنها دید.","حکیم فهمید که از بلای طوفان نجات یافته است و باید برای زنده ماندن خود چاره‌ای بیندیشد."],"5":["طوطی ادامه داد: «ای بازرگان مهربان و ای دوست هم‌زبان، سلام مرا به طوطیان هند و دوستان برسان.»","بازرگان، پس از چند شبانه‌روز به هندوستان رسید.","در آنجا، چشمش به دسته‌ای از طوطیان افتاد. سلام و پیغام طوطی‌اش را به آنها داد.","بازرگان با تعجب و شگفت‌زده به طوطی نگاه کرد، اما حرف او را پذیرفت."],"6":["آرش کمان‌گیر، تیرانداز ماهر ایرانی، خود را برای پرتاب این تیر آماده کرد.","همه گریان و منتظر، پای کوه بلند دماوند ایستاده بودند."],"7":["از چند روز پیش شنیده بودیم که قرار است مهمان عزیزی به شهر ما بیاید.","از چند روز پیش، شهر حال و هوای دیگری داشت.","همه جا و همه چیز به انتظار رسیدن این مهمان بود.","سرودهای نشاط‌انگیز از «صدا و سیما» شنیده می‌شد.","صبح آن روز، زودتر از همیشه با شنیدن صدای جیک‌جیک گنجشکان از خواب بیدار شدم."],"10":["من مانند کودکان دیگر در مکتب درس می‌خواندم.","مکتب، اتاقی بود بزرگ که همه‌ی شاگردان آن روی زمین می‌نشستند و درس می‌خواندیم.","پدرم در ساختن طاق مسجد استاد بود.","آن وقت‌ها، هنوز مدرسه‌های امروزی دایر نشده بود."],"11":["او همیشه قصه‌هایش را ناتمام می‌گذاشت تا بچه‌ها منتظر دیدار بعدی و شنیدن بقیه‌ی قصه باشند.","دست‌های کوچک خود را به آسمان می‌گرفتند و برای پیروزی رزمندگان اسلام دعا می‌کردند.","مردم خرمشهر را خونین‌شهر می‌نامیدند.","خرمشهر را تسخیرناپذیر ساخته بود."],"12":["نامه‌ای از جبهه‌ی جنوب آمده بود.","یک قطره شبنم از گل، بر روی برگ غلتید.","یک قطره روی شیشه، مثل تگرگ غلتید.","یک قطره از دل من، بر روی دفتر افتاد."],"13":["مادر موسی وقتی گهواره‌ی او را به رود نیل سپرد، دنبال او رفت.","بر اثر بارندگی زیاد، رودخانه لبالب از آب شده بود.","سراسر دشت پر از شقایق‌های وحشی بود.","صدای تکبیر دمادم از هر سو شنیده می‌شد."],"14":["لقمان را گفتند: «ادب از که آموختی؟»","گفت: «از بی‌ادبان، هر چه از ایشان در نظرم ناپسند آمد، از آن پرهیز کردم.»","مشک آن است که خود ببوید، نه آنکه عطار بگوید.","عالم بی‌عمل، به زنبور بی‌عسل می‌ماند."],"15":["تو بزرگی و من خطاکارم.","شیر از این لابه، رحم حاصل کرد.","اتفاقاً سه چار روز دگر، از پی صید، می‌گذشت یک صیاد.","موش چون حال شیر را دریافت، بندها را جوید با دندان.","دام صیاد، گیر شیر افتاد."],"16":["می‌خواهد بداند چرا خورشید آن بالا ایستاده است و نمی‌افتد.","هزاران سؤال وجود دارد که در مغزمان می‌چرخد و می‌چرخد.","پژوهشگران و دانشمندان بسیاری دیگر، همواره به دنبال پرسش‌های خود می‌روند و آن قدر فکر می‌کنند تا پاسخ آنها را پیدا کنند.","یکی از این دانشمندان که همیشه تشنه‌ی یادگیری و دانش‌اندوزی بود، ابوریحان بیرونی است."],"17":["وقتی وارد حیاط مدرسه شد، صدای شادی بچه‌ها او را به یاد دوستانش انداخت.","دخترک ریزنقش نزدیک او آمد و گفت: «دانش‌آموز جدید هستی؟ اسمت چیست؟»","آنها به سمت کلاس حرکت کردند.","در این لحظه، دانش‌آموزان برای نوشتن روی تخته‌ی هوشمند به گچ احتیاج نداشتند.","بنفشه با انگشت خود، روی تخته‌ی هوشمند، پیامی را برای خوش‌آمدگویی به مهتاب نوشت."]};
   const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه']];
   
   const pgState = {mode:'build',lesson:'',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
@@ -4784,11 +4784,10 @@ async function loadSourceQuestionBanks(){
     return pool;
   }
   function pgBuildSpellingPools(lessons){
-    const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet(),safeKnown=pgAllSourceWordSet();
+    const fixPool=[],clozePool=[],fixSeen=new Set(),clozeSeen=new Set(),known=pgAllCorrectWordSet();
     lessons.forEach(lesson=>{
       const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
-      const excerpts=pgTextExcerpts[id]||[];
-      const vocab=pgReferenceVocabularyForLesson(lesson);
+      const excerpts=pgTextExcerpts[id]||[],vocab=pgReferenceVocabularyForLesson(lesson);
       excerpts.forEach((sentence,si)=>{
         const words=vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)&&pgWordInSentence(w,sentence))
           .sort((a,b)=>pgWordLetters(b).length-pgWordLetters(a).length);
@@ -4810,8 +4809,8 @@ async function loadSourceQuestionBanks(){
             .slice(0,3);
           if(distractors.length===3){
             const options=pgShuffle([{text:word,correct:true}].concat(distractors.map(text=>({text,correct:false}))));
-            const keys=options.map(o=>pgNormalize(o.text));
-            if(options.filter(o=>o.correct===true&&pgNormalize(o.text)===pgNormalize(word)).length===1&&new Set(keys).size===4){
+            const optionKeys=options.map(o=>pgNormalize(o.text));
+            if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
               const sentenceWithGap=pgMaskWord(sentence,word);
               if(sentenceWithGap!==sentence){
                 pgAddUnique(clozePool,clozeSeen,{
@@ -4824,56 +4823,32 @@ async function loadSourceQuestionBanks(){
           }
         });
       });
-    });
-    // Add more questions per mode using only the selected lesson's verified spelling list.
-    lessons.forEach(lesson=>{
-      const id=Number(lesson.id),title=String(lesson.title||'درس '+id);
-      const vocab=pgReferenceVocabularyForLesson(lesson),excerpts=pgTextExcerpts[id]||[],entries=pgDictionaryEntries[id]||[];
-      const existingFix=new Set(fixPool.filter(q=>Number(q.lessonId)===id).map(q=>pgNormalize(q.target)));
-      const existingCloze=new Set(clozePool.filter(q=>Number(q.lessonId)===id).map(q=>pgNormalize(q.target)));
-      vocab.forEach((word,wi)=>{
-        if(!pgIsSimpleWord(word)||!pgHasConfusable(word))return;
-        const wordKey=pgNormalize(word),variantsForFix=pgShuffle(pgVariants(word,known));
-        if(!variantsForFix.length)return;
-        if(!existingFix.has(wordKey)){
-          const wrong=variantsForFix[0];
+      // Fill gaps without inventing book sentences: fallback questions are clearly marked as spelling-list items.
+      vocab.filter(w=>pgIsSimpleWord(w)&&pgHasConfusable(w)).forEach(word=>{
+        const variants=pgShuffle(pgVariants(word,known))
+          .filter((v,i,a)=>pgNormalize(v)!==pgNormalize(word)&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i);
+        const hasFix=fixPool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
+        if(!hasFix&&variants.length){
+          const wrong=variants[0];
           pgAddUnique(fixPool,fixSeen,{
-            id:'fix:wordbank:'+id+':'+wi+':'+wordKey,mode:'fix',lessonId:id,lessonTitle:title,
-            target:word,wrong,sentence:'واژه: '+wrong,
-            source:'فهرست واژه‌های املایی، درس '+id,
-            prompt:'املای واژهٔ زیر عمداً نادرست نوشته شده است. شکل درست را از واژه‌های همین درس بنویس.'
+            id:'fix:word-only:'+id+':'+pgNormalize(word),mode:'fix',lessonId:id,lessonTitle:title,
+            target:word,wrong,sentence:wrong,source:'فهرست املایی تأییدشده، درس '+id,
+            prompt:'این واژه از فهرست املایی درس است؛ یک حرف هم‌آوا در شکل نمایش‌داده‌شده اشتباه شده است. املای درست را بنویس.'
           });
-          existingFix.add(wordKey);
         }
-        if(existingCloze.has(wordKey))return;
-        const bookSentence=excerpts.find(sentence=>pgWordInSentence(word,sentence));
-        const dictionaryEntry=entries.find(entry=>pgNormalize(entry.answer)===wordKey&&String(entry.clue||'').trim());
-        const contextual=!!bookSentence||!!dictionaryEntry;
-        const candidates=pgShuffle(pgVariants(word,contextual?known:safeKnown));
-        const distractors=candidates.filter((v,i,a)=>pgNormalize(v)!==wordKey&&a.findIndex(x=>pgNormalize(x)===pgNormalize(v))===i).slice(0,3);
-        if(distractors.length!==3)return;
-        const options=pgShuffle([{text:word,correct:true}].concat(distractors.map(text=>({text,correct:false}))));
-        const keys=options.map(o=>pgNormalize(o.text));
-        if(options.filter(o=>o.correct===true&&pgNormalize(o.text)===wordKey).length!==1||new Set(keys).size!==4)return;
-        let sentence,prompt,source;
-        if(bookSentence){
-          sentence=pgMaskWord(bookSentence,word);
-          prompt='جای خالی را با املای درست واژه‌ای که در عبارت کتاب آمده کامل کن.';
-          source='متن کتاب فارسی، درس '+id;
-        }else if(dictionaryEntry){
-          sentence='سرنخ واژه‌نامه: «'+dictionaryEntry.clue+'»؛ واژهٔ مورد نظر: ______';
-          prompt='با توجه به سرنخ واژه‌نامه، املای درست واژه را انتخاب کن.';
-          source='واژه‌نامهٔ فارسی چهارم، درس '+id;
-        }else{
-          sentence='واژه‌ای از فهرست املایی این درس: ______';
-          prompt='کدام گزینه شکل درست املاییِ یک واژه از فهرست همین درس است؟ گزینه‌های دیگر با حروف هم‌آوا ساخته شده‌اند.';
-          source='فهرست واژه‌های املایی، درس '+id;
+        const hasCloze=clozePool.some(q=>q.lessonId===id&&pgNormalize(q.target)===pgNormalize(word));
+        if(!hasCloze&&variants.length>=3){
+          const options=pgShuffle([{text:word,correct:true}].concat(variants.slice(0,3).map(text=>({text,correct:false}))));
+          const optionKeys=options.map(o=>pgNormalize(o.text));
+          if(options.length===4&&options.filter(o=>o.correct===true).length===1&&new Set(optionKeys).size===4){
+            pgAddUnique(clozePool,clozeSeen,{
+              id:'cloze:word-only:'+id+':'+pgNormalize(word),mode:'cloze',lessonId:id,lessonTitle:title,
+              target:word,sentence:'واژهٔ املایی این درس: ______',options,
+              source:'فهرست املایی تأییدشده، درس '+id,
+              prompt:'کدام گزینه املای درستِ واژهٔ مورد تمرین است؟'
+            });
+          }
         }
-        pgAddUnique(clozePool,clozeSeen,{
-          id:'cloze:wordbank:'+id+':'+wi+':'+wordKey,mode:'cloze',lessonId:id,lessonTitle:title,
-          target:word,sentence,options,source,prompt
-        });
-        existingCloze.add(wordKey);
       });
     });
     return {fix:fixPool,cloze:clozePool};
