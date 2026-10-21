@@ -1036,7 +1036,27 @@ a{color:#d7ff76}
 .pg-entry-card{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-height:132px;text-align:right;padding:16px;background:linear-gradient(145deg,#172b69,#245ee0 70%,#14a7cc);color:#fff;border:2px solid #8deaff;box-shadow:0 5px 0 #112b78,0 12px 22px #173e8422}
 .pg-entry-card:nth-child(2){background:linear-gradient(145deg,#3b176e,#7540d5 70%,#e15eac);border-color:#ddc4ff;box-shadow:0 5px 0 #371466,0 12px 22px #173e8422}
 .pg-entry-card strong{font-size:16px}.pg-entry-card small{font-size:12px;line-height:1.75;color:#eef6ff;font-weight:500}
-.pg-games-head{align-items:flex-start;flex-wrap:wrap}.pg-games-head h3{margin:0;font-size:18px}
+.pg-games-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg,#172b69,#245ee0 70%,#14a7cc);color:#fff;border:1px solid #6fdcf3}.pg-games-head h3{margin:0;font-size:18px;color:#fff}.pg-games-head p,.pg-games-head .muted{color:#e5f3ff!important;margin:5px 0 0;line-height:1.7}.pg-games-head button{flex:0 0 auto;min-height:42px;background:#fff;color:#17458f;border:1px solid #c8e7ff}
+#persianGamesPanel{color:var(--text,#eef4ff);color:inherit}
+#persianGamesPanel .pg-game-select{margin:14px 0;padding:14px;border:1px solid var(--border,#354b70);border-radius:16px;background:var(--panel,#17233b);color:var(--text,#f4f7ff)}
+#persianGamesPanel .pg-games-section-title{grid-column:1/-1;color:var(--text,#f4f7ff);font-weight:900;font-size:14px;padding:3px 2px 5px}#persianGamesPanel .pg-game-select label,#persianGamesPanel .field{display:block;color:var(--text,#f4f7ff)!important;font-weight:850;margin-bottom:7px}
+#persianGamesPanel .pg-game-select select{width:100%;max-width:100%;box-sizing:border-box;font-size:16px;min-height:50px;padding:10px 12px;border-radius:12px;background:var(--input-bg,#0f1a2e);color:var(--text,#fff);border:1px solid var(--border,#55709a)}
+#persianGamesPanel .pg-lesson-prompt,#persianGamesPanel .pg-selected-lesson{color:var(--muted,#c2cce0)!important;line-height:1.8}
+#persianGamesPanel .pg-mode-tabs{grid-template-columns:1fr;gap:9px;margin:14px 0}
+#persianGamesPanel .pg-mode-tabs button{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;text-align:right;column-gap:9px;min-height:58px;padding:10px 13px;border-radius:13px;font-size:14px;line-height:1.55}
+#persianGamesPanel .pg-mode-tabs button b{grid-row:span 2;display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#ffffff25;font-size:20px}
+#persianGamesPanel .pg-mode-tabs button span{grid-column:2;align-self:end;font-weight:900}#persianGamesPanel .pg-mode-tabs button small{grid-column:2;color:inherit!important;opacity:.9;font-size:11px!important}
+#persianGamesPanel .pg-game-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#persianGamesPanel .pg-game-stats span{display:block;text-align:center;color:var(--text,#f4f7ff);background:var(--panel,#17233b);border-color:var(--border,#354b70);line-height:1.6}
+#persianGamesPanel .pg-game-card{background:var(--panel,#17233b);border-color:var(--border,#4b6590);box-shadow:none;color:var(--text,#f4f7ff)}
+#persianGamesPanel .pg-question-head strong,#persianGamesPanel .pg-prompt{color:var(--text,#f4f7ff)!important}
+#persianGamesPanel .pg-question-head span{background:var(--input-bg,#0f1a2e);color:var(--text,#eaf1ff);border-color:var(--border,#4b6590)}
+#persianGamesPanel .pg-context{background:var(--input-bg,#0f1a2e);color:var(--text,#f4f7ff);border-color:var(--border,#4b6590)}
+#persianGamesPanel .pg-word-slots{background:var(--input-bg,#0f1a2e);border-color:var(--border,#4b6590)}
+#persianGamesPanel .pg-letter-tile,#persianGamesPanel .pg-cloze-option,#persianGamesPanel .pg-subtle-button{color:var(--text,#f4f7ff);background:var(--input-bg,#0f1a2e);border-color:var(--border,#4b6590);box-shadow:none}
+#persianGamesPanel .pg-feedback{color:var(--text,#f4f7ff)}
+#persianGamesPanel button{overflow-wrap:anywhere}
+@media(min-width:560px){#persianGamesPanel .pg-mode-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}#persianGamesPanel .pg-mode-tabs button{grid-template-columns:1fr;text-align:center;justify-items:center;min-height:105px}#persianGamesPanel .pg-mode-tabs button span{grid-column:1}#persianGamesPanel .pg-mode-tabs button b{grid-row:auto}#persianGamesPanel .pg-mode-tabs button small{grid-column:1}}
 .pg-game-select{margin:12px 0}
 .pg-game-select select{font-size:16px;min-height:48px}
 .pg-mode-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:12px 0}
@@ -1219,15 +1239,15 @@ a{color:#d7ff76}
 <section id="persianGamesPanel" class="item hidden" aria-label="باشگاه واژه‌ها">
   <div class="row pg-games-head"><div><h3>🪐 باشگاه واژه‌ها</h3><p class="muted">هر بار ورود، پرسش‌ها و گزینه‌ها به ترتیب تازه‌ای نمایش داده می‌شوند.</p></div><button type="button" id="persianGamesBack" class="outline">↩ بازگشت</button></div>
   <div class="pg-game-select">
-    <label class="field" for="pgLessonSelect">محدودهٔ تمرین</label>
+    <label class="field" for="pgLessonSelect">۱. انتخاب درس فارسی</label>
     <select id="pgLessonSelect"><option value="">ابتدا درس را انتخاب کن…</option></select>
     <div id="pgLessonPrompt" class="pg-lesson-prompt">برای شروع، یکی از درس‌های کتاب را انتخاب کن. سؤال‌ها فقط از همان درس نمایش داده می‌شوند.</div>
     <p id="pgSelectedLessonName" class="pg-selected-lesson muted hidden"></p>
   </div>
-  <div id="pgModeTabs" class="pg-mode-tabs hidden" aria-label="انتخاب بازی">
-    <button type="button" data-pg-mode="build" class="active"><b>🔤</b>ساختن کلمه</button>
-    <button type="button" data-pg-mode="fix"><b>✍️</b>شکار غلط املایی</button>
-    <button type="button" data-pg-mode="cloze"><b>🧩</b>جای خالی املایی</button>
+  <div id="pgModeTabs" class="pg-mode-tabs hidden" aria-label="انتخاب بازی"><div class="pg-games-section-title">۲. حالا یکی از بازی‌های همین درس را انتخاب کن</div>
+    <button type="button" data-pg-mode="build" class="active"><b>🔤</b><span>ساختن کلمه</span></button>
+    <button type="button" data-pg-mode="fix"><b>✍️</b><span>شکار غلط املایی</span></button>
+    <button type="button" data-pg-mode="cloze"><b>🧩</b><span>جای خالی املایی</span></button>
   </div>
   <div class="pg-game-stats hidden"><span id="pgPoolCount">در حال آماده‌سازی بانک سؤال…</span><span id="pgScore">۰ درست از ۰</span></div>
   <div class="pg-game-card hidden">
@@ -4438,7 +4458,7 @@ async function loadSourceQuestionBanks(){
     17:['باران، نم‌نم می‌بارید.','مهتاب از خانه بیرون آمد و به مدرسهٔ جدید می‌رفت.','روی تختهٔ هوشمند می‌توانی دایره رسم کنی.','با نقاله و خط‌کش واقعی، زاویه‌ها را اندازه‌گیری کن.','دانش‌آموزان به کلاس وارد شدند.']
   };
   const pgSimilarFamilies = [['س','ص','ث'],['ز','ذ','ض','ظ'],['ت','ط'],['ق','غ'],['ح','ه']];
-  const pgExtraTextVocabulary={2:['تغییرات'],3:['گذشته'],4:['تخته‌پاره‌ای'],10:['تصویری'],11:['تسخیرناپذیر'],13:['طغیان'],17:['اندازه‌گیری']};
+  
   const pgState = {mode:'build',lesson:'',pools:{build:[],fix:[],cloze:[]},queues:{build:[],fix:[],cloze:[]},indices:{build:0,fix:0,cloze:0},questionNo:{build:0,fix:0,cloze:0},current:null,selectedTileIds:[],tiles:[],selectedCloze:-1,answered:false,score:0,attempts:0};
   function pgNormalize(value){
     return String(value==null?'':value).replace(/ي/g,'ی').replace(/ك/g,'ک').replace(/ۀ/g,'ه').replace(/[ًٌٍَُِّْـ]/g,'').replace(/[\s\u200c\u200d‌‎‏\-‐‑–—،,؛;:.!؟?«»"'(){}\[\]\/]/g,'').toLowerCase();
@@ -4480,7 +4500,6 @@ async function loadSourceQuestionBanks(){
     (lesson.synonyms||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(String(p[1]||'').split(/[،,;]/)[0].trim())}});
     (lesson.opposites||[]).forEach(p=>{if(Array.isArray(p)){add(p[0]);add(p[1])}});
     (lesson.families||[]).forEach(f=>{if(f&&typeof f==='object'){add(f.root);(f.words||[]).forEach(add)}});
-    (pgExtraTextVocabulary[Number(lesson.id)]||[]).forEach(add);
     return out;
   }
   function pgVocabularyForLesson(lesson){
