@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v28-20261022-theme-space-light-music-default-on-button-lower">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v29-20261022-theme-space-light-autoplay-cheerful-music">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2143,7 +2143,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 .hero:before{left:96px!important}
 #musicToggleButton{
   position:fixed;
-  top:calc(env(safe-area-inset-top, 0px) + 48px);
+  top:calc(env(safe-area-inset-top, 0px) + 72px);
   left:calc(env(safe-area-inset-left, 0px) + 26px);
   z-index:99999;
   display:grid;
@@ -2176,7 +2176,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   .teacher-name{font-size:11px}
   .hero:before{left:90px!important}
   #musicToggleButton{
-    top:calc(env(safe-area-inset-top, 0px) + 38px);
+    top:calc(env(safe-area-inset-top, 0px) + 58px);
     left:calc(env(safe-area-inset-left, 0px) + 22px);
     width:48px;
     height:48px;
@@ -7377,21 +7377,21 @@ function paintMathQuestionVisual(q,target){
   const TEACHER_NAME = 'نظامی';
   const MUSIC_VOLUME = 0.28;
   const MUSIC_DEFAULT_ON = true;
-  const MUSIC_STORAGE_KEY = 'chahromiha-background-music-v2';
+  const MUSIC_STORAGE_KEY = 'chahromiha-background-music-v3';
   const MUSIC_FADE_SECONDS = 1.5;
   const MAX_ACTIVE_OSCILLATORS = 10;
-  const PAD_CHORD_SECONDS = 8;
+  const PAD_CHORD_SECONDS = 4.8;
   const MELODY_SCALE = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
   const HAPPY_MELODY_PHRASE = [
-    0, 2, 3, 2, 4, 3, 2, 0,
-    0, 2, 4, 5, 4, 3, 2,
-    1, 2, 3, 4, 2, 0
+    0, 2, 3, 4, 2, 4, 5, 3,
+    4, 2, 1, 3, 4, 5, 3, 2,
+    0, 2, 4, 3, 5, 4, 3, 1
   ];
   const CHORDS = [
-    [130.81, 164.81, 196.00, 246.94], // Cmaj7
-    [174.61, 220.00, 261.63, 329.63], // Fmaj7 — brighter upper voicing
-    [196.00, 246.94, 293.66, 329.63], // G6 — bright major lift
-    [130.81, 164.81, 196.00, 246.94]  // Cmaj7 — happy resolution
+    [261.63, 329.63, 392.00, 523.25], // C major — bright home chord
+    [349.23, 440.00, 523.25, 659.25], // F major
+    [392.00, 493.88, 587.33, 659.25], // G major — cheerful lift
+    [261.63, 329.63, 392.00, 523.25]  // C major — clear resolution
   ];
 
   const teacherLine = document.querySelector('[data-teacher-name]');
@@ -7449,12 +7449,17 @@ function paintMathQuestionVisual(q,target){
   let masterRamp = { from: 0, to: 0, start: 0, end: 0 };
 
   function updateMusicToggle() {
-    /* دکمه وضعیت انتخاب موسیقی را نشان می‌دهد؛ پخش واقعی پس از اولین لمس آغاز می‌شود. */
-    const enabledNow = musicEnabled && !document.hidden;
-    musicToggle.textContent = enabledNow ? '🔊' : '🔇';
-    musicToggle.setAttribute('aria-label', enabledNow ? 'قطع موسیقی' : 'پخش موسیقی');
-    musicToggle.setAttribute('aria-pressed', enabledNow ? 'true' : 'false');
-    musicToggle.title = enabledNow ? 'موسیقی فعال است؛ با اولین لمس پخش می‌شود' : 'پخش موسیقی';
+    const playingNow = Boolean(
+      musicEnabled &&
+      isPlaying &&
+      !document.hidden &&
+      audioContext &&
+      audioContext.state === 'running'
+    );
+    musicToggle.textContent = playingNow ? '🔊' : '🔇';
+    musicToggle.setAttribute('aria-label', playingNow ? 'قطع موسیقی' : 'پخش موسیقی');
+    musicToggle.setAttribute('aria-pressed', playingNow ? 'true' : 'false');
+    musicToggle.title = playingNow ? 'قطع موسیقی' : 'پخش موسیقی';
   }
 
   function createReverbImpulse(context) {
@@ -7504,9 +7509,9 @@ function paintMathQuestionVisual(q,target){
       feedbackFilter.frequency.value = 800;
       feedbackFilter.Q.value = 0.5;
       feedbackGain = context.createGain();
-      feedbackGain.gain.value = 0.35;
+      feedbackGain.gain.value = 0.22;
       delayWetGain = context.createGain();
-      delayWetGain.gain.value = 0.18;
+      delayWetGain.gain.value = 0.09;
       musicInput.connect(delayNode);
       delayNode.connect(delayWetGain);
       delayWetGain.connect(masterGain);
@@ -7517,7 +7522,7 @@ function paintMathQuestionVisual(q,target){
       convolver = context.createConvolver();
       convolver.buffer = createReverbImpulse(context);
       reverbWetGain = context.createGain();
-      reverbWetGain.gain.value = 0.16;
+      reverbWetGain.gain.value = 0.10;
       musicInput.connect(convolver);
       convolver.connect(reverbWetGain);
       reverbWetGain.connect(masterGain);
@@ -7591,8 +7596,8 @@ function paintMathQuestionVisual(q,target){
     oscillator.frequency.setValueAtTime(frequency, startTime);
     oscillator.detune.setValueAtTime((Math.random() * 10) - 5, startTime);
     envelope.gain.setValueAtTime(0.0001, startTime);
-    envelope.gain.linearRampToValueAtTime(0.11, startTime + 2.5);
-    envelope.gain.setValueAtTime(0.11, startTime + 5);
+    envelope.gain.linearRampToValueAtTime(0.095, startTime + 0.55);
+    envelope.gain.setValueAtTime(0.095, startTime + 3.35);
     envelope.gain.linearRampToValueAtTime(0.0001, startTime + PAD_CHORD_SECONDS);
     oscillator.connect(envelope);
     envelope.connect(padFilter);
@@ -7636,10 +7641,10 @@ function paintMathQuestionVisual(q,target){
     fundamental.frequency.setValueAtTime(MELODY_SCALE[nextIndex], startTime);
     octave.frequency.setValueAtTime(MELODY_SCALE[nextIndex] * 2, startTime);
     fundamentalGain.gain.value = 0.9;
-    octaveGain.gain.value = 0.28;
+    octaveGain.gain.value = 0.38;
     envelope.gain.setValueAtTime(0.0001, startTime);
-    envelope.gain.linearRampToValueAtTime(0.17, startTime + 0.035);
-    envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.46);
+    envelope.gain.linearRampToValueAtTime(0.19, startTime + 0.025);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.30);
 
     fundamental.connect(fundamentalGain);
     fundamentalGain.connect(envelope);
@@ -7649,17 +7654,17 @@ function paintMathQuestionVisual(q,target){
     trackVoice([fundamental, octave], [fundamentalGain, octaveGain, envelope]);
     fundamental.start(startTime);
     octave.start(startTime);
-    fundamental.stop(startTime + 0.52);
-    octave.stop(startTime + 0.52);
+    fundamental.stop(startTime + 0.35);
+    octave.stop(startTime + 0.35);
   }
 
   function scheduleMelodyAttempt() {
     if (!isPlaying) return;
-    /* ضرب‌آهنگ ملایم و سرزنده: یک نت تقریباً هر نیم ثانیه */
-    const wait = 520 + Math.random() * 130;
+    /* ملودی شاد و منظم؛ نت‌ها کوتاه‌اند تا با هم قاطی نشوند. */
+    const wait = 380 + Math.random() * 80;
     melodyTimer = window.setTimeout(function () {
       if (!isPlaying) return;
-      if (Math.random() < 0.96) playMelodyNote();
+      if (Math.random() < 0.99) playMelodyNote();
       scheduleMelodyAttempt();
     }, wait);
   }
@@ -7738,10 +7743,23 @@ function paintMathQuestionVisual(q,target){
   }
 
   musicToggle.addEventListener('click', function () {
-    musicEnabled = !musicEnabled;
-    saveMusicPreference(musicEnabled);
-    if (musicEnabled) startMusic();
-    else fadeOutAndPause();
+    const playingNow = Boolean(
+      musicEnabled &&
+      isPlaying &&
+      !document.hidden &&
+      audioContext &&
+      audioContext.state === 'running'
+    );
+
+    if (playingNow) {
+      musicEnabled = false;
+      saveMusicPreference(false);
+      fadeOutAndPause();
+    } else {
+      musicEnabled = true;
+      saveMusicPreference(true);
+      startMusic();
+    }
     updateMusicToggle();
   });
 
@@ -7765,6 +7783,12 @@ function paintMathQuestionVisual(q,target){
   });
 
   updateMusicToggle();
+
+  /* تلاش برای پخش از همان لحظهٔ ورود؛ اگر مرورگر اجازه ندهد،
+     اولین لمس صفحه پخش را فعال می‌کند. */
+  if (musicEnabled && !document.hidden) {
+    startMusic();
+  }
 })();
 
 </script></body></html>
