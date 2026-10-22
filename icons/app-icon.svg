@@ -1,6 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="logoTitle">
-  <defs><linearGradient id="appBg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1B2F78"/><stop offset=".55" stop-color="#1A55A4"/><stop offset="1" stop-color="#087FAE"/></linearGradient></defs>
+  <defs><linearGradient id="appBg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1B2F78"/><stop offset=".55" stop-color="#1A55A4"/><stop offset="1" stop-color="#087FAE"/></linearGradient>
+  <radialGradient id="galaxyCore" cx="50%" cy="44%" r="66%">
+    <stop offset="0" stop-color="#7B5BFF"/><stop offset=".38" stop-color="#4735B8"/><stop offset=".72" stop-color="#203E91"/><stop offset="1" stop-color="#101B4A"/>
+  </radialGradient>
+  <radialGradient id="nebulaA" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#FF64C8" stop-opacity=".85"/><stop offset=".55" stop-color="#9C4DFF" stop-opacity=".45"/><stop offset="1" stop-color="#9C4DFF" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="nebulaB" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#25E4F2" stop-opacity=".82"/><stop offset=".6" stop-color="#277DFF" stop-opacity=".38"/><stop offset="1" stop-color="#277DFF" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="galaxyRing" x1="60" y1="160" x2="450" y2="360" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#3DE4F3"/><stop offset=".5" stop-color="#A879FF"/><stop offset="1" stop-color="#FF77C8"/>
+  </linearGradient>
   <rect width="512" height="512" rx="112" fill="url(#appBg)"/>
+  <ellipse cx="256" cy="252" rx="220" ry="224" fill="#332A94" opacity=".95"/>
+  <ellipse cx="174" cy="170" rx="165" ry="130" fill="url(#nebulaA)"/>
+  <ellipse cx="341" cy="319" rx="175" ry="135" fill="url(#nebulaB)"/>
+  <path d="M37 277C119 173 215 165 290 212S390 293 472 210" fill="none" stroke="url(#galaxyRing)" stroke-width="15" opacity=".65"/>
+  <g fill="#FFFFFF"><circle cx="91" cy="99" r="4"/><circle cx="408" cy="102" r="3"/><circle cx="440" cy="270" r="4"/><circle cx="73" cy="354" r="3"/><circle cx="361" cy="409" r="3"/><circle cx="147" cy="424" r="2.5"/></g>
   <title id="logoTitle">فضانورد کتاب‌به‌دست چهارمی‌ها</title>
   <defs>
     <linearGradient id="helmet" x1="86" y1="44" x2="390" y2="335" gradientUnits="userSpaceOnUse">
@@ -22,6 +39,17 @@
       <feGaussianBlur stdDeviation="8"/>
     </filter>
   </defs>
+
+
+  <circle cx="256" cy="256" r="239" fill="url(#galaxyCore)" stroke="#B3EFFF" stroke-opacity=".75" stroke-width="5"/>
+  <ellipse cx="250" cy="253" rx="210" ry="78" transform="rotate(-28 250 253)" fill="none" stroke="url(#galaxyRing)" stroke-width="16" opacity=".72"/>
+  <ellipse cx="250" cy="253" rx="178" ry="58" transform="rotate(-28 250 253)" fill="none" stroke="#9B82FF" stroke-width="24" opacity=".28"/>
+  <ellipse cx="175" cy="178" rx="150" ry="103" fill="url(#nebulaA)" transform="rotate(-25 175 178)"/>
+  <ellipse cx="335" cy="316" rx="156" ry="116" fill="url(#nebulaB)" transform="rotate(-24 335 316)"/>
+  <path d="M74 290C130 220 182 198 244 205S353 256 429 194" fill="none" stroke="#9CEFFF" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+  <path d="M93 335C159 282 204 279 256 291S350 322 405 278" fill="none" stroke="#FF9BDF" stroke-width="3" stroke-linecap="round" opacity=".62"/>
+  <g fill="#FFFFFF"><circle cx="118" cy="174" r="4"/><circle cx="153" cy="105" r="3"/><circle cx="335" cy="110" r="4"/><circle cx="391" cy="166" r="3"/><circle cx="420" cy="242" r="4"/><circle cx="91" cy="251" r="3"/><circle cx="132" cy="371" r="4"/><circle cx="366" cy="386" r="3"/><circle cx="301" cy="75" r="2.5"/><circle cx="204" cy="390" r="2.5"/><circle cx="386" cy="309" r="2.5"/><circle cx="75" cy="317" r="2.5"/></g>
+  <g fill="#FFE17B"><path d="M104 124l5-13 5 13 13 5-13 5-5 13-5-13-13-5z"/><path d="M380 119l4-10 4 10 10 4-10 4-4 10-4-10-10-4z"/><path d="M412 351l4-10 4 10 10 4-10 4-4 10-4-10-10-4z"/></g>
   <ellipse cx="258" cy="451" rx="143" ry="18" fill="#16336A" opacity=".10" filter="url(#shadow)"/>
   <path d="M87 300C43 244 76 157 135 133" fill="none" stroke="#41D6E4" stroke-width="10" stroke-linecap="round"/>
   <path d="M384 157C431 202 429 267 397 301" fill="none" stroke="#8D70FF" stroke-width="10" stroke-linecap="round"/>
