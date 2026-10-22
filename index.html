@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v27-20261022-theme-space-light-cheerful-melody-button-spacing">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v28-20261022-theme-space-light-music-default-on-button-lower">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2143,7 +2143,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 .hero:before{left:96px!important}
 #musicToggleButton{
   position:fixed;
-  top:calc(env(safe-area-inset-top, 0px) + 30px);
+  top:calc(env(safe-area-inset-top, 0px) + 48px);
   left:calc(env(safe-area-inset-left, 0px) + 26px);
   z-index:99999;
   display:grid;
@@ -2176,7 +2176,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   .teacher-name{font-size:11px}
   .hero:before{left:90px!important}
   #musicToggleButton{
-    top:calc(env(safe-area-inset-top, 0px) + 24px);
+    top:calc(env(safe-area-inset-top, 0px) + 38px);
     left:calc(env(safe-area-inset-left, 0px) + 22px);
     width:48px;
     height:48px;
@@ -7377,7 +7377,7 @@ function paintMathQuestionVisual(q,target){
   const TEACHER_NAME = 'نظامی';
   const MUSIC_VOLUME = 0.28;
   const MUSIC_DEFAULT_ON = true;
-  const MUSIC_STORAGE_KEY = 'chahromiha-background-music';
+  const MUSIC_STORAGE_KEY = 'chahromiha-background-music-v2';
   const MUSIC_FADE_SECONDS = 1.5;
   const MAX_ACTIVE_OSCILLATORS = 10;
   const PAD_CHORD_SECONDS = 8;
@@ -7449,17 +7449,12 @@ function paintMathQuestionVisual(q,target){
   let masterRamp = { from: 0, to: 0, start: 0, end: 0 };
 
   function updateMusicToggle() {
-    const playingNow = Boolean(
-      musicEnabled &&
-      isPlaying &&
-      !document.hidden &&
-      audioContext &&
-      audioContext.state === 'running'
-    );
-    musicToggle.textContent = playingNow ? '🔊' : '🔇';
-    musicToggle.setAttribute('aria-label', playingNow ? 'قطع موسیقی' : 'پخش موسیقی');
-    musicToggle.setAttribute('aria-pressed', playingNow ? 'true' : 'false');
-    musicToggle.title = playingNow ? 'قطع موسیقی' : 'پخش موسیقی';
+    /* دکمه وضعیت انتخاب موسیقی را نشان می‌دهد؛ پخش واقعی پس از اولین لمس آغاز می‌شود. */
+    const enabledNow = musicEnabled && !document.hidden;
+    musicToggle.textContent = enabledNow ? '🔊' : '🔇';
+    musicToggle.setAttribute('aria-label', enabledNow ? 'قطع موسیقی' : 'پخش موسیقی');
+    musicToggle.setAttribute('aria-pressed', enabledNow ? 'true' : 'false');
+    musicToggle.title = enabledNow ? 'موسیقی فعال است؛ با اولین لمس پخش می‌شود' : 'پخش موسیقی';
   }
 
   function createReverbImpulse(context) {
@@ -7743,14 +7738,7 @@ function paintMathQuestionVisual(q,target){
   }
 
   musicToggle.addEventListener('click', function () {
-    const playingNow = Boolean(
-      musicEnabled &&
-      isPlaying &&
-      !document.hidden &&
-      audioContext &&
-      audioContext.state === 'running'
-    );
-    musicEnabled = !playingNow;
+    musicEnabled = !musicEnabled;
     saveMusicPreference(musicEnabled);
     if (musicEnabled) startMusic();
     else fadeOutAndPause();
