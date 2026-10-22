@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v29-20261022-theme-space-light-autoplay-cheerful-music">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v30-20261022-louder-faster-cheerful-music">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2143,21 +2143,21 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 .hero:before{left:96px!important}
 #musicToggleButton{
   position:fixed;
-  top:calc(env(safe-area-inset-top, 0px) + 72px);
+  top:calc(env(safe-area-inset-top, 0px) + 82px);
   left:calc(env(safe-area-inset-left, 0px) + 26px);
   z-index:99999;
   display:grid;
   place-items:center;
-  width:52px;
-  height:52px;
-  min-width:52px;
-  min-height:52px;
+  width:62px;
+  height:62px;
+  min-width:62px;
+  min-height:62px;
   padding:0;
   border:1px solid var(--line);
   border-radius:50%;
   background:color-mix(in srgb,var(--card) 90%,transparent);
   color:var(--text);
-  font-size:22px;
+  font-size:26px;
   line-height:1;
   box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 12%,transparent),0 5px 16px rgba(0,0,0,.24);
   -webkit-backdrop-filter:blur(10px);
@@ -2176,12 +2176,12 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   .teacher-name{font-size:11px}
   .hero:before{left:90px!important}
   #musicToggleButton{
-    top:calc(env(safe-area-inset-top, 0px) + 58px);
+    top:calc(env(safe-area-inset-top, 0px) + 68px);
     left:calc(env(safe-area-inset-left, 0px) + 22px);
-    width:48px;
-    height:48px;
-    min-width:48px;
-    min-height:48px;
+    width:58px;
+    height:58px;
+    min-width:58px;
+    min-height:58px;
   }
 }
 
@@ -7375,17 +7375,17 @@ function paintMathQuestionVisual(q,target){
   'use strict';
 
   const TEACHER_NAME = 'نظامی';
-  const MUSIC_VOLUME = 0.28;
+  const MUSIC_VOLUME = 0.42;
   const MUSIC_DEFAULT_ON = true;
   const MUSIC_STORAGE_KEY = 'chahromiha-background-music-v3';
   const MUSIC_FADE_SECONDS = 1.5;
   const MAX_ACTIVE_OSCILLATORS = 10;
-  const PAD_CHORD_SECONDS = 4.8;
+  const PAD_CHORD_SECONDS = 3.8;
   const MELODY_SCALE = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
   const HAPPY_MELODY_PHRASE = [
-    0, 2, 3, 4, 2, 4, 5, 3,
-    4, 2, 1, 3, 4, 5, 3, 2,
-    0, 2, 4, 3, 5, 4, 3, 1
+    0, 2, 4, 5, 4, 2, 3, 4,
+    5, 4, 2, 3, 4, 2, 1, 0,
+    2, 4, 5, 4, 3, 2, 4, 5
   ];
   const CHORDS = [
     [261.63, 329.63, 392.00, 523.25], // C major — bright home chord
@@ -7498,12 +7498,12 @@ function paintMathQuestionVisual(q,target){
 
       padFilter = context.createBiquadFilter();
       padFilter.type = 'lowpass';
-      padFilter.frequency.value = 800;
+      padFilter.frequency.value = 1100;
       padFilter.Q.value = 0.5;
       padFilter.connect(musicInput);
 
       delayNode = context.createDelay(1.2);
-      delayNode.delayTime.value = 0.4;
+      delayNode.delayTime.value = 0.28;
       feedbackFilter = context.createBiquadFilter();
       feedbackFilter.type = 'lowpass';
       feedbackFilter.frequency.value = 800;
@@ -7597,7 +7597,7 @@ function paintMathQuestionVisual(q,target){
     oscillator.detune.setValueAtTime((Math.random() * 10) - 5, startTime);
     envelope.gain.setValueAtTime(0.0001, startTime);
     envelope.gain.linearRampToValueAtTime(0.095, startTime + 0.55);
-    envelope.gain.setValueAtTime(0.095, startTime + 3.35);
+    envelope.gain.setValueAtTime(0.095, startTime + PAD_CHORD_SECONDS - 0.65);
     envelope.gain.linearRampToValueAtTime(0.0001, startTime + PAD_CHORD_SECONDS);
     oscillator.connect(envelope);
     envelope.connect(padFilter);
@@ -7636,7 +7636,7 @@ function paintMathQuestionVisual(q,target){
     const fundamental = audioContext.createOscillator();
     const octave = audioContext.createOscillator();
 
-    fundamental.type = 'sine';
+    fundamental.type = 'triangle';
     octave.type = 'sine';
     fundamental.frequency.setValueAtTime(MELODY_SCALE[nextIndex], startTime);
     octave.frequency.setValueAtTime(MELODY_SCALE[nextIndex] * 2, startTime);
@@ -7644,7 +7644,7 @@ function paintMathQuestionVisual(q,target){
     octaveGain.gain.value = 0.38;
     envelope.gain.setValueAtTime(0.0001, startTime);
     envelope.gain.linearRampToValueAtTime(0.19, startTime + 0.025);
-    envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.30);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.23);
 
     fundamental.connect(fundamentalGain);
     fundamentalGain.connect(envelope);
@@ -7654,14 +7654,14 @@ function paintMathQuestionVisual(q,target){
     trackVoice([fundamental, octave], [fundamentalGain, octaveGain, envelope]);
     fundamental.start(startTime);
     octave.start(startTime);
-    fundamental.stop(startTime + 0.35);
-    octave.stop(startTime + 0.35);
+    fundamental.stop(startTime + 0.26);
+    octave.stop(startTime + 0.26);
   }
 
   function scheduleMelodyAttempt() {
     if (!isPlaying) return;
     /* ملودی شاد و منظم؛ نت‌ها کوتاه‌اند تا با هم قاطی نشوند. */
-    const wait = 380 + Math.random() * 80;
+    const wait = 270 + Math.random() * 65;
     melodyTimer = window.setTimeout(function () {
       if (!isPlaying) return;
       if (Math.random() < 0.99) playMelodyNote();
