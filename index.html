@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#100e1b">
+<meta charset="utf-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#F6F4FF"><meta name="theme-color" content="#100e1b" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icons/app-icon.svg">
 <link rel="apple-touch-icon" href="./icons/app-icon.svg">
@@ -9,10 +9,12 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v24-20261022-storage-sync">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v24-20261022-theme-space-light">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap");
+
 :root{--blue:#1456b8;--blue2:#2679e8;--navy:#10376b;--ink:#183354;--muted:#637b98;--bg:#edf6ff;--card:#fff;--line:#d7e7f8;--green:#14865c;--red:#bf344b;--gold:#a96500;--purple:#7452c7;--cyan:#20b9d4;--orange:#ffad28}
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(circle at 8% 3%,#d3f3ff 0,transparent 24%),radial-gradient(circle at 95% 20%,#dbe8ff 0,transparent 27%),linear-gradient(180deg,#f0f8ff,#eaf3ff 58%,#f8fbff);color:var(--ink);font-family:Tahoma,Arial,sans-serif;line-height:1.85;min-height:100vh}
@@ -1499,6 +1501,632 @@ html,body{width:100%;max-width:100%;overflow-x:hidden}
 .science-lab-cup.dark{background:linear-gradient(#303b4e,#111827);color:#fff}.science-lab-cup.light{background:linear-gradient(#fff,#dbeafe);color:#164e8a}.science-lab-cup span{font-size:25px}.science-lab-scene small{color:#c5d9f2}
 .science-lab-actions{display:flex;gap:8px;flex-wrap:wrap}.science-lab-actions button{flex:1;min-width:130px;background:#203e68;color:#f2fbff;border:1px solid #79bce8;border-radius:12px;padding:10px;cursor:pointer}
 .science-lab-actions button.selected{background:#8af1ed;color:#09213b;border-color:#d5ffff;box-shadow:0 0 0 2px rgba(138,241,237,.18)}.science-lab-result{margin-top:12px;padding:12px;border-radius:12px;background:rgba(5,18,40,.7);border:1px solid #5f98bf}.science-lab-result p{margin-bottom:0}
+
+
+/* ===== چهارمی ها | ماجراجویی فضاییِ روشن ===== */
+:root{
+  color-scheme:light;
+  --bg:#F6F4FF;
+  --card:#FFFFFF;
+  --text:#1E1B3A;
+  --muted:#5A5778;
+  --line:#E4E0F7;
+  --primary:#5B4BDB;
+  --star:#FFB020;
+  --ok:#0B7A55;
+  --retry:#E8590C;
+  --math:#2F6FED;
+  --fa:#D6336C;
+  --sci:#66A80F;
+  --soc:#F59F00;
+  --quran:#0C8599;
+  --gifts:var(--quran);
+  --retry-text:#79320A;
+  /* compatibility variables used by the existing styles */
+  --blue:var(--primary);
+  --blue2:var(--primary);
+  --navy:var(--text);
+  --ink:var(--text);
+  --green:var(--ok);
+  --red:var(--retry);
+  --gold:var(--star);
+  --purple:var(--primary);
+  --cyan:var(--quran);
+  --orange:var(--retry);
+  --border:var(--line);
+  --input-bg:var(--card);
+  --panel:var(--card);
+  --surface-2:color-mix(in srgb,var(--primary) 6%,var(--card));
+  --space-panel:var(--card);
+  --space-panel-deep:var(--card);
+  --space-panel-raised:var(--card);
+  --space-text:var(--text);
+  --space-muted:var(--muted);
+  --space-border:var(--line);
+  --space-glow:transparent;
+}
+html{
+  background:var(--bg)!important;
+  color:var(--text)!important;
+}
+body{
+  background-color:var(--bg)!important;
+  background-image:
+    radial-gradient(circle at 9% 13%,rgba(255,176,32,.13) 0 1.5px,transparent 2px),
+    radial-gradient(circle at 83% 24%,rgba(91,75,219,.09) 0 1.5px,transparent 2px),
+    radial-gradient(circle at 68% 82%,rgba(12,133,153,.08) 0 1.5px,transparent 2px)!important;
+  background-size:280px 230px,340px 280px,390px 310px!important;
+  color:var(--text)!important;
+  font-family:"Vazirmatn",Tahoma,system-ui,sans-serif!important;
+  font-size:17px!important;
+  line-height:1.9!important;
+}
+button,input,select,textarea{
+  font-family:"Vazirmatn",Tahoma,system-ui,sans-serif!important;
+}
+h1,h2,h3,h4,h5,h6,b,strong,th{font-weight:700}
+p,li,label,summary{line-height:1.9}
+a{color:var(--primary)!important;text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+::selection{background:color-mix(in srgb,var(--primary) 22%,var(--card));color:var(--text)}
+button{
+  border-radius:14px;
+  background:var(--primary)!important;
+  color:#fff!important;
+  border:1px solid var(--primary)!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+  font-weight:700;
+  transition:background-color .14s ease,border-color .14s ease,color .14s ease,transform .12s ease!important;
+  -webkit-tap-highlight-color:transparent;
+}
+button:not(#teacher table button){min-height:48px}
+#teacher table button{min-height:unset!important}
+button:not(:disabled):hover{filter:none!important;transform:translateY(-1px)}
+button:not(:disabled):active{filter:none!important;transform:translateY(0) scale(.99)!important;box-shadow:none!important}
+button:disabled{opacity:.58!important;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,
+summary:focus-visible,a:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--primary) 72%,var(--star))!important;
+  outline-offset:3px!important;
+}
+.outline,button.outline{
+  background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;
+  color:var(--primary)!important;
+  border-color:color-mix(in srgb,var(--primary) 34%,var(--line))!important;
+  box-shadow:none!important;
+}
+.success,button.success{
+  background:var(--ok)!important;color:#fff!important;border-color:var(--ok)!important;box-shadow:none!important;
+}
+.danger,button.danger{
+  background:#FFF1E5!important;color:var(--retry-text)!important;border-color:#F2C5A8!important;box-shadow:none!important;
+}
+input,select,textarea{
+  color:var(--text)!important;background:var(--card)!important;
+  border:1px solid var(--line)!important;border-radius:12px;
+  box-shadow:none!important;color-scheme:light;
+}
+input::placeholder,textarea::placeholder{color:var(--muted)!important;opacity:1}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--primary)!important;
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 18%,transparent)!important;
+  outline:none;
+}
+input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
+.field,label.field{color:var(--muted)!important}
+.muted,.card .muted,.hero .muted,.subject small,.mode span,.chapter-card button small,
+.footer,.profile-progress-caption,.profile-progress-label,.profile-progress-pct,
+.teacher-student-card small,.teacher-student-detail .detail-meta{color:var(--muted)!important}
+
+.card,.login-page,.item,.metric,.mode,.chapter-manager,.teacher-chapter-row,
+.teacher-bank-manager,.teacher-legacy-maker,.teacher-question-row,.question-editor,
+.student-account-form,.student-accounts-list,.accessrow,.option,.practice-option,
+.exam-option,.profile-card,.progress-dashboard,.progress-chapter,.video-manager,
+.chapter-video,.teacher-student-card,.teacher-student-detail,
+.teacher-student-detail .detail-row,.unified-subject-card,.book-planet-section,
+.teacher-topic-analytics,.teacher-report-metric,.printable-exam-builder,
+.explore-tool,.science-lab,.math-question-visual,.lesson-note,.lesson-sub,
+.chapter-intro,.chapter-goals,.concept-box,.lesson-example,.lesson-mistake,
+.lesson-check,.teacher-preview-entry{
+  color:var(--text)!important;
+  background:var(--card)!important;
+  background-image:none!important;
+  border-color:var(--line)!important;
+  box-shadow:0 5px 16px rgba(54,39,114,.06)!important;
+}
+.card{border-radius:18px!important}
+.card h2,.card h3,.card h4,.chapter-card b,.chapter-card button strong,.mode b,
+.chapter-goals h4,.lesson-note h4,.lesson-sub>b,.teacher-preview-copy b,.teacher-topic-analytics h3{
+  color:var(--text)!important;
+}
+.card h2{font-size:clamp(18px,3vw,21px)!important;font-weight:800!important}
+.card h3{font-weight:800!important}
+.pill{
+  background:color-mix(in srgb,var(--primary) 8%,var(--card))!important;
+  color:var(--text)!important;border:1px solid var(--line)!important;box-shadow:none!important;
+}
+.notice{
+  background:color-mix(in srgb,var(--star) 12%,var(--card))!important;
+  color:var(--text)!important;
+  border:1px solid color-mix(in srgb,var(--star) 35%,var(--line))!important;
+  box-shadow:none!important;
+}
+.metric{
+  background:color-mix(in srgb,var(--primary) 6%,var(--card))!important;
+  border:1px solid var(--line)!important;box-shadow:none!important;
+}
+.metric strong,.progress-summary b{color:var(--primary)!important}
+.hero{
+  color:var(--text)!important;
+  background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;
+  background-image:
+    radial-gradient(circle at 11% 24%,rgba(255,176,32,.16) 0 2px,transparent 2.5px),
+    radial-gradient(circle at 88% 17%,rgba(91,75,219,.12) 0 2px,transparent 2.5px)!important;
+  border:1px solid var(--line)!important;border-radius:18px!important;
+  box-shadow:0 7px 18px rgba(54,39,114,.07)!important;text-shadow:none!important;
+}
+.hero h1,.hero p,.hero .muted,.hero-statusline,.hero-mini-badge{
+  color:var(--text)!important;text-shadow:none!important;opacity:1;
+}
+.hero p{font-size:14px!important}
+.hero:before{color:color-mix(in srgb,var(--star) 65%,var(--primary))!important;opacity:.8}
+.hero:after{opacity:.14!important;filter:none!important}
+.logo{
+  color:var(--primary)!important;
+  background:color-mix(in srgb,var(--primary) 12%,var(--card))!important;
+  border:1px solid color-mix(in srgb,var(--primary) 28%,var(--line))!important;
+  border-radius:16px!important;box-shadow:none!important;text-shadow:none!important;
+}
+.mission-chip{
+  color:var(--text)!important;background:var(--card)!important;
+  border:1px solid var(--line)!important;box-shadow:none!important;backdrop-filter:none!important;
+}
+.mission-chip b{color:var(--text)!important}
+.mission-chip small{color:var(--muted)!important}
+#studentEnter{
+  background:var(--primary)!important;color:#fff!important;border-color:var(--primary)!important;box-shadow:none!important;
+}
+.nav button,.book-tabs button,#teacherNav button{
+  color:var(--muted)!important;
+  background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;
+  border:1px solid var(--line)!important;border-radius:12px!important;box-shadow:none!important;
+}
+.nav button.active,.book-tabs button.active,#teacherNav button.active{
+  background:var(--primary)!important;color:#fff!important;border-color:var(--primary)!important;box-shadow:none!important;
+}
+.student-app-nav{
+  background:var(--card)!important;border:1px solid var(--line)!important;
+  border-radius:18px!important;box-shadow:0 5px 16px rgba(54,39,114,.08)!important;backdrop-filter:none!important;
+}
+.student-app-nav button{
+  color:var(--muted)!important;background:transparent!important;
+  border:1px solid transparent!important;box-shadow:none!important;border-radius:12px!important;
+}
+.student-app-nav button.active,#studentAppNav button[data-app-view].active{
+  background:color-mix(in srgb,var(--primary) 12%,var(--card))!important;
+  color:var(--primary)!important;
+  border-color:color-mix(in srgb,var(--primary) 20%,var(--line))!important;box-shadow:none!important;
+}
+.student-app-nav button small{color:inherit!important}
+
+/* ثابت ماندن رنگ مستقل هر کتاب بر اساس شناسه‌های فعلی */
+.subject{
+  --book-accent:var(--primary);
+  color:var(--text)!important;
+  background:color-mix(in srgb,var(--book-accent) 12%,#fff)!important;
+  border:1px solid color-mix(in srgb,var(--book-accent) 25%,var(--line))!important;
+  border-radius:18px!important;box-shadow:none!important;
+}
+.subject[data-student-subject="math"],.subject[data-other-subject="math"]{--book-accent:var(--math)}
+.subject[data-student-subject="persian"],.subject[data-other-subject="persian"]{--book-accent:var(--fa)}
+.subject[data-student-subject="science"],.subject[data-other-subject="science"]{--book-accent:var(--sci)}
+.subject[data-student-subject="social"],.subject[data-other-subject="social"]{--book-accent:var(--soc)}
+.subject[data-student-subject="gifts"],.subject[data-other-subject="gifts"]{--book-accent:var(--quran)}
+.subject:before{background:var(--book-accent)!important;border-radius:0 12px 12px 0}
+.subject.active{
+  border-color:var(--book-accent)!important;
+  background:color-mix(in srgb,var(--book-accent) 15%,#fff)!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--book-accent) 24%,transparent)!important;
+}
+.subject b{color:var(--text)!important}
+.subject small{color:var(--muted)!important}
+.subjectIcon{
+  width:44px;height:44px;display:inline-grid!important;place-items:center;vertical-align:middle;
+  margin-left:8px!important;border-radius:13px!important;
+  border:1px solid color-mix(in srgb,var(--book-accent,var(--primary)) 25%,var(--line))!important;
+  background:color-mix(in srgb,var(--book-accent,var(--primary)) 14%,#fff)!important;
+  color:var(--text)!important;filter:none!important;
+}
+.mode,.chapter-card{
+  color:var(--text)!important;background:var(--card)!important;
+  border:1px solid var(--line)!important;box-shadow:none!important;
+}
+.mode.active,.chapter-card button.active{
+  background:color-mix(in srgb,var(--primary) 9%,var(--card))!important;
+  border-color:var(--primary)!important;
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--primary) 20%,transparent)!important;
+}
+.chapter-card button{color:var(--text)!important;background:var(--card)!important;border:0!important;box-shadow:none!important}
+.chapter-card button strong{color:var(--text)!important}
+.chapter-card button small{color:var(--muted)!important}
+.practice-option,.exam-option,.option,.accessrow{
+  background:var(--card)!important;color:var(--text)!important;
+  border:1px solid var(--line)!important;box-shadow:none!important;
+}
+.practice-option.selected,.exam-option.selected{
+  background:color-mix(in srgb,var(--primary) 9%,var(--card))!important;
+  border-color:var(--primary)!important;box-shadow:inset -4px 0 var(--primary)!important;
+}
+
+/* رنگ نوارهای پیشرفت با کتاب مرتبط می‌ماند؛ بدون تغییر داده یا اسکریپت */
+.profile-progress-track,.progress-track,.teacher-topic-row .progress-track{
+  background:color-mix(in srgb,var(--primary) 6%,var(--card))!important;border:1px solid var(--line)!important;
+}
+.profile-progress-fill,.progress-track>span,.teacher-topic-row .progress-track span{
+  background:var(--book-accent,var(--primary))!important;background-image:none!important;
+}
+#unifiedSubjectCards .unified-subject-card:has([data-focus-subject="math"]){--book-accent:var(--math)}
+#unifiedSubjectCards .unified-subject-card:has([data-focus-subject="persian"]){--book-accent:var(--fa)}
+#unifiedSubjectCards .unified-subject-card:has([data-focus-subject="science"]){--book-accent:var(--sci)}
+#unifiedSubjectCards .unified-subject-card:has([data-focus-subject="social"]){--book-accent:var(--soc)}
+#unifiedSubjectCards .unified-subject-card:has([data-focus-subject="gifts"]){--book-accent:var(--quran)}
+#chapterPlanetRoute .book-planet-section:has([data-planet-subject="math"]){--book-accent:var(--math)}
+#chapterPlanetRoute .book-planet-section:has([data-planet-subject="persian"]){--book-accent:var(--fa)}
+#chapterPlanetRoute .book-planet-section:has([data-planet-subject="science"]){--book-accent:var(--sci)}
+#chapterPlanetRoute .book-planet-section:has([data-planet-subject="social"]){--book-accent:var(--soc)}
+#chapterPlanetRoute .book-planet-section:has([data-planet-subject="gifts"]){--book-accent:var(--quran)}
+#allBooksProgressMount .profile-progress-row:nth-child(1){--book-accent:var(--math)}
+#allBooksProgressMount .profile-progress-row:nth-child(2){--book-accent:var(--fa)}
+#allBooksProgressMount .profile-progress-row:nth-child(3){--book-accent:var(--sci)}
+#allBooksProgressMount .profile-progress-row:nth-child(4){--book-accent:var(--soc)}
+#allBooksProgressMount .profile-progress-row:nth-child(5){--book-accent:var(--quran)}
+.book-planet-section{
+  border-color:var(--line)!important;border-inline-start:4px solid var(--book-accent,var(--primary))!important;
+  background:var(--card)!important;box-shadow:none!important;
+}
+.book-planet-heading b,.profile-progress-label{color:var(--text)!important}
+.book-planet-heading small,.profile-progress-caption{color:var(--muted)!important}
+.profile-progress-pct{color:var(--text)!important}
+
+/* بازخورد تمرین: سبز برای درست، نارنجی ملایم برای تلاش دوباره */
+.lesson-example{
+  background:color-mix(in srgb,var(--ok) 9%,var(--card))!important;
+  color:var(--text)!important;border-color:color-mix(in srgb,var(--ok) 27%,var(--line))!important;
+}
+.lesson-example>b{color:var(--ok)!important}
+.lesson-mistake{
+  background:color-mix(in srgb,var(--retry) 10%,var(--card))!important;
+  color:var(--text)!important;border-color:color-mix(in srgb,var(--retry) 27%,var(--line))!important;
+}
+.lesson-mistake>b{color:var(--retry-text)!important}
+.lesson-check{
+  background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;
+  color:var(--text)!important;border-color:color-mix(in srgb,var(--primary) 22%,var(--line))!important;
+}
+.lesson-check>b{color:var(--primary)!important}
+.chapter-intro,.chapter-goals,.lesson-note,.lesson-sub,.concept-box,.chapter-manager,
+.teacher-topic-analytics,.teacher-preview-entry,.teacher-report-metric{
+  background:var(--card)!important;color:var(--text)!important;
+  border-color:var(--line)!important;box-shadow:none!important;
+}
+.lesson-note h4,.lesson-sub>b,.chapter-intro h4,.chapter-goals h4{color:var(--text)!important}
+.visual-feedback-head,.visual-answer-summary,.question-analysis-specific,.visual-text-details,
+.visual-step-card,.visual-fraction-card,.visual-bottom-note,.visual-feedback-status,.question-analysis-title{
+  color:var(--text)!important;border-color:var(--line)!important;box-shadow:none!important;
+}
+.visual-feedback-head{
+  background:color-mix(in srgb,var(--primary) 6%,var(--card))!important;
+  border:1px solid var(--line)!important;border-radius:14px!important;
+}
+.visual-feedback-head.is-correct{
+  background:color-mix(in srgb,var(--ok) 10%,var(--card))!important;
+  border-color:color-mix(in srgb,var(--ok) 30%,var(--line))!important;
+}
+.visual-feedback-head.is-correct strong:before{content:"✔ ";color:var(--ok)}
+.visual-feedback-head.is-correct .visual-feedback-status{
+  background:var(--ok)!important;color:#fff!important;border-color:var(--ok)!important;
+}
+.visual-feedback-head.needs-review{
+  background:color-mix(in srgb,var(--retry) 10%,var(--card))!important;
+  border-color:color-mix(in srgb,var(--retry) 30%,var(--line))!important;
+}
+.visual-feedback-head.needs-review strong:before{content:"دوباره امتحان کن — ";color:var(--retry-text)}
+.visual-feedback-head.needs-review .visual-feedback-status{
+  background:color-mix(in srgb,var(--retry) 15%,var(--card))!important;
+  color:var(--retry-text)!important;border-color:color-mix(in srgb,var(--retry) 32%,var(--line))!important;
+}
+.visual-answer-summary{
+  background:color-mix(in srgb,var(--ok) 7%,var(--card))!important;
+  border:1px solid color-mix(in srgb,var(--ok) 22%,var(--line))!important;border-radius:13px!important;
+}
+.question-analysis-specific,.visual-text-details{
+  background:var(--card)!important;border:1px solid var(--line)!important;border-radius:13px!important;
+}
+.visual-bottom-note{
+  background:color-mix(in srgb,var(--star) 12%,var(--card))!important;color:var(--text)!important;
+}
+.pg-feedback.correct,#persianGamesPanel .pg-feedback.correct,#persianGamesPanel #pgFeedback.correct{
+  background:#E6F7EE!important;color:#075B3D!important;border:1px solid #9BD8BA!important;
+}
+.pg-feedback.incorrect,#persianGamesPanel .pg-feedback.incorrect,#persianGamesPanel #pgFeedback.incorrect{
+  background:#FFF0E4!important;color:var(--retry-text)!important;border:1px solid #F0C2A4!important;
+}
+.pg-feedback.info,#persianGamesPanel .pg-feedback.info{
+  background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;
+  color:var(--text)!important;border:1px solid var(--line)!important;
+}
+#bookPracticeFeedback:has(.visual-feedback-head.is-correct),#examFeedback:has(.visual-feedback-head.is-correct){
+  background:color-mix(in srgb,var(--ok) 8%,var(--card))!important;color:var(--text)!important;
+  border:1px solid color-mix(in srgb,var(--ok) 28%,var(--line))!important;
+}
+#bookPracticeFeedback:has(.visual-feedback-head.needs-review),#examFeedback:has(.visual-feedback-head.needs-review){
+  background:color-mix(in srgb,var(--retry) 9%,var(--card))!important;color:var(--text)!important;
+  border:1px solid color-mix(in srgb,var(--retry) 30%,var(--line))!important;
+}
+
+/* بخش‌های فارسی، آزمایشگاه علوم و شکل‌های کمکی نیز از سطح روشن پیروی کنند */
+#persianLanding,#persianGamesPanel{
+  background:var(--card)!important;background-image:none!important;color:var(--text)!important;
+  border:1px solid var(--line)!important;border-radius:18px!important;box-shadow:0 5px 16px rgba(54,39,114,.06)!important;
+}
+#persianLanding :is(h1,h2,h3,h4,p,small,strong,label,.field,.muted),
+#persianGamesPanel :is(h1,h2,h3,h4,p,small,strong,label,.field,.muted,.pg-prompt,.pg-source-note,
+.pg-games-section-title,.pg-selected-lesson,.pg-lesson-prompt,.pg-game-select,.pg-game-card,
+.pg-game-stats span,.pg-context,.pg-word-slots,.pg-question-head strong,.pg-question-head span){
+  color:var(--text)!important;
+}
+#persianLanding .muted,#persianGamesPanel .muted,#persianGamesPanel .pg-source-note,
+#persianGamesPanel .pg-selected-lesson{color:var(--muted)!important}
+#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-game-select,#persianGamesPanel .pg-game-stats span,
+#persianGamesPanel .pg-context,#persianGamesPanel .pg-word-slots,#persianGamesPanel .pg-question-head span{
+  background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important;box-shadow:none!important;
+}
+#persianGamesPanel .pg-lesson-prompt{
+  background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;color:var(--text)!important;border-color:var(--line)!important;
+}
+#persianGamesPanel .pg-mode-tabs button,#persianGamesPanel [data-pg-mode]{
+  color:var(--text)!important;background:color-mix(in srgb,var(--primary) 7%,var(--card))!important;
+  border:1px solid var(--line)!important;border-radius:13px!important;box-shadow:none!important;
+}
+#persianGamesPanel .pg-mode-tabs button.active,#persianGamesPanel [data-pg-mode].active{
+  background:var(--primary)!important;color:#fff!important;border-color:var(--primary)!important;box-shadow:none!important;
+}
+#persianGamesPanel #pgLessonSelect,#persianGamesPanel .pg-game-select select,
+#persianGamesPanel .pg-answer-input,#persianGamesPanel #pgFixAnswer{
+  background:var(--card)!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;
+  border:1px solid var(--line)!important;color-scheme:light;box-shadow:none!important;
+}
+#persianGamesPanel #pgLessonSelect option,#persianGamesPanel .pg-game-select select option{
+  background:var(--card)!important;color:var(--text)!important;
+}
+#persianGamesPanel .pg-letter-tile,#persianGamesPanel .pg-cloze-option{
+  background:var(--card)!important;color:var(--text)!important;border:1px solid var(--line)!important;box-shadow:none!important;
+}
+#persianGamesPanel .pg-letter-tile.selected,#persianGamesPanel .pg-cloze-option.selected,
+#persianGamesPanel .pg-cloze-option[aria-pressed="true"],#persianGamesPanel #pgClozeOptions button.selected{
+  background:color-mix(in srgb,var(--primary) 12%,var(--card))!important;
+  color:var(--text)!important;border-color:var(--primary)!important;box-shadow:inset 0 0 0 1px var(--primary)!important;
+}
+.explore-tool h4,.science-lab h4{color:var(--text)!important}
+.explore-choice,.science-lab-scenes,.science-lab-scene,.science-lab-result,.plant-sim-stage,.science-lab-cup{
+  background:color-mix(in srgb,var(--quran) 7%,var(--card))!important;
+  color:var(--text)!important;border-color:var(--line)!important;box-shadow:none!important;filter:none!important;
+}
+.explore-choice.active,.science-lab-actions button.selected{
+  background:color-mix(in srgb,var(--primary) 12%,var(--card))!important;
+  color:var(--text)!important;border-color:var(--primary)!important;box-shadow:none!important;
+}
+.science-lab-scene small,.science-lab-result p{color:var(--muted)!important}
+.math-question-visual{
+  background:var(--card)!important;background-image:none!important;color:var(--text)!important;
+  border-color:var(--line)!important;box-shadow:none!important;
+}
+.math-question-visual :is(figcaption,p,small,b,strong,th,td,label){color:var(--text)!important}
+.math-question-visual :is(.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-set-group,
+.mqv-unit-step,.mqv-group-card,.mqv-op span,.mqv-frac-label,.mqv-place-table th,.mqv-place-table td,
+.mqv-decimal-table th,.mqv-decimal-table td){
+  background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important;box-shadow:none!important;
+}
+.math-question-visual :is(.mqv-caption,.mqv-stage small,.mqv-place-table th,.mqv-decimal-table th,.mqv-group-card small){
+  color:var(--muted)!important;
+}
+.math-question-visual :is(.mqv-op b,.mqv-seq-arrow,.mqv-seq-arrow small,.mqv-group-card b,
+.mqv-place-table td,.mqv-decimal-table td){color:var(--text)!important}
+.math-question-visual .mqv-frac-piece{background:var(--card)!important;border-color:var(--line)!important}
+.math-question-visual .mqv-frac-piece.filled{
+  background:color-mix(in srgb,var(--math) 18%,var(--card))!important;border-color:var(--math)!important;
+}
+.math-question-visual .mqv-remainder{
+  background:color-mix(in srgb,var(--star) 12%,var(--card))!important;color:var(--text)!important;border-color:var(--line)!important;
+}
+.footer{color:var(--muted)!important;border-color:var(--line)!important}
+:where(.card,.item,.chapter-manager,.teacher-chapter-row,.accessrow,.option,.concept-box):focus-within{
+  border-color:var(--primary)!important;
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 17%,transparent)!important;
+}
+
+@media(prefers-color-scheme:dark){
+  :root{
+    color-scheme:dark;
+    --bg:#100E1B;
+    --card:#1B1830;
+    --text:#F1EEFF;
+    --muted:#B7B2D6;
+    --line:#3A3456;
+    --primary:#8B7DFF;
+    --border:var(--line);
+    --input-bg:var(--card);
+    --panel:var(--card);
+    --surface-2:#211D3A;
+    --space-panel:var(--card);
+    --space-panel-deep:var(--card);
+    --space-panel-raised:#24203C;
+    --space-text:var(--text);
+    --space-muted:var(--muted);
+    --space-border:var(--line);
+    --space-glow:transparent;
+    --blue:var(--primary);--blue2:var(--primary);--navy:var(--text);--ink:var(--text);
+    --green:#53D7A4;--red:#FFB47F;--gold:var(--star);--purple:var(--primary);--cyan:#50D0DD;
+    --orange:#FFB47F;--retry-text:#FFD9BE;
+  }
+  html,body{background-color:var(--bg)!important;color:var(--text)!important}
+  body{
+    background-image:
+      radial-gradient(circle at 9% 13%,rgba(255,176,32,.1) 0 1.5px,transparent 2px),
+      radial-gradient(circle at 83% 24%,rgba(139,125,255,.13) 0 1.5px,transparent 2px),
+      radial-gradient(circle at 68% 82%,rgba(80,208,221,.1) 0 1.5px,transparent 2px)!important;
+  }
+  .hero{
+    background:color-mix(in srgb,var(--primary) 9%,var(--card))!important;
+    background-image:
+      radial-gradient(circle at 11% 24%,rgba(255,176,32,.1) 0 2px,transparent 2.5px),
+      radial-gradient(circle at 88% 17%,rgba(139,125,255,.12) 0 2px,transparent 2.5px)!important;
+  }
+  .hero h1,.hero p,.hero .muted,.hero-statusline,.hero-mini-badge,
+  .card h2,.card h3,.card h4,.chapter-card b,.chapter-card button strong,.mode b,
+  .lesson-note h4,.lesson-sub>b,.chapter-intro h4,.chapter-goals h4{color:var(--text)!important}
+  .logo{background:color-mix(in srgb,var(--primary) 20%,var(--card))!important;color:var(--text)!important}
+  .card,.login-page,.item,.metric,.mode,.chapter-manager,.teacher-chapter-row,.teacher-bank-manager,
+  .teacher-legacy-maker,.teacher-question-row,.question-editor,.student-account-form,.student-accounts-list,
+  .accessrow,.option,.practice-option,.exam-option,.profile-card,.progress-dashboard,.progress-chapter,
+  .video-manager,.chapter-video,.teacher-student-card,.teacher-student-detail,.teacher-student-detail .detail-row,
+  .unified-subject-card,.book-planet-section,.teacher-topic-analytics,.teacher-report-metric,
+  .printable-exam-builder,.explore-tool,.science-lab,.math-question-visual,.lesson-note,.lesson-sub,
+  .chapter-intro,.chapter-goals,.concept-box,.lesson-example,.lesson-mistake,.lesson-check,.teacher-preview-entry{
+    background:var(--card)!important;background-image:none!important;color:var(--text)!important;
+    border-color:var(--line)!important;box-shadow:none!important;
+  }
+  .subject{
+    background:color-mix(in srgb,var(--book-accent,var(--primary)) 17%,var(--card))!important;
+    color:var(--text)!important;
+    border-color:color-mix(in srgb,var(--book-accent,var(--primary)) 45%,var(--line))!important;
+  }
+  .subject.active{
+    background:color-mix(in srgb,var(--book-accent,var(--primary)) 23%,var(--card))!important;
+    border-color:var(--book-accent,var(--primary))!important;
+  }
+  .subjectIcon{
+    background:color-mix(in srgb,var(--book-accent,var(--primary)) 20%,var(--card))!important;
+    color:var(--text)!important;border-color:color-mix(in srgb,var(--book-accent,var(--primary)) 48%,var(--line))!important;
+  }
+  button{color:#100E1B!important}
+  button.outline,.outline,.nav button,.book-tabs button,#teacherNav button,.student-app-nav button,
+  .chapter-card button,.mode,.subject,.practice-option,.exam-option,.option,.accessrow{
+    color:var(--text)!important;
+  }
+  .outline,button.outline,.nav button,.book-tabs button,#teacherNav button{
+    background:color-mix(in srgb,var(--primary) 12%,var(--card))!important;
+    border-color:var(--line)!important;color:var(--text)!important;
+  }
+  .nav button.active,.book-tabs button.active,#teacherNav button.active{
+    background:var(--primary)!important;color:#100E1B!important;border-color:var(--primary)!important;
+  }
+  .student-app-nav{background:var(--card)!important;border-color:var(--line)!important}
+  .student-app-nav button{background:transparent!important;color:var(--muted)!important}
+  .student-app-nav button.active,#studentAppNav button[data-app-view].active{
+    background:color-mix(in srgb,var(--primary) 18%,var(--card))!important;
+    color:var(--text)!important;border-color:var(--primary)!important;
+  }
+  .pill{background:color-mix(in srgb,var(--primary) 14%,var(--card))!important;color:var(--text)!important;border-color:var(--line)!important}
+  .notice{background:color-mix(in srgb,var(--star) 11%,var(--card))!important;color:var(--text)!important;border-color:color-mix(in srgb,var(--star) 30%,var(--line))!important}
+  .metric{background:color-mix(in srgb,var(--primary) 10%,var(--card))!important}
+  .metric strong,.progress-summary b{color:var(--primary)!important}
+  .lesson-example{background:color-mix(in srgb,var(--ok) 15%,var(--card))!important}
+  .lesson-mistake{background:color-mix(in srgb,var(--retry) 15%,var(--card))!important}
+  .practice-option,.exam-option,.option,.accessrow{
+    background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important;
+  }
+  .practice-option.selected,.exam-option.selected{
+    background:color-mix(in srgb,var(--primary) 18%,var(--card))!important;border-color:var(--primary)!important;
+  }
+  .profile-progress-track,.progress-track,.teacher-topic-row .progress-track{
+    background:#100E1B!important;border-color:var(--line)!important;
+  }
+  .pg-feedback.correct,#persianGamesPanel .pg-feedback.correct,#persianGamesPanel #pgFeedback.correct{
+    background:#173A30!important;color:#D8F8E9!important;border-color:#3B9B78!important;
+  }
+  .pg-feedback.incorrect,#persianGamesPanel .pg-feedback.incorrect,#persianGamesPanel #pgFeedback.incorrect{
+    background:#452A19!important;color:#FFE4CF!important;border-color:#B87545!important;
+  }
+  .pg-feedback.info,#persianGamesPanel .pg-feedback.info{
+    background:color-mix(in srgb,var(--primary) 14%,var(--card))!important;color:var(--text)!important;border-color:var(--line)!important;
+  }
+  .visual-feedback-head.is-correct{background:#173A30!important;border-color:#3B9B78!important}
+  .visual-feedback-head.is-correct strong:before{color:#8CE0B9}
+  .visual-feedback-head.is-correct .visual-feedback-status{background:#0B7A55!important;color:#fff!important}
+  .visual-feedback-head.needs-review{background:#452A19!important;border-color:#B87545!important}
+  .visual-feedback-head.needs-review strong:before{color:#FFD9BE}
+  .visual-feedback-head.needs-review .visual-feedback-status{background:#5C351E!important;color:#FFE4CF!important;border-color:#B87545!important}
+  .visual-answer-summary{background:#173A30!important;border-color:#3B9B78!important}
+  .visual-bottom-note{background:#352B1B!important;color:#FFE7BD!important}
+  #persianLanding,#persianGamesPanel{
+    background:var(--card)!important;background-image:none!important;color:var(--text)!important;
+    border-color:var(--line)!important;box-shadow:none!important;
+  }
+  #persianLanding :is(h1,h2,h3,h4,p,small,strong,label,.field,.muted),
+  #persianGamesPanel :is(h1,h2,h3,h4,p,small,strong,label,.field,.muted,.pg-prompt,.pg-source-note,
+  .pg-games-section-title,.pg-selected-lesson,.pg-lesson-prompt,.pg-game-select,.pg-game-card,
+  .pg-game-stats span,.pg-context,.pg-word-slots,.pg-question-head strong,.pg-question-head span){
+    color:var(--text)!important;
+  }
+  #persianGamesPanel .pg-lesson-prompt,#persianGamesPanel .pg-game-card,#persianGamesPanel .pg-game-select,
+  #persianGamesPanel .pg-game-stats span,#persianGamesPanel .pg-context,#persianGamesPanel .pg-word-slots,
+  #persianGamesPanel .pg-question-head span{
+    background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important;
+  }
+  #persianGamesPanel .pg-mode-tabs button,#persianGamesPanel [data-pg-mode]{
+    background:color-mix(in srgb,var(--primary) 12%,var(--card))!important;
+    color:var(--text)!important;border-color:var(--line)!important;box-shadow:none!important;
+  }
+  #persianGamesPanel .pg-mode-tabs button.active,#persianGamesPanel [data-pg-mode].active{
+    background:var(--primary)!important;color:#100E1B!important;border-color:var(--primary)!important;
+  }
+  #persianGamesPanel #pgLessonSelect,#persianGamesPanel .pg-game-select select,
+  #persianGamesPanel .pg-answer-input,#persianGamesPanel #pgFixAnswer,
+  #persianGamesPanel #pgLessonSelect option,#persianGamesPanel .pg-game-select select option{
+    color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;
+    background:var(--card)!important;border-color:var(--line)!important;color-scheme:dark!important;
+  }
+  #persianGamesPanel .pg-letter-tile,#persianGamesPanel .pg-cloze-option{
+    background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important;
+  }
+  #persianGamesPanel .pg-letter-tile.selected,#persianGamesPanel .pg-cloze-option.selected,
+  #persianGamesPanel .pg-cloze-option[aria-pressed="true"],#persianGamesPanel #pgClozeOptions button.selected{
+    background:color-mix(in srgb,var(--primary) 18%,var(--card))!important;
+    color:var(--text)!important;border-color:var(--primary)!important;
+  }
+  .explore-choice,.science-lab-scenes,.science-lab-scene,.science-lab-result,.plant-sim-stage,.science-lab-cup{
+    background:color-mix(in srgb,var(--quran) 12%,var(--card))!important;
+    color:var(--text)!important;border-color:var(--line)!important;
+  }
+  .explore-choice.active,.science-lab-actions button.selected{
+    background:color-mix(in srgb,var(--primary) 18%,var(--card))!important;color:var(--text)!important;border-color:var(--primary)!important;
+  }
+  .math-question-visual :is(.mqv-stage,.mqv-seq-cell,.mqv-hour-block,.mqv-shape-card,.mqv-set-group,
+  .mqv-unit-step,.mqv-group-card,.mqv-op span,.mqv-frac-label,.mqv-place-table th,.mqv-place-table td,
+  .mqv-decimal-table th,.mqv-decimal-table td){
+    background:var(--card)!important;color:var(--text)!important;border-color:var(--line)!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto!important;animation-duration:.01ms!important;
+    animation-iteration-count:1!important;transition-duration:.01ms!important;
+  }
+}
+@media print{
+  body.print-exam-only,body.print-exam-only .print-exam-paper,
+  body.print-exam-only .print-exam-question,body.print-exam-only .print-exam-answer-key{
+    background:#fff!important;background-image:none!important;color:#111!important;
+    border-color:#777!important;box-shadow:none!important;text-shadow:none!important;
+  }
+  body.print-exam-only .print-exam-paper *,body.print-exam-only .print-exam-question *,
+  body.print-exam-only .print-exam-answer-key *{
+    color:#111!important;text-shadow:none!important;box-shadow:none!important;
+  }
+}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
