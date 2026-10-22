@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v25-20261022-theme-space-light-teacher-name-music">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v26-20261022-theme-space-light-happier-louder-music">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -7375,18 +7375,23 @@ function paintMathQuestionVisual(q,target){
   'use strict';
 
   const TEACHER_NAME = 'نظامی';
-  const MUSIC_VOLUME = 0.2;
+  const MUSIC_VOLUME = 0.28;
   const MUSIC_DEFAULT_ON = true;
   const MUSIC_STORAGE_KEY = 'chahromiha-background-music';
   const MUSIC_FADE_SECONDS = 1.5;
   const MAX_ACTIVE_OSCILLATORS = 10;
   const PAD_CHORD_SECONDS = 8;
   const MELODY_SCALE = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+  const HAPPY_MELODY_PHRASE = [
+    0, 2, 3, 2, 4, 3, 2, 0,
+    0, 2, 4, 5, 4, 3, 2,
+    1, 2, 3, 4, 2, 0
+  ];
   const CHORDS = [
     [130.81, 164.81, 196.00, 246.94], // Cmaj7
-    [110.00, 130.81, 164.81, 196.00], // Am7
-    [87.31, 110.00, 130.81, 164.81],  // Fmaj7
-    [98.00, 123.47, 146.83, 164.81]   // G6
+    [98.00, 123.47, 146.83, 164.81],   // G6
+    [110.00, 130.81, 164.81, 196.00],  // Am7
+    [87.31, 110.00, 130.81, 164.81]    // Fmaj7
   ];
 
   const teacherLine = document.querySelector('[data-teacher-name]');
@@ -7435,7 +7440,7 @@ function paintMathQuestionVisual(q,target){
   let isPlaying = false;
   let engineScheduled = false;
   let chordIndex = 0;
-  let lastMelodyIndex = null;
+  let melodyPhraseIndex = 0;
   let padTimer = null;
   let melodyTimer = null;
   let fadeFinishTimer = null;
@@ -7621,17 +7626,8 @@ function paintMathQuestionVisual(q,target){
       return;
     }
 
-    let nextIndex;
-    if (lastMelodyIndex === null) {
-      nextIndex = Math.floor(Math.random() * MELODY_SCALE.length);
-    } else {
-      const minIndex = Math.max(0, lastMelodyIndex - 2);
-      const maxIndex = Math.min(MELODY_SCALE.length - 1, lastMelodyIndex + 2);
-      const candidates = [];
-      for (let i = minIndex; i <= maxIndex; i += 1) candidates.push(i);
-      nextIndex = candidates[Math.floor(Math.random() * candidates.length)];
-    }
-    lastMelodyIndex = nextIndex;
+    const nextIndex = HAPPY_MELODY_PHRASE[melodyPhraseIndex];
+    melodyPhraseIndex = (melodyPhraseIndex + 1) % HAPPY_MELODY_PHRASE.length;
 
     const startTime = audioContext.currentTime + 0.02;
     const envelope = audioContext.createGain();
@@ -7645,9 +7641,9 @@ function paintMathQuestionVisual(q,target){
     fundamental.frequency.setValueAtTime(MELODY_SCALE[nextIndex], startTime);
     octave.frequency.setValueAtTime(MELODY_SCALE[nextIndex] * 2, startTime);
     fundamentalGain.gain.value = 0.9;
-    octaveGain.gain.value = 0.24;
+    octaveGain.gain.value = 0.28;
     envelope.gain.setValueAtTime(0.0001, startTime);
-    envelope.gain.linearRampToValueAtTime(0.14, startTime + 0.07);
+    envelope.gain.linearRampToValueAtTime(0.16, startTime + 0.07);
     envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 2.55);
 
     fundamental.connect(fundamentalGain);
