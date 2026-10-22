@@ -5,7 +5,7 @@
   "description": "محیط یادگیری چنددرس پایه چهارم؛ آموزش، واژه‌آموزی، املا، تمرین و آزمون",
   "lang": "fa",
   "dir": "rtl",
-  "start_url": "./?source=pwa&v=20261022-chahromiha-v35",
+  "start_url": "./?source=pwa&v=20261022-chahromiha-v36",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -16,7 +16,7 @@
   ],
   "icons": [
     {
-      "src": "./icons/app-icon.png",
+      "src": "./icons/app-icon-2.png",
       "sizes": "any",
       "type": "image/png",
       "purpose": "any"
