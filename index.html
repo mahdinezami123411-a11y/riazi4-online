@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="چهارمی ها">
-<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v24-20261022-theme-space-light">
+<meta name="application-name" content="چهارمی ها"><meta name="app-build" content="chahromiha-v25-20261022-theme-space-light-teacher-name-music">
 <title>چهارمی ها | آموزش همه درس‌های پایه چهارم</title>
 <!-- نسخه اصلاح‌شده v4: حفظ کتاب داخلی، ورود با نام کاربری و رمز، و نشان نسخه برای بررسی انتشار | 2026-10-14 -->
 <style>
@@ -2128,9 +2128,66 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   }
 }
 
+
+/* چهارمی ها: نام آموزگار و کنترل موسیقی پس‌زمینه */
+.teacher-name{
+  display:block;
+  min-width:0;
+  margin-top:2px;
+  color:var(--muted)!important;
+  font-size:12px;
+  line-height:1.5;
+  font-weight:600;
+  text-shadow:none!important;
+}
+.hero:before{left:76px!important}
+#musicToggleButton{
+  position:fixed;
+  top:calc(env(safe-area-inset-top, 0px) + 12px);
+  left:calc(env(safe-area-inset-left, 0px) + 12px);
+  z-index:99999;
+  display:grid;
+  place-items:center;
+  width:52px;
+  height:52px;
+  min-width:52px;
+  min-height:52px;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:color-mix(in srgb,var(--card) 78%,transparent);
+  color:var(--text);
+  font-size:22px;
+  line-height:1;
+  box-shadow:0 4px 14px rgba(0,0,0,.22);
+  -webkit-backdrop-filter:blur(10px);
+  backdrop-filter:blur(10px);
+  transform:none;
+  transition:background-color .2s,filter .2s,box-shadow .2s;
+}
+#musicToggleButton[hidden]{display:none!important}
+#musicToggleButton:hover{filter:brightness(1.05);transform:none}
+#musicToggleButton:active{transform:scale(.96);box-shadow:0 2px 9px rgba(0,0,0,.18)}
+#musicToggleButton:focus-visible{
+  outline:3px solid var(--primary,#5B4BDB);
+  outline-offset:3px;
+}
+@media(max-width:390px){
+  .teacher-name{font-size:11px}
+  .hero:before{left:70px!important}
+  #musicToggleButton{
+    top:calc(env(safe-area-inset-top, 0px) + 8px);
+    left:calc(env(safe-area-inset-left, 0px) + 8px);
+    width:48px;
+    height:48px;
+    min-width:48px;
+    min-height:48px;
+  }
+}
+
 </style></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
-<header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
+<header class="hero"><div class="brand"><div class="logo">📚</div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p><small class="teacher-name" data-teacher-name>آموزگار: نظامی</small></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
 <section class="card" id="home"><div class="home-kicker"><span>📚</span> چهارمی ها</div><h2>سلام دانش‌آموز چهارمی! کدام کتاب را می‌خواهی شروع کنی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">بعد از ورود، کتاب موردنظرت را انتخاب کن و آموزش، یادآوری، تمرین و آزمون همان درس را باز کن.</p><div class="mission-strip"><div class="mission-chip"><span>📖</span><b>یادگیری</b><small>درس را مرحله‌به‌مرحله بخوان</small></div><div class="mission-chip"><span>✏️</span><b>تمرین</b><small>دانسته‌هایت را بسنج</small></div><div class="mission-chip"><span>🌟</span><b>پیشرفت</b><small>قدم‌به‌قدم بهتر شو</small></div></div><div class="notice adventure-note">🧭 برای شروع، با حساب دانش‌آموز وارد شو؛ سپس یکی از کتاب‌های پایهٔ چهارم را انتخاب کن. بخش‌های هر کتاب متناسب با همان درس نمایش داده می‌شوند.</div></section>
 <section id="studentNamePage" class="card hidden login-page" aria-labelledby="studentLoginTitle">
   <div class="login-art">🚀 <span>مأموریت شروع می‌شود!</span></div>
@@ -7310,5 +7367,419 @@ function paintMathQuestionVisual(q,target){
  target.innerHTML=markup;
  target.classList.toggle('hidden',!markup);
 }
+
+
+
+/* چهارمی ها: نام آموزگار و موسیقی فضاییِ تولیدشده با Web Audio API */
+(function initializeTeacherNameAndBackgroundMusic() {
+  'use strict';
+
+  const TEACHER_NAME = 'نظامی';
+  const MUSIC_VOLUME = 0.2;
+  const MUSIC_DEFAULT_ON = true;
+  const MUSIC_STORAGE_KEY = 'chahromiha-background-music';
+  const MUSIC_FADE_SECONDS = 1.5;
+  const MAX_ACTIVE_OSCILLATORS = 10;
+  const PAD_CHORD_SECONDS = 8;
+  const MELODY_SCALE = [523.25, 587.33, 659.25, 783.99, 880, 1046.5];
+  const CHORDS = [
+    [130.81, 164.81, 196.00, 246.94], // Cmaj7
+    [110.00, 130.81, 164.81, 196.00], // Am7
+    [87.31, 110.00, 130.81, 164.81],  // Fmaj7
+    [98.00, 123.47, 146.83, 164.81]   // G6
+  ];
+
+  const teacherLine = document.querySelector('[data-teacher-name]');
+  if (teacherLine) teacherLine.textContent = 'آموزگار: ' + TEACHER_NAME;
+
+  const musicToggle = document.createElement('button');
+  musicToggle.type = 'button';
+  musicToggle.id = 'musicToggleButton';
+  musicToggle.textContent = '🔇';
+  musicToggle.setAttribute('aria-label', 'پخش موسیقی');
+  musicToggle.setAttribute('aria-pressed', 'false');
+  musicToggle.title = 'پخش موسیقی';
+  musicToggle.hidden = true;
+  document.body.appendChild(musicToggle);
+
+  const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextConstructor) return;
+  musicToggle.hidden = false;
+
+  function readMusicPreference() {
+    try {
+      const saved = window.localStorage.getItem(MUSIC_STORAGE_KEY);
+      if (saved === 'on') return true;
+      if (saved === 'off') return false;
+    } catch (error) {}
+    return MUSIC_DEFAULT_ON;
+  }
+
+  function saveMusicPreference(enabled) {
+    try {
+      window.localStorage.setItem(MUSIC_STORAGE_KEY, enabled ? 'on' : 'off');
+    } catch (error) {}
+  }
+
+  let musicEnabled = readMusicPreference();
+  let audioContext = null;
+  let masterGain = null;
+  let musicInput = null;
+  let padFilter = null;
+  let delayNode = null;
+  let feedbackFilter = null;
+  let feedbackGain = null;
+  let delayWetGain = null;
+  let convolver = null;
+  let reverbWetGain = null;
+  let isPlaying = false;
+  let engineScheduled = false;
+  let chordIndex = 0;
+  let lastMelodyIndex = null;
+  let padTimer = null;
+  let melodyTimer = null;
+  let fadeFinishTimer = null;
+  let fadeVersion = 0;
+  const activeOscillators = new Set();
+  let masterRamp = { from: 0, to: 0, start: 0, end: 0 };
+
+  function updateMusicToggle() {
+    const playingNow = Boolean(
+      musicEnabled &&
+      isPlaying &&
+      !document.hidden &&
+      audioContext &&
+      audioContext.state === 'running'
+    );
+    musicToggle.textContent = playingNow ? '🔊' : '🔇';
+    musicToggle.setAttribute('aria-label', playingNow ? 'قطع موسیقی' : 'پخش موسیقی');
+    musicToggle.setAttribute('aria-pressed', playingNow ? 'true' : 'false');
+    musicToggle.title = playingNow ? 'قطع موسیقی' : 'پخش موسیقی';
+  }
+
+  function createReverbImpulse(context) {
+    const seconds = 3.2;
+    const length = Math.floor(context.sampleRate * seconds);
+    const impulse = context.createBuffer(2, length, context.sampleRate);
+    for (let channel = 0; channel < 2; channel += 1) {
+      const samples = impulse.getChannelData(channel);
+      for (let i = 0; i < length; i += 1) {
+        const fade = Math.pow(1 - i / length, 3);
+        samples[i] = (Math.random() * 2 - 1) * fade;
+      }
+    }
+    return impulse;
+  }
+
+  function ensureAudioGraph() {
+    if (audioContext && masterGain) return true;
+    try {
+      audioContext = new AudioContextConstructor();
+      const context = audioContext;
+
+      masterGain = context.createGain();
+      masterGain.gain.setValueAtTime(0, context.currentTime);
+      masterGain.connect(context.destination);
+      masterRamp = {
+        from: 0,
+        to: 0,
+        start: context.currentTime,
+        end: context.currentTime
+      };
+
+      musicInput = context.createGain();
+      musicInput.gain.value = 1;
+      musicInput.connect(masterGain);
+
+      padFilter = context.createBiquadFilter();
+      padFilter.type = 'lowpass';
+      padFilter.frequency.value = 800;
+      padFilter.Q.value = 0.5;
+      padFilter.connect(musicInput);
+
+      delayNode = context.createDelay(1.2);
+      delayNode.delayTime.value = 0.4;
+      feedbackFilter = context.createBiquadFilter();
+      feedbackFilter.type = 'lowpass';
+      feedbackFilter.frequency.value = 800;
+      feedbackFilter.Q.value = 0.5;
+      feedbackGain = context.createGain();
+      feedbackGain.gain.value = 0.35;
+      delayWetGain = context.createGain();
+      delayWetGain.gain.value = 0.18;
+      musicInput.connect(delayNode);
+      delayNode.connect(delayWetGain);
+      delayWetGain.connect(masterGain);
+      delayNode.connect(feedbackFilter);
+      feedbackFilter.connect(feedbackGain);
+      feedbackGain.connect(delayNode);
+
+      convolver = context.createConvolver();
+      convolver.buffer = createReverbImpulse(context);
+      reverbWetGain = context.createGain();
+      reverbWetGain.gain.value = 0.16;
+      musicInput.connect(convolver);
+      convolver.connect(reverbWetGain);
+      reverbWetGain.connect(masterGain);
+      return true;
+    } catch (error) {
+      try {
+        if (audioContext && audioContext.state !== 'closed') {
+          audioContext.close().catch(function () {});
+        }
+      } catch (closeError) {}
+      audioContext = null;
+      masterGain = null;
+      musicToggle.hidden = true;
+      return false;
+    }
+  }
+
+  function estimateMasterLevel(now) {
+    if (now >= masterRamp.end) return masterRamp.to;
+    if (now <= masterRamp.start || masterRamp.end <= masterRamp.start) {
+      return masterRamp.from;
+    }
+    const progress = (now - masterRamp.start) / (masterRamp.end - masterRamp.start);
+    return masterRamp.from + (masterRamp.to - masterRamp.from) * progress;
+  }
+
+  function fadeMasterTo(target) {
+    if (!audioContext || !masterGain) return;
+    const now = audioContext.currentTime;
+    const current = estimateMasterLevel(now);
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setValueAtTime(current, now);
+    masterGain.gain.linearRampToValueAtTime(target, now + MUSIC_FADE_SECONDS);
+    masterRamp = {
+      from: current,
+      to: target,
+      start: now,
+      end: now + MUSIC_FADE_SECONDS
+    };
+  }
+
+  function clearMusicTimers() {
+    if (padTimer !== null) window.clearTimeout(padTimer);
+    if (melodyTimer !== null) window.clearTimeout(melodyTimer);
+    padTimer = null;
+    melodyTimer = null;
+    engineScheduled = false;
+  }
+
+  function trackVoice(oscillators, extraNodes) {
+    const voice = { remaining: oscillators.length, extraNodes: extraNodes };
+    oscillators.forEach(function (oscillator) {
+      activeOscillators.add(oscillator);
+      oscillator.onended = function () {
+        activeOscillators.delete(oscillator);
+        try { oscillator.disconnect(); } catch (error) {}
+        voice.remaining -= 1;
+        if (voice.remaining === 0) {
+          voice.extraNodes.forEach(function (node) {
+            try { node.disconnect(); } catch (error) {}
+          });
+        }
+      };
+    });
+  }
+
+  function scheduleOnePadNote(frequency, index, startTime) {
+    const oscillator = audioContext.createOscillator();
+    const envelope = audioContext.createGain();
+    oscillator.type = index % 2 === 0 ? 'sine' : 'triangle';
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+    oscillator.detune.setValueAtTime((Math.random() * 10) - 5, startTime);
+    envelope.gain.setValueAtTime(0.0001, startTime);
+    envelope.gain.linearRampToValueAtTime(0.11, startTime + 2.5);
+    envelope.gain.setValueAtTime(0.11, startTime + 5);
+    envelope.gain.linearRampToValueAtTime(0.0001, startTime + PAD_CHORD_SECONDS);
+    oscillator.connect(envelope);
+    envelope.connect(padFilter);
+    trackVoice([oscillator], [envelope]);
+    oscillator.start(startTime);
+    oscillator.stop(startTime + PAD_CHORD_SECONDS + 0.05);
+  }
+
+  function schedulePadChord() {
+    if (!isPlaying || !audioContext) return;
+    const chord = CHORDS[chordIndex % CHORDS.length];
+    if (activeOscillators.size + chord.length > MAX_ACTIVE_OSCILLATORS) {
+      padTimer = window.setTimeout(schedulePadChord, 250);
+      return;
+    }
+    const startTime = audioContext.currentTime + 0.03;
+    chord.forEach(function (frequency, index) {
+      scheduleOnePadNote(frequency, index, startTime);
+    });
+    chordIndex = (chordIndex + 1) % CHORDS.length;
+    padTimer = window.setTimeout(schedulePadChord, PAD_CHORD_SECONDS * 1000);
+  }
+
+  function playMelodyNote() {
+    if (!isPlaying || !audioContext || activeOscillators.size + 2 > MAX_ACTIVE_OSCILLATORS) {
+      return;
+    }
+
+    let nextIndex;
+    if (lastMelodyIndex === null) {
+      nextIndex = Math.floor(Math.random() * MELODY_SCALE.length);
+    } else {
+      const minIndex = Math.max(0, lastMelodyIndex - 2);
+      const maxIndex = Math.min(MELODY_SCALE.length - 1, lastMelodyIndex + 2);
+      const candidates = [];
+      for (let i = minIndex; i <= maxIndex; i += 1) candidates.push(i);
+      nextIndex = candidates[Math.floor(Math.random() * candidates.length)];
+    }
+    lastMelodyIndex = nextIndex;
+
+    const startTime = audioContext.currentTime + 0.02;
+    const envelope = audioContext.createGain();
+    const fundamentalGain = audioContext.createGain();
+    const octaveGain = audioContext.createGain();
+    const fundamental = audioContext.createOscillator();
+    const octave = audioContext.createOscillator();
+
+    fundamental.type = 'sine';
+    octave.type = 'sine';
+    fundamental.frequency.setValueAtTime(MELODY_SCALE[nextIndex], startTime);
+    octave.frequency.setValueAtTime(MELODY_SCALE[nextIndex] * 2, startTime);
+    fundamentalGain.gain.value = 0.9;
+    octaveGain.gain.value = 0.24;
+    envelope.gain.setValueAtTime(0.0001, startTime);
+    envelope.gain.linearRampToValueAtTime(0.14, startTime + 0.07);
+    envelope.gain.exponentialRampToValueAtTime(0.0001, startTime + 2.55);
+
+    fundamental.connect(fundamentalGain);
+    fundamentalGain.connect(envelope);
+    octave.connect(octaveGain);
+    octaveGain.connect(envelope);
+    envelope.connect(musicInput);
+    trackVoice([fundamental, octave], [fundamentalGain, octaveGain, envelope]);
+    fundamental.start(startTime);
+    octave.start(startTime);
+    fundamental.stop(startTime + 2.6);
+    octave.stop(startTime + 2.6);
+  }
+
+  function scheduleMelodyAttempt() {
+    if (!isPlaying) return;
+    const wait = 1500 + Math.random() * 2000;
+    melodyTimer = window.setTimeout(function () {
+      if (!isPlaying) return;
+      if (Math.random() < 0.7) playMelodyNote();
+      scheduleMelodyAttempt();
+    }, wait);
+  }
+
+  async function startMusic() {
+    if (!musicEnabled || document.hidden) {
+      updateMusicToggle();
+      return;
+    }
+    if (isPlaying && audioContext && audioContext.state === 'running') {
+      updateMusicToggle();
+      return;
+    }
+    if (!ensureAudioGraph()) {
+      updateMusicToggle();
+      return;
+    }
+
+    const requestVersion = ++fadeVersion;
+    if (fadeFinishTimer !== null) {
+      window.clearTimeout(fadeFinishTimer);
+      fadeFinishTimer = null;
+    }
+
+    try {
+      if (audioContext.state !== 'running') await audioContext.resume();
+      if (requestVersion !== fadeVersion || !musicEnabled || document.hidden) {
+        updateMusicToggle();
+        return;
+      }
+
+      isPlaying = true;
+      fadeMasterTo(MUSIC_VOLUME);
+      if (!engineScheduled) {
+        engineScheduled = true;
+        schedulePadChord();
+        scheduleMelodyAttempt();
+      }
+    } catch (error) {
+      isPlaying = false;
+    }
+    updateMusicToggle();
+  }
+
+  function stopActiveOscillators() {
+    if (!audioContext) return;
+    const stopAt = audioContext.currentTime + 0.03;
+    Array.from(activeOscillators).forEach(function (oscillator) {
+      try { oscillator.stop(stopAt); } catch (error) {}
+    });
+  }
+
+  function fadeOutAndPause() {
+    isPlaying = false;
+    clearMusicTimers();
+    const requestVersion = ++fadeVersion;
+    updateMusicToggle();
+    if (!audioContext || !masterGain) return;
+
+    fadeMasterTo(0);
+    if (fadeFinishTimer !== null) window.clearTimeout(fadeFinishTimer);
+    fadeFinishTimer = window.setTimeout(function () {
+      if (requestVersion !== fadeVersion || isPlaying || !audioContext) return;
+      stopActiveOscillators();
+      fadeFinishTimer = window.setTimeout(function () {
+        if (requestVersion !== fadeVersion || isPlaying || !audioContext) return;
+        try {
+          if (audioContext.state === 'running') {
+            audioContext.suspend().catch(function () {});
+          }
+        } catch (error) {}
+        fadeFinishTimer = null;
+        updateMusicToggle();
+      }, 80);
+    }, MUSIC_FADE_SECONDS * 1000 + 30);
+  }
+
+  musicToggle.addEventListener('click', function () {
+    const playingNow = Boolean(
+      musicEnabled &&
+      isPlaying &&
+      !document.hidden &&
+      audioContext &&
+      audioContext.state === 'running'
+    );
+    musicEnabled = !playingNow;
+    saveMusicPreference(musicEnabled);
+    if (musicEnabled) startMusic();
+    else fadeOutAndPause();
+    updateMusicToggle();
+  });
+
+  function onFirstUserInteraction(event) {
+    if (event && (event.target === musicToggle || musicToggle.contains(event.target))) return;
+    document.removeEventListener('pointerdown', onFirstUserInteraction, true);
+    document.removeEventListener('keydown', onFirstUserInteraction, true);
+    if (musicEnabled && !document.hidden) startMusic();
+  }
+  document.addEventListener('pointerdown', onFirstUserInteraction, { capture: true, passive: true });
+  document.addEventListener('keydown', onFirstUserInteraction, true);
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      fadeOutAndPause();
+    } else if (musicEnabled) {
+      startMusic();
+    } else {
+      updateMusicToggle();
+    }
+  });
+
+  updateMusicToggle();
+})();
 
 </script></body></html>
