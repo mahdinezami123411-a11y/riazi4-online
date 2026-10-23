@@ -381,6 +381,8 @@ const subjectLessonUi = await page.evaluate(async () => {
         galleryStage?.dispatchEvent(event);
       };
       const nextButtonOnLeft = Boolean(gallery?.querySelector('[data-gallery-next]') === galleryStage?.firstElementChild);
+      const nextButtonPointsLeft = gallery?.querySelector('[data-gallery-next]')?.textContent.trim() === '←';
+      const previousButtonPointsRight = gallery?.querySelector('[data-gallery-prev]')?.textContent.trim() === '→';
       dispatchTouch('touchstart', [[150,200]], [[150,200]]);
       dispatchTouch('touchend', [[230,200]], []);
       const swipeLeftToRightWorked = (gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '') !== nextImageSource;
@@ -398,7 +400,7 @@ const subjectLessonUi = await page.evaluate(async () => {
       document.getElementById('studentStageBack')?.click();
       const sectionMenuRestored = !document.getElementById('persianLessonSectionMenu')?.classList.contains('hidden')
         && document.getElementById('persianLessonSectionPages')?.classList.contains('hidden') === true;
-      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored,thumbnailCount:bookThumbnails.length,galleryOpened,nextButtonWorked,nextButtonOnLeft,swipeLeftToRightWorked,pinchZoomWorked,galleryClosed};
+      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored,thumbnailCount:bookThumbnails.length,galleryOpened,nextButtonWorked,nextButtonOnLeft,nextButtonPointsLeft,previousButtonPointsRight,swipeLeftToRightWorked,pinchZoomWorked,galleryClosed};
     }
     result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError,persianSections};
     document.getElementById('studentStageBack')?.click();
@@ -424,6 +426,8 @@ for (const subject of ['persian','science','social','gifts']) {
     assert.equal(item.persianSections.galleryOpened, true, 'فارسی: با لمس تصویر، گالری صفحات کتاب باز نشد');
     assert.equal(item.persianSections.nextButtonWorked, true, 'فارسی: دکمهٔ صفحهٔ بعد کار نکرد');
     assert.equal(item.persianSections.nextButtonOnLeft, true, 'فارسی: دکمهٔ صفحهٔ بعد باید سمت چپ باشد');
+    assert.equal(item.persianSections.nextButtonPointsLeft, true, 'فارسی: فلش چپ باید صفحهٔ بعد را باز کند');
+    assert.equal(item.persianSections.previousButtonPointsRight, true, 'فارسی: فلش راست باید صفحهٔ قبل را باز کند');
     assert.equal(item.persianSections.swipeLeftToRightWorked, true, 'فارسی: کشیدن تصویر از چپ به راست صفحهٔ بعدی را باز نکرد');
     assert.equal(item.persianSections.pinchZoomWorked, true, 'فارسی: بزرگ‌نمایی دو‌انگشتی کار نکرد');
     assert.equal(item.persianSections.galleryClosed, true, 'فارسی: گالری با دکمهٔ بستن بسته نشد');

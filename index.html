@@ -6198,7 +6198,7 @@ const persianBookPageMap={
     modal.setAttribute('aria-label','گالری صفحات کتاب فارسی');
     modal.dataset.previousOverflow=document.body.style.overflow;
     modal._restoreFocusTarget=document.activeElement;
-    modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">→</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">←</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">کشیدن تصویر از چپ به راست: صفحهٔ بعدی · از راست به چپ: صفحهٔ قبلی</span><span class="persian-book-gallery-hint">برای بزرگ‌نمایی، دو انگشت را باز کن</span></div></div>';
+    modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">←</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">→</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">کشیدن تصویر از چپ به راست: صفحهٔ بعدی · از راست به چپ: صفحهٔ قبلی</span><span class="persian-book-gallery-hint">برای بزرگ‌نمایی، دو انگشت را باز کن</span></div></div>';
     document.body.appendChild(modal);
     document.body.style.overflow='hidden';
     let index=Math.max(0,Math.min(pageNumbers.length-1,Number(startIndex)||0));
@@ -7338,7 +7338,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v73',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v74',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
