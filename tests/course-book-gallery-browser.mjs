@@ -124,7 +124,15 @@ try {
   }
 
   // Verify that a math subsection thumbnail opens the image gallery and supports next/close.
-  await page.evaluate(() => window.__quizTestApi.renderChapter(1));
+  await page.evaluate(() => {
+    const api = window.__quizTestApi;
+    api.renderChapterPicker();
+    const picker = document.querySelector('#chapterPicker');
+    picker?.classList.remove('hidden');
+    const button = picker?.querySelector('[data-chapter="1"]');
+    if (!button) throw new Error('بازگشت به فصل اول ریاضی برای آزمایش گالری ممکن نبود');
+    button.click();
+  });
   await page.waitForFunction(() => {
     const img=document.querySelector('#chapterLessonBody .math-subtopic-book-pages img');
     return !!img && img.complete && img.naturalWidth>0;
