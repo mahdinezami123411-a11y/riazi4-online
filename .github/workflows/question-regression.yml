@@ -35,9 +35,11 @@ jobs:
       - name: Instrument temporary test page
         run: |
           node tests/instrument-test-page.mjs index.html "$RUNNER_TEMP/quiz-site/index.html"
-          mkdir -p "$RUNNER_TEMP/quiz-site/assets"
+          mkdir -p "$RUNNER_TEMP/quiz-site/assets/book-pages/persian" "$RUNNER_TEMP/quiz-site/assets/books"
           cp assets/source-question-banks.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
           cp assets/persian-vocabulary.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
+          cp assets/book-pages/persian/page-*.webp assets/book-pages/persian/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/persian/"
+          cp assets/books/persian-pages.pdf "$RUNNER_TEMP/quiz-site/assets/books/"
           cp sw.js manifest.webmanifest "$RUNNER_TEMP/quiz-site/"
       - name: Run browser checks
         run: |

@@ -363,6 +363,26 @@ const subjectLessonUi = await page.evaluate(async () => {
       const cards = [...document.querySelectorAll('#persianLessonSectionMenu [data-persian-section-open]')];
       const oppositesCard = document.querySelector('#persianLessonSectionMenu [data-persian-section-open="opposites"]');
       const sectionNames = cards.map(card => card.textContent.trim());
+      await new Promise(resolve => setTimeout(resolve, 150));
+      const bookThumbnails = [...document.querySelectorAll('#lessonBookSection .book-page-thumb[data-book-gallery-open]')];
+      bookThumbnails[0]?.click();
+      const gallery = document.getElementById('persianBookGalleryModal');
+      const galleryOpened = Boolean(gallery && gallery.querySelector('[data-gallery-image]')?.getAttribute('src'));
+      const firstImageSource = gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '';
+      gallery?.querySelector('[data-gallery-next]')?.click();
+      const nextImageSource = gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '';
+      const nextButtonWorked = Boolean(firstImageSource && nextImageSource && firstImageSource !== nextImageSource);
+      const galleryStage = gallery?.querySelector('[data-gallery-stage]');
+      const dispatchTouch = (type, x) => {
+        const event = new Event(type, {bubbles:true});
+        Object.defineProperty(event, 'changedTouches', {value:[{clientX:x}]});
+        galleryStage?.dispatchEvent(event);
+      };
+      dispatchTouch('touchstart', 230);
+      dispatchTouch('touchend', 150);
+      const swipeLeftWorked = (gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '') !== nextImageSource;
+      gallery?.querySelector('[data-gallery-close]')?.click();
+      const galleryClosed = !document.getElementById('persianBookGalleryModal');
       oppositesCard?.click();
       const visiblePage = document.querySelector('#otherLessonContent .persian-lesson-section-page:not(.hidden)');
       const oppositesPageVisible = visiblePage?.dataset.persianSectionPage === 'opposites'
@@ -370,7 +390,7 @@ const subjectLessonUi = await page.evaluate(async () => {
       document.getElementById('studentStageBack')?.click();
       const sectionMenuRestored = !document.getElementById('persianLessonSectionMenu')?.classList.contains('hidden')
         && document.getElementById('persianLessonSectionPages')?.classList.contains('hidden') === true;
-      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored};
+      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored,thumbnailCount:bookThumbnails.length,galleryOpened,nextButtonWorked,swipeLeftWorked,galleryClosed};
     }
     result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError,persianSections};
     document.getElementById('studentStageBack')?.click();
@@ -392,6 +412,11 @@ for (const subject of ['persian','science','social','gifts']) {
     assert.ok(item.persianSections.count >= 8, 'فارسی: بخش‌های درس باید به کارت‌های جداگانه تقسیم شوند');
     assert.equal(item.persianSections.sectionNames.some(name => /متن و مفهوم درس/.test(name)), false, 'فارسی: بخش متن و مفهوم درس باید حذف شده باشد');
     assert.ok(item.persianSections.sectionNames.some(name => /کلمات سخت املایی/.test(name)), 'فارسی: کارت کلمات سخت املایی وجود ندارد');
+    assert.ok(item.persianSections.thumbnailCount >= 2, 'فارسی: تصاویر صفحات کتاب در گالری نمایش داده نشدند');
+    assert.equal(item.persianSections.galleryOpened, true, 'فارسی: با لمس تصویر، گالری صفحات کتاب باز نشد');
+    assert.equal(item.persianSections.nextButtonWorked, true, 'فارسی: دکمهٔ صفحهٔ بعد کار نکرد');
+    assert.equal(item.persianSections.swipeLeftWorked, true, 'فارسی: کشیدن تصویر به چپ صفحه را عوض نکرد');
+    assert.equal(item.persianSections.galleryClosed, true, 'فارسی: گالری با دکمهٔ بستن بسته نشد');
     assert.ok(item.persianSections.sectionNames.some(name => /هم‌معنی‌ها/.test(name)), 'فارسی: کارت هم‌معنی‌ها وجود ندارد');
     assert.ok(item.persianSections.sectionNames.some(name => /متضادها/.test(name)), 'فارسی: کارت متضادها وجود ندارد');
     assert.equal(item.persianSections.oppositesPageVisible, true, 'فارسی: انتخاب کارت متضادها صفحهٔ همان بخش را باز نکرد');

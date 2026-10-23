@@ -76,6 +76,10 @@ for (const match of bundledAssetsMatch[1].matchAll(/['"]([^'"]+)['"]/g)) {
   }
 }
 const persianPageImagesEnabled = /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*true/.test(html);
+assert.match(html, /class="book-page-gallery"/, 'گالری تصاویر صفحات فارسی ثبت نشده است');
+assert.match(html, /function openPersianBookGallery\(/, 'نمایشگر تمام‌صفحهٔ صفحات کتاب پیدا نشد');
+assert.match(html, /touchstart/, 'تعویض صفحه با حرکت انگشت پیاده‌سازی نشده است');
+assert.match(html, /data-gallery-next/, 'دکمهٔ صفحهٔ بعد در گالری وجود ندارد');
 if (persianPageImagesEnabled) {
   const pageMap = JSON.parse(await readFile(new URL('../assets/book-pages/persian/page-map.json', import.meta.url), 'utf8'));
   assert.equal(Object.keys(pageMap).length, 17, 'نگاشت صفحات باید ۱۷ درس فارسی را پوشش دهد');
