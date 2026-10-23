@@ -609,6 +609,15 @@ a{color:#d7ff76}
 .book-library-card{display:grid;grid-template-columns:1fr;gap:8px;padding:12px;background:#211b30;border:1px solid #57486f;border-radius:14px;color:#f6f1ff}
 .book-library-heading{display:flex;gap:9px;align-items:center}.book-library-heading>span{font-size:25px}.book-library-heading b{display:block;color:#e2ff9b}.book-library-heading small{display:block;color:#ddd4ef;line-height:1.7}
 .lesson-book-pages{background:#211b30!important;color:#f6f1ff!important;border:1px solid #6c587f!important;border-radius:14px!important;padding:12px!important;margin:8px 0 14px!important}
+.persian-audio-resources{margin-top:16px;padding-top:12px;border-top:1px solid #6c587f}
+.persian-audio-resources h4{margin:0 0 6px!important;color:#e2ff9b!important}
+.persian-audio-resources>p{margin:0 0 10px;font-size:.9rem}
+.persian-audio-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px}
+.persian-audio-link{display:flex;align-items:center;gap:9px;min-width:0;padding:10px 12px;border:1px solid #73608a;border-radius:11px;background:#2d2440;color:#f6f1ff!important;text-decoration:none!important}
+.persian-audio-link:hover,.persian-audio-link:focus-visible{border-color:#a9e3ff;background:#382a50}
+.persian-audio-link-main{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.persian-audio-link-main b{font-size:.92rem;line-height:1.5}
+.persian-audio-link-main small{color:#e2d9f0;font-size:.78rem}
 .lesson-book-pages h4{color:#e2ff9b!important;margin-top:0!important}.lesson-book-pages p{color:#e8e0f5!important;line-height:1.8}.lesson-book-pages code{direction:ltr;unicode-bidi:plaintext;color:#182033;background:#f8fafc;padding:2px 5px;border-radius:4px}
 .math-chapter-book-pages{margin:12px 0!important;border-color:#8e79bf!important;background:#211b30!important;color:#f6f1ff!important}
 .math-chapter-book-pages>summary{cursor:pointer;list-style:none;padding:9px 5px;color:#e2ff9b!important;font-size:1rem;font-weight:900}
@@ -6216,6 +6225,92 @@ const persianBookPageMap={
     16:{start:124,end:129,pdfStart:75,pdfEnd:80},
     17:{start:130,end:134,pdfStart:81,pdfEnd:85}
   };
+  // Audio destinations are taken from the clickable QR links embedded in the supplied Persian textbook PDF.
+  const persianAudioResourcesByLesson = {
+    1:[
+      {page:8,title:'ستایش',url:'https://www.roshd.ir/403-0-1'},
+      {page:10,title:'آفریدگار زیبایی',url:'https://www.roshd.ir/403-1-1'},
+      {page:16,title:'خبر داغ؛ بخوان و حفظ کن',url:'https://www.roshd.ir/403-1-2'}
+    ],
+    2:[
+      {page:18,title:'کوچ پرستوها',url:'https://www.roshd.ir/403-1-3'},
+      {page:22,title:'دانش زبانی؛ گوش کن و بگو',url:'https://www.roshd.ir/403-1-4'},
+      {page:23,title:'در جست‌وجو؛ بخوان و بیندیش',url:'https://www.roshd.ir/403-1-5'},
+      {page:28,title:'قوی‌ترین حیوان جنگل؛ حکایت',url:'https://www.roshd.ir/403-1-6'}
+    ],
+    3:[
+      {page:30,title:'راز نشانه‌ها',url:'https://www.roshd.ir/403-2-1'},
+      {page:33,title:'قصه‌گویی؛ شروع مناسب',url:'https://www.roshd.ir/403-2-2'},
+      {page:34,title:'روباه و زاغ؛ بخوان و حفظ کن',url:'https://www.roshd.ir/403-2-3'}
+    ],
+    4:[
+      {page:36,title:'ارزش علم',url:'https://www.roshd.ir/403-2-4'},
+      {page:41,title:'گوسفند مادر و برّه؛ گوش دادن',url:'https://www.roshd.ir/403-2-5'}
+    ],
+    5:[
+      {page:42,title:'رهایی از قفس',url:'https://www.roshd.ir/403-2-6'},
+      {page:47,title:'داستان طوطی؛ درک مطلب',url:'https://www.roshd.ir/403-2-7'},
+      {page:48,title:'قدم یازدهم؛ بخوان و بیندیش',url:'https://www.roshd.ir/403-2-8'},
+      {page:52,title:'مَثَل',url:'https://www.roshd.ir/403-2-9'}
+    ],
+    6:[
+      {page:54,title:'آرش کمانگیر',url:'https://www.roshd.ir/403-3-1'},
+      {page:60,title:'باران؛ بخوان و حفظ کن',url:'https://www.roshd.ir/403-3-2'}
+    ],
+    7:[
+      {page:62,title:'مهمان شهر ما',url:'https://www.roshd.ir/403-3-3'},
+      {page:66,title:'واژه‌آموزی',url:'https://www.roshd.ir/403-3-4'},
+      {page:67,title:'انتظار؛ بخوان و بیندیش',url:'https://www.roshd.ir/403-3-5'}
+    ],
+    10:[
+      {page:80,title:'باغچهٔ اطفال',url:'https://www.roshd.ir/403-5-1'},
+      {page:86,title:'قصه‌گویی و صندلی صمیمیت؛ گوش دادن',url:'https://www.roshd.ir/403-5-2'},
+      {page:87,title:'همای رحمت؛ بخوان و حفظ کن',url:'https://www.roshd.ir/403-5-3'}
+    ],
+    11:[
+      {page:88,title:'فرمانده دل',url:'https://www.roshd.ir/403-5-4'},
+      {page:92,title:'فرمانده دل؛ درک مطلب',url:'https://www.roshd.ir/403-5-5'},
+      {page:93,title:'یک کودک، یک فرشته',url:'https://www.roshd.ir/403-5-6'}
+    ],
+    12:[
+      {page:94,title:'شعر همراه درس اتفاق ساده',url:'https://www.roshd.ir/403-5-7'},
+      {page:97,title:'قصه‌گویی و صندلی صمیمیت؛ تفکّر',url:'https://www.roshd.ir/403-5-8'},
+      {page:98,title:'دوست بچه‌های خوب؛ بخوان و بیندیش',url:'https://www.roshd.ir/403-5-9'},
+      {page:102,title:'نگاه پنهان؛ حکایت',url:'https://www.roshd.ir/403-5-10'}
+    ],
+    13:[
+      {page:104,title:'لطف حق',url:'https://www.roshd.ir/403-6-1'},
+      {page:107,title:'امید؛ بخوان و حفظ کن',url:'https://www.roshd.ir/403-6-2'}
+    ],
+    14:[
+      {page:108,title:'ادب از که آموختی',url:'https://www.roshd.ir/403-6-3'},
+      {page:111,title:'دانش زبانی؛ گوش کن و بگو',url:'https://www.roshd.ir/403-6-4'}
+    ],
+    15:[
+      {page:112,title:'شیر و موش',url:'https://www.roshd.ir/403-6-5'},
+      {page:115,title:'قصه‌گویی؛ پایان مناسب',url:'https://www.roshd.ir/403-6-6'},
+      {page:116,title:'هفت مروارید سرخ؛ بخوان و بیندیش',url:'https://www.roshd.ir/403-6-7'}
+    ],
+    16:[
+      {page:124,title:'پرسشگری',url:'https://www.roshd.ir/403-7-1'},
+      {page:127,title:'دانش زبانی',url:'https://www.roshd.ir/403-7-2'},
+      {page:128,title:'خرد و دانش؛ بخوان و حفظ کن',url:'https://www.roshd.ir/403-7-3'}
+    ],
+    17:[
+      {page:130,title:'مدرسهٔ هوشمند',url:'https://www.roshd.ir/403-7-4'},
+      {page:135,title:'قاضی هوشمند؛ بخوان و بیندیش',url:'https://www.roshd.ir/403-7-5'},
+      {page:139,title:'مَثَل',url:'https://www.roshd.ir/403-7-6'},
+      {page:140,title:'نیایش؛ صوت اول',url:'https://www.roshd.ir/403-7-7'},
+      {page:140,title:'نیایش؛ صوت دوم',url:'https://www.roshd.ir/403-7-8'}
+    ]
+  };
+
+  function renderPersianAudioResources(lessonId){
+    const items=persianAudioResourcesByLesson[Number(lessonId)]||[];
+    if(!items.length)return '';
+    return '<section class="persian-audio-resources"><h4>🎧 صوت‌های همراه این درس و روان‌خوانی‌ها</h4><p class="muted">پیوندهای زیر از QR Codeهای خود کتاب استخراج شده‌اند و صفحهٔ صوت را در سامانهٔ رشد باز می‌کنند؛ اتصال اینترنت لازم است.</p><div class="persian-audio-links">'+items.map(item=>'<a class="persian-audio-link" href="'+item.url+'" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶️</span><span class="persian-audio-link-main"><b>'+escapeHtml(item.title)+'</b><small>صفحهٔ '+fa(item.page)+' کتاب · پخش در رشد</small></span><span aria-hidden="true">↗</span></a>').join('')+'</div></section>';
+  }
+
   const courseBookPageMap={
     math:{
       1:{start:1,end:20,pdfStart:7,pdfEnd:26},2:{start:24,end:42,pdfStart:30,pdfEnd:48},
@@ -6449,6 +6544,7 @@ const persianBookPageMap={
         if(hasImages){
           const bookTitle=courseName(imageSubjectId);
           mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(bookTitle)+'</h4><p class="muted">برای بزرگ‌نمایی روی تصویر بزن و برای رفتن به صفحهٔ بعد، تصویر را از چپ به راست بکش.</p><div class="book-page-gallery" aria-label="گالری صفحات کتاب '+escapeHtml(bookTitle)+'">'+imagePages.map((p,i)=>'<button type="button" class="book-page-thumb" data-book-gallery-open="'+i+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(p)+'"><img loading="'+(i<2?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب '+escapeHtml(bookTitle)+'"><span>صفحهٔ '+fa(p)+'</span></button>').join('')+'</div></section>';
+          if(isPersianBook){const audioResources=renderPersianAudioResources(Number(lesson.id));if(audioResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',audioResources);}
           mount.querySelectorAll('[data-book-gallery-open]').forEach(button=>{
             button.addEventListener('click',()=>openPersianBookGallery(imagePages,Number(button.dataset.bookGalleryOpen),imageSubjectId));
           });
