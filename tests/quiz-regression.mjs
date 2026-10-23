@@ -75,7 +75,26 @@ for (const match of bundledAssetsMatch[1].matchAll(/['"]([^'"]+)['"]/g)) {
     assert.fail('فایل PDF معرفی‌شده به‌عنوان همراه برنامه وجود ندارد: ' + match[1]);
   }
 }
-assert.match(html, /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false/, 'نباید تصاویر صفحه‌های کتابِ منتشرنشده درخواست شوند');
+const persianPageImagesEnabled = /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*true/.test(html);
+if (persianPageImagesEnabled) {
+  const pageMap = JSON.parse(await readFile(new URL('../assets/book-pages/persian/page-map.json', import.meta.url), 'utf8'));
+  assert.equal(Object.keys(pageMap).length, 17, 'نگاشت صفحات باید ۱۷ درس فارسی را پوشش دهد');
+  let mappedPageCount = 0;
+  for (const [lessonId, range] of Object.entries(pageMap)) {
+    for (let page = range.printedStart; page <= range.printedEnd; page++) {
+      try {
+        await access(new URL(`../assets/book-pages/persian/page-${String(page).padStart(3, '0')}.webp`, import.meta.url));
+      } catch {
+        assert.fail(`تصویر صفحه ${page} مربوط به درس ${lessonId} در مخزن وجود ندارد`);
+      }
+      mappedPageCount++;
+    }
+  }
+  assert.equal(mappedPageCount, 85, 'تعداد صفحات نگاشت‌شدهٔ کتاب باید ۸۵ صفحه باشد');
+  await access(new URL('../assets/books/persian-pages.pdf', import.meta.url));
+} else {
+  assert.match(html, /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false/, 'تا پیش از نصب بسته، تصاویر صفحات کتاب نباید درخواست شوند');
+}
 assert.match(html, /function renderMathQuestionVisualMarkup\(q,printMode\)/, 'رسم‌های کمکی سؤال‌های ریاضی ثبت نشده‌اند');
 assert.match(html, /id="bookPracticeVisualAid"/, 'جای نمایش شکل در تمرین وجود ندارد');
 assert.match(html, /id="examQuestionVisualAid"/, 'جای نمایش شکل در آزمون وجود ندارد');
