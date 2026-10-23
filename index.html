@@ -2891,6 +2891,7 @@ const bookSubjectCatalog=[
  const BUNDLED_BOOK_ASSETS = new Set(['./assets/math-fourth.pdf', './assets/books/persian-pages.pdf']);
  // The lesson page images are not shipped in this repository yet; do not issue 404 requests for them.
  const BUNDLED_PERSIAN_PAGE_IMAGES = true;
+ const BUNDLED_COURSE_PAGE_IMAGES = false;
 let sourceQuestionBanks = {};
 let sourceQuestionBanksLoading = null;
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
@@ -6177,7 +6178,52 @@ const persianBookPageMap={
     16:{start:124,end:129,pdfStart:75,pdfEnd:80},
     17:{start:130,end:134,pdfStart:81,pdfEnd:85}
   };
-  function lessonImagePath(page){return './assets/book-pages/persian/page-'+String(page).padStart(3,'0')+'.webp'}
+  const courseBookPageMap={
+    math:{
+      1:{start:1,end:20,pdfStart:7,pdfEnd:26},2:{start:24,end:42,pdfStart:30,pdfEnd:48},
+      3:{start:46,end:72,pdfStart:52,pdfEnd:78},4:{start:76,end:94,pdfStart:82,pdfEnd:100},
+      5:{start:98,end:116,pdfStart:104,pdfEnd:122},6:{start:120,end:138,pdfStart:126,pdfEnd:144},
+      7:{start:142,end:152,pdfStart:148,pdfEnd:158}
+    },
+    science:{
+      1:{start:1,end:4,pdfStart:9,pdfEnd:12},2:{start:5,end:14,pdfStart:13,pdfEnd:22},
+      3:{start:15,end:26,pdfStart:23,pdfEnd:34},4:{start:27,end:36,pdfStart:35,pdfEnd:44},
+      5:{start:37,end:46,pdfStart:45,pdfEnd:54},6:{start:47,end:58,pdfStart:55,pdfEnd:66},
+      7:{start:59,end:66,pdfStart:67,pdfEnd:74},8:{start:67,end:76,pdfStart:75,pdfEnd:84},
+      9:{start:77,end:82,pdfStart:85,pdfEnd:90},10:{start:83,end:92,pdfStart:91,pdfEnd:100},
+      11:{start:93,end:102,pdfStart:101,pdfEnd:110},12:{start:103,end:110,pdfStart:111,pdfEnd:118},
+      13:{start:111,end:120,pdfStart:119,pdfEnd:128}
+    },
+    social:{
+      1:{start:2,end:4,pdfStart:10,pdfEnd:12},2:{start:5,end:9,pdfStart:13,pdfEnd:17},
+      3:{start:10,end:14,pdfStart:18,pdfEnd:22},4:{start:15,end:23,pdfStart:23,pdfEnd:31},
+      5:{start:24,end:29,pdfStart:32,pdfEnd:37},6:{start:30,end:33,pdfStart:38,pdfEnd:41},
+      7:{start:34,end:37,pdfStart:42,pdfEnd:45},8:{start:38,end:41,pdfStart:46,pdfEnd:49},
+      9:{start:42,end:46,pdfStart:50,pdfEnd:54},10:{start:47,end:51,pdfStart:55,pdfEnd:59},
+      11:{start:52,end:56,pdfStart:60,pdfEnd:64},12:{start:57,end:61,pdfStart:65,pdfEnd:69},
+      13:{start:62,end:64,pdfStart:70,pdfEnd:72},14:{start:65,end:73,pdfStart:73,pdfEnd:81},
+      15:{start:74,end:78,pdfStart:82,pdfEnd:86},16:{start:79,end:84,pdfStart:87,pdfEnd:92},
+      17:{start:85,end:89,pdfStart:93,pdfEnd:97},18:{start:90,end:93,pdfStart:98,pdfEnd:101},
+      19:{start:94,end:99,pdfStart:102,pdfEnd:107},20:{start:100,end:102,pdfStart:108,pdfEnd:110},
+      21:{start:103,end:104,pdfStart:111,pdfEnd:112},22:{start:105,end:112,pdfStart:113,pdfEnd:120}
+    },
+    gifts:{
+      1:{start:8,end:13,pdfStart:8,pdfEnd:13},2:{start:14,end:21,pdfStart:14,pdfEnd:21},
+      3:{start:22,end:31,pdfStart:22,pdfEnd:31},4:{start:32,end:39,pdfStart:32,pdfEnd:39},
+      5:{start:40,end:44,pdfStart:40,pdfEnd:44},6:{start:45,end:49,pdfStart:45,pdfEnd:49},
+      7:{start:50,end:55,pdfStart:50,pdfEnd:55},8:{start:56,end:63,pdfStart:56,pdfEnd:63},
+      9:{start:64,end:68,pdfStart:64,pdfEnd:68},10:{start:69,end:75,pdfStart:69,pdfEnd:75},
+      11:{start:76,end:81,pdfStart:76,pdfEnd:81},12:{start:82,end:87,pdfStart:82,pdfEnd:87},
+      13:{start:88,end:92,pdfStart:88,pdfEnd:92},14:{start:93,end:96,pdfStart:93,pdfEnd:96},
+      15:{start:97,end:103,pdfStart:97,pdfEnd:103},16:{start:104,end:108,pdfStart:104,pdfEnd:108},
+      17:{start:109,end:114,pdfStart:109,pdfEnd:114},18:{start:115,end:121,pdfStart:115,pdfEnd:121},
+      19:{start:122,end:128,pdfStart:122,pdfEnd:128}
+    }
+  };
+  function lessonImagePath(page,subjectId='persian'){
+    const folder=subjectId==='dictation'?'persian':subjectId;
+    return './assets/book-pages/'+folder+'/page-'+String(page).padStart(3,'0')+'.webp';
+  }
   function closePersianBookGallery(){
     const modal=document.getElementById('persianBookGalleryModal');
     if(!modal)return;
@@ -6187,7 +6233,7 @@ const persianBookPageMap={
     const restoreTarget=modal._restoreFocusTarget;
     if(restoreTarget&&restoreTarget.isConnected)restoreTarget.focus({preventScroll:true});
   }
-  function openPersianBookGallery(pageNumbers,startIndex){
+  function openPersianBookGallery(pageNumbers,startIndex,bookSubjectId='persian'){
     closePersianBookGallery();
     if(!Array.isArray(pageNumbers)||!pageNumbers.length)return;
     const modal=document.createElement('div');
@@ -6195,7 +6241,7 @@ const persianBookPageMap={
     modal.className='persian-book-gallery-overlay';
     modal.setAttribute('role','dialog');
     modal.setAttribute('aria-modal','true');
-    modal.setAttribute('aria-label','گالری صفحات کتاب فارسی');
+    modal.setAttribute('aria-label','گالری صفحات کتاب '+courseName(bookSubjectId));
     modal.dataset.previousOverflow=document.body.style.overflow;
     modal._restoreFocusTarget=document.activeElement;
     modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">←</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">→</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">کشیدن تصویر از چپ به راست: صفحهٔ بعدی · از راست به چپ: صفحهٔ قبلی</span><span class="persian-book-gallery-hint">برای بزرگ‌نمایی، دو انگشت را باز کن</span></div></div>';
@@ -6229,10 +6275,10 @@ const persianBookPageMap={
     };
     const render=()=>{
       const page=pageNumbers[index];
-      image.src=lessonImagePath(page);
-      image.alt='صفحهٔ '+fa(page)+' از کتاب فارسی چهارم';
+      image.src=lessonImagePath(page,bookSubjectId);
+      image.alt='صفحهٔ '+fa(page)+' از کتاب '+courseName(bookSubjectId);
       counter.textContent='صفحهٔ '+fa(page)+' · '+fa(index+1)+' از '+fa(pageNumbers.length);
-      caption.textContent='صفحهٔ '+fa(page)+' از کتاب فارسی چهارم';
+      caption.textContent='صفحهٔ '+fa(page)+' از کتاب '+courseName(bookSubjectId);
       previousButton.disabled=index===0;
       nextButton.disabled=index===pageNumbers.length-1;
       resetZoom();
@@ -6311,17 +6357,21 @@ const persianBookPageMap={
     const subject=bookSubjectCatalog.find(s=>s.id===displayId)||bookSubjectCatalog.find(s=>s.id===subjectId);
     if(!subject){mount.innerHTML='';return}
     mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">در حال بارگذاری صفحات اصلی کتاب…</p></section>';
-    const info=(subjectId==='persian'||subjectId==='dictation')?persianBookPageMap[Number(lesson.id)]:null;
-    if(info&&BUNDLED_PERSIAN_PAGE_IMAGES){
+    const isPersianBook=subjectId==='persian'||subjectId==='dictation';
+    const info=isPersianBook?persianBookPageMap[Number(lesson.id)]:(courseBookPageMap[subjectId]||{})[Number(lesson.id)]||null;
+    const imageSubjectId=subjectId==='dictation'?'persian':subjectId;
+    const pageImagesEnabled=isPersianBook?BUNDLED_PERSIAN_PAGE_IMAGES:BUNDLED_COURSE_PAGE_IMAGES;
+    if(info&&pageImagesEnabled){
       const imagePages=[];for(let p=info.start;p<=info.end;p++)imagePages.push(p);
-      const pathFor=p=>'./assets/book-pages/persian/page-'+String(p).padStart(3,'0')+'.webp';
+      const pathFor=p=>lessonImagePath(p,imageSubjectId);
       try{
         const hasImages=await assetExists(pathFor(info.start));
         if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
         if(hasImages){
-          mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب فارسی</h4><p class="muted">همهٔ صفحه‌های این درس را می‌توانی ببینی. برای بزرگ‌نمایی روی تصویر بزن و برای جابه‌جایی، تصویر را به راست یا چپ بکش.</p><div class="book-page-gallery" aria-label="گالری صفحات کتاب فارسی">'+imagePages.map((p,i)=>'<button type="button" class="book-page-thumb" data-book-gallery-open="'+i+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(p)+'"><img loading="'+(i<2?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب فارسی چهارم"><span>صفحهٔ '+fa(p)+'</span></button>').join('')+'</div></section>';
+          const bookTitle=courseName(imageSubjectId);
+          mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(bookTitle)+'</h4><p class="muted">برای بزرگ‌نمایی روی تصویر بزن و برای رفتن به صفحهٔ بعد، تصویر را از چپ به راست بکش.</p><div class="book-page-gallery" aria-label="گالری صفحات کتاب '+escapeHtml(bookTitle)+'">'+imagePages.map((p,i)=>'<button type="button" class="book-page-thumb" data-book-gallery-open="'+i+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(p)+'"><img loading="'+(i<2?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب '+escapeHtml(bookTitle)+'"><span>صفحهٔ '+fa(p)+'</span></button>').join('')+'</div></section>';
           mount.querySelectorAll('[data-book-gallery-open]').forEach(button=>{
-            button.addEventListener('click',()=>openPersianBookGallery(imagePages,Number(button.dataset.bookGalleryOpen)));
+            button.addEventListener('click',()=>openPersianBookGallery(imagePages,Number(button.dataset.bookGalleryOpen),imageSubjectId));
           });
           return;
         }
@@ -6331,12 +6381,12 @@ const persianBookPageMap={
     const settings=courseSettingsBySubject[displayId]||{};
     // A PDF uploaded from the teacher panel is the full book, so use the printed page number.
     // The bundled persian-pages.pdf is an excerpt, so use its internal page index instead.
-    let pageNumber=info?.start||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
+    let pageNumber=(isPersianBook?info?.start:info?.pdfStart)||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
     if(!url&&settings.bookFilePath&&cloudSession?.access_token){
-      try{const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[displayId]=url;pageNumber=info?.start||pageNumber}catch(error){console.warn('Course PDF could not be loaded',error)}
+      try{const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[displayId]=url;pageNumber=(isPersianBook?info?.start:info?.pdfStart)||pageNumber}catch(error){console.warn('Course PDF could not be loaded',error)}
     }
     if(!url&&displayId==='dictation'&&courseSettingsBySubject.persian?.bookFilePath){
-      try{const blob=await fetchClassMaterial(courseSettingsBySubject.persian.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.persian=url;pageNumber=info?.start||pageNumber}catch(error){console.warn('Persian PDF could not be loaded',error)}
+      try{const blob=await fetchClassMaterial(courseSettingsBySubject.persian.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls.persian=url;pageNumber=(isPersianBook?info?.start:info?.pdfStart)||pageNumber}catch(error){console.warn('Persian PDF could not be loaded',error)}
     }
     if(!url&&BUNDLED_BOOK_ASSETS.has(subject.asset)&&await assetExists(subject.asset)){url=subject.asset;pageNumber=info?.pdfStart||pageNumber}
     if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
@@ -7338,7 +7388,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v74',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v75',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
