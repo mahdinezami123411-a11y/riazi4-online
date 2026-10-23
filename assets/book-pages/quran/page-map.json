@@ -1,0 +1,113 @@
+{
+  "subject": "quran",
+  "pageCount": 91,
+  "lessonCount": 15,
+  "pdfPagesOffset": 12,
+  "lessons": {
+    "1": {
+      "title": "یادآوری قواعد و آشنایی با خط قرآن",
+      "printedStart": 1,
+      "printedEnd": 9,
+      "pdfStart": 13,
+      "pdfEnd": 21
+    },
+    "2": {
+      "title": "سورهٔ تغابن و ادامهٔ سورهٔ نبأ",
+      "printedStart": 10,
+      "printedEnd": 14,
+      "pdfStart": 22,
+      "pdfEnd": 26
+    },
+    "3": {
+      "title": "سورهٔ آل‌عمران و سورهٔ عبس",
+      "printedStart": 15,
+      "printedEnd": 19,
+      "pdfStart": 27,
+      "pdfEnd": 31
+    },
+    "4": {
+      "title": "سورهٔ فصلت و سورهٔ عبس",
+      "printedStart": 20,
+      "printedEnd": 24,
+      "pdfStart": 32,
+      "pdfEnd": 36
+    },
+    "5": {
+      "title": "سورهٔ آل‌عمران و سورهٔ تکویر",
+      "printedStart": 25,
+      "printedEnd": 30,
+      "pdfStart": 37,
+      "pdfEnd": 42
+    },
+    "6": {
+      "title": "سورهٔ اسراء و سورهٔ تکویر",
+      "printedStart": 31,
+      "printedEnd": 35,
+      "pdfStart": 43,
+      "pdfEnd": 47
+    },
+    "7": {
+      "title": "سورهٔ نحل و سورهٔ محمد",
+      "printedStart": 36,
+      "printedEnd": 40,
+      "pdfStart": 48,
+      "pdfEnd": 52
+    },
+    "8": {
+      "title": "سورهٔ آل‌عمران و سورهٔ فاطر",
+      "printedStart": 41,
+      "printedEnd": 46,
+      "pdfStart": 53,
+      "pdfEnd": 58
+    },
+    "9": {
+      "title": "سورهٔ بقره و سورهٔ احزاب",
+      "printedStart": 47,
+      "printedEnd": 51,
+      "pdfStart": 59,
+      "pdfEnd": 63
+    },
+    "10": {
+      "title": "سورهٔ هود و سورهٔ سبأ",
+      "printedStart": 52,
+      "printedEnd": 56,
+      "pdfStart": 64,
+      "pdfEnd": 68
+    },
+    "11": {
+      "title": "سورهٔ ملک و نشانهٔ وقف",
+      "printedStart": 57,
+      "printedEnd": 61,
+      "pdfStart": 69,
+      "pdfEnd": 73
+    },
+    "12": {
+      "title": "سورهٔ آل‌عمران و سورهٔ یس",
+      "printedStart": 62,
+      "printedEnd": 67,
+      "pdfStart": 74,
+      "pdfEnd": 79
+    },
+    "13": {
+      "title": "سورهٔ نمل",
+      "printedStart": 68,
+      "printedEnd": 72,
+      "pdfStart": 80,
+      "pdfEnd": 84
+    },
+    "14": {
+      "title": "سورهٔ احزاب",
+      "printedStart": 73,
+      "printedEnd": 77,
+      "pdfStart": 85,
+      "pdfEnd": 89
+    },
+    "15": {
+      "title": "قرآن در تابستان",
+      "printedStart": 78,
+      "printedEnd": 91,
+      "pdfStart": 90,
+      "pdfEnd": 103
+    }
+  }
+}
