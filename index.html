@@ -2794,7 +2794,7 @@ function renderMathSubtopicPageGallery(chapterId,sectionIndex,sectionTitle){
   if(!pages.length)return '';
   const title=escapeHtml(sectionTitle||'مبحث آموزشی');
   const cards=pages.map((page,index)=>'<button type="button" class="book-page-thumb" data-math-page-open="'+index+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(page)+'">'+
-    '<img loading="lazy" src="./assets/book-pages/math/page-'+String(page).padStart(3,'0')+'.webp" alt="صفحهٔ '+fa(page)+' از کتاب ریاضی چهارم">'+
+    '<img loading="'+(index<2?'eager':'lazy')+'" src="./assets/book-pages/math/page-'+String(page).padStart(3,'0')+'.webp" alt="صفحهٔ '+fa(page)+' از کتاب ریاضی چهارم">'+
     '<span>صفحهٔ '+fa(page)+'</span></button>').join('');
   return '<div class="book-page-gallery math-subtopic-book-gallery" data-math-page-list="'+pages.join(',')+'" aria-label="تصویرهای کتاب برای '+title+'">'+
     '<h5 class="math-subtopic-gallery-heading">📚 صفحات کتابِ همین مبحث</h5>'+cards+'</div>';
@@ -7425,7 +7425,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v91',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v92',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
