@@ -614,6 +614,28 @@ a{color:#d7ff76}
 .book-open-link{display:inline-block;color:#14213d!important;background:#e2ff9b!important;border-radius:9px;padding:9px 12px;font-weight:850;text-decoration:none;margin:4px 0 10px}
 .book-page-item{background:#fff!important;color:#172033!important;border:1px solid #9ca3af!important;border-radius:10px!important;margin:7px 0!important;padding:8px!important}
 .book-page-item summary{color:#172033!important;font-weight:850!important;padding:5px}.book-page-item img{display:block;width:100%;height:auto;max-width:100%;border-radius:7px;margin:8px auto 0;background:#fff}
+
+/* گالری صفحات واقعی کتاب فارسی */
+.book-page-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0 4px}
+.book-page-thumb{display:flex;flex-direction:column;gap:7px;min-width:0;padding:7px;border:1px solid #9e91ff!important;border-radius:13px!important;background:linear-gradient(145deg,#8f7dff,#7767ec)!important;color:#101936!important;box-shadow:0 3px 0 #5142c6!important;text-align:center;cursor:pointer}
+.book-page-thumb img{display:block;width:100%;aspect-ratio:3/4;object-fit:contain;background:#fff;border-radius:8px;box-shadow:0 1px 5px #090b2c40}
+.book-page-thumb span{font-size:12px;font-weight:850;color:#111a38!important}
+.book-page-thumb:focus-visible{outline:3px solid #ffe66d;outline-offset:2px}
+@media(min-width:560px){.book-page-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:900px){.book-page-gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.persian-book-gallery-overlay{position:fixed;inset:0;z-index:100000;display:flex;justify-content:center;align-items:stretch;padding:calc(8px + env(safe-area-inset-top)) 10px calc(8px + env(safe-area-inset-bottom));box-sizing:border-box;background:rgba(5,8,28,.98);color:#fff}
+.persian-book-gallery-dialog{display:flex;flex-direction:column;gap:12px;width:100%;max-width:1000px;min-height:0;margin:auto}
+.persian-book-gallery-top,.persian-book-gallery-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-shrink:0}
+.persian-book-gallery-counter{font-size:14px;font-weight:850;color:#f6f3ff}
+.persian-book-gallery-close,.persian-book-gallery-nav{display:grid;place-items:center;flex-shrink:0;min-width:44px;min-height:44px;padding:7px 12px;border:1px solid #9c8cff!important;border-radius:13px!important;background:#7564ef!important;color:#fff!important;font-size:22px;font-weight:900;box-shadow:none!important}
+.persian-book-gallery-close{font-size:16px}
+.persian-book-gallery-stage{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:5px;flex:1;min-height:0;direction:ltr;touch-action:pan-y}
+.persian-book-gallery-frame{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:0;height:100%;margin:0}
+.persian-book-gallery-image{display:block;max-width:100%;width:auto;height:auto;max-height:calc(100dvh - 170px);object-fit:contain;border-radius:4px;background:#fff;box-shadow:0 8px 30px #0008;user-select:none;-webkit-user-drag:none}
+.persian-book-gallery-caption{color:#e4defe;font-size:12px;font-weight:750;text-align:center}
+.persian-book-gallery-nav:disabled{opacity:.3;cursor:not-allowed}
+.persian-book-gallery-hint{font-size:11px;color:#c6c0ec;text-align:center}
+@media(max-width:420px){.persian-book-gallery-overlay{padding-left:5px;padding-right:5px}.persian-book-gallery-stage{grid-template-columns:35px minmax(0,1fr) 35px;gap:3px}.persian-book-gallery-nav{min-width:35px;min-height:44px;padding:5px;font-size:18px}.persian-book-gallery-image{max-height:calc(100dvh - 185px)}}
 .lesson-text-section{color:#172033!important}.lesson-text-section h4{color:#172033!important}.lesson-main-text{font-size:16px;line-height:2;color:#172033!important}
 
 .course-lesson-settings{display:grid;gap:9px;margin:12px 0}
@@ -6156,6 +6178,70 @@ const persianBookPageMap={
     17:{start:130,end:134,pdfStart:81,pdfEnd:85}
   };
   function lessonImagePath(page){return './assets/book-pages/persian/page-'+String(page).padStart(3,'0')+'.webp'}
+  function closePersianBookGallery(){
+    const modal=document.getElementById('persianBookGalleryModal');
+    if(!modal)return;
+    if(modal._galleryKeyHandler)document.removeEventListener('keydown',modal._galleryKeyHandler);
+    modal.remove();
+    document.body.style.overflow=modal.dataset.previousOverflow||'';
+    const restoreTarget=modal._restoreFocusTarget;
+    if(restoreTarget&&restoreTarget.isConnected)restoreTarget.focus({preventScroll:true});
+  }
+  function openPersianBookGallery(pageNumbers,startIndex){
+    closePersianBookGallery();
+    if(!Array.isArray(pageNumbers)||!pageNumbers.length)return;
+    const modal=document.createElement('div');
+    modal.id='persianBookGalleryModal';
+    modal.className='persian-book-gallery-overlay';
+    modal.setAttribute('role','dialog');
+    modal.setAttribute('aria-modal','true');
+    modal.setAttribute('aria-label','گالری صفحات کتاب فارسی');
+    modal.dataset.previousOverflow=document.body.style.overflow;
+    modal._restoreFocusTarget=document.activeElement;
+    modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">‹</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">›</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">برای رفتن به صفحهٔ قبل یا بعد، تصویر را بکش</span><span class="persian-book-gallery-hint">بزرگ‌نمایی با کیفیت اصلی</span></div></div>';
+    document.body.appendChild(modal);
+    document.body.style.overflow='hidden';
+    let index=Math.max(0,Math.min(pageNumbers.length-1,Number(startIndex)||0));
+    const image=modal.querySelector('[data-gallery-image]');
+    const counter=modal.querySelector('[data-gallery-counter]');
+    const caption=modal.querySelector('[data-gallery-caption]');
+    const previousButton=modal.querySelector('[data-gallery-prev]');
+    const nextButton=modal.querySelector('[data-gallery-next]');
+    const render=()=>{
+      const page=pageNumbers[index];
+      image.src=lessonImagePath(page);
+      image.alt='صفحهٔ '+fa(page)+' از کتاب فارسی چهارم';
+      counter.textContent='صفحهٔ '+fa(page)+' · '+fa(index+1)+' از '+fa(pageNumbers.length);
+      caption.textContent='صفحهٔ '+fa(page)+' از کتاب فارسی چهارم';
+      previousButton.disabled=index===0;
+      nextButton.disabled=index===pageNumbers.length-1;
+    };
+    const previous=()=>{if(index>0){index--;render()}};
+    const next=()=>{if(index<pageNumbers.length-1){index++;render()}};
+    previousButton.addEventListener('click',previous);
+    nextButton.addEventListener('click',next);
+    modal.querySelector('[data-gallery-close]').addEventListener('click',closePersianBookGallery);
+    modal.addEventListener('click',event=>{if(event.target===modal)closePersianBookGallery()});
+    let touchStartX=null;
+    const stage=modal.querySelector('[data-gallery-stage]');
+    stage.addEventListener('touchstart',event=>{touchStartX=event.changedTouches&&event.changedTouches[0]?event.changedTouches[0].clientX:null},{passive:true});
+    stage.addEventListener('touchend',event=>{
+      const endX=event.changedTouches&&event.changedTouches[0]?event.changedTouches[0].clientX:null;
+      if(touchStartX===null||typeof endX!=='number')return;
+      const delta=touchStartX-endX;
+      if(delta>45)next();
+      else if(delta< -45)previous();
+      touchStartX=null;
+    },{passive:true});
+    modal._galleryKeyHandler=event=>{
+      if(event.key==='Escape')closePersianBookGallery();
+      else if(event.key==='ArrowLeft')next();
+      else if(event.key==='ArrowRight')previous();
+    };
+    document.addEventListener('keydown',modal._galleryKeyHandler);
+    render();
+    modal.querySelector('[data-gallery-close]').focus({preventScroll:true});
+  }
   async function loadLessonBookSection(subjectId,lesson){
     const mount=$('lessonBookSection');if(!mount)return;
     const displayId=subjectId==='dictation'&&!courseSettingsBySubject.dictation?.bookFilePath?'persian':subjectId;
@@ -6170,7 +6256,10 @@ const persianBookPageMap={
         const hasImages=await assetExists(pathFor(info.start));
         if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
         if(hasImages){
-          mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات واقعی کتاب فارسی</h4>'+imagePages.map((p,i)=>'<details class="book-page-item" '+(i===0?'open':'')+'><summary>صفحهٔ '+fa(p)+'</summary><img loading="'+(i===0?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب فارسی چهارم"></details>').join('')+'</section>';
+          mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب فارسی</h4><p class="muted">همهٔ صفحه‌های این درس را می‌توانی ببینی. برای بزرگ‌نمایی روی تصویر بزن و برای جابه‌جایی، تصویر را به راست یا چپ بکش.</p><div class="book-page-gallery" aria-label="گالری صفحات کتاب فارسی">'+imagePages.map((p,i)=>'<button type="button" class="book-page-thumb" data-book-gallery-open="'+i+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(p)+'"><img loading="'+(i<2?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب فارسی چهارم"><span>صفحهٔ '+fa(p)+'</span></button>').join('')+'</div></section>';
+          mount.querySelectorAll('[data-book-gallery-open]').forEach(button=>{
+            button.addEventListener('click',()=>openPersianBookGallery(imagePages,Number(button.dataset.bookGalleryOpen)));
+          });
           return;
         }
       }catch{}
@@ -7186,7 +7275,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v71',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v72',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
