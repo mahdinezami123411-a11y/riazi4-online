@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFile, access } from 'node:fs/promises';
+import { readFile, access, readdir } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
@@ -104,6 +104,29 @@ if (persianPageImagesEnabled) {
 } else {
   assert.match(html, /BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false/, 'تا پیش از نصب بسته، تصاویر صفحات کتاب نباید درخواست شوند');
 }
+
+const coursePageImagesEnabled = /BUNDLED_COURSE_PAGE_IMAGES\s*=\s*true/.test(html);
+if (coursePageImagesEnabled) {
+  const expectedCourseBooks = {math:{pages:134,lessons:7},science:{pages:120,lessons:13},social:{pages:111,lessons:22},gifts:{pages:121,lessons:19}};
+  for (const [subject, expected] of Object.entries(expectedCourseBooks)) {
+    const dir = new URL('../assets/book-pages/'+subject+'/', import.meta.url);
+    const manifest = JSON.parse(await readFile(new URL('page-map.json', dir), 'utf8'));
+    assert.equal(manifest.subject, subject, subject+': شناسنامهٔ صفحات کتاب نادرست است');
+    assert.equal(manifest.pageCount, expected.pages, subject+': تعداد تصاویر صفحات کتاب نادرست است');
+    assert.equal(manifest.lessonCount, expected.lessons, subject+': تعداد درس‌های نگاشت‌شده نادرست است');
+    assert.equal(Object.keys(manifest.lessons).length, expected.lessons, subject+': نگاشت تمام درس‌ها کامل نیست');
+    const files = await readdir(dir);
+    assert.equal(files.filter(name => /^page-\d{3}\.webp$/.test(name)).length, expected.pages, subject+': تعداد فایل‌های تصویر با نگاشت برابر نیست');
+    for (const range of Object.values(manifest.lessons)) {
+      for (let page = range.printedStart; page <= range.printedEnd; page++) {
+        await access(new URL('page-'+String(page).padStart(3,'0')+'.webp', dir));
+      }
+    }
+  }
+} else {
+  assert.match(html, /BUNDLED_COURSE_PAGE_IMAGES\s*=\s*false/, 'تصاویر کتاب‌های جدید نباید پیش از نصب بسته فعال شوند');
+}
+
 assert.match(html, /function renderMathQuestionVisualMarkup\(q,printMode\)/, 'رسم‌های کمکی سؤال‌های ریاضی ثبت نشده‌اند');
 assert.match(html, /id="bookPracticeVisualAid"/, 'جای نمایش شکل در تمرین وجود ندارد');
 assert.match(html, /id="examQuestionVisualAid"/, 'جای نمایش شکل در آزمون وجود ندارد');

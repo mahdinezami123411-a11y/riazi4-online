@@ -7,6 +7,7 @@ on:
       - 'sw.js'
       - 'assets/source-question-banks.json.gz.b64'
       - 'assets/persian-vocabulary.json.gz.b64'
+      - 'assets/book-pages/**'
       - 'tests/**'
       - '.github/workflows/question-regression.yml'
   workflow_dispatch:
@@ -40,6 +41,12 @@ jobs:
           cp assets/persian-vocabulary.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
           cp assets/book-pages/persian/page-*.webp assets/book-pages/persian/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/persian/"
           cp assets/books/persian-pages.pdf "$RUNNER_TEMP/quiz-site/assets/books/"
+          for subject in math science social gifts; do
+            if [ -d "assets/book-pages/$subject" ]; then
+              mkdir -p "$RUNNER_TEMP/quiz-site/assets/book-pages/$subject"
+              cp assets/book-pages/"$subject"/page-*.webp assets/book-pages/"$subject"/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/$subject/"
+            fi
+          done
           cp sw.js manifest.webmanifest "$RUNNER_TEMP/quiz-site/"
       - name: Run browser checks
         run: |
@@ -48,4 +55,7 @@ jobs:
           echo $! > "$RUNNER_TEMP/quiz-http.pid"
           cd "$RUNNER_TEMP/quiz-test"
           node "$GITHUB_WORKSPACE/tests/persian-gallery-browser.mjs"
+          if grep -Eq 'BUNDLED_COURSE_PAGE_IMAGES\\s*=\\s*true' "$GITHUB_WORKSPACE/index.html"; then
+            node "$GITHUB_WORKSPACE/tests/course-book-gallery-browser.mjs"
+          fi
           node "$GITHUB_WORKSPACE/tests/quiz-browser.mjs"
