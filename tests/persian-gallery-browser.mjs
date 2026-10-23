@@ -24,7 +24,7 @@ try {
     if (!lesson) throw new Error('Persian lesson picker did not show an available lesson.');
     lesson.click();
   });
-  await page.waitForSelector('#lessonBookSection .book-page-thumb[data-book-gallery-open]', {timeout:15000});
+  await page.waitForSelector('#lessonBookSection .book-page-thumb[data-book-gallery-open]', {state:'attached',timeout:15000});
   const result = await page.evaluate(() => {
     const thumbnails = [...document.querySelectorAll('#lessonBookSection .book-page-thumb[data-book-gallery-open]')];
     thumbnails[0]?.click();
