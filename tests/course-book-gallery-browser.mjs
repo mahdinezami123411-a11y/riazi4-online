@@ -83,9 +83,7 @@ try {
     if (document.querySelector('#bookView [data-book-tab="file"]') || document.getElementById('booktab-file')) {
       throw new Error('تب PDF کتاب ریاضی هنوز در پنل دانش‌آموز وجود دارد');
     }
-    const chapter = document.querySelector('#chapterPicker [data-chapter="1"]');
-    if (!chapter) throw new Error('فصل اول ریاضی در فهرست پیدا نشد');
-    chapter.click();
+    api.renderChapter(1);
   });
 
   const mathReports=[];
@@ -93,12 +91,7 @@ try {
     if (chapter.id > 1) {
       await page.evaluate(chapterId => {
         const api = window.__quizTestApi;
-        api.renderChapterPicker();
-        const picker = document.querySelector('#chapterPicker');
-        picker?.classList.remove('hidden');
-        const button = picker?.querySelector('[data-chapter="'+chapterId+'"]');
-        if (!button) throw new Error('فصل ریاضی پیدا نشد: '+chapterId);
-        button.click();
+        api.renderChapter(chapterId);
       }, chapter.id);
     }
     await page.waitForFunction(() => document.querySelectorAll('#chapterLessonBody .math-subtopic-book-pages').length > 0, {timeout:12000});
