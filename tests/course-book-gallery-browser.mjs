@@ -102,11 +102,11 @@ try {
         chapter:chapterId,
         sectionCount:notes.length,
         galleryCount:galleries.length,
-        pageCount:galleries.reduce((sum,g)=>sum+(g.dataset.mathPageList||'').split(',').filter(Boolean).length,0),
+        pageCount:galleries.reduce((sum,g)=>sum+((g.querySelector('[data-math-page-list]')?.dataset.mathPageList||'').split(',').filter(Boolean).length),0),
         pathsValid:galleries.every(g=>[...g.querySelectorAll('img')].every(img=>(img.getAttribute('src')||'').includes('assets/book-pages/math/page-'))),
         eachSectionHasPages:notes.length===galleries.length&&notes.every(n=>n.querySelector('.math-subtopic-book-pages')),
         firstImage:galleries[0]?.querySelector('img')?.getAttribute('src')||'',
-        firstPageList:galleries[0]?.dataset.mathPageList||''
+        firstPageList:galleries[0]?.querySelector('[data-math-page-list]')?.dataset.mathPageList||''
       };
     }, chapter.id);
     assert.equal(report.sectionCount,chapter.sections,'فصل '+chapter.id+': تعداد مباحث آموزشی تغییر کرده است');
