@@ -184,25 +184,25 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 
 /* فهرست بخش‌های جداگانهٔ هر درس فارسی */
 .persian-lesson-section-menu{display:grid;gap:12px;margin:12px 0 4px}
-.persian-lesson-menu-intro{padding:14px;border:1px solid #8fc8ef;border-radius:16px;background:linear-gradient(135deg,#e8f7ff,#f4efff);color:#214d78}
-.persian-lesson-menu-intro h4{margin:0 0 5px;font-size:16px;color:#174e91}
-.persian-lesson-menu-intro p{margin:0;font-size:12px;line-height:1.9}
+.persian-lesson-menu-intro{padding:14px;border:1px solid #aa9dff;border-radius:16px;background:#8b78ff!important;color:#111b3b!important;box-shadow:0 3px 0 #6152cc}
+.persian-lesson-menu-intro h4{margin:0 0 5px;font-size:16px;color:#101936!important}
+.persian-lesson-menu-intro p{margin:0;font-size:12px;line-height:1.9;color:#202f59!important;font-weight:750}
 .persian-lesson-section-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.persian-section-card{display:flex;align-items:center;gap:10px;width:100%;min-width:0;min-height:78px;padding:11px;text-align:right;white-space:normal;background:linear-gradient(145deg,#fff,#f3f8ff);color:#173e68;border:1px solid #c9e0f7;border-radius:15px;box-shadow:0 3px 0 #d9e9f8}
+.persian-section-card{display:flex;align-items:center;gap:10px;width:100%;min-width:0;min-height:78px;padding:11px;text-align:right;white-space:normal;background:linear-gradient(145deg,#8f7dff,#8070f3)!important;color:#101936!important;border:1px solid #aa9dff!important;border-radius:15px;box-shadow:0 3px 0 #6152cc!important}
 .persian-section-card:active{transform:translateY(1px)}
 .persian-section-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#e5f4ff;font-size:24px}
 .persian-section-card:nth-child(3n+2) .persian-section-icon{background:#fff0d8}
 .persian-section-card:nth-child(3n) .persian-section-icon{background:#e4f8ec}
 .persian-section-card-copy{display:block;flex:1;min-width:0}
-.persian-section-card-copy b{display:block;font-size:13px;line-height:1.6;color:#16477f}
-.persian-section-card-copy small{display:block;margin-top:3px;color:#627b96;font-size:10px;font-weight:500;line-height:1.7}
-.persian-section-arrow{flex:0 0 auto;font-size:19px;color:#2877bb}
+.persian-section-card-copy b{display:block;font-size:13px;line-height:1.6;color:#101936!important;font-weight:850}
+.persian-section-card-copy small{display:block;margin-top:3px;color:#24345c!important;font-size:10px;font-weight:750;line-height:1.7}
+.persian-section-arrow{flex:0 0 auto;font-size:19px;color:#1d2e59!important}
 .persian-lesson-section-pages{margin:12px 0}
 .persian-lesson-section-page{min-width:0;animation:persianPageIn .18s ease-out}
-.persian-section-page-heading{display:flex;align-items:center;gap:9px;margin:0 0 12px;padding:12px;border-radius:14px;background:linear-gradient(120deg,#e7f5ff,#f1efff);border:1px solid #cbdff8}
+.persian-section-page-heading{display:flex;align-items:center;gap:9px;margin:0 0 12px;padding:12px;border-radius:14px;background:linear-gradient(120deg,#8f7dff,#8070f3)!important;border:1px solid #aa9dff!important;box-shadow:0 3px 0 #6152cc}
 .persian-section-page-heading .persian-section-icon{flex-basis:39px;width:39px;height:39px;font-size:22px}
-.persian-section-page-heading h4{margin:0;color:#174e91;font-size:15px;line-height:1.7}
-.persian-section-page-heading p{margin:2px 0 0;color:#607a98;font-size:11px;line-height:1.8}
+.persian-section-page-heading h4{margin:0;color:#101936!important;font-size:15px;line-height:1.7;font-weight:850}
+.persian-section-page-heading p{margin:2px 0 0;color:#24345c!important;font-size:11px;line-height:1.8;font-weight:700}
 @keyframes persianPageIn{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:420px){
  .persian-lesson-section-grid{grid-template-columns:1fr;gap:8px}
@@ -6207,10 +6207,6 @@ const persianBookPageMap={
     const langTopic=l.languageTopic||{title:'دانش زبانی',source:'تکمیلی',explain:'از جمله‌های متن درس برای تمرین استفاده کن.',examples:[]};
     const exampleItems=items=>(Array.isArray(items)&&items.length?'<ul>'+items.map(item=>'<li>'+escapeForHtmlText(item)+'</li>').join('')+'</ul>':'');
     const lessonTeachingBlock=!isDictationOnly?(
-      '<section class="lesson-note"><h4>📖 آموزش و مفهوم درس</h4><p>'+escapeForHtmlText(l.content||'برای این درس توضیح متنی ثبت نشده است.')+'</p>'+
-      (l.example?'<p><b>نمونه و کاربرد:</b> '+escapeForHtmlText(l.example)+'</p>':'')+
-      (l.isFreeLesson?'<p class="muted">این بخش «درس آزاد» است؛ برای نمایش محتوای دقیق، متن انتخاب‌شده در کلاس باید توسط معلم وارد شود.</p>':'')+
-      '</section>'+
       '<section class="lesson-note"><h4>🧠 واژه‌آموزی: '+escapeForHtmlText(wordTopic.title)+'</h4><p>'+escapeForHtmlText(wordTopic.explain||'')+'</p>'+exampleItems(wordTopic.examples)+'</section>'+
       '<section class="lesson-note"><h4>✏️ دانش زبانی و نگارش: '+escapeForHtmlText(langTopic.title)+'</h4><p>'+escapeForHtmlText(langTopic.explain||'')+'</p>'+exampleItems(langTopic.examples)+
       '<div class="notice"><b>تمرین نگارش:</b> در ۳ تا ۵ جمله، پیام یا موضوع درس را با زبان خودت بنویس. دست‌کم دو واژه از فهرست همین درس را به کار ببر و در پایان نوشته‌ات را از نظر املا و نشانه‌گذاری بازبینی کن.</div></section>'
@@ -6266,7 +6262,6 @@ const persianBookPageMap={
     const consumedLessonNodes=new Set();
     const lessonSectionMeta=(title)=>{
       const t=String(title||'').replace(/\s+/g,' ').trim();
-      if(t.includes('آموزش و مفهوم درس'))return {key:'lesson-text',title:'متن و مفهوم درس',description:'توضیح کلی، پیام درس و نمونه‌های آن را بخوان.',icon:'📖'};
       if(t.includes('واژه‌آموزی'))return {key:'word-learning',title:'واژه‌آموزی',description:'با واژه‌های آموزشی و مثال‌های درس آشنا شو.',icon:'🧠'};
       if(t.includes('دانش زبانی و نگارش'))return {key:'language-writing',title:'دانش زبانی و نگارش',description:'نکته‌های زبانی و راهنمای نوشتن را ببین.',icon:'✍️'};
       if(t.includes('واژه‌های مهم درس'))return {key:'important-words',title:'واژه‌های مهم درس',description:'واژه‌های کلیدی این درس را مرور کن.',icon:'📌'};
@@ -7191,7 +7186,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v69',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v70',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
