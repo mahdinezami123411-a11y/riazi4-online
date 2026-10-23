@@ -75,6 +75,8 @@ try {
   // Math has its own chapter screen: its PDF tab is gone, and every subsection has its own page gallery.
   await page.evaluate(() => {
     const api = window.__quizTestApi;
+    // In production, chapter availability is configured by the teacher; open all chapters in this UI test.
+    api.setCourseLessonOpen(() => true);
     api.showStudentAppView('home');
     api.showStudentAppView('learn');
     if (document.querySelector('#bookView [data-book-tab="file"]') || document.getElementById('booktab-file')) {
