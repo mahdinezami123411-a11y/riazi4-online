@@ -83,7 +83,7 @@ try {
     if (document.querySelector('#bookView [data-book-tab="file"]') || document.getElementById('booktab-file')) {
       throw new Error('تب PDF کتاب ریاضی هنوز در پنل دانش‌آموز وجود دارد');
     }
-    api.renderChapter(1);
+    window.__renderMathChapterForTest(1);
   });
 
   const mathReports=[];
@@ -91,7 +91,7 @@ try {
     if (chapter.id > 1) {
       await page.evaluate(chapterId => {
         const api = window.__quizTestApi;
-        api.renderChapter(chapterId);
+        window.__renderMathChapterForTest(chapterId);
       }, chapter.id);
     }
     await page.waitForFunction(() => document.querySelectorAll('#chapterLessonBody .math-subtopic-book-pages').length > 0, {timeout:12000});
