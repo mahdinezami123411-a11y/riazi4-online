@@ -72,7 +72,7 @@ try {
     console.log(subject.id+' gallery check passed:',JSON.stringify(item));
   }
 
-  // Math has its own chapter screen: its PDF tab is gone, and every subsection has its own page gallery.
+  // Math chapters open directly; each chapter has one accordion grouping page galleries by subsection.
   await page.evaluate(() => {
     const api = window.__quizTestApi;
     // In production, chapter availability is configured by the teacher; open all chapters in this UI test.
@@ -80,6 +80,9 @@ try {
     api.showStudentAppView('home');
     api.showStudentAppView('learn');
     api.renderChapterPicker();
+    if (document.querySelector('#bookView [data-book-tab="chapters"]') || document.querySelector('#bookView .book-tabs')) {
+      throw new Error('دکمهٔ قدیمی «آموزش فصل‌ها و صفحات کتاب» هنوز وجود دارد');
+    }
     if (document.querySelector('#bookView [data-book-tab="file"]') || document.getElementById('booktab-file')) {
       throw new Error('تب PDF کتاب ریاضی هنوز در پنل دانش‌آموز وجود دارد');
     }
@@ -96,20 +99,25 @@ try {
     }
     await page.waitForFunction(() => document.querySelectorAll('#chapterLessonBody .math-subtopic-book-pages').length > 0, {timeout:12000});
     const report = await page.evaluate(chapterId => {
-      const notes=[...document.querySelectorAll('#chapterLessonBody .math-subtopic-note')];
+      const notes=[...document.querySelectorAll('#chapterLessonBody .math-subtopic-learning')];
       const galleries=[...document.querySelectorAll('#chapterLessonBody .math-subtopic-book-pages')];
+      const pagesSection=document.querySelector('#chapterLessonBody details.math-chapter-book-pages');
       return {
         chapter:chapterId,
         sectionCount:notes.length,
+        chapterPagesSection:Boolean(pagesSection),
+        pagesSectionTitle:pagesSection?.querySelector('summary')?.textContent.trim().replace(/\s+/g,' ')||'',
         galleryCount:galleries.length,
         pageCount:galleries.reduce((sum,g)=>sum+((g.querySelector('[data-math-page-list]')?.dataset.mathPageList||'').split(',').filter(Boolean).length),0),
         pathsValid:galleries.every(g=>[...g.querySelectorAll('img')].every(img=>(img.getAttribute('src')||'').includes('assets/book-pages/math/page-'))),
-        eachSectionHasPages:notes.length===galleries.length&&notes.every(n=>n.querySelector('.math-subtopic-book-pages')),
+        eachSectionHasPages:Boolean(pagesSection)&&notes.length===galleries.length&&galleries.every(g=>Boolean(g.querySelector('[data-math-page-list]')))&&notes.every(n=>!n.querySelector('.math-subtopic-book-pages')),
         firstImage:galleries[0]?.querySelector('img')?.getAttribute('src')||'',
         firstPageList:galleries[0]?.querySelector('[data-math-page-list]')?.dataset.mathPageList||''
       };
     }, chapter.id);
     assert.equal(report.sectionCount,chapter.sections,'فصل '+chapter.id+': تعداد مباحث آموزشی تغییر کرده است');
+    assert.equal(report.chapterPagesSection,true,'فصل '+chapter.id+': بخش صفحات کتاب وجود ندارد');
+    assert.ok(report.pagesSectionTitle.includes('صفحات کتاب'),'فصل '+chapter.id+': عنوان بخش صفحات کتاب اشتباه است');
     assert.equal(report.galleryCount,chapter.sections,'فصل '+chapter.id+': برای همهٔ مباحث گالری صفحه ساخته نشده است');
     assert.equal(report.pageCount,chapter.pages,'فصل '+chapter.id+': تعداد صفحه‌های تخصیص‌داده‌شده با فهرست کتاب برابر نیست');
     assert.equal(report.pathsValid,true,'فصل '+chapter.id+': مسیر تصویرهای کتاب ریاضی اشتباه است');
@@ -121,14 +129,18 @@ try {
 
   // Verify that a math subsection thumbnail opens the image gallery and supports next/close.
   await page.evaluate(() => {
-    // Open chapter 1 directly; the chapter picker belongs to the hidden book screen at this point.
+    // Open chapter 1 and expand its pages accordion so lazy images can load.
     window.__renderMathChapterForTest(1);
+    const pagesSection=document.querySelector('#chapterLessonBody details.math-chapter-book-pages');
+    if(pagesSection)pagesSection.open=true;
   });
   await page.waitForFunction(() => {
     const img=document.querySelector('#chapterLessonBody .math-subtopic-book-pages img');
     return !!img && img.complete && img.naturalWidth>0;
   }, {timeout:12000});
   const mathModal = await page.evaluate(() => {
+    const pagesSection=document.querySelector('#chapterLessonBody details.math-chapter-book-pages');
+    if(pagesSection)pagesSection.open=true;
     const gallery=document.querySelector('#chapterLessonBody .math-subtopic-book-pages');
     const cards=[...(gallery?.querySelectorAll('[data-math-page-open]')||[])];
     const source=cards[0]?.querySelector('img')?.getAttribute('src')||'';
