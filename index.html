@@ -2339,7 +2339,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </div>
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
-<div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div>
+<div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فصل‌ها، صفحه‌های کتاب، تمرین و امتحان</small></button></div></div>
 <div id="studentDashboard" class="card progress-dashboard">
   <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
   <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
@@ -2769,7 +2769,7 @@ let activeChapter=1, currentPractice=null, selectedPracticeAnswer=null;
 
 const mathSubtopicPageLists = {
   // فصل اول: صفحه‌ها بر اساس موضوع واقعی هر بخش؛ صفحه‌های مشترک در بیش از یک مبحث می‌آیند.
-  1:[[4,5,6,7],[2,3,8],[3,9,10,11],[12,13,14,15],[16,17,18,19,20]],
+  1:[[4,5,6,7],[2,3,8],[3,9,10,11],[12,13,14,15],[16,17,18,19]],
   // فصل دوم: شناخت کسر، جمع و تفریق کسرها، کسرهای مساوی، ضرب عدد در کسر
   2:[[24,25,26,27,28,29],[30,31,32,33],[34,35,36,37],[38,39,40,41,42]],
   // فصل سوم: ضرب دورقمی، محاسبه حاصل‌ضرب، برآورد، بخش‌پذیری، تقسیم یک‌رقمی و دورقمی
@@ -2828,7 +2828,7 @@ function renderChapter(id){
   const mistake=o.mistake?`<div class="lesson-mistake"><b>⚠️ اشتباه رایج</b><p>${escapeHtml(o.mistake)}</p></div>`:'';
   const check=o.check?`<div class="lesson-check"><b>🧠 خودت را بسنج</b><p>${escapeHtml(o.check)}</p><details><summary>دیدن پاسخ و توضیح</summary><p>${escapeHtml(o.answer||"ابتدا نکته‌های کلیدی این مبحث را مرور کن و مثال را دوباره حل کن.")}</p></details></div>`:'';
   const pageGallery=renderMathSubtopicPageGallery(id,i,o.title||'مبحث آموزشی');
-  return `<article class="lesson-note math-subtopic-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${pageGallery}${steps}${example}${keys}${mistake}${check}</article>`;
+  return `<article class="lesson-note math-subtopic-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4>${pageGallery}<p>${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}</article>`;
  }).join('');
  $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب بخوان، مثال حل‌شده را بدون نگاه کردن دوباره حل کن، به سؤال «خودت را بسنج» پاسخ بده و سپس از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
  renderChapterPicker();updatePracticeTopicOptions();
@@ -6368,6 +6368,19 @@ const persianBookPageMap={
     if(!subject){mount.innerHTML='';return}
     mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">در حال بارگذاری صفحات اصلی کتاب…</p></section>';
     const isPersianBook=subjectId==='persian'||subjectId==='dictation';
+    if(subjectId==='math'){
+      const chapter=chapters.find(item=>Number(item.id)===Number(lesson.id));
+      if(chapter){
+        const galleries=chapter.sections.map((raw,index)=>{
+          const section=Array.isArray(raw)?{title:raw[0]}:raw;
+          return renderMathSubtopicPageGallery(chapter.id,index,section?.title||'مبحث آموزشی');
+        }).join('');
+        mount.innerHTML=galleries||'<section class="lesson-book-pages"><h4>📚 صفحات کتاب ریاضی</h4><p class="muted">برای این فصل، تصویر صفحه‌ها ثبت نشده است.</p></section>';
+      }else{
+        mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب ریاضی</h4><p class="muted">فصل موردنظر پیدا نشد.</p></section>';
+      }
+      return;
+    }
     const info=isPersianBook?persianBookPageMap[Number(lesson.id)]:(courseBookPageMap[subjectId]||{})[Number(lesson.id)]||null;
     const imageSubjectId=subjectId==='dictation'?'persian':subjectId;
     const pageImagesEnabled=isPersianBook?BUNDLED_PERSIAN_PAGE_IMAGES:BUNDLED_COURSE_PAGE_IMAGES;
