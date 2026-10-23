@@ -2866,9 +2866,9 @@ const bookSubjectCatalog=[
  {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
 ];
  // Only assets verified to exist in the deployed repository may be requested as bundled files.
- const BUNDLED_BOOK_ASSETS = new Set(['./assets/math-fourth.pdf']);
+ const BUNDLED_BOOK_ASSETS = new Set(['./assets/math-fourth.pdf', './assets/books/persian-pages.pdf']);
  // The lesson page images are not shipped in this repository yet; do not issue 404 requests for them.
- const BUNDLED_PERSIAN_PAGE_IMAGES = false;
+ const BUNDLED_PERSIAN_PAGE_IMAGES = true;
 let sourceQuestionBanks = {};
 let sourceQuestionBanksLoading = null;
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
@@ -7186,7 +7186,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v70',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v71',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
