@@ -79,6 +79,7 @@ try {
     api.setCourseLessonOpen(() => true);
     api.showStudentAppView('home');
     api.showStudentAppView('learn');
+    api.renderChapterPicker();
     if (document.querySelector('#bookView [data-book-tab="file"]') || document.getElementById('booktab-file')) {
       throw new Error('تب PDF کتاب ریاضی هنوز در پنل دانش‌آموز وجود دارد');
     }
