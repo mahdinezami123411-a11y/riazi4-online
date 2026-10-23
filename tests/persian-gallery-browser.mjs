@@ -25,7 +25,12 @@ try {
     lesson.click();
   });
   await page.waitForSelector('#lessonBookSection .book-page-thumb[data-book-gallery-open]', {state:'attached',timeout:15000});
+  await page.waitForSelector('#lessonBookSection .persian-audio-link', {state:'attached',timeout:15000});
   const result = await page.evaluate(() => {
+    const audioLinks = [...document.querySelectorAll('#lessonBookSection .persian-audio-link')];
+    const audioFirstUrl = audioLinks[0]?.getAttribute('href')||'';
+    const audioFirstTitle = audioLinks[0]?.querySelector('b')?.textContent||'';
+    const audioSecureTarget = audioLinks[0]?.getAttribute('target')==='_blank'&&audioLinks[0]?.getAttribute('rel')==='noopener noreferrer';
     const thumbnails = [...document.querySelectorAll('#lessonBookSection .book-page-thumb[data-book-gallery-open]')];
     thumbnails[0]?.click();
     const modal = document.getElementById('persianBookGalleryModal');
@@ -55,9 +60,13 @@ try {
     dispatchTouch('touchend',[[70,160],[210,160]],[]);
     modal.querySelector('[data-gallery-close]')?.click();
     const closeWorks = !document.getElementById('persianBookGalleryModal');
-    return {thumbnailCount:thumbnails.length,nextButtonOnLeft,buttonMovedToNextPage,leftToRightGoesNext,pinchZoomWorks,zoomScale,closeWorks};
+    return {thumbnailCount:thumbnails.length,audioCount:audioLinks.length,audioFirstUrl,audioFirstTitle,audioSecureTarget,nextButtonOnLeft,buttonMovedToNextPage,leftToRightGoesNext,pinchZoomWorks,zoomScale,closeWorks};
   });
   assert.ok(result.thumbnailCount > 1, 'صفحه‌های درس به‌صورت تصاویر قابل انتخاب نمایش داده نشدند');
+  assert.equal(result.audioCount,3,'صوت‌های QR درس اول در بخش مربوطه نمایش داده نشدند');
+  assert.ok(result.audioFirstUrl.endsWith('/403-0-1'),'پیوند صوت ستایش از QR کتاب استخراج نشده است');
+  assert.equal(result.audioFirstTitle,'ستایش','عنوان صوت QR در بخش فارسی درست نیست');
+  assert.equal(result.audioSecureTarget,true,'پیوند صوت باید ایمن و در برگهٔ جدید باز شود');
   assert.equal(result.nextButtonOnLeft,true,'فلش صفحهٔ بعد در سمت چپ قرار ندارد');
   assert.equal(result.buttonMovedToNextPage,true,'فلش سمت چپ صفحهٔ بعد را نمایش نداد');
   assert.equal(result.leftToRightGoesNext,true,'کشیدن تصویر از چپ به راست صفحهٔ بعدی را نمایش نداد');
