@@ -1349,7 +1349,7 @@ a{color:#d7ff76}
 #persianGamesPanel .pg-cloze-option.selected{
   background:linear-gradient(135deg,#175ad0,#167da7)!important;color:#fff!important;border-color:#70e6ff!important;
 }
-#persianGamesPanel .pg-action-grid .outline,#persianGamesPanel #persianGamesBack{
+#persianGamesPanel .pg-action-grid .outline{
   background:#f7faff!important;color:#1a4589!important;border-color:#bddcff!important;
 }
 #persianGamesPanel .pg-feedback.correct{background:#103e35!important;color:#b9ffe5!important;border-color:#2cb78b!important}
@@ -2268,7 +2268,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 <button type="button" data-app-view="report"><span>📈</span><small>کارنامه</small></button>
 <button type="button" data-app-view="profile"><span>👤</span><small>پروفایل</small></button>
 </nav>
-<button type="button" id="studentStageBack" class="student-stage-back hidden" aria-label="بازگشت به مرحلهٔ قبل" title="بازگشت به مرحلهٔ قبل"><span aria-hidden="true">⬅️</span><span>بازگشت به مرحلهٔ قبل</span></button>
+<button type="button" id="studentStageBack" class="student-stage-back hidden" aria-label="بازگشت به صفحه قبل" title="بازگشت به صفحه قبل"><span aria-hidden="true">⬅️</span><span>بازگشت به صفحه قبل</span></button>
 <div id="assignmentsStudentView" class="student-screen hidden"><div class="card"><div class="row"><h2>📋 فعالیت‌های کلاسی</h2><button id="refreshStudentAssignments" class="outline" type="button">به‌روزرسانی</button></div><p class="muted">تمرین‌ها و آزمون‌هایی که معلم برای کلاس منتشر کرده اینجا نمایش داده می‌شوند.</p><div id="studentAssignmentList" class="notice">برای دیدن فعالیت‌ها وارد حساب دانش‌آموز شو.</div><div id="studentAssignmentRunner" class="hidden"><h3 id="studentAssignmentTitle"></h3><p id="studentAssignmentProgress" class="muted"></p><div id="studentAssignmentQuestion" class="item"></div><div id="studentAssignmentFeedback" class="notice hidden" role="status"></div><div class="grid"><button id="studentAssignmentSubmit" type="button">ثبت پاسخ</button><button id="studentAssignmentNext" class="outline hidden" type="button">سؤال بعدی</button></div></div></div></div>
 <div id="profileView" class="student-screen hidden">
 <div id="studentProfile" class="profile-card">
@@ -2289,7 +2289,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </div>
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
-<div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2><button class="outline" id="mathBackToSubjects" type="button">بازگشت به انتخاب کتاب‌ها</button></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div>
+<div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فایل کتاب، فصل‌ها، تمرین و امتحان</small></button></div></div>
 <div id="studentDashboard" class="card progress-dashboard">
   <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
   <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
@@ -2299,17 +2299,17 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </div>
 </div>
 <div id="otherSubjectsView" class="card hidden">
-  <div class="row"><h2 id="otherSubjectPageHeading">📚 درس‌های پایهٔ چهارم</h2><button class="outline" id="subjectsBackHome">بازگشت به انتخاب کتاب‌ها</button></div>
+  <div class="row"><h2 id="otherSubjectPageHeading">📚 درس‌های پایهٔ چهارم</h2></div>
   <p class="muted">ابتدا کتاب را انتخاب کن. بعد از بازشدن کتاب، از نوار بالای آن بین درس‌ها، تمرین و آزمون جابه‌جا شو.</p>
   <nav id="otherSubjectTabs" class="book-tabs hidden" aria-label="بخش‌های کتاب"><button type="button" class="active" data-other-subject-tab="lessons">📖 درس‌ها</button><button type="button" data-other-subject-tab="practice">✏️ تمرین</button><button type="button" data-other-subject-tab="exam">📝 آزمون</button></nav>
   <div id="otherSubjectPicker" class="subjects"></div>
   <div id="otherSubjectLessons" class="hidden">
-    <div id="persianLessonBackRow" class="row hidden" style="margin-top:10px"><button type="button" id="persianLessonsBack" class="outline">↩ بازگشت به صفحهٔ فارسی</button></div>
+    
     <div class="row" style="margin-top:14px"><h3 id="otherSubjectTitle">درس</h3><span class="pill" id="otherSubjectProgress">۰ پاسخ</span></div>
     <div id="otherSubjectLessonPicker" class="chapter-grid"></div>
   </div>
   <div id="otherSubjectLessonBody" class="item hidden lesson-reader" aria-live="polite">
-    <div class="row lesson-reader-toolbar"><span class="pill">یاد بگیر و تمرین کن</span><button id="backToOtherLessons" class="outline" type="button">↩ فهرست درس‌ها</button></div>
+    
     <h3 id="otherLessonTitle">آموزش مبحث</h3>
     <div id="otherLessonContent"></div>
     <div class="lesson-note"><h4>🎯 پرسش این مبحث</h4><p id="otherLessonQuestion"></p><div id="otherLessonOptions"></div><button id="checkOtherLessonAnswer" style="width:100%;margin-top:9px">بررسی پاسخ</button><div id="otherLessonFeedback" class="notice hidden" aria-live="polite"></div></div>
@@ -2332,7 +2332,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   </div>
 </section>
 <section id="persianGamesPanel" class="item hidden" aria-label="باشگاه واژه‌ها">
-  <div class="row pg-games-head"><div><h3>🪐 باشگاه واژه‌ها</h3><p class="muted">هر بار ورود، پرسش‌ها و گزینه‌ها به ترتیب تازه‌ای نمایش داده می‌شوند.</p></div><button type="button" id="persianGamesBack" class="outline">↩ بازگشت</button></div>
+  <div class="row pg-games-head"><div><h3>🪐 باشگاه واژه‌ها</h3><p class="muted">هر بار ورود، پرسش‌ها و گزینه‌ها به ترتیب تازه‌ای نمایش داده می‌شوند.</p></div></div>
   <div class="pg-game-select">
     <label class="field" for="pgLessonSelect">۱. انتخاب درس فارسی</label>
     <select id="pgLessonSelect"><option value="">ابتدا درس را انتخاب کن…</option></select>
@@ -2410,7 +2410,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 <section class="learn-section item"><h3>۶. جمع عددهای دو، سه و چهاررقمی</h3><p>برای جمع، رقم‌های هم‌ارزش را زیر هم می‌نویسیم: یکان زیر یکان، دهگان زیر دهگان، صدگان زیر صدگان و هزارگان زیر هزارگان. از ستون یکان شروع می‌کنیم. اگر حاصل یک ستون ۱۰ یا بیشتر شد، ده‌تایی را به ستون بعدی می‌بریم.</p><div class="concept-grid"><div class="concept-box"><b>جمع دورقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۷</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۵</span></div><div class="stack-rule"></div><div class="stack-result">۴۲</div></div><p class="muted">از یکان شروع می‌کنیم: ۷+۵=۱۲؛ ۲ را می‌نویسیم و ۱ دهگان را به ستون بعد می‌بریم.</p></div><div class="concept-box"><b>جمع سه‌رقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۳۳۴</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۵۶۸</span></div><div class="stack-rule"></div><div class="stack-result">۹۰۲</div></div><p class="muted">یکان زیر یکان، دهگان زیر دهگان و صدگان زیر صدگان قرار می‌گیرد.</p></div><div class="concept-box"><b>جمع چهاررقمی</b><div class="stack-sum" dir="ltr"><div class="stack-row"><span class="stack-num">۲۳۴۵</span></div><div class="stack-row"><span class="stack-op">+</span><span class="stack-num">۱۲۸۷</span></div><div class="stack-rule"></div><div class="stack-result">۳۶۳۲</div></div><p class="muted">در هر ستون، اگر حاصل ۱۰ یا بیشتر شد، رقم یکان را می‌نویسیم و دهگان را انتقال می‌دهیم.</p></div><div class="concept-box"><b>یادت باشد</b><p>عددها را مرتب بنویس و رقم‌های هم‌ارزش را دقیقاً زیر هم قرار بده. از ستون یکان شروع کن.</p></div></div></section>
 <section class="learn-section item"><h3>۷. تمرین جمع دورقمی، سه‌رقمی و چهاررقمی</h3><label class="field" for="additionDigits">نوع جمع</label><select id="additionDigits"><option value="2">دو رقمی</option><option value="3">سه رقمی</option><option value="4">چهار رقمی</option></select><button id="newAddition" style="width:100%;margin-top:9px">➕ سؤال جمع جدید</button><div id="additionBox" class="item hidden"><div id="additionQuestion" class="stack-sum stack-question" aria-live="polite"></div><input id="additionAnswer" inputmode="numeric" placeholder="حاصل جمع را بنویس"><button id="checkAddition" style="width:100%;margin-top:8px">بررسی پاسخ</button><div id="additionFeedback" class="notice hidden"></div></div></section>
 </div>
-<div id="bookView" class="card hidden"><div class="row"><h2>📘 کتاب ریاضی چهارم</h2><button class="outline" id="backToReminders">بازگشت به یادآوری</button></div><div class="book-tabs"><button class="active" data-book-tab="file">📄 فایل کتاب</button><button data-book-tab="chapters">📚 توضیح هر فصل</button></div>
+<div id="bookView" class="card hidden"><div class="row"><h2>📘 کتاب ریاضی چهارم</h2></div><div class="book-tabs"><button class="active" data-book-tab="file">📄 فایل کتاب</button><button data-book-tab="chapters">📚 توضیح هر فصل</button></div>
 <div id="booktab-file" class="tabpane active"><h3>فایل کتاب ریاضی چهارم</h3><div id="studentBookStatus" class="notice">در حال آماده‌سازی کتاب ریاضی چهارم…</div><div id="studentPdfFrame"></div></div>
 <div id="booktab-chapters" class="tabpane"><h3>آموزش فصل‌های کتاب ریاضی چهارم</h3><p class="muted" id="chapterPickerIntro">برای دیدن آموزش، یک فصل را انتخاب کن. عنوان‌ها و ترتیب فصل‌ها از فهرست کتاب ریاضی چهارم دبستان، چاپ سیزدهم ۱۴۰۵ برداشته شده‌اند.</p><div class="chapter-grid" id="chapterPicker"></div></div>
 <div id="booktab-practice" class="tabpane"><h3>🎯 میدان تمرین فصل‌به‌فصل</h3><p class="muted" id="practiceDescription">یک فصل را انتخاب کن و سؤال‌های همان فصل را تمرین کن؛ همچنین می‌توانی سؤال‌های نمونهٔ نوبت اول یا دوم را تک‌به‌تک پاسخ بدهی.</p><label class="field" for="practiceSetMode">نوع تمرین</label><select id="practiceSetMode"><option value="chapter">تمرین یک فصل</option><option value="term1">تمرین نمونه نوبت اول · ۱۰ سؤال</option><option value="term2">تمرین نمونه نوبت دوم · ۱۰ سؤال</option></select>
@@ -2420,7 +2420,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </div>
 </section>
 </section>
-<div id="mathChapterLessonView" class="card hidden"><div class="row"><h2>📘 آموزش فصل ریاضی</h2><button type="button" class="outline" id="backToChapterPicker">↩️ بازگشت به فهرست فصل‌ها</button></div><div id="chapterLesson" class="item hidden" aria-live="polite"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div><h3 id="chapterLessonTitle">آموزش فصل</h3><span class="pill" id="chapterLessonTag">یاد بگیر</span></div></div><div id="chapterLessonBody"></div><button class="outline" id="chapterToPractice" style="width:100%;margin-top:10px">✏️ تمرین همین فصل</button></div></div>
+<div id="mathChapterLessonView" class="card hidden"><div class="row"><h2>📘 آموزش فصل ریاضی</h2></div><div id="chapterLesson" class="item hidden" aria-live="polite"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div><h3 id="chapterLessonTitle">آموزش فصل</h3><span class="pill" id="chapterLessonTag">یاد بگیر</span></div></div><div id="chapterLessonBody"></div><button class="outline" id="chapterToPractice" style="width:100%;margin-top:10px">✏️ تمرین همین فصل</button></div></div>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
 <section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🟢 حضور امروز</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
 <div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس‌های فعال در همهٔ کتاب‌ها</span><strong id="teacherActiveLessonCount">۰</strong></div><div class="metric"><span class="muted">کتاب‌های دارای درس باز</span><strong id="teacherActiveBookCount">۰</strong></div><div class="metric"><span class="muted">تعداد کتاب‌های برنامه</span><strong id="teacherBookTotalCount">۶</strong></div></div><h3 style="margin-top:16px">وضعیت دسترسی درس‌ها به تفکیک کتاب</h3><p class="muted">تعداد درس‌های باز و عنوان همان درس‌ها، بر اساس تنظیمات فعلی کلاس و زمان‌بندی دسترسی، در این فهرست نمایش داده می‌شود.</p><div id="teacherCourseOverviewList" class="stack"></div><div id="teacherOverviewStatus" class="notice">برای مشاهدهٔ وضعیت دقیق، تنظیمات کتاب‌های کلاس از سرور دریافت می‌شود.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><div id="teacherOverviewStudentCards" class="teacher-student-grid" aria-label="فهرست دانش‌آموزان کلاس"></div><div id="teacherOverviewStudentDetail" class="teacher-student-detail hidden" aria-live="polite"></div><label class="field" for="teacherOverviewStudentFilter">فیلتر برگه‌های ثبت‌شده</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
@@ -2564,7 +2564,7 @@ let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},book
 const $=id=>document.getElementById(id);
 function show(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});window.scrollTo({top:0,behavior:'smooth'})}
 $('studentEnter').onclick=()=>{show('studentNamePage');const err=$('studentLoginError');if(err)err.classList.add('hidden');const name=$('studentNameInput'),pass=$('studentPasswordInput');if(name)name.value='';if(pass)pass.value='';setTimeout(()=>name?.focus(),100)};$('teacherEnter').onclick=()=>show('teacherGate');$('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');$('demoTeacherLogin').onclick=()=>{const status=$('teacherEmail');if(status)status.focus();};
-document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>{const book=b.dataset.studentView==='book';$('remindersView').classList.toggle('hidden',book);$('bookView').classList.toggle('hidden',!book);window.scrollTo({top:0,behavior:'smooth'});if(book)renderStudentBook()});$('backToReminders').onclick=()=>{$('bookView').classList.add('hidden');$('remindersView').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})};
+document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>{const book=b.dataset.studentView==='book';$('remindersView').classList.toggle('hidden',book);$('bookView').classList.toggle('hidden',!book);window.scrollTo({top:0,behavior:'smooth'});if(book)renderStudentBook()});
 function renderFullTimesTable(){const colors=['#2498cf','#d78a35','#55a45e','#d85c86','#7556a4','#7556a4','#d85c86','#2498cf','#d78a35','#55a45e'];let h='<div class="times-columns" aria-label="همه جدول‌های ضرب یک تا ده">';for(let n=1;n<=10;n++){h+=`<section class="times-column" style="--stripe:${colors[n-1]}"><h4>جدول ضرب ${n.toLocaleString('fa-IR')}</h4><ol>`;for(let m=1;m<=10;m++){h+=`<li>${m.toLocaleString('fa-IR')} × ${n.toLocaleString('fa-IR')} = ${(m*n).toLocaleString('fa-IR')}</li>`}h+='</ol></section>'}h+='</div>';$('fullTimesTable').innerHTML=h}
 function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 function newReminderMath(){const type=$('reminderMathType').value;let a,b,text;if(type==='divide'){b=rand(2,10);let q=rand(2,10);a=b*q;currentReminderAnswer=q;text=`${a} ÷ ${b} = ؟`}else if(type==='concept'){a=rand(2,8);b=rand(2,9);currentReminderAnswer=a*b;text=`${a} گروهِ ${b}تایی چندتا می‌شود؟`}else{a=rand(1,10);b=rand(1,10);currentReminderAnswer=a*b;text=`${a} × ${b} = ؟`}currentReminderQuestion={kind:type,a,b,text,answered:false};$('checkReminderMath').disabled=false;$('reminderMathQuestion').textContent=text;$('reminderMathAnswer').value='';$('reminderMathFeedback').classList.add('hidden');$('reminderMathBox').classList.remove('hidden')}
@@ -2823,7 +2823,7 @@ $('practiceTypeFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBo
 $('practiceDifficultyFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
 // Initial display: show accurate bank size before the first question.
 updatePracticeStats();
-$('backToChapterPicker').onclick=()=>{$('mathChapterLessonView').classList.add('hidden');$('chapterLesson').classList.add('hidden');$('bookView').classList.remove('hidden');document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x.dataset.bookTab==='chapters'));document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-chapters'));$('chapterPicker').classList.remove('hidden');$('chapterPickerIntro').classList.remove('hidden');renderChapterPicker();window.scrollTo({top:0,behavior:'smooth'})};
+
 $('chapterToPractice').onclick=()=>{$('mathChapterLessonView').classList.add('hidden');$('bookView').classList.remove('hidden');document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x.dataset.bookTab==='practice'));document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-practice'));$('bookPracticeTopic').value=String(activeChapter);newBookPractice();window.scrollTo({top:0,behavior:'smooth'})};
 $('bookPracticeTopic').onchange=()=>{if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice()};
 renderChapterPicker();updatePracticeTopicOptions();renderTeacherChapterList();
@@ -3548,7 +3548,6 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function populateChapterExamSelect(){const sel=$('examChapterSelect');if(!sel)return;const old=sel.value;sel.innerHTML=chapters.filter(c=>c.id<=7).map(c=>`<option value="${c.id}">فصل ${faDigits(c.id)}: ${escapeHtml(c.title)}</option>`).join('');if(old&&[...sel.options].some(o=>o.value===old))sel.value=old;}
   document.querySelectorAll('#studentAppNav [data-app-view]').forEach(b=>b.onclick=()=>showStudentAppView(b.dataset.appView));
   document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>showStudentAppView(b.dataset.studentView==='reminders'?'reminders':'learn'));
-  $('backToReminders').onclick=()=>showStudentAppView('reminders');
   $('practiceSetMode').onchange=()=>{window.__termPracticeCache=window.__termPracticeCache||{};syncPracticeModeUI();practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
   $('startChapterExam').onclick=()=>{populateChapterExamSelect();$('examSubmit').classList.remove('hidden');startBookExam('chapter:'+Number($('examChapterSelect').value||1))};
   populateChapterExamSelect();syncPracticeModeUI();
@@ -5977,8 +5976,6 @@ async function loadSourceQuestionBanks(){
       pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');$('persianLessonBackRow')?.classList.remove('hidden');setOtherSubjectTabActive('lessons');
       window.scrollTo({top:0,behavior:'smooth'});
     };
-    $('persianLessonsBack').onclick=()=>{pgSetGameVisible('landing');$('otherSubjectLessonBody')?.classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
-    $('persianGamesBack').onclick=()=>{pgSetGameVisible('landing');window.scrollTo({top:0,behavior:'smooth'})};
     $('pgNext').onclick=()=>pgNextQuestion(pgState.mode);
     $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
     $('pgClearLetter').onclick=()=>{
@@ -6387,13 +6384,6 @@ const persianBookPageMap={
     if(lessonButton){const small=lessonButton.querySelectorAll('small')[1]||lessonButton.querySelector('small');if(small)small.textContent=ok?'✅ پاسخ درست ثبت شده':'پاسخ ثبت شد؛ دوباره تمرین کن'}
     renderOtherSubjectPicker();
   };
-  $('backToOtherLessons').onclick=()=>{
-    $('otherSubjectLessonBody').classList.add('hidden');
-    $('otherSubjectLessons').classList.remove('hidden');
-    $('otherSubjectLessons').scrollIntoView({behavior:'smooth',block:'start'});
-  };
-  $('subjectsBackHome').onclick=()=>showStudentAppView('home');
-  $('mathBackToSubjects').onclick=()=>showStudentAppView('home');
 
   /* بازگشت مرحله‌ای در تمام مسیرهای یادگیری دانش‌آموز */
   const yareStudentStageBackButton=$('studentStageBack');
@@ -6504,10 +6494,9 @@ const persianBookPageMap={
       yareStudentStageClearHistory();
       return;
     }
-    const builtInBack=target.closest('#backToOtherLessons,#backToChapterPicker,#subjectsBackHome,#mathBackToSubjects,#backToReminders,#persianLessonsBack,#persianGamesBack');
     const lessonsTabBack=target.matches('#otherSubjectTabs [data-other-subject-tab="lessons"]')&&
       !!$('otherSubjectLessonBody')&&!$('otherSubjectLessonBody').classList.contains('hidden');
-    if(builtInBack||lessonsTabBack){
+    if(lessonsTabBack){
       if(yareStudentStageHistory.length)yareStudentStageHistory.pop();
       yareStudentStageUpdateButton();
       return;
