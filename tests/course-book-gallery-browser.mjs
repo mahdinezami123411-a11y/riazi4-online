@@ -134,7 +134,7 @@ try {
     // Open chapter 1 and expand its pages accordion so lazy images can load.
     window.__renderMathChapterForTest(1);
     const subsection=document.querySelector('#chapterLessonBody details.math-subtopic-learning');
-    subsection?.querySelector('summary')?.click();
+    if(subsection)subsection.open=true;
   });
   await page.waitForFunction(() => {
     const img=document.querySelector('#chapterLessonBody .math-subtopic-book-gallery img');
@@ -142,7 +142,7 @@ try {
   }, {timeout:12000});
   const mathModal = await page.evaluate(() => {
     const subsection=document.querySelector('#chapterLessonBody details.math-subtopic-learning');
-    subsection?.querySelector('summary')?.click();
+    if(subsection)subsection.open=true;
     const gallery=subsection?.querySelector('.math-subtopic-book-gallery');
     const cards=[...(gallery?.querySelectorAll('[data-math-page-open]')||[])];
     const source=cards[0]?.querySelector('img')?.getAttribute('src')||'';
