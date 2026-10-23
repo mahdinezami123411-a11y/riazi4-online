@@ -1,0 +1,141 @@
+{
+  "subject": "gifts",
+  "pageCount": 121,
+  "lessonCount": 19,
+  "pdfPagesOffset": 0,
+  "lessons": {
+    "1": {
+      "title": "دانه‌ای که نمی‌خواست بروید!",
+      "printedStart": 8,
+      "printedEnd": 13,
+      "pdfStart": 8,
+      "pdfEnd": 13
+    },
+    "2": {
+      "title": "کودکی بر آب",
+      "printedStart": 14,
+      "printedEnd": 21,
+      "pdfStart": 14,
+      "pdfEnd": 21
+    },
+    "3": {
+      "title": "ما به مسجد می‌رویم",
+      "printedStart": 22,
+      "printedEnd": 31,
+      "pdfStart": 22,
+      "pdfEnd": 31
+    },
+    "4": {
+      "title": "یک نماز و ده رکوع!",
+      "printedStart": 32,
+      "printedEnd": 39,
+      "pdfStart": 32,
+      "pdfEnd": 39
+    },
+    "5": {
+      "title": "سخنی که سه بار تکرار شد!",
+      "printedStart": 40,
+      "printedEnd": 44,
+      "pdfStart": 40,
+      "pdfEnd": 44
+    },
+    "6": {
+      "title": "حرمی با دو گنبد",
+      "printedStart": 45,
+      "printedEnd": 49,
+      "pdfStart": 45,
+      "pdfEnd": 49
+    },
+    "7": {
+      "title": "نماز در کوهستان",
+      "printedStart": 50,
+      "printedEnd": 55,
+      "pdfStart": 50,
+      "pdfEnd": 55
+    },
+    "8": {
+      "title": "دیدار دوست",
+      "printedStart": 56,
+      "printedEnd": 63,
+      "pdfStart": 56,
+      "pdfEnd": 63
+    },
+    "9": {
+      "title": "کودک شجاع",
+      "printedStart": 64,
+      "printedEnd": 68,
+      "pdfStart": 64,
+      "pdfEnd": 68
+    },
+    "10": {
+      "title": "روشن‌ترین شب",
+      "printedStart": 69,
+      "printedEnd": 75,
+      "pdfStart": 69,
+      "pdfEnd": 75
+    },
+    "11": {
+      "title": "درس یازدهم",
+      "printedStart": 76,
+      "printedEnd": 81,
+      "pdfStart": 76,
+      "pdfEnd": 81
+    },
+    "12": {
+      "title": "روزی برای تمام بچه‌ها",
+      "printedStart": 82,
+      "printedEnd": 87,
+      "pdfStart": 82,
+      "pdfEnd": 87
+    },
+    "13": {
+      "title": "خاله نرگس",
+      "printedStart": 88,
+      "printedEnd": 92,
+      "pdfStart": 88,
+      "pdfEnd": 92
+    },
+    "14": {
+      "title": "اولین بانوی مسلمان",
+      "printedStart": 93,
+      "printedEnd": 96,
+      "pdfStart": 93,
+      "pdfEnd": 96
+    },
+    "15": {
+      "title": "یک ماجرای زیبا",
+      "printedStart": 97,
+      "printedEnd": 103,
+      "pdfStart": 97,
+      "pdfEnd": 103
+    },
+    "16": {
+      "title": "اسب طلایی",
+      "printedStart": 104,
+      "printedEnd": 108,
+      "pdfStart": 104,
+      "pdfEnd": 108
+    },
+    "17": {
+      "title": "آقای بهاری، خانم بهاری",
+      "printedStart": 109,
+      "printedEnd": 114,
+      "pdfStart": 109,
+      "pdfEnd": 114
+    },
+    "18": {
+      "title": "چشمان همیشه باز",
+      "printedStart": 115,
+      "printedEnd": 121,
+      "pdfStart": 115,
+      "pdfEnd": 121
+    },
+    "19": {
+      "title": "خداجون از تو ممنونم",
+      "printedStart": 122,
+      "printedEnd": 128,
+      "pdfStart": 122,
+      "pdfEnd": 128
+    }
+  }
+}

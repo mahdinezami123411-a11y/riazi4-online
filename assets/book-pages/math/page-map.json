@@ -1,0 +1,57 @@
+{
+  "subject": "math",
+  "pageCount": 134,
+  "lessonCount": 7,
+  "pdfPagesOffset": 6,
+  "lessons": {
+    "1": {
+      "title": "اعداد و الگوها",
+      "printedStart": 1,
+      "printedEnd": 20,
+      "pdfStart": 7,
+      "pdfEnd": 26
+    },
+    "2": {
+      "title": "کسر",
+      "printedStart": 24,
+      "printedEnd": 42,
+      "pdfStart": 30,
+      "pdfEnd": 48
+    },
+    "3": {
+      "title": "ضرب و تقسیم",
+      "printedStart": 46,
+      "printedEnd": 72,
+      "pdfStart": 52,
+      "pdfEnd": 78
+    },
+    "4": {
+      "title": "اندازه‌گیری",
+      "printedStart": 76,
+      "printedEnd": 94,
+      "pdfStart": 82,
+      "pdfEnd": 100
+    },
+    "5": {
+      "title": "عدد مخلوط و عدد اعشاری",
+      "printedStart": 98,
+      "printedEnd": 116,
+      "pdfStart": 104,
+      "pdfEnd": 122
+    },
+    "6": {
+      "title": "شکل‌های هندسی",
+      "printedStart": 120,
+      "printedEnd": 138,
+      "pdfStart": 126,
+      "pdfEnd": 144
+    },
+    "7": {
+      "title": "آمار و احتمال",
+      "printedStart": 142,
+      "printedEnd": 152,
+      "pdfStart": 148,
+      "pdfEnd": 158
+    }
+  }
+}

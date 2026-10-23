@@ -2891,7 +2891,7 @@ const bookSubjectCatalog=[
  const BUNDLED_BOOK_ASSETS = new Set(['./assets/math-fourth.pdf', './assets/books/persian-pages.pdf']);
  // The lesson page images are not shipped in this repository yet; do not issue 404 requests for them.
  const BUNDLED_PERSIAN_PAGE_IMAGES = true;
- const BUNDLED_COURSE_PAGE_IMAGES = false;
+ const BUNDLED_COURSE_PAGE_IMAGES = true;
 let sourceQuestionBanks = {};
 let sourceQuestionBanksLoading = null;
 const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
@@ -7388,7 +7388,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v75',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v76',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });

@@ -1,0 +1,99 @@
+{
+  "subject": "science",
+  "pageCount": 120,
+  "lessonCount": 13,
+  "pdfPagesOffset": 8,
+  "lessons": {
+    "1": {
+      "title": "زنگ علوم",
+      "printedStart": 1,
+      "printedEnd": 4,
+      "pdfStart": 9,
+      "pdfEnd": 12
+    },
+    "2": {
+      "title": "مخلوط‌ها در زندگی",
+      "printedStart": 5,
+      "printedEnd": 14,
+      "pdfStart": 13,
+      "pdfEnd": 22
+    },
+    "3": {
+      "title": "انرژی، نیاز هر روز ما",
+      "printedStart": 15,
+      "printedEnd": 26,
+      "pdfStart": 23,
+      "pdfEnd": 34
+    },
+    "4": {
+      "title": "انرژی الکتریکی",
+      "printedStart": 27,
+      "printedEnd": 36,
+      "pdfStart": 35,
+      "pdfEnd": 44
+    },
+    "5": {
+      "title": "گرما و ماده",
+      "printedStart": 37,
+      "printedEnd": 46,
+      "pdfStart": 45,
+      "pdfEnd": 54
+    },
+    "6": {
+      "title": "سنگ‌ها",
+      "printedStart": 47,
+      "printedEnd": 58,
+      "pdfStart": 55,
+      "pdfEnd": 66
+    },
+    "7": {
+      "title": "آهنربا در زندگی",
+      "printedStart": 59,
+      "printedEnd": 66,
+      "pdfStart": 67,
+      "pdfEnd": 74
+    },
+    "8": {
+      "title": "آسمان در شب",
+      "printedStart": 67,
+      "printedEnd": 76,
+      "pdfStart": 75,
+      "pdfEnd": 84
+    },
+    "9": {
+      "title": "بدن ما (۱)",
+      "printedStart": 77,
+      "printedEnd": 82,
+      "pdfStart": 85,
+      "pdfEnd": 90
+    },
+    "10": {
+      "title": "بدن ما (۲)",
+      "printedStart": 83,
+      "printedEnd": 92,
+      "pdfStart": 91,
+      "pdfEnd": 100
+    },
+    "11": {
+      "title": "بی‌مهره‌ها",
+      "printedStart": 93,
+      "printedEnd": 102,
+      "pdfStart": 101,
+      "pdfEnd": 110
+    },
+    "12": {
+      "title": "گوناگونی گیاهان",
+      "printedStart": 103,
+      "printedEnd": 110,
+      "pdfStart": 111,
+      "pdfEnd": 118
+    },
+    "13": {
+      "title": "زیستگاه",
+      "printedStart": 111,
+      "printedEnd": 120,
+      "pdfStart": 119,
+      "pdfEnd": 128
+    }
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "subject": "social",
+  "pageCount": 111,
+  "lessonCount": 22,
+  "pdfPagesOffset": 8,
+  "lessons": {
+    "1": {
+      "title": "همسایهٔ ما",
+      "printedStart": 2,
+      "printedEnd": 4,
+      "pdfStart": 10,
+      "pdfEnd": 12
+    },
+    "2": {
+      "title": "اینجا محلهٔ ماست",
+      "printedStart": 5,
+      "printedEnd": 9,
+      "pdfStart": 13,
+      "pdfEnd": 17
+    },
+    "3": {
+      "title": "خرید و فروش در محله",
+      "printedStart": 10,
+      "printedEnd": 14,
+      "pdfStart": 18,
+      "pdfEnd": 22
+    },
+    "4": {
+      "title": "نقشهٔ محلهٔ ما",
+      "printedStart": 15,
+      "printedEnd": 23,
+      "pdfStart": 23,
+      "pdfEnd": 31
+    },
+    "5": {
+      "title": "زندگی در شهر و روستا",
+      "printedStart": 24,
+      "printedEnd": 29,
+      "pdfStart": 32,
+      "pdfEnd": 37
+    },
+    "6": {
+      "title": "جهت‌های جغرافیایی",
+      "printedStart": 30,
+      "printedEnd": 33,
+      "pdfStart": 38,
+      "pdfEnd": 41
+    },
+    "7": {
+      "title": "جغرافیدانان چگونه محیط‌های زندگی را مطالعه می‌کنند؟",
+      "printedStart": 34,
+      "printedEnd": 37,
+      "pdfStart": 42,
+      "pdfEnd": 45
+    },
+    "8": {
+      "title": "نخستین روستاها چگونه به وجود آمده‌اند؟",
+      "printedStart": 38,
+      "printedEnd": 41,
+      "pdfStart": 46,
+      "pdfEnd": 49
+    },
+    "9": {
+      "title": "نخستین شهرها چگونه به وجود آمدند؟",
+      "printedStart": 42,
+      "printedEnd": 46,
+      "pdfStart": 50,
+      "pdfEnd": 54
+    },
+    "10": {
+      "title": "مورخان چگونه گذشته را مطالعه می‌کنند؟",
+      "printedStart": 47,
+      "printedEnd": 51,
+      "pdfStart": 55,
+      "pdfEnd": 59
+    },
+    "11": {
+      "title": "سفری به شهر باستانی همدان",
+      "printedStart": 52,
+      "printedEnd": 56,
+      "pdfStart": 60,
+      "pdfEnd": 64
+    },
+    "12": {
+      "title": "سفری به تخت جمشید (۱)",
+      "printedStart": 57,
+      "printedEnd": 61,
+      "pdfStart": 65,
+      "pdfEnd": 69
+    },
+    "13": {
+      "title": "سفری به تخت جمشید (۲)",
+      "printedStart": 62,
+      "printedEnd": 64,
+      "pdfStart": 70,
+      "pdfEnd": 72
+    },
+    "14": {
+      "title": "سفری به شهر باستانی کرمانشاه",
+      "printedStart": 65,
+      "printedEnd": 73,
+      "pdfStart": 73,
+      "pdfEnd": 81
+    },
+    "15": {
+      "title": "کوه‌ها و دشت‌های زیبا",
+      "printedStart": 74,
+      "printedEnd": 78,
+      "pdfStart": 82,
+      "pdfEnd": 86
+    },
+    "16": {
+      "title": "آب و هوا",
+      "printedStart": 79,
+      "printedEnd": 84,
+      "pdfStart": 87,
+      "pdfEnd": 92
+    },
+    "17": {
+      "title": "نواحی آب و هوایی ایران",
+      "printedStart": 85,
+      "printedEnd": 89,
+      "pdfStart": 93,
+      "pdfEnd": 97
+    },
+    "18": {
+      "title": "پوشش گیاهی و زندگی جانوری در ایران",
+      "printedStart": 90,
+      "printedEnd": 93,
+      "pdfStart": 98,
+      "pdfEnd": 101
+    },
+    "19": {
+      "title": "از محیط زیست مراقبت کنیم",
+      "printedStart": 94,
+      "printedEnd": 99,
+      "pdfStart": 102,
+      "pdfEnd": 107
+    },
+    "20": {
+      "title": "نشانه‌های ملی ما",
+      "printedStart": 100,
+      "printedEnd": 102,
+      "pdfStart": 108,
+      "pdfEnd": 110
+    },
+    "21": {
+      "title": "تقویم",
+      "printedStart": 103,
+      "printedEnd": 104,
+      "pdfStart": 111,
+      "pdfEnd": 112
+    },
+    "22": {
+      "title": "روزهای مهم",
+      "printedStart": 105,
+      "printedEnd": 112,
+      "pdfStart": 113,
+      "pdfEnd": 120
+    }
+  }
+}
