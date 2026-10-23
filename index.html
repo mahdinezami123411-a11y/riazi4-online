@@ -192,6 +192,42 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 #practiceChapterSelector{margin-top:8px}
 @media(max-width:390px){.student-app-nav{gap:2px;padding:5px}.student-app-nav button{font-size:17px}.student-app-nav button small{font-size:9px}}
 
+/* دکمهٔ بازگشت مرحله‌ای برای دانش‌آموز */
+.student-stage-back{
+  position:fixed;
+  right:max(12px,env(safe-area-inset-right,12px));
+  bottom:calc(84px + env(safe-area-inset-bottom,0px));
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  min-height:50px;
+  max-width:calc(100vw - 24px);
+  padding:10px 18px;
+  border:2px solid #fff4cf;
+  border-radius:15px;
+  background:linear-gradient(135deg,#ffe16b 0%,#ffad2f 100%);
+  color:#3d2800;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.4;
+  box-shadow:0 5px 0 #a45a08,0 10px 24px #15385b44;
+  text-shadow:none;
+  touch-action:manipulation;
+}
+.student-stage-back span:first-child{font-size:22px;line-height:1}
+.student-stage-back:focus-visible{outline:3px solid #1456b8;outline-offset:3px}
+@media(max-width:560px){
+  .student-stage-back{
+    right:10px;
+    bottom:calc(80px + env(safe-area-inset-bottom,0px));
+    min-height:48px;
+    padding:9px 14px;
+    font-size:13px;
+    border-radius:14px;
+  }
+}
 /* سطح دشواری برای دانش‌آموز نمایش داده نمی‌شود؛ تمرین‌ها سطح‌های ترکیبی دارند. */
 #practiceFilters{grid-template-columns:minmax(0,1fr)!important}
 #practiceFilters>div:nth-child(2){display:none!important}
@@ -2232,6 +2268,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 <button type="button" data-app-view="report"><span>📈</span><small>کارنامه</small></button>
 <button type="button" data-app-view="profile"><span>👤</span><small>پروفایل</small></button>
 </nav>
+<button type="button" id="studentStageBack" class="student-stage-back hidden" aria-label="بازگشت به مرحلهٔ قبل" title="بازگشت به مرحلهٔ قبل"><span aria-hidden="true">⬅️</span><span>بازگشت به مرحلهٔ قبل</span></button>
 <div id="assignmentsStudentView" class="student-screen hidden"><div class="card"><div class="row"><h2>📋 فعالیت‌های کلاسی</h2><button id="refreshStudentAssignments" class="outline" type="button">به‌روزرسانی</button></div><p class="muted">تمرین‌ها و آزمون‌هایی که معلم برای کلاس منتشر کرده اینجا نمایش داده می‌شوند.</p><div id="studentAssignmentList" class="notice">برای دیدن فعالیت‌ها وارد حساب دانش‌آموز شو.</div><div id="studentAssignmentRunner" class="hidden"><h3 id="studentAssignmentTitle"></h3><p id="studentAssignmentProgress" class="muted"></p><div id="studentAssignmentQuestion" class="item"></div><div id="studentAssignmentFeedback" class="notice hidden" role="status"></div><div class="grid"><button id="studentAssignmentSubmit" type="button">ثبت پاسخ</button><button id="studentAssignmentNext" class="outline hidden" type="button">سؤال بعدی</button></div></div></div></div>
 <div id="profileView" class="student-screen hidden">
 <div id="studentProfile" class="profile-card">
@@ -6358,6 +6395,147 @@ const persianBookPageMap={
   $('subjectsBackHome').onclick=()=>showStudentAppView('home');
   $('mathBackToSubjects').onclick=()=>showStudentAppView('home');
 
+  /* بازگشت مرحله‌ای در تمام مسیرهای یادگیری دانش‌آموز */
+  const yareStudentStageBackButton=$('studentStageBack');
+  const yareStudentStageHistory=[];
+  const yareStudentStageTopViews=[
+    '#studentHomeView','#remindersView','#bookView','#mathChapterLessonView',
+    '#otherSubjectsView','#assignmentsStudentView','#studentReportView','#profileView'
+  ];
+  const yareStudentStagePanelSelectors=[
+    '#studentSubjectHub','#mathHomeMenu','#studentDashboard','#otherSubjectPicker',
+    '#otherSubjectTabs','#otherSubjectActivityPanel','#otherSubjectExplorePanel',
+    '#otherSubjectLessons','#otherSubjectLessonBody','#persianLessonBackRow',
+    '#persianLanding','#persianGamesPanel','#chapterPicker','#chapterPickerIntro',
+    '#chapterLesson','#studentAssignmentRunner'
+  ];
+  const yareStudentStageClassSelectors=[
+    ...yareStudentStageTopViews,...yareStudentStagePanelSelectors,
+    '#studentAppNav [data-app-view]','#bookView .tabpane','#bookView [data-book-tab]',
+    '#otherSubjectTabs [data-other-subject-tab]'
+  ];
+  function yareStudentStageSignature(){
+    return JSON.stringify({
+      views:yareStudentStageTopViews.filter(selector=>{const el=$(selector);return el&&!el.classList.contains('hidden')}),
+      panels:yareStudentStagePanelSelectors.filter(selector=>{const el=$(selector);return el&&!el.classList.contains('hidden')}),
+      appTab:document.querySelector('#studentAppNav [data-app-view].active')?.dataset.appView||'',
+      bookTab:document.querySelector('#bookView [data-book-tab].active')?.dataset.bookTab||'',
+      subjectTab:document.querySelector('#otherSubjectTabs [data-other-subject-tab].active')?.dataset.otherSubjectTab||'',
+      subject:activeStudentSubject||'',
+      otherSubject:selectedOtherSubject?.id||'',
+      lesson:selectedOtherLesson?.id??null,
+      chapter:Number(activeChapter)||0
+    });
+  }
+  function yareStudentStageCapture(){
+    return {
+      signature:yareStudentStageSignature(),
+      classStates:yareStudentStageClassSelectors.map(selector=>({
+        selector,
+        classes:[...document.querySelectorAll(selector)].map(el=>el.className)
+      })),
+      activeStudentSubject,
+      selectedOtherSubjectRef:selectedOtherSubject,
+      selectedOtherSubjectId:selectedOtherSubject?.id||'',
+      selectedOtherLessonRef:selectedOtherLesson,
+      selectedOtherLessonId:selectedOtherLesson?.id??null,
+      activeChapter,
+      scrollY:window.scrollY,
+      otherSubjectPickerVisible:!!$('otherSubjectPicker')&&!$('otherSubjectPicker').classList.contains('hidden'),
+      otherSubjectLessonBodyVisible:!!$('otherSubjectLessonBody')&&!$('otherSubjectLessonBody').classList.contains('hidden'),
+      otherSubjectActivityVisible:!!$('otherSubjectActivityPanel')&&!$('otherSubjectActivityPanel').classList.contains('hidden'),
+      otherSubjectExploreVisible:!!$('otherSubjectExplorePanel')&&!$('otherSubjectExplorePanel').classList.contains('hidden'),
+      otherSubjectTab:document.querySelector('#otherSubjectTabs [data-other-subject-tab].active')?.dataset.otherSubjectTab||'lessons',
+      mathChapterVisible:!!$('mathChapterLessonView')&&!$('mathChapterLessonView').classList.contains('hidden')
+    };
+  }
+  function yareStudentStageUpdateButton(){
+    const student=$('student');
+    const visible=!!student&&!student.classList.contains('hidden')&&yareStudentStageHistory.length>0;
+    yareStudentStageBackButton?.classList.toggle('hidden',!visible);
+  }
+  function yareStudentStageClearHistory(){
+    yareStudentStageHistory.length=0;
+    yareStudentStageUpdateButton();
+  }
+  function yareStudentStageRestore(snapshot){
+    if(!snapshot||!$('student')||$('student').classList.contains('hidden'))return;
+    const currentSubjectId=selectedOtherSubject?.id||'';
+    const reopenSubject=!snapshot.otherSubjectPickerVisible&&!!snapshot.selectedOtherSubjectId&&currentSubjectId!==snapshot.selectedOtherSubjectId;
+    if(reopenSubject){
+      openOtherSubject(snapshot.selectedOtherSubjectId);
+    }else if(snapshot.selectedOtherSubjectRef&&currentSubjectId!==snapshot.selectedOtherSubjectId){
+      selectedOtherSubject=snapshot.selectedOtherSubjectRef;
+    }
+    activeStudentSubject=snapshot.activeStudentSubject;
+    if(snapshot.otherSubjectPickerVisible||!snapshot.selectedOtherSubjectId){
+      selectedOtherLesson=snapshot.selectedOtherLessonRef;
+    }else if(!reopenSubject){
+      selectedOtherLesson=snapshot.selectedOtherLessonRef;
+    }
+    const chapterChanged=Number(activeChapter)!==Number(snapshot.activeChapter);
+    if(snapshot.mathChapterVisible&&chapterChanged&&Number(snapshot.activeChapter)>0){
+      renderChapter(Number(snapshot.activeChapter));
+    }
+    if(!snapshot.otherSubjectPickerVisible&&snapshot.selectedOtherSubjectId){
+      if(snapshot.otherSubjectLessonBodyVisible&&snapshot.selectedOtherLessonId&&
+        (reopenSubject||Number(selectedOtherLesson?.id)!==Number(snapshot.selectedOtherLessonId))){
+        renderOtherLesson(snapshot.selectedOtherLessonId);
+      }else if(reopenSubject&&snapshot.otherSubjectExploreVisible){
+        renderSubjectExploration();
+      }else if(reopenSubject&&snapshot.otherSubjectActivityVisible){
+        renderOtherSubjectActivity(snapshot.otherSubjectTab==='exam'?'exam':'practice');
+      }
+    }
+    activeStudentSubject=snapshot.activeStudentSubject;
+    if(snapshot.activeChapter!==undefined)activeChapter=snapshot.activeChapter;
+    snapshot.classStates.forEach(state=>{
+      const nodes=document.querySelectorAll(state.selector);
+      state.classes.forEach((className,index)=>{if(nodes[index])nodes[index].className=className});
+    });
+    yareStudentStageUpdateButton();
+    window.scrollTo({top:Math.max(0,Number(snapshot.scrollY)||0),behavior:'smooth'});
+  }
+  function yareStudentStageHandleClick(event){
+    const target=event.target?.closest?.('button,a,[role="button"]');
+    if(!target)return;
+    if(target.id==='studentStageBack')return;
+    if(target.id==='studentBack'){
+      yareStudentStageClearHistory();
+      return;
+    }
+    const builtInBack=target.closest('#backToOtherLessons,#backToChapterPicker,#subjectsBackHome,#mathBackToSubjects,#backToReminders,#persianLessonsBack,#persianGamesBack');
+    const lessonsTabBack=target.matches('#otherSubjectTabs [data-other-subject-tab="lessons"]')&&
+      !!$('otherSubjectLessonBody')&&!$('otherSubjectLessonBody').classList.contains('hidden');
+    if(builtInBack||lessonsTabBack){
+      if(yareStudentStageHistory.length)yareStudentStageHistory.pop();
+      yareStudentStageUpdateButton();
+      return;
+    }
+    const student=$('student');
+    if(!student||student.classList.contains('hidden'))return;
+    const forwardNavigation=target.closest(
+      '#studentAppNav [data-app-view],[data-student-view],' +
+      '#studentSubjectPicker [data-student-subject],#otherSubjectPicker [data-other-subject],' +
+      '#otherSubjectLessonPicker [data-other-lesson],#chapterPicker [data-chapter],' +
+      '#bookView [data-book-tab],#otherSubjectTabs [data-other-subject-tab],' +
+      '#chapterToPractice,#persianOpenWordGames,#persianChooseLesson'
+    );
+    if(!forwardNavigation)return;
+    const snapshot=yareStudentStageCapture();
+    if(yareStudentStageHistory.at(-1)?.signature!==snapshot.signature){
+      yareStudentStageHistory.push(snapshot);
+      if(yareStudentStageHistory.length>40)yareStudentStageHistory.shift();
+    }
+    yareStudentStageUpdateButton();
+  }
+  document.addEventListener('click',yareStudentStageHandleClick,true);
+  yareStudentStageBackButton?.addEventListener('click',()=>{
+    const snapshot=yareStudentStageHistory.pop();
+    if(snapshot)yareStudentStageRestore(snapshot);
+    yareStudentStageUpdateButton();
+  });
+  yareStudentStageUpdateButton();
 
   function renderUnifiedLearningReport(){
     const mathProgress=typeof window.__yareStudentProgressSnapshot==='function'?window.__yareStudentProgressSnapshot():{attempts:0,correct:0,byChapter:{}};
