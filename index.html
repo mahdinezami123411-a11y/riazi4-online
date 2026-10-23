@@ -6256,6 +6256,23 @@ const persianBookPageMap={
       15:{start:97,end:103,pdfStart:97,pdfEnd:103},16:{start:104,end:108,pdfStart:104,pdfEnd:108},
       17:{start:109,end:114,pdfStart:109,pdfEnd:114},18:{start:115,end:121,pdfStart:115,pdfEnd:121},
       19:{start:122,end:128,pdfStart:122,pdfEnd:128}
+    },
+    quran:{
+      1:{start:1,end:9,pdfStart:13,pdfEnd:21},
+      2:{start:10,end:14,pdfStart:22,pdfEnd:26},
+      3:{start:15,end:19,pdfStart:27,pdfEnd:31},
+      4:{start:20,end:24,pdfStart:32,pdfEnd:36},
+      5:{start:25,end:30,pdfStart:37,pdfEnd:42},
+      6:{start:31,end:35,pdfStart:43,pdfEnd:47},
+      7:{start:36,end:40,pdfStart:48,pdfEnd:52},
+      8:{start:41,end:46,pdfStart:53,pdfEnd:58},
+      9:{start:47,end:51,pdfStart:59,pdfEnd:63},
+      10:{start:52,end:56,pdfStart:64,pdfEnd:68},
+      11:{start:57,end:61,pdfStart:69,pdfEnd:73},
+      12:{start:62,end:67,pdfStart:74,pdfEnd:79},
+      13:{start:68,end:72,pdfStart:80,pdfEnd:84},
+      14:{start:73,end:77,pdfStart:85,pdfEnd:89},
+      15:{start:78,end:91,pdfStart:90,pdfEnd:103}
     }
   };
 
@@ -7450,7 +7467,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v95',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v96',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
