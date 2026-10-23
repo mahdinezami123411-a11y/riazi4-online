@@ -2482,7 +2482,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
   <div class="row"><div><h3>🗂️ بانک سؤال مستقل برای هر کتاب و هر درس</h3><p class="muted">ابتدا کتاب و سپس درس را انتخاب کن؛ مشاهده، جست‌وجو، افزودن و ویرایش سؤال‌ها فقط برای همان کتاب و درس انجام می‌شود.</p></div><span class="pill" id="teacherBankTotal">۷۰۰ سؤال</span></div>
-  <label class="field" for="teacherBankSubject">انتخاب کتاب</label><select id="teacherBankSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option></select><label class="field" for="teacherBankChapter">انتخاب درس یا فصل</label><select id="teacherBankChapter"></select><div id="teacherBankLessonDescription" class="notice hidden" aria-live="polite"></div>
+  <label class="field" for="teacherBankSubject">انتخاب کتاب</label><select id="teacherBankSubject"><option value="math">ریاضی</option><option value="persian">فارسی</option><option value="science">علوم تجربی</option><option value="social">مطالعات اجتماعی</option><option value="gifts">هدیه‌های آسمانی</option><option value="quran">قرآن چهارم</option></select><label class="field" for="teacherBankChapter">انتخاب درس یا فصل</label><select id="teacherBankChapter"></select><div id="teacherBankLessonDescription" class="notice hidden" aria-live="polite"></div>
   <label class="field" for="teacherQuestionSearch">جست‌وجو در سؤال‌ها</label><input id="teacherQuestionSearch" placeholder="بخشی از متن سؤال یا مبحث را بنویس...">
   <div id="teacherBankCounts" class="notice">برای دیدن بانک، یک فصل را انتخاب کن.</div>
   <div id="teacherQuestionList" class="teacher-question-list"></div>
@@ -2900,7 +2900,8 @@ const bookSubjectCatalog=[
  {id:'persian',name:'فارسی',icon:'📚',asset:'./assets/books/persian-pages.pdf',assetLabel:'assets/books/persian-pages.pdf'},
  {id:'science',name:'علوم تجربی',icon:'🔬',asset:'./assets/books/science-fourth.pdf',assetLabel:'assets/books/science-fourth.pdf'},
  {id:'social',name:'مطالعات اجتماعی',icon:'🗺️',asset:'./assets/books/social-fourth.pdf',assetLabel:'assets/books/social-fourth.pdf'},
- {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
+ {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'},
+ {id:'quran',name:'قرآن چهارم',icon:'📿'}
 ];
  // Only assets verified to exist in the deployed repository may be requested as bundled files.
  const BUNDLED_BOOK_ASSETS = new Set(['./assets/books/persian-pages.pdf']);
@@ -2909,7 +2910,7 @@ const bookSubjectCatalog=[
  const BUNDLED_COURSE_PAGE_IMAGES = true;
 let sourceQuestionBanks = {};
 let sourceQuestionBanksLoading = null;
-const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی'};
+const COURSE_NAMES={math:'ریاضی',persian:'فارسی',dictation:'املای فارسی',science:'علوم تجربی',social:'مطالعات اجتماعی',gifts:'هدیه‌های آسمانی',quran:'قرآن چهارم'};
 function courseName(id){return COURSE_NAMES[id]||id||'کتاب'}
 function courseLessonCatalog(subject){
   let base=[];
@@ -2954,7 +2955,7 @@ function formatCourseLessonExplanation(value){
 }
 function renderSubjectAccessControls(){
  const box=$('subjectAccessList');if(!box)return;
- const ids=['math','persian','science','social','gifts'];
+ const ids=['math','persian','science','social','gifts','quran'];
  box.innerHTML=ids.map(subject=>{
   const settings=courseSettingsBySubject[subject]||{},catalog=courseLessonCatalog(subject);
   const title=subject==='persian'?'فارسی':(settings.courseTitle||courseName(subject));
@@ -2979,7 +2980,7 @@ function renderSubjectAccessControls(){
  });
 }
 function renderTeacherCourseOverview(){
- const ids=['math','persian','science','social','gifts'];
+ const ids=['math','persian','science','social','gifts','quran'];
  const courses=ids.map(id=>{
    const settings=courseSettingsBySubject[id]||{};
    const catalog=courseLessonCatalog(id);
@@ -4933,6 +4934,30 @@ async function loadSubjectVideo(subject,lessonId){
       {id:2,title:'نشانه‌گذاری در نوشتن',content:'نقطه پایان جملهٔ خبری را نشان می‌دهد، علامت پرسش در پایان پرسش می‌آید و ویرگول مکث کوتاه میان بخش‌های جمله را نشان می‌دهد. نشانه‌گذاری درست، خواندن متن را آسان‌تر می‌کند.',example:'«امروز به کتابخانه رفتم.» جملهٔ خبری است و با نقطه پایان می‌یابد.',question:'کدام نشانه معمولاً در پایان یک پرسش مستقیم می‌آید؟',options:['نقطه','ویرگول','علامت پرسش','دونقطه'],answer:2,analysis:'پرسش مستقیم با علامت پرسش «؟» پایان می‌یابد تا خواننده بداند جمله سؤال است.'},
       {id:3,title:'بازبینی املایی',content:'برای کم کردن غلط‌های املایی، نوشته را پس از نوشتن دوباره بخوان، واژه‌های دشوار را با کتاب یا واژه‌نامه بررسی کن و به حروفی که معمولاً اشتباه می‌نویسی توجه ویژه داشته باش.',example:'پس از نوشتن یک بند، یک بار برای معنی و ترتیب جمله‌ها و بار دیگر برای املای واژه‌ها آن را بازبینی کن.',question:'پس از نوشتن املا، کدام کار مفیدتر است؟',options:['فوراً دفتر را ببندیم.','نوشته را بازخوانی و واژه‌های دشوار را بررسی کنیم.','همهٔ واژه‌ها را تغییر دهیم.','نشانه‌گذاری را حذف کنیم.'],answer:1,analysis:'بازخوانی به پیدا کردن جاافتادگی‌ها و غلط‌ها کمک می‌کند. بررسی واژه‌های دشوار احتمال تکرار اشتباه را کاهش می‌دهد.'}
     ]}
+    ,
+    {
+      "id": "quran",
+      "name": "قرآن چهارم",
+      "icon": "📿",
+      "color": "#239b83",
+      "lessons": [
+        {"id":1,"title":"یادآوری قواعد و آشنایی با خط قرآن","page":"۱","content":"در این درس، قواعد روخوانی سال‌های گذشته مرور می‌شود و دانش‌آموز با خط قرآن کریم آشناتر می‌شود. همچنین آیات ۳۸ تا ۴۱ سورهٔ ابراهیم و آیات ۱ تا ۱۶ سورهٔ نبأ برای تمرین خواندن معرفی شده‌اند. به نشانه‌های وقف و چگونگی مکث درست هنگام خواندن توجه کن."},
+        {"id":2,"title":"سورهٔ تغابن و ادامهٔ سورهٔ نبأ","page":"۱۰","content":"این درس شامل آیات ۱ تا ۴ سورهٔ تغابن و آیات ۱۷ تا ۳۰ سورهٔ نبأ است. هنگام روخوانی، به نشانه‌های وقف بر حرکت‌های تنوین (ــًــ ٌــٍ) توجه کن و آیات را با مکث مناسب بخوان."},
+        {"id":3,"title":"سورهٔ آل‌عمران و سورهٔ عبس","page":"۱۵","content":"در این درس، آیات ۲۶ و ۲۷ سورهٔ آل‌عمران و آیات ۱ تا ۱۶ سورهٔ عبس خوانده می‌شوند. نکتهٔ آموزشی درس، توجه به وقف بر «ـهُ» و «ـهِ» است؛ در پایان عبارت‌ها به نشانه‌ها دقت کن و پیوسته و شمرده بخوان."},
+        {"id":4,"title":"سورهٔ فصلت و سورهٔ عبس","page":"۲۰","content":"آیات ۳۰ تا ۳۴ سورهٔ فصلت و آیات ۱۷ تا ۳۲ سورهٔ عبس در این درس تمرین می‌شوند. هنگام خواندن، به وقف بر نشانهٔ «ة» توجه کن و محل مکث را با راهنمایی آموزگار تشخیص بده."},
+        {"id":5,"title":"سورهٔ آل‌عمران و سورهٔ تکویر","page":"۲۵","content":"این درس آیات ۱۰۲ تا ۱۰۴ سورهٔ آل‌عمران و آیات ۱ تا ۱۴ سورهٔ تکویر را در بر می‌گیرد. با حروف مقطعه آشنا شو و آن‌ها را مطابق آموزش آموزگار بخوان."},
+        {"id":6,"title":"سورهٔ اسراء و سورهٔ تکویر","page":"۳۱","content":"در این درس آیات ۷۸ تا ۸۲ سورهٔ اسراء و آیات ۱۵ تا ۲۹ سورهٔ تکویر تمرین می‌شوند. نکتهٔ درس، شناخت و خواندن درست علامت مدّ است؛ هنگام تلاوت به کشش صدا توجه کن."},
+        {"id":7,"title":"سورهٔ نحل و سورهٔ محمد","page":"۳۶","content":"این درس شامل آیات ۹۶ تا ۱۰۰ سورهٔ نحل و آیات ۳۳ تا ۳۷ سورهٔ محمد (ص) است. آیات را با دقت بخوان و به نشانه‌های وقف و پیوند درست کلمات توجه کن."},
+        {"id":8,"title":"سورهٔ آل‌عمران و سورهٔ فاطر","page":"۴۱","content":"در این درس آیات ۳۵ تا ۳۷ سورهٔ آل‌عمران و آیات ۳ تا ۶ سورهٔ فاطر خوانده می‌شوند. داستان حضرت زکریا و حضرت مریم نیز محور آشنایی با پیام‌ها و معارف این بخش است."},
+        {"id":9,"title":"سورهٔ بقره و سورهٔ احزاب","page":"۴۷","content":"این درس آیات ۲۶۱ و ۲۶۲ سورهٔ بقره و آیات ۷۰ تا ۷۳ سورهٔ احزاب را شامل می‌شود. آیات را شمرده بخوان و برای فهم پیام آن‌ها، دربارهٔ درست‌گویی و کار نیک با آموزگار گفت‌وگو کن."},
+        {"id":10,"title":"سورهٔ هود و سورهٔ سبأ","page":"۵۲","content":"در این درس آیات ۱۱۲ تا ۱۱۵ سورهٔ هود و آیات ۴۶ تا ۵۰ سورهٔ سبأ تمرین می‌شوند. هنگام تلاوت، به خواندن صحیح واژه‌ها و مکث در محل مناسب توجه کن."},
+        {"id":11,"title":"سورهٔ ملک و نشانهٔ وقف","page":"۵۷","content":"این درس آیات ۱ تا ۵ سورهٔ ملک و آیات ۶ تا ۱۰ آن را در بر می‌گیرد. نکتهٔ آموزشی، وقف با نشانهٔ مربوط به «ی» است. نشانه‌ها را در متن کتاب پیدا کن و با راهنمایی آموزگار تمرین کن."},
+        {"id":12,"title":"سورهٔ آل‌عمران و سورهٔ یس","page":"۶۲","content":"در این درس آیات ۳۸ تا ۴۱ سورهٔ آل‌عمران و آیات ۱ تا ۱۱ سورهٔ یس خوانده می‌شوند. داستان حضرت زکریا و حضرت یحیی نیز در کنار تمرین آیات مطرح می‌شود."},
+        {"id":13,"title":"سورهٔ نمل","page":"۶۸","content":"این درس آیات ۵۹ تا ۶۱ و آیات ۶۲ تا ۶۴ سورهٔ نمل را شامل می‌شود. آیات را با دقت بخوان و برای تشخیص مکث‌ها و پیوستگی عبارت‌ها به نشانه‌های متن توجه کن."},
+        {"id":14,"title":"سورهٔ احزاب","page":"۷۳","content":"در این درس آیات ۵۹ تا ۶۲ و آیات ۵۶ تا ۵۸ سورهٔ احزاب تمرین می‌شوند. به درست‌خوانی آیات و رعایت نشانه‌های وقف توجه کن و پیام‌های درس را با آموزگار مرور کن."},
+        {"id":15,"title":"قرآن در تابستان","page":"۷۸","content":"این بخش برای تمرین تابستانی سوره‌های اعلی، طارق و غاشیه و نیز شعار هفته، پیام‌های قرآنی و احادیث نورانی در نظر گرفته شده است. در تعطیلات نیز با برنامه‌ای کوتاه و پیوسته، خواندن قرآن را ادامه بده."}
+      ]
+    }
   ];
 
   // محتوای فارسی از کتاب فارسی چهارم دبستان (چاپ سیزدهم ۱۴۰۵).
