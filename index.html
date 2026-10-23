@@ -2768,8 +2768,8 @@ function feedback(inputId,feedbackId,answer,success){const raw=$(inputId).value.
 let activeChapter=1, currentPractice=null, selectedPracticeAnswer=null;
 
 const mathSubtopicPageLists = {
-  // فصل اول: صفحه‌ها بر اساس موضوع واقعی هر بخش؛ صفحه‌های مشترک در بیش از یک مبحث می‌آیند.
-  1:[[4,5,6,7],[8],[2,3,9,10,11],[12,13,14,15],[16,17,18,19]],
+  // فصل اول: هر فهرست بر اساس عنوان و محتوای صفحه‌های چاپ‌شده؛ صفحهٔ ۹ هم به الگوهای عددی و هم به الگوهای شکلی مربوط است.
+  1:[[4,5,6,7],[8,9],[2,3,9,10,11],[12,13,14,15],[16,17,18,19]],
   // فصل دوم: شناخت کسر، جمع و تفریق کسرها، کسرهای مساوی، ضرب عدد در کسر
   2:[[24,25,26,27,28,29],[30,31,32,33],[34,35,36,37],[38,39,40,41,42]],
   // فصل سوم: ضرب دورقمی، محاسبه حاصل‌ضرب، برآورد، بخش‌پذیری، تقسیم یک‌رقمی و دورقمی
@@ -7412,7 +7412,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v83',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v84',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
