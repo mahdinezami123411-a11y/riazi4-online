@@ -15,7 +15,8 @@ page.on('pageerror', error => pageErrors.push(error.message));
 const otherSubjects = [
   {id:'science',title:'علوم تجربی'},
   {id:'social',title:'مطالعات اجتماعی'},
-  {id:'gifts',title:'هدیه‌های آسمانی'}
+  {id:'gifts',title:'هدیه‌های آسمانی'},
+  {id:'quran',title:'قرآن چهارم'}
 ];
 const mathChapters = [
   {id:1,sections:5,pages:19},
