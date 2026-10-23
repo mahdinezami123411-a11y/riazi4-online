@@ -320,11 +320,15 @@ const mathNavigation = await page.evaluate(() => {
   const bookHidden = document.getElementById('bookView')?.classList.contains('hidden') === true;
   const lessonTitle = document.getElementById('chapterLessonTitle')?.textContent || '';
   const lessonContentPresent = (document.getElementById('chapterLessonBody')?.textContent || '').trim().length > 20;
-  document.getElementById('backToChapterPicker')?.click();
+  const sharedBackButton = document.getElementById('studentStageBack');
+  const sharedBackLabel = sharedBackButton?.textContent.trim() || '';
+  const sharedBackVisible = !!sharedBackButton && !sharedBackButton.classList.contains('hidden');
+  const duplicateBackButtonsAbsent = ['backToChapterPicker','backToOtherLessons','subjectsBackHome','mathBackToSubjects','backToReminders','persianLessonsBack','persianGamesBack'].every(id => !document.getElementById(id));
+  document.getElementById('studentStageBack')?.click();
   const backReturnsToChapters = document.getElementById('mathChapterLessonView')?.classList.contains('hidden') === true
     && !document.getElementById('bookView')?.classList.contains('hidden')
     && !document.getElementById('booktab-chapters')?.classList.contains('active') === false;
-  return {mathMenuVisible,allBooksMapHidden,bookVisible,chapterTabActive,chapterDisabled,lessonViewVisible,bookHidden,lessonTitle,lessonContentPresent,backReturnsToChapters};
+  return {mathMenuVisible,allBooksMapHidden,bookVisible,chapterTabActive,chapterDisabled,lessonViewVisible,bookHidden,lessonTitle,lessonContentPresent,sharedBackLabel,sharedBackVisible,duplicateBackButtonsAbsent,backReturnsToChapters};
 });
 assert.equal(mathNavigation.mathMenuVisible, true, 'انتخاب کتاب ریاضی باید منوی اختصاصی ریاضی را باز کند');
 assert.equal(mathNavigation.allBooksMapHidden, true, 'نقشهٔ تمام کتاب‌ها نباید زیر منوی ریاضی نمایش داده شود');
@@ -335,6 +339,9 @@ assert.equal(mathNavigation.lessonViewVisible, true, 'انتخاب فصل بای
 assert.equal(mathNavigation.bookHidden, true, 'با باز شدن آموزش فصل، فهرست کتاب باید پنهان شود');
 assert.match(mathNavigation.lessonTitle, /فصل\s*۱|فصل 1|فصل ۱/, 'عنوان فصل در صفحهٔ آموزش نمایش داده نشد');
 assert.equal(mathNavigation.lessonContentPresent, true, 'توضیحات فصل در صفحهٔ آموزش خالی است');
+assert.equal(mathNavigation.sharedBackLabel, '⬅️بازگشت به صفحه قبل', 'عنوان دکمهٔ مشترک بازگشت نادرست است');
+assert.equal(mathNavigation.sharedBackVisible, true, 'دکمهٔ مشترک بازگشت در مرحلهٔ آموزش نمایش داده نشد');
+assert.equal(mathNavigation.duplicateBackButtonsAbsent, true, 'یکی از دکمه‌های برگشت تکراری هنوز داخل صفحه وجود دارد');
 assert.equal(mathNavigation.backReturnsToChapters, true, 'دکمهٔ بازگشت باید فهرست فصل‌ها را برگرداند');
 
 const subjectLessonUi = await page.evaluate(async () => {
@@ -352,7 +359,7 @@ const subjectLessonUi = await page.evaluate(async () => {
     const viewVisible = !document.getElementById('otherSubjectLessonBody')?.classList.contains('hidden');
     const renderedError = /باز کردن این درس با خطا روبه‌رو شد/.test(body);
     result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError};
-    document.getElementById('backToOtherLessons')?.click();
+    document.getElementById('studentStageBack')?.click();
   }
   api.showStudentAppView('home');
   const idCounts = {};
@@ -388,7 +395,7 @@ const mobileUi = await page.evaluate(() => {
   checks.push(measure('math-book'));
   document.querySelector('#chapterPicker [data-chapter="1"]')?.click();
   checks.push(measure('math-chapter-lesson'));
-  document.getElementById('backToChapterPicker')?.click();
+  document.getElementById('studentStageBack')?.click();
   api.showStudentAppView('home');
   document.querySelector('#studentSubjectPicker [data-student-subject="science"]')?.click();
   const lessonButton = document.querySelector('#otherSubjectLessonPicker [data-other-lesson]:not([disabled])');
