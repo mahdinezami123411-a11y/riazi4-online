@@ -2786,7 +2786,7 @@ const mathSubtopicPageLists = {
 function renderMathSubtopicPageGallery(chapterId,sectionIndex,sectionTitle){
   const pages=(mathSubtopicPageLists[Number(chapterId)]||[])[Number(sectionIndex)]||[];
   if(!pages.length)return '';
-  return '<section class="lesson-book-pages math-subtopic-book-pages" aria-label="صفحات کتاب مربوط به '+escapeHtml(sectionTitle)+'">'+
+  return '<section class="lesson-book-pages math-subtopic-book-pages" data-math-page-list="'+pages.join(',')+'" aria-label="صفحات کتاب مربوط به '+escapeHtml(sectionTitle)+'">'+
     '<h5>📖 تصاویر کتاب برای این مبحث · '+fa(pages.length)+' صفحه</h5>'+
     '<p class="muted">این تصاویر مربوط به همین سرفصل هستند؛ برای بزرگ‌نمایی هر صفحه روی تصویر بزن.</p>'+
     '<div class="book-page-gallery" data-math-page-list="'+pages.join(',')+'" aria-label="صفحات کتاب ریاضی">'+

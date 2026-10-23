@@ -18,7 +18,7 @@ const otherSubjects = [
   {id:'gifts',title:'هدیه‌های آسمانی'}
 ];
 const mathChapters = [
-  {id:1,sections:5,pages:20},
+  {id:1,sections:5,pages:19},
   {id:2,sections:4,pages:19},
   {id:3,sections:6,pages:27},
   {id:4,sections:4,pages:19},
