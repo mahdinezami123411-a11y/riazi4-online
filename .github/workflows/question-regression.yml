@@ -41,7 +41,7 @@ jobs:
           cp assets/persian-vocabulary.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
           cp assets/book-pages/persian/page-*.webp assets/book-pages/persian/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/persian/"
           cp assets/books/persian-pages.pdf "$RUNNER_TEMP/quiz-site/assets/books/"
-          for subject in math science social gifts; do
+          for subject in math science social gifts quran; do
             if [ -d "assets/book-pages/$subject" ]; then
               mkdir -p "$RUNNER_TEMP/quiz-site/assets/book-pages/$subject"
               cp assets/book-pages/"$subject"/page-*.webp assets/book-pages/"$subject"/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/$subject/"
