@@ -630,8 +630,8 @@ a{color:#d7ff76}
 .persian-book-gallery-close,.persian-book-gallery-nav{display:grid;place-items:center;flex-shrink:0;min-width:44px;min-height:44px;padding:7px 12px;border:1px solid #9c8cff!important;border-radius:13px!important;background:#7564ef!important;color:#fff!important;font-size:22px;font-weight:900;box-shadow:none!important}
 .persian-book-gallery-close{font-size:16px}
 .persian-book-gallery-stage{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:5px;flex:1;min-height:0;direction:ltr;touch-action:pan-y}
-.persian-book-gallery-frame{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:0;height:100%;margin:0}
-.persian-book-gallery-image{display:block;max-width:100%;width:auto;height:auto;max-height:calc(100dvh - 170px);object-fit:contain;border-radius:4px;background:#fff;box-shadow:0 8px 30px #0008;user-select:none;-webkit-user-drag:none}
+.persian-book-gallery-frame{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:0;height:100%;margin:0;overflow:hidden}
+.persian-book-gallery-image{display:block;max-width:100%;width:auto;height:auto;max-height:calc(100dvh - 170px);object-fit:contain;border-radius:4px;background:#fff;box-shadow:0 8px 30px #0008;user-select:none;-webkit-user-drag:none;transform-origin:center center;transition:transform .04s linear;touch-action:none}
 .persian-book-gallery-caption{color:#e4defe;font-size:12px;font-weight:750;text-align:center}
 .persian-book-gallery-nav:disabled{opacity:.3;cursor:not-allowed}
 .persian-book-gallery-hint{font-size:11px;color:#c6c0ec;text-align:center}
@@ -2375,7 +2375,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   <p class="muted" style="margin-top:12px">درس‌های آزاد کتاب فارسی برای متن انتخابی معلم و کلاس در نظر گرفته شده‌اند.</p>
 
 <section id="persianLanding" class="item hidden" aria-label="بخش‌های فارسی">
-  <div class="row"><div><h3>📖 فارسی چهارم</h3><p class="muted">واژه‌های کتاب را با بازی تمرین کن یا مستقیم سراغ درس‌ها برو.</p></div><span class="pill">ویژهٔ گوشی</span></div>
+  <div class="row"><div><h3>📖 فارسی چهارم</h3><p class="muted">واژه‌های کتاب را با بازی تمرین کن یا مستقیم سراغ درس‌ها برو.</p></div></div>
   <div class="pg-entry-grid">
     <button type="button" id="persianOpenWordGames" class="pg-entry-card"><strong>🪐 باشگاه واژه‌ها</strong><small>ساختن کلمه، شکار غلط املایی و جای خالی املایی؛ با سؤال‌های درسی و ترتیب تصادفی.</small></button>
     <button type="button" id="persianChooseLesson" class="pg-entry-card"><strong>📚 انتخاب درس</strong><small>برای خواندن توضیح‌ها و واژه‌آموزی یک درس مشخص از کتاب را انتخاب کن.</small></button>
@@ -6198,15 +6198,35 @@ const persianBookPageMap={
     modal.setAttribute('aria-label','گالری صفحات کتاب فارسی');
     modal.dataset.previousOverflow=document.body.style.overflow;
     modal._restoreFocusTarget=document.activeElement;
-    modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">‹</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">›</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">برای رفتن به صفحهٔ قبل یا بعد، تصویر را بکش</span><span class="persian-book-gallery-hint">بزرگ‌نمایی با کیفیت اصلی</span></div></div>';
+    modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">→</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">←</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">کشیدن تصویر از چپ به راست: صفحهٔ بعدی · از راست به چپ: صفحهٔ قبلی</span><span class="persian-book-gallery-hint">برای بزرگ‌نمایی، دو انگشت را باز کن</span></div></div>';
     document.body.appendChild(modal);
     document.body.style.overflow='hidden';
     let index=Math.max(0,Math.min(pageNumbers.length-1,Number(startIndex)||0));
+    let zoom=1,panX=0,panY=0;
+    let touchMode='idle',touchStartX=null;
+    let pinchStartDistance=0,pinchStartZoom=1;
+    let panStartX=0,panStartY=0,panOriginX=0,panOriginY=0;
     const image=modal.querySelector('[data-gallery-image]');
     const counter=modal.querySelector('[data-gallery-counter]');
     const caption=modal.querySelector('[data-gallery-caption]');
     const previousButton=modal.querySelector('[data-gallery-prev]');
     const nextButton=modal.querySelector('[data-gallery-next]');
+    const stage=modal.querySelector('[data-gallery-stage]');
+    const frame=modal.querySelector('.persian-book-gallery-frame');
+    const touchDistance=(a,b)=>Math.hypot(b.clientX-a.clientX,b.clientY-a.clientY);
+    const renderImageTransform=()=>{
+      image.style.transform='translate3d('+panX+'px, '+panY+'px, 0) scale('+zoom+')';
+      image.dataset.zoom=zoom.toFixed(2);
+    };
+    const resetZoom=()=>{
+      zoom=1;panX=0;panY=0;renderImageTransform();
+    };
+    const clampPan=()=>{
+      const maxX=Math.max(0,(frame.clientWidth*(zoom-1))/2);
+      const maxY=Math.max(0,(frame.clientHeight*(zoom-1))/2);
+      panX=Math.max(-maxX,Math.min(maxX,panX));
+      panY=Math.max(-maxY,Math.min(maxY,panY));
+    };
     const render=()=>{
       const page=pageNumbers[index];
       image.src=lessonImagePath(page);
@@ -6215,6 +6235,7 @@ const persianBookPageMap={
       caption.textContent='صفحهٔ '+fa(page)+' از کتاب فارسی چهارم';
       previousButton.disabled=index===0;
       nextButton.disabled=index===pageNumbers.length-1;
+      resetZoom();
     };
     const previous=()=>{if(index>0){index--;render()}};
     const next=()=>{if(index<pageNumbers.length-1){index++;render()}};
@@ -6222,16 +6243,58 @@ const persianBookPageMap={
     nextButton.addEventListener('click',next);
     modal.querySelector('[data-gallery-close]').addEventListener('click',closePersianBookGallery);
     modal.addEventListener('click',event=>{if(event.target===modal)closePersianBookGallery()});
-    let touchStartX=null;
-    const stage=modal.querySelector('[data-gallery-stage]');
-    stage.addEventListener('touchstart',event=>{touchStartX=event.changedTouches&&event.changedTouches[0]?event.changedTouches[0].clientX:null},{passive:true});
+    stage.addEventListener('touchstart',event=>{
+      const touches=event.touches||[];
+      if(touches.length>=2){
+        event.preventDefault();
+        touchMode='pinch';touchStartX=null;
+        pinchStartDistance=Math.max(1,touchDistance(touches[0],touches[1]));
+        pinchStartZoom=zoom;
+        return;
+      }
+      if(touches.length===1){
+        if(zoom>1){
+          touchMode='pan';touchStartX=null;
+          panStartX=touches[0].clientX;panStartY=touches[0].clientY;
+          panOriginX=panX;panOriginY=panY;
+        }else{
+          touchMode='swipe';touchStartX=touches[0].clientX;
+        }
+      }
+    },{passive:false});
+    stage.addEventListener('touchmove',event=>{
+      const touches=event.touches||[];
+      if(touchMode==='pinch'&&touches.length>=2){
+        event.preventDefault();
+        const distance=touchDistance(touches[0],touches[1]);
+        zoom=Math.max(1,Math.min(4,pinchStartZoom*distance/pinchStartDistance));
+        if(zoom===1){panX=0;panY=0}else clampPan();
+        renderImageTransform();
+      }else if(touchMode==='pan'&&touches.length===1){
+        event.preventDefault();
+        panX=panOriginX+touches[0].clientX-panStartX;
+        panY=panOriginY+touches[0].clientY-panStartY;
+        clampPan();
+        renderImageTransform();
+      }
+    },{passive:false});
     stage.addEventListener('touchend',event=>{
+      const remaining=event.touches||[];
+      if(touchMode==='pinch'){
+        touchMode='idle';touchStartX=null;
+        return;
+      }
+      if(touchMode==='pan'){
+        if(!remaining.length)touchMode='idle';
+        return;
+      }
+      if(touchMode!=='swipe'||touchStartX===null)return;
       const endX=event.changedTouches&&event.changedTouches[0]?event.changedTouches[0].clientX:null;
-      if(touchStartX===null||typeof endX!=='number')return;
-      const delta=touchStartX-endX;
+      if(typeof endX!=='number'){touchMode='idle';touchStartX=null;return;}
+      const delta=endX-touchStartX;
       if(delta>45)next();
       else if(delta< -45)previous();
-      touchStartX=null;
+      touchStartX=null;touchMode='idle';
     },{passive:true});
     modal._galleryKeyHandler=event=>{
       if(event.key==='Escape')closePersianBookGallery();
@@ -7275,7 +7338,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v72',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v73',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });

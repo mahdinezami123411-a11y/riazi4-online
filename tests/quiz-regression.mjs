@@ -80,6 +80,10 @@ assert.match(html, /class="book-page-gallery"/, 'گالری تصاویر صفح�
 assert.match(html, /function openPersianBookGallery\(/, 'نمایشگر تمام‌صفحهٔ صفحات کتاب پیدا نشد');
 assert.match(html, /touchstart/, 'تعویض صفحه با حرکت انگشت پیاده‌سازی نشده است');
 assert.match(html, /data-gallery-next/, 'دکمهٔ صفحهٔ بعد در گالری وجود ندارد');
+assert.match(html, /const delta=endX-touchStartX/, 'جهت حرکت انگشت از چپ به راست برای صفحهٔ بعد درست نیست');
+assert.match(html, /touchDistance\(touches\[0\],touches\[1\]\)/, 'زوم دو‌انگشتی در گالری پیاده‌سازی نشده است');
+assert.match(html, /image\.dataset\.zoom=zoom\.toFixed\(2\)/, 'بزرگ‌نمایی تصویر در گالری ثبت نشده است');
+assert.doesNotMatch(html, /<span class="pill">ویژهٔ گوشی<\/span>/, 'برچسب ویژهٔ گوشی باید حذف شده باشد');
 if (persianPageImagesEnabled) {
   const pageMap = JSON.parse(await readFile(new URL('../assets/book-pages/persian/page-map.json', import.meta.url), 'utf8'));
   assert.equal(Object.keys(pageMap).length, 17, 'نگاشت صفحات باید ۱۷ درس فارسی را پوشش دهد');

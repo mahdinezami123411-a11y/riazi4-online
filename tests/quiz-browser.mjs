@@ -373,14 +373,22 @@ const subjectLessonUi = await page.evaluate(async () => {
       const nextImageSource = gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '';
       const nextButtonWorked = Boolean(firstImageSource && nextImageSource && firstImageSource !== nextImageSource);
       const galleryStage = gallery?.querySelector('[data-gallery-stage]');
-      const dispatchTouch = (type, x) => {
-        const event = new Event(type, {bubbles:true});
-        Object.defineProperty(event, 'changedTouches', {value:[{clientX:x}]});
+      const dispatchTouch = (type, changedPoints, activePoints) => {
+        const toTouch = point => ({clientX:point[0],clientY:point[1]});
+        const event = new Event(type, {bubbles:true,cancelable:true});
+        Object.defineProperty(event, 'changedTouches', {value:changedPoints.map(toTouch)});
+        Object.defineProperty(event, 'touches', {value:activePoints.map(toTouch)});
         galleryStage?.dispatchEvent(event);
       };
-      dispatchTouch('touchstart', 230);
-      dispatchTouch('touchend', 150);
-      const swipeLeftWorked = (gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '') !== nextImageSource;
+      const nextButtonOnLeft = Boolean(gallery?.querySelector('[data-gallery-next]') === galleryStage?.firstElementChild);
+      dispatchTouch('touchstart', [[150,200]], [[150,200]]);
+      dispatchTouch('touchend', [[230,200]], []);
+      const swipeLeftToRightWorked = (gallery?.querySelector('[data-gallery-image]')?.getAttribute('src') || '') !== nextImageSource;
+      dispatchTouch('touchstart', [[100,160],[180,160]], [[100,160],[180,160]]);
+      dispatchTouch('touchmove', [[70,160],[210,160]], [[70,160],[210,160]]);
+      const zoomImage = gallery?.querySelector('[data-gallery-image]');
+      const pinchZoomWorked = Number(zoomImage?.dataset.zoom || '1') > 1.4;
+      dispatchTouch('touchend', [[70,160],[210,160]], []);
       gallery?.querySelector('[data-gallery-close]')?.click();
       const galleryClosed = !document.getElementById('persianBookGalleryModal');
       oppositesCard?.click();
@@ -390,7 +398,7 @@ const subjectLessonUi = await page.evaluate(async () => {
       document.getElementById('studentStageBack')?.click();
       const sectionMenuRestored = !document.getElementById('persianLessonSectionMenu')?.classList.contains('hidden')
         && document.getElementById('persianLessonSectionPages')?.classList.contains('hidden') === true;
-      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored,thumbnailCount:bookThumbnails.length,galleryOpened,nextButtonWorked,swipeLeftWorked,galleryClosed};
+      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored,thumbnailCount:bookThumbnails.length,galleryOpened,nextButtonWorked,nextButtonOnLeft,swipeLeftToRightWorked,pinchZoomWorked,galleryClosed};
     }
     result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError,persianSections};
     document.getElementById('studentStageBack')?.click();
@@ -415,7 +423,9 @@ for (const subject of ['persian','science','social','gifts']) {
     assert.ok(item.persianSections.thumbnailCount >= 2, 'فارسی: تصاویر صفحات کتاب در گالری نمایش داده نشدند');
     assert.equal(item.persianSections.galleryOpened, true, 'فارسی: با لمس تصویر، گالری صفحات کتاب باز نشد');
     assert.equal(item.persianSections.nextButtonWorked, true, 'فارسی: دکمهٔ صفحهٔ بعد کار نکرد');
-    assert.equal(item.persianSections.swipeLeftWorked, true, 'فارسی: کشیدن تصویر به چپ صفحه را عوض نکرد');
+    assert.equal(item.persianSections.nextButtonOnLeft, true, 'فارسی: دکمهٔ صفحهٔ بعد باید سمت چپ باشد');
+    assert.equal(item.persianSections.swipeLeftToRightWorked, true, 'فارسی: کشیدن تصویر از چپ به راست صفحهٔ بعدی را باز نکرد');
+    assert.equal(item.persianSections.pinchZoomWorked, true, 'فارسی: بزرگ‌نمایی دو‌انگشتی کار نکرد');
     assert.equal(item.persianSections.galleryClosed, true, 'فارسی: گالری با دکمهٔ بستن بسته نشد');
     assert.ok(item.persianSections.sectionNames.some(name => /هم‌معنی‌ها/.test(name)), 'فارسی: کارت هم‌معنی‌ها وجود ندارد');
     assert.ok(item.persianSections.sectionNames.some(name => /متضادها/.test(name)), 'فارسی: کارت متضادها وجود ندارد');
