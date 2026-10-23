@@ -6336,6 +6336,39 @@ const persianBookPageMap={
     return '<section class="persian-audio-resources quran-qr-resources"><h4>🔗 پیوندهای QR و تمرین‌های قرآنی</h4><p class="muted">این پیوندها از QR Codeهای قابل‌کلیک داخل PDF کتاب قرآن چهارم استخراج شده‌اند و صفحهٔ مربوط را در سامانهٔ رشد باز می‌کنند؛ اتصال اینترنت لازم است.</p><div class="persian-audio-links">'+items.map(item=>'<a class="persian-audio-link" href="'+item.url+'" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">📿</span><span class="persian-audio-link-main"><b>'+escapeHtml(item.title)+'</b><small>'+(item.page?'صفحهٔ '+fa(item.page)+' کتاب':'جلد کتاب')+' · بازشدن در رشد</small></span><span aria-hidden="true">↗</span></a>').join('')+'</div></section>';
   }
 
+  // QR links for Science and Gifts are decoded from the QR codes at the start of each textbook lesson.
+  const subjectQrResourcesByLesson = {
+    science: {
+      1:'https://www.roshd.ir/406-1', 2:'https://www.roshd.ir/406-2',
+      3:'https://www.roshd.ir/406-3', 4:'https://www.roshd.ir/406-4',
+      5:'https://www.roshd.ir/406-5', 6:'https://www.roshd.ir/406-6',
+      7:'https://www.roshd.ir/406-7', 8:'https://www.roshd.ir/406-8',
+      9:'https://www.roshd.ir/406-9', 10:'https://www.roshd.ir/406-10',
+      11:'https://www.roshd.ir/406-11', 12:'https://www.roshd.ir/406-12',
+      13:'https://www.roshd.ir/406-13'
+    },
+    gifts: {
+      1:'https://www.roshd.ir/402-1', 2:'https://www.roshd.ir/402-2',
+      3:'https://www.roshd.ir/402-3', 4:'https://www.roshd.ir/402-4',
+      5:'https://www.roshd.ir/402-5', 6:'https://www.roshd.ir/402-6',
+      7:'https://www.roshd.ir/402-7', 8:'https://www.roshd.ir/402-8',
+      9:'https://www.roshd.ir/402-9', 10:'https://www.roshd.ir/402-10',
+      11:'https://www.roshd.ir/402-11', 12:'https://www.roshd.ir/402-12',
+      13:'https://www.roshd.ir/402-13', 14:'https://www.roshd.ir/402-14',
+      15:'https://www.roshd.ir/402-15', 16:'https://www.roshd.ir/402-16',
+      17:'https://www.roshd.ir/402-17', 18:'https://www.roshd.ir/402-18',
+      19:'https://www.roshd.ir/402-19'
+    }
+  };
+
+  function renderSubjectQrResources(subjectId, lessonId){
+    const url=(subjectQrResourcesByLesson[subjectId]||{})[Number(lessonId)];
+    if(!url)return '';
+    const lesson=courseLessonCatalog(subjectId).find(item=>Number(item.id)===Number(lessonId));
+    const page=(courseBookPageMap[subjectId]||{})[Number(lessonId)]?.start;
+    return '<section class="persian-audio-resources quran-qr-resources"><h4>🔗 پیوند QR کتاب '+escapeHtml(courseName(subjectId))+'</h4><p class="muted">این پیوند از QR Code ابتدای همین درس در فایل کتاب استخراج شده و صفحهٔ مربوط را در سامانهٔ رشد باز می‌کند؛ اتصال اینترنت لازم است.</p><div class="persian-audio-links"><a class="persian-audio-link" href="'+url+'" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">🔗</span><span class="persian-audio-link-main"><b>'+escapeHtml(lesson?.title||('درس '+fa(lessonId)))+'</b><small>'+(page?'صفحهٔ '+fa(page)+' کتاب · بازشدن در رشد':'بازشدن در رشد')+'</small></span><span aria-hidden="true">↗</span></a></div></section>';
+  }
+
   const courseBookPageMap={
     math:{
       1:{start:1,end:20,pdfStart:7,pdfEnd:26},2:{start:24,end:42,pdfStart:30,pdfEnd:48},
@@ -6569,7 +6602,7 @@ const persianBookPageMap={
         if(hasImages){
           const bookTitle=courseName(imageSubjectId);
           mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(bookTitle)+'</h4><p class="muted">برای بزرگ‌نمایی روی تصویر بزن و برای رفتن به صفحهٔ بعد، تصویر را از چپ به راست بکش.</p><div class="book-page-gallery" aria-label="گالری صفحات کتاب '+escapeHtml(bookTitle)+'">'+imagePages.map((p,i)=>'<button type="button" class="book-page-thumb" data-book-gallery-open="'+i+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(p)+'"><img loading="'+(i<2?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب '+escapeHtml(bookTitle)+'"><span>صفحهٔ '+fa(p)+'</span></button>').join('')+'</div></section>';
-          if(isPersianBook){const audioResources=renderPersianAudioResources(Number(lesson.id));if(audioResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',audioResources);}else if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
+          if(isPersianBook){const audioResources=renderPersianAudioResources(Number(lesson.id));if(audioResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',audioResources);}else if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}else if(subjectId==='science'||subjectId==='gifts'){const qrResources=renderSubjectQrResources(subjectId,Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
           mount.querySelectorAll('[data-book-gallery-open]').forEach(button=>{
             button.addEventListener('click',()=>openPersianBookGallery(imagePages,Number(button.dataset.bookGalleryOpen),imageSubjectId));
           });
@@ -6593,10 +6626,10 @@ const persianBookPageMap={
     if(url){
       const page=pageNumber;
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
-      if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
+      if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}else if(subjectId==='science'||subjectId==='gifts'){const qrResources=renderSubjectQrResources(subjectId,Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
     }else{
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">فایل PDF صفحات اصلی کتاب هنوز داخل سایت قرار نگرفته است؛ اما واژه‌های املا، معنی‌ها و تمرین‌های همین درس از فایل‌های بررسی‌شده در پایین همین صفحه در دسترس‌اند.</p></section>';
-      if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
+      if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}else if(subjectId==='science'||subjectId==='gifts'){const qrResources=renderSubjectQrResources(subjectId,Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
     }
   }
   function renderPersianLesson(l){
