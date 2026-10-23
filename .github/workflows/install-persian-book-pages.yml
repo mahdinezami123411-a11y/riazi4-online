@@ -51,16 +51,16 @@ jobs:
           let expected = 0;
           for (const [lesson, info] of Object.entries(map)) {
             if (!Number.isInteger(info.printedStart) || !Number.isInteger(info.printedEnd) || info.printedEnd < info.printedStart) {
-              throw new Error(\`Invalid page range for lesson \${lesson}\`);
+              throw new Error('Invalid page range for lesson ' + lesson);
             }
             for (let page = info.printedStart; page <= info.printedEnd; page++) {
-              const file = path.join('assets/book-pages/persian', \`page-\${String(page).padStart(3, '0')}.webp\`);
-              if (!fs.existsSync(file)) throw new Error(\`Missing image for printed page \${page} (lesson \${lesson})\`);
+              const file = path.join('assets/book-pages/persian', 'page-' + String(page).padStart(3, '0') + '.webp');
+              if (!fs.existsSync(file)) throw new Error('Missing image for printed page ' + page + ' (lesson ' + lesson + ')');
               expected++;
             }
           }
-          if (expected !== 85) throw new Error(\`Expected 85 mapped pages, got \${expected}\`);
-          console.log(\`Validated \${expected} textbook page images across \${Object.keys(map).length} lessons.\`);
+          if (expected !== 85) throw new Error('Expected 85 mapped pages, got ' + expected);
+          console.log('Validated ' + expected + ' textbook page images across ' + Object.keys(map).length + ' lessons.');
           NODE
 
       - name: Enable the verified pages and update PWA cache version
@@ -75,7 +75,7 @@ jobs:
           if (!assetMatch) throw new Error('Could not find BUNDLED_BOOK_ASSETS in index.html');
           if (!assetMatch[1].includes("'./assets/books/persian-pages.pdf'")) {
             const values = assetMatch[1].trim();
-            html = html.replace(bundledAssets, \`const BUNDLED_BOOK_ASSETS = new Set([\${values}, './assets/books/persian-pages.pdf']);\`);
+            html = html.replace(bundledAssets, "const BUNDLED_BOOK_ASSETS = new Set([" + values + ", './assets/books/persian-pages.pdf']);");
           }
           if (/const\s+BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false\s*;/.test(html)) {
             html = html.replace(/const\s+BUNDLED_PERSIAN_PAGE_IMAGES\s*=\s*false\s*;/, 'const BUNDLED_PERSIAN_PAGE_IMAGES = true;');
@@ -113,10 +113,10 @@ jobs:
 
       - name: Request a GitHub Pages rebuild and rerun regression tests
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          if gh api --method POST "repos/\${GITHUB_REPOSITORY}/pages/builds"; then
+          if gh api --method POST "repos/${GITHUB_REPOSITORY}/pages/builds"; then
             echo 'Requested a GitHub Pages rebuild.'
           else
             echo 'Assets are committed. If Pages does not redeploy automatically, start a new Pages deployment from Actions.'
