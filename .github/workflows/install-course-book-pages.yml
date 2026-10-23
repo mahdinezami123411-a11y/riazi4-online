@@ -113,8 +113,7 @@ jobs:
             const cacheName = /(const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v)(\d+)/;
             const reg = html.match(registration), cache = sw.match(cacheName);
             if (!reg || !cache) throw new Error('PWA cache version strings were not found');
-            if (reg[3] !== cache[2]) throw new Error('PWA registration and cache versions were out of sync');
-            const next = String(Number(reg[3]) + 1);
+            const next = String(Math.max(Number(reg[3]), Number(cache[2])) + 1);
             html = html.replace(registration, (_all,prefix,date) => prefix + date + next);
             sw = sw.replace(cacheName, (_all,prefix) => prefix + next);
             fs.writeFileSync('index.html', html);
