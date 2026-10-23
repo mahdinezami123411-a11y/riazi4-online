@@ -6,8 +6,13 @@ const input = process.argv[2];
 const output = process.argv[3];
 assert.ok(input && output, 'Usage: node instrument-test-page.mjs input.html output.html');
 let html = await readFile(input, 'utf8');
-const marker = html.lastIndexOf('})();');
-assert.ok(marker >= 0, 'Could not find the end of the app scope to attach the local test bridge.');
+// The app scope closes immediately before a later standalone UI IIFE.
+ // Insert the bridge at the app-scope close, not the final close in the file,
+ // so lexical helpers such as loadSourceQuestionBanks remain visible.
+const loaderIndex = html.indexOf('async function loadSourceQuestionBanks');
+const lastUiIife = html.lastIndexOf('(()=>{');
+const marker = lastUiIife > 0 ? html.lastIndexOf('})();', lastUiIife) : -1;
+assert.ok(loaderIndex >= 0 && marker > loaderIndex, 'Could not find the end of the app scope containing loadSourceQuestionBanks.');
 const bridge = `
   if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') {
     window.__quizTestApi = {
