@@ -182,6 +182,34 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 @media(max-width:560px){.profile-fields{grid-template-columns:1fr}.profile-avatar{width:76px;height:76px}}
 
 
+/* فهرست بخش‌های جداگانهٔ هر درس فارسی */
+.persian-lesson-section-menu{display:grid;gap:12px;margin:12px 0 4px}
+.persian-lesson-menu-intro{padding:14px;border:1px solid #8fc8ef;border-radius:16px;background:linear-gradient(135deg,#e8f7ff,#f4efff);color:#214d78}
+.persian-lesson-menu-intro h4{margin:0 0 5px;font-size:16px;color:#174e91}
+.persian-lesson-menu-intro p{margin:0;font-size:12px;line-height:1.9}
+.persian-lesson-section-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.persian-section-card{display:flex;align-items:center;gap:10px;width:100%;min-width:0;min-height:78px;padding:11px;text-align:right;white-space:normal;background:linear-gradient(145deg,#fff,#f3f8ff);color:#173e68;border:1px solid #c9e0f7;border-radius:15px;box-shadow:0 3px 0 #d9e9f8}
+.persian-section-card:active{transform:translateY(1px)}
+.persian-section-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#e5f4ff;font-size:24px}
+.persian-section-card:nth-child(3n+2) .persian-section-icon{background:#fff0d8}
+.persian-section-card:nth-child(3n) .persian-section-icon{background:#e4f8ec}
+.persian-section-card-copy{display:block;flex:1;min-width:0}
+.persian-section-card-copy b{display:block;font-size:13px;line-height:1.6;color:#16477f}
+.persian-section-card-copy small{display:block;margin-top:3px;color:#627b96;font-size:10px;font-weight:500;line-height:1.7}
+.persian-section-arrow{flex:0 0 auto;font-size:19px;color:#2877bb}
+.persian-lesson-section-pages{margin:12px 0}
+.persian-lesson-section-page{min-width:0;animation:persianPageIn .18s ease-out}
+.persian-section-page-heading{display:flex;align-items:center;gap:9px;margin:0 0 12px;padding:12px;border-radius:14px;background:linear-gradient(120deg,#e7f5ff,#f1efff);border:1px solid #cbdff8}
+.persian-section-page-heading .persian-section-icon{flex-basis:39px;width:39px;height:39px;font-size:22px}
+.persian-section-page-heading h4{margin:0;color:#174e91;font-size:15px;line-height:1.7}
+.persian-section-page-heading p{margin:2px 0 0;color:#607a98;font-size:11px;line-height:1.8}
+@keyframes persianPageIn{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:420px){
+ .persian-lesson-section-grid{grid-template-columns:1fr;gap:8px}
+ .persian-section-card{min-height:69px;padding:9px 11px}
+ .persian-section-icon{flex-basis:39px;width:39px;height:39px;font-size:22px}
+}
+
 /* نوار پیمایش اپلیکیشنی دانش‌آموز و نمایش مستقل پروفایل */
 .student-app-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;position:sticky;bottom:7px;z-index:40;margin:8px 0 13px;padding:7px;background:rgba(255,255,255,.96);border:1px solid #d3e4f8;border-radius:18px;box-shadow:0 7px 26px #163d6b20;backdrop-filter:blur(10px)}
 .student-app-nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:52px;padding:5px 2px;margin:0;border-radius:12px;background:transparent;color:#355574;box-shadow:none;font-size:19px}
@@ -6224,6 +6252,125 @@ const persianBookPageMap={
     const legacyQuizDetails=[...content.querySelectorAll('details')].find(el=>el.querySelector('.persian-quiz-grid'));
     if(legacyQuizDetails){const help=legacyQuizDetails.previousElementSibling,heading=help?.previousElementSibling;legacyQuizDetails.remove();if(help?.tagName==='P')help.remove();if(heading?.tagName==='H4'&&/تمرین/.test(heading.textContent))heading.remove()}
     const legacyExamSubmit=content.querySelector('[data-persian-exam-submit]');if(legacyExamSubmit)legacyExamSubmit.closest('section.lesson-note')?.remove();
+
+    // نمایش محتوای هر درس به صورت فهرست بخش‌ها و صفحهٔ اختصاصی هر بخش.
+    const originalLessonNodes=[...content.children];
+    const lessonMenu=document.createElement('section');
+    lessonMenu.id='persianLessonSectionMenu';
+    lessonMenu.className='persian-lesson-section-menu';
+    lessonMenu.innerHTML='<div class="persian-lesson-menu-intro"><h4>📚 بخش‌های این درس</h4><p>هر بخشی را که می‌خواهی انتخاب کن؛ توضیحات و واژه‌های همان بخش جداگانه باز می‌شوند.</p></div><div class="persian-lesson-section-grid" id="persianLessonSectionGrid"></div>';
+    const lessonPageHost=document.createElement('div');
+    lessonPageHost.id='persianLessonSectionPages';
+    lessonPageHost.className='persian-lesson-section-pages hidden';
+    const lessonSectionGrid=lessonMenu.querySelector('#persianLessonSectionGrid');
+    const consumedLessonNodes=new Set();
+    const lessonSectionMeta=(title)=>{
+      const t=String(title||'').replace(/\s+/g,' ').trim();
+      if(t.includes('آموزش و مفهوم درس'))return {key:'lesson-text',title:'متن و مفهوم درس',description:'توضیح کلی، پیام درس و نمونه‌های آن را بخوان.',icon:'📖'};
+      if(t.includes('واژه‌آموزی'))return {key:'word-learning',title:'واژه‌آموزی',description:'با واژه‌های آموزشی و مثال‌های درس آشنا شو.',icon:'🧠'};
+      if(t.includes('دانش زبانی و نگارش'))return {key:'language-writing',title:'دانش زبانی و نگارش',description:'نکته‌های زبانی و راهنمای نوشتن را ببین.',icon:'✍️'};
+      if(t.includes('واژه‌های مهم درس'))return {key:'important-words',title:'واژه‌های مهم درس',description:'واژه‌های کلیدی این درس را مرور کن.',icon:'📌'};
+      if(t.includes('واژه‌های دشوار')||t.includes('فهرست واژه‌ها برای املا'))return {key:'spelling-words',title:'کلمات سخت املایی',description:'واژه‌ها را بخوان و املای درستشان را تمرین کن.',icon:'✏️'};
+      if(t.includes('معنی واژه‌ها'))return {key:'word-meanings',title:'معنی واژه‌ها',description:'معنی واژه‌های درس را جداگانه ببین.',icon:'📘'};
+      if(t.includes('هم‌معنی‌ها'))return {key:'synonyms',title:'هم‌معنی‌ها',description:'واژه‌های هم‌معنی را با هم مقایسه کن.',icon:'🔁'};
+      if(t.includes('هم‌خانواده‌ها'))return {key:'word-families',title:'هم‌خانواده‌ها',description:'واژه‌های مرتبط با ریشهٔ مشترک را ببین.',icon:'🧩'};
+      if(t.includes('متضادها'))return {key:'opposites',title:'متضادها',description:'واژه‌هایی با معنی مخالف را یاد بگیر.',icon:'↔️'};
+      if(t.includes('صفحات کتاب'))return {key:'book-pages',title:'صفحات کتاب',description:'صفحات مربوط به همین درس را مشاهده کن.',icon:'📚'};
+      return {key:'extra-'+(lessonPageHost.children.length+1),title:t||'بخش تکمیلی',description:'محتوای تکمیلی این درس را مشاهده کن.',icon:'🌟'};
+    };
+    const addLessonSectionPage=(meta,node)=>{
+      if(!node)return;
+      const page=document.createElement('section');
+      page.className='persian-lesson-section-page hidden';
+      page.dataset.persianSectionPage=meta.key;
+      const heading=document.createElement('div');
+      heading.className='persian-section-page-heading';
+      const icon=document.createElement('span');
+      icon.className='persian-section-icon';
+      icon.setAttribute('aria-hidden','true');
+      icon.textContent=meta.icon;
+      const copy=document.createElement('div');
+      copy.style.minWidth='0';
+      const title=document.createElement('h4');
+      title.textContent=meta.title;
+      const description=document.createElement('p');
+      description.textContent=meta.description;
+      copy.append(title,description);
+      heading.append(icon,copy);
+      page.append(heading,node);
+      lessonPageHost.appendChild(page);
+
+      const card=document.createElement('button');
+      card.type='button';
+      card.className='persian-section-card';
+      card.dataset.persianSectionOpen=meta.key;
+      card.setAttribute('aria-label','باز کردن بخش '+meta.title);
+      card.innerHTML='<span class="persian-section-icon" aria-hidden="true">'+meta.icon+'</span><span class="persian-section-card-copy"><b>'+escapeForHtmlText(meta.title)+'</b><small>'+escapeForHtmlText(meta.description)+'</small></span><span class="persian-section-arrow" aria-hidden="true">←</span>';
+      lessonSectionGrid.appendChild(card);
+    };
+
+    const bookMount=content.querySelector('#lessonBookSection');
+    if(bookMount){
+      addLessonSectionPage({key:'book-pages',title:'صفحات کتاب',description:'صفحات مربوط به همین درس را مشاهده کن.',icon:'📚'},bookMount);
+      consumedLessonNodes.add(bookMount);
+    }
+
+    const topLessonNotes=originalLessonNodes.filter(node=>node.classList?.contains('lesson-note'));
+    topLessonNotes.forEach(node=>{
+      const heading=node.querySelector('h4');
+      const meta=lessonSectionMeta(heading?.textContent||'');
+      addLessonSectionPage(meta,node);
+      consumedLessonNodes.add(node);
+    });
+
+    const vocabularyGrid=content.querySelector('.persian-vocab-grid');
+    if(vocabularyGrid){
+      [...vocabularyGrid.children].forEach(node=>{
+        const heading=node.querySelector('h4');
+        addLessonSectionPage(lessonSectionMeta(heading?.textContent||''),node);
+      });
+      consumedLessonNodes.add(vocabularyGrid);
+    }
+
+    const freeLessonNote=originalLessonNodes.find(node=>
+      node.classList?.contains('notice')&&/درس آزاد/.test(node.textContent||'')
+    );
+    if(freeLessonNote){
+      addLessonSectionPage({key:'free-lesson-info',title:'دربارهٔ درس آزاد',description:'ببین برای کامل شدن این درس چه اطلاعاتی لازم است.',icon:'🌱'},freeLessonNote);
+      consumedLessonNodes.add(freeLessonNote);
+    }
+
+    const remainingLessonNodes=originalLessonNodes.filter(node=>
+      !consumedLessonNodes.has(node)&&node.parentElement===content
+    );
+    if(remainingLessonNodes.length){
+      const activityContainer=document.createElement('div');
+      activityContainer.className='persian-extra-lesson-content';
+      remainingLessonNodes.forEach(node=>activityContainer.appendChild(node));
+      const heading=activityContainer.querySelector('h4');
+      const description=/تمرین|سؤال/.test(activityContainer.textContent||'')
+        ?'راهنمای تمرین و فعالیت‌های تکمیلی همین درس را ببین.'
+        :'بخش‌های تکمیلی ثبت‌شده برای این درس را مشاهده کن.';
+      addLessonSectionPage({
+        key:'lesson-activities',
+        title:heading?.textContent?.trim()||'تمرین و فعالیت‌های درس',
+        description,
+        icon:'🎯'
+      },activityContainer);
+    }
+
+    content.replaceChildren(lessonMenu,lessonPageHost);
+    lessonSectionGrid.querySelectorAll('[data-persian-section-open]').forEach(button=>{
+      button.onclick=()=>{
+        lessonMenu.classList.add('hidden');
+        lessonPageHost.classList.remove('hidden');
+        lessonPageHost.querySelectorAll('.persian-lesson-section-page').forEach(page=>{
+          page.classList.toggle('hidden',page.dataset.persianSectionPage!==button.dataset.persianSectionOpen);
+        });
+        window.scrollTo({top:0,behavior:'smooth'});
+      };
+    });
+
     const examSubmit=content.querySelector('[data-persian-exam-submit]');
     if(examSubmit)examSubmit.onclick=async()=>{
       let score=0,answered=0;const details=[];
@@ -6396,6 +6543,7 @@ const persianBookPageMap={
     '#studentSubjectHub','#mathHomeMenu','#studentDashboard','#otherSubjectPicker',
     '#otherSubjectTabs','#otherSubjectActivityPanel','#otherSubjectExplorePanel',
     '#otherSubjectLessons','#otherSubjectLessonBody','#persianLessonBackRow',
+    '#persianLessonSectionMenu','#persianLessonSectionPages','#otherLessonContent .persian-lesson-section-page',
     '#persianLanding','#persianGamesPanel','#chapterPicker','#chapterPickerIntro',
     '#chapterLesson','#studentAssignmentRunner'
   ];
@@ -6506,7 +6654,7 @@ const persianBookPageMap={
     const forwardNavigation=target.closest(
       '#studentAppNav [data-app-view],[data-student-view],' +
       '#studentSubjectPicker [data-student-subject],#otherSubjectPicker [data-other-subject],' +
-      '#otherSubjectLessonPicker [data-other-lesson],#chapterPicker [data-chapter],' +
+      '#otherSubjectLessonPicker [data-other-lesson],#otherLessonContent [data-persian-section-open],#chapterPicker [data-chapter],' +
       '#bookView [data-book-tab],#otherSubjectTabs [data-other-subject-tab],' +
       '#chapterToPractice,#persianOpenWordGames,#persianChooseLesson'
     );
