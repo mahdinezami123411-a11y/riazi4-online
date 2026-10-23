@@ -6423,7 +6423,7 @@ const persianBookPageMap={
     // A PDF uploaded from the teacher panel is the full book, so use the printed page number.
     // The bundled persian-pages.pdf is an excerpt, so use its internal page index instead.
     let pageNumber=(isPersianBook?info?.start:info?.pdfStart)||Math.max(1,Number(String(lesson.page||'').match(/\d+/)?.[0]||1));
-    if(!url&&settings.bookFilePath&&cloudSession?.access_token){
+    if(!url&&displayId!=='math'&&settings.bookFilePath&&cloudSession?.access_token){
       try{const blob=await fetchClassMaterial(settings.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[displayId]=url;pageNumber=(isPersianBook?info?.start:info?.pdfStart)||pageNumber}catch(error){console.warn('Course PDF could not be loaded',error)}
     }
     if(!url&&displayId==='dictation'&&courseSettingsBySubject.persian?.bookFilePath){
@@ -7429,7 +7429,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v85',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v86',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
