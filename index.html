@@ -6311,6 +6311,31 @@ const persianBookPageMap={
     return '<section class="persian-audio-resources"><h4>🎧 صوت‌های همراه این درس و روان‌خوانی‌ها</h4><p class="muted">پیوندهای زیر از QR Codeهای خود کتاب استخراج شده‌اند و صفحهٔ صوت را در سامانهٔ رشد باز می‌کنند؛ اتصال اینترنت لازم است.</p><div class="persian-audio-links">'+items.map(item=>'<a class="persian-audio-link" href="'+item.url+'" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">▶️</span><span class="persian-audio-link-main"><b>'+escapeHtml(item.title)+'</b><small>صفحهٔ '+fa(item.page)+' کتاب · پخش در رشد</small></span><span aria-hidden="true">↗</span></a>').join('')+'</div></section>';
   }
 
+  // Quran QR destinations are taken from clickable links embedded in the supplied textbook PDF.
+  const quranQrResourcesByLesson = {
+    1:[{page:0,title:'صفحهٔ اصلی کتاب قرآن چهارم',url:'https://www.roshd.ir/401'},{page:1,title:'یادآوری قواعد و آشنایی با خط قرآن',url:'https://www.roshd.ir/401-1'},{page:9,title:'روخوانی سورهٔ نبأ؛ آیات ۱ تا ۱۶',url:'https://www.roshd.ir/401-1-1'}],
+    2:[{page:10,title:'سورهٔ تغابن و سورهٔ نبأ',url:'https://www.roshd.ir/401-2'},{page:14,title:'روخوانی سورهٔ نبأ؛ آیات ۱۷ تا ۳۰',url:'https://www.roshd.ir/401-2-1'}],
+    3:[{page:15,title:'سورهٔ آل‌عمران و سورهٔ عبس',url:'https://www.roshd.ir/401-3'},{page:19,title:'روخوانی سورهٔ عبس؛ آیات ۱ تا ۱۶',url:'https://www.roshd.ir/401-3-1'}],
+    4:[{page:20,title:'سورهٔ فصلت و سورهٔ عبس',url:'https://www.roshd.ir/401-4'},{page:23,title:'تمرین وقف و پیام‌های قرآنی',url:'https://www.roshd.ir/401-4-1'},{page:24,title:'روخوانی سورهٔ عبس؛ آیات ۱۷ تا ۳۲',url:'https://www.roshd.ir/401-4-2'}],
+    5:[{page:25,title:'سورهٔ آل‌عمران و سورهٔ تکویر',url:'https://www.roshd.ir/401-5'},{page:29,title:'حدیث نورانی و تمرین قرآن',url:'https://www.roshd.ir/401-5-1'},{page:30,title:'روخوانی سورهٔ تکویر؛ آیات ۱ تا ۱۴',url:'https://www.roshd.ir/401-5-2'}],
+    6:[{page:31,title:'سورهٔ اسراء و سورهٔ تکویر',url:'https://www.roshd.ir/401-6'},{page:34,title:'تمرین مدّ و پیام‌های قرآنی',url:'https://www.roshd.ir/401-6-1'},{page:35,title:'روخوانی سورهٔ تکویر؛ آیات ۱۵ تا ۲۹',url:'https://www.roshd.ir/401-6-2'}],
+    7:[{page:36,title:'سورهٔ نحل و سورهٔ محمد',url:'https://www.roshd.ir/401-7'},{page:39,title:'تمرین‌های پیام‌های قرآنی',url:'https://www.roshd.ir/401-7-1'},{page:40,title:'روخوانی سورهٔ محمد؛ آیات ۳۳ تا ۳۷',url:'https://www.roshd.ir/401-7-2'}],
+    8:[{page:41,title:'سورهٔ آل‌عمران و سورهٔ فاطر',url:'https://www.roshd.ir/401-8'},{page:45,title:'تمرین اتصال‌های قرآنی',url:'https://www.roshd.ir/401-8-1'},{page:46,title:'روخوانی سورهٔ فاطر؛ آیات ۳ تا ۶',url:'https://www.roshd.ir/401-8-2'}],
+    9:[{page:47,title:'سورهٔ بقره و سورهٔ احزاب',url:'https://www.roshd.ir/401-9'},{page:50,title:'تمرین اتصال‌های قرآنی',url:'https://www.roshd.ir/401-9-1'},{page:51,title:'روخوانی سورهٔ احزاب؛ آیات ۷۰ تا ۷۳',url:'https://www.roshd.ir/401-9-2'}],
+    10:[{page:52,title:'سورهٔ هود و سورهٔ سبأ',url:'https://www.roshd.ir/401-10'},{page:55,title:'تمرین اتصال‌های قرآنی',url:'https://www.roshd.ir/401-10-1'},{page:56,title:'روخوانی سورهٔ سبأ؛ آیات ۴۶ تا ۵۰',url:'https://www.roshd.ir/401-10-2'}],
+    11:[{page:57,title:'سورهٔ ملک و نشانهٔ وقف',url:'https://www.roshd.ir/401-11'},{page:60,title:'تمرین خانهٔ نورانی؛ روخوانی سورهٔ ملک',url:'https://www.roshd.ir/401-11'},{page:61,title:'روخوانی سورهٔ ملک؛ آیات ۶ تا ۱۰',url:'https://www.roshd.ir/401-11-2'}],
+    12:[{page:62,title:'سورهٔ آل‌عمران و سورهٔ یس',url:'https://www.roshd.ir/401-12'},{page:66,title:'تمرین اتصال‌ها و پیام‌های قرآنی',url:'https://www.roshd.ir/401-12-1'},{page:67,title:'روخوانی سورهٔ یس؛ آیات ۱ تا ۱۱',url:'https://www.roshd.ir/401-12-2'}],
+    13:[{page:68,title:'سورهٔ نمل',url:'https://www.roshd.ir/401-13'},{page:71,title:'دعاهای قرآنی و تمرین‌های تکمیلی',url:'https://www.roshd.ir/401-13-1'},{page:72,title:'روخوانی سورهٔ نمل؛ آیات ۶۲ تا ۶۴',url:'https://www.roshd.ir/401-13-2'}],
+    14:[{page:73,title:'سورهٔ احزاب',url:'https://www.roshd.ir/401-14'},{page:77,title:'روخوانی سورهٔ احزاب؛ آیات ۵۶ تا ۵۸',url:'https://www.roshd.ir/401-14-1'}],
+    15:[{page:78,title:'قرآن در تابستان',url:'https://www.roshd.ir/401-15'},{page:79,title:'یادآوری و روخوانی سورهٔ نبأ',url:'https://www.roshd.ir/401-15-1'},{page:80,title:'پیام قرآنی؛ جوّ زمین',url:'https://www.roshd.ir/401-15-2'},{page:81,title:'یادآوری و روخوانی سورهٔ عبس',url:'https://www.roshd.ir/401-15-3'},{page:82,title:'حدیث نورانی و حفظ قرآن',url:'https://www.roshd.ir/401-15-4'},{page:83,title:'روخوانی سورهٔ تکویر',url:'https://www.roshd.ir/401-15-5'},{page:84,title:'حدیث نورانی و حفظ قرآن',url:'https://www.roshd.ir/401-15-6'},{page:85,title:'روخوانی سورهٔ غاشیه',url:'https://www.roshd.ir/401-15-7'},{page:87,title:'حدیث نورانی؛ یاری از قرآن',url:'https://www.roshd.ir/401-15-8'},{page:88,title:'روخوانی سورهٔ اعلیٰ',url:'https://www.roshd.ir/401-15-9'},{page:89,title:'آیات سورهٔ اعلیٰ و پیام قرآنی',url:'https://www.roshd.ir/401-15-10'},{page:90,title:'روخوانی سورهٔ طارق',url:'https://www.roshd.ir/401-15-11'},{page:91,title:'حدیث نورانی و دعاهای قرآنی',url:'https://www.roshd.ir/401-15-12'}]
+  };
+
+  function renderQuranQrResources(lessonId){
+    const items=quranQrResourcesByLesson[Number(lessonId)]||[];
+    if(!items.length)return '';
+    return '<section class="persian-audio-resources quran-qr-resources"><h4>🔗 پیوندهای QR و تمرین‌های قرآنی</h4><p class="muted">این پیوندها از QR Codeهای قابل‌کلیک داخل PDF کتاب قرآن چهارم استخراج شده‌اند و صفحهٔ مربوط را در سامانهٔ رشد باز می‌کنند؛ اتصال اینترنت لازم است.</p><div class="persian-audio-links">'+items.map(item=>'<a class="persian-audio-link" href="'+item.url+'" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">📿</span><span class="persian-audio-link-main"><b>'+escapeHtml(item.title)+'</b><small>'+(item.page?'صفحهٔ '+fa(item.page)+' کتاب':'جلد کتاب')+' · بازشدن در رشد</small></span><span aria-hidden="true">↗</span></a>').join('')+'</div></section>';
+  }
+
   const courseBookPageMap={
     math:{
       1:{start:1,end:20,pdfStart:7,pdfEnd:26},2:{start:24,end:42,pdfStart:30,pdfEnd:48},
@@ -6544,7 +6569,7 @@ const persianBookPageMap={
         if(hasImages){
           const bookTitle=courseName(imageSubjectId);
           mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(bookTitle)+'</h4><p class="muted">برای بزرگ‌نمایی روی تصویر بزن و برای رفتن به صفحهٔ بعد، تصویر را از چپ به راست بکش.</p><div class="book-page-gallery" aria-label="گالری صفحات کتاب '+escapeHtml(bookTitle)+'">'+imagePages.map((p,i)=>'<button type="button" class="book-page-thumb" data-book-gallery-open="'+i+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(p)+'"><img loading="'+(i<2?'eager':'lazy')+'" src="'+pathFor(p)+'" alt="صفحهٔ '+fa(p)+' از کتاب '+escapeHtml(bookTitle)+'"><span>صفحهٔ '+fa(p)+'</span></button>').join('')+'</div></section>';
-          if(isPersianBook){const audioResources=renderPersianAudioResources(Number(lesson.id));if(audioResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',audioResources);}
+          if(isPersianBook){const audioResources=renderPersianAudioResources(Number(lesson.id));if(audioResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',audioResources);}else if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
           mount.querySelectorAll('[data-book-gallery-open]').forEach(button=>{
             button.addEventListener('click',()=>openPersianBookGallery(imagePages,Number(button.dataset.bookGalleryOpen),imageSubjectId));
           });
@@ -6568,8 +6593,10 @@ const persianBookPageMap={
     if(url){
       const page=pageNumber;
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
+      if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
     }else{
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">فایل PDF صفحات اصلی کتاب هنوز داخل سایت قرار نگرفته است؛ اما واژه‌های املا، معنی‌ها و تمرین‌های همین درس از فایل‌های بررسی‌شده در پایین همین صفحه در دسترس‌اند.</p></section>';
+      if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
     }
   }
   function renderPersianLesson(l){
