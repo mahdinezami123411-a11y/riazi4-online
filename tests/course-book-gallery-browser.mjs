@@ -12,17 +12,27 @@ const context = await browser.newContext({serviceWorkers:'block'});
 const page = await context.newPage();
 const pageErrors = [];
 page.on('pageerror', error => pageErrors.push(error.message));
-const subjects = [
-  {id:'math',title:'ریاضی'},
+const otherSubjects = [
   {id:'science',title:'علوم تجربی'},
   {id:'social',title:'مطالعات اجتماعی'},
   {id:'gifts',title:'هدیه‌های آسمانی'}
+];
+const mathChapters = [
+  {id:1,sections:5,pages:20},
+  {id:2,sections:4,pages:19},
+  {id:3,sections:6,pages:27},
+  {id:4,sections:4,pages:19},
+  {id:5,sections:4,pages:19},
+  {id:6,sections:5,pages:19},
+  {id:7,sections:3,pages:11}
 ];
 
 try {
   await page.goto('http://127.0.0.1:8765/index.html', {waitUntil:'domcontentloaded'});
   await page.waitForFunction(() => !!window.__quizTestApi, {timeout:12000});
-  for (const subject of subjects) {
+
+  // Other textbooks use the shared lesson picker and its lesson-level gallery.
+  for (const subject of otherSubjects) {
     await page.evaluate(subjectId => {
       const api = window.__quizTestApi;
       api.showStudentAppView('home');
@@ -61,7 +71,85 @@ try {
     assert.equal(item.closed,true,subject.id+': بستن گالری کار نکرد');
     console.log(subject.id+' gallery check passed:',JSON.stringify(item));
   }
+
+  // Math has its own chapter screen: its PDF tab is gone, and every subsection has its own page gallery.
+  await page.evaluate(() => {
+    const api = window.__quizTestApi;
+    api.showStudentAppView('home');
+    api.showStudentAppView('learn');
+    if (document.querySelector('#bookView [data-book-tab="file"]') || document.getElementById('booktab-file')) {
+      throw new Error('تب PDF کتاب ریاضی هنوز در پنل دانش‌آموز وجود دارد');
+    }
+    const chapter = document.querySelector('#chapterPicker [data-chapter="1"]');
+    if (!chapter) throw new Error('فصل اول ریاضی در فهرست پیدا نشد');
+    chapter.click();
+  });
+
+  const mathReports=[];
+  for (const chapter of mathChapters) {
+    if (chapter.id > 1) {
+      await page.evaluate(chapterId => {
+        const api = window.__quizTestApi;
+        api.renderChapterPicker();
+        const picker = document.querySelector('#chapterPicker');
+        picker?.classList.remove('hidden');
+        const button = picker?.querySelector('[data-chapter="'+chapterId+'"]');
+        if (!button) throw new Error('فصل ریاضی پیدا نشد: '+chapterId);
+        button.click();
+      }, chapter.id);
+    }
+    await page.waitForFunction(() => document.querySelectorAll('#chapterLessonBody .math-subtopic-book-pages').length > 0, {timeout:12000});
+    const report = await page.evaluate(chapterId => {
+      const notes=[...document.querySelectorAll('#chapterLessonBody .math-subtopic-note')];
+      const galleries=[...document.querySelectorAll('#chapterLessonBody .math-subtopic-book-pages')];
+      return {
+        chapter:chapterId,
+        sectionCount:notes.length,
+        galleryCount:galleries.length,
+        pageCount:galleries.reduce((sum,g)=>sum+(g.dataset.mathPageList||'').split(',').filter(Boolean).length,0),
+        pathsValid:galleries.every(g=>[...g.querySelectorAll('img')].every(img=>(img.getAttribute('src')||'').includes('assets/book-pages/math/page-'))),
+        eachSectionHasPages:notes.length===galleries.length&&notes.every(n=>n.querySelector('.math-subtopic-book-pages')),
+        firstImage:galleries[0]?.querySelector('img')?.getAttribute('src')||'',
+        firstPageList:galleries[0]?.dataset.mathPageList||''
+      };
+    }, chapter.id);
+    assert.equal(report.sectionCount,chapter.sections,'فصل '+chapter.id+': تعداد مباحث آموزشی تغییر کرده است');
+    assert.equal(report.galleryCount,chapter.sections,'فصل '+chapter.id+': برای همهٔ مباحث گالری صفحه ساخته نشده است');
+    assert.equal(report.pageCount,chapter.pages,'فصل '+chapter.id+': تعداد صفحه‌های تخصیص‌داده‌شده با فهرست کتاب برابر نیست');
+    assert.equal(report.pathsValid,true,'فصل '+chapter.id+': مسیر تصویرهای کتاب ریاضی اشتباه است');
+    assert.equal(report.eachSectionHasPages,true,'فصل '+chapter.id+': یکی از مباحث بدون صفحه مانده است');
+    assert.ok(report.firstImage.includes('assets/book-pages/math/page-'),'فصل '+chapter.id+': تصویر صفحه پیدا نشد');
+    mathReports.push(report);
+    console.log('math subsection page check passed:',JSON.stringify(report));
+  }
+
+  // Verify that a math subsection thumbnail opens the image gallery and supports next/close.
+  await page.evaluate(() => window.__quizTestApi.renderChapter(1));
+  await page.waitForFunction(() => {
+    const img=document.querySelector('#chapterLessonBody .math-subtopic-book-pages img');
+    return !!img && img.complete && img.naturalWidth>0;
+  }, {timeout:12000});
+  const mathModal = await page.evaluate(() => {
+    const gallery=document.querySelector('#chapterLessonBody .math-subtopic-book-pages');
+    const cards=[...(gallery?.querySelectorAll('[data-math-page-open]')||[])];
+    const source=cards[0]?.querySelector('img')?.getAttribute('src')||'';
+    cards[0]?.click();
+    const modal=document.getElementById('persianBookGalleryModal');
+    const image=modal?.querySelector('[data-gallery-image]');
+    const first=image?.getAttribute('src')||'';
+    modal?.querySelector('[data-gallery-next]')?.click();
+    const next=image?.getAttribute('src')||'';
+    const label=modal?.getAttribute('aria-label')||'';
+    modal?.querySelector('[data-gallery-close]')?.click();
+    return {source,first,next,label,opened:!!(modal&&first),nextWorked:!!(first&&next&&first!==next),closed:!document.getElementById('persianBookGalleryModal')};
+  });
+  assert.ok(mathModal.source.includes('assets/book-pages/math/page-'),'تصویر مبحث ریاضی از پوشهٔ اشتباه می‌آید');
+  assert.equal(mathModal.opened,true,'گالری صفحهٔ مبحث ریاضی باز نشد');
+  assert.ok(mathModal.label.includes('ریاضی'),'عنوان گالری صفحهٔ ریاضی درست نیست');
+  assert.equal(mathModal.nextWorked,true,'رفتن به صفحهٔ بعد در گالری ریاضی کار نکرد');
+  assert.equal(mathModal.closed,true,'بستن گالری ریاضی کار نکرد');
   assert.deepEqual(pageErrors,[], 'خطای JavaScript هنگام آزمایش گالری کتاب‌ها: '+pageErrors.join(' | '));
+  console.log('math page modal check passed:',JSON.stringify(mathModal));
 } finally {
   await context.close();
   await browser.close();
