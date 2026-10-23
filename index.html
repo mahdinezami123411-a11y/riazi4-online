@@ -153,7 +153,7 @@ input,select,textarea{border-color:#c5d7fa;border-radius:13px;background:#fbfdff
 .lesson-accordion summary::-webkit-details-marker{display:none}.lesson-accordion summary:after{content:'＋';margin-right:auto;color:#2180cf;font-size:19px}.lesson-accordion[open] summary:after{content:'−'}
 .lesson-accordion .topic-number{display:grid;place-items:center;min-width:30px;height:30px;border-radius:10px;background:#dcedff;color:#1456b8;font-size:12px}
 .lesson-accordion .topic-summary{display:block;font-size:11px;color:#68819f;font-weight:400;line-height:1.6;margin-top:3px}.lesson-accordion-content{padding:12px;border-top:1px solid #e0edf9}
-.lesson-accordion-content>p{margin:4px 0 10px;line-height:1.9}.lesson-accordion-content .lesson-sub{margin:8px 0}
+.lesson-accordion-content>p{margin:4px 0 10px;line-height:1.9}.lesson-accordion-content .lesson-sub{margin:8px 0}.math-subtopic-summary{display:block;min-width:0;flex:1;text-align:right}.math-subtopic-summary strong{display:block;line-height:1.7}.math-subtopic-explanation{line-height:2;margin:7px 0 10px}.math-subtopic-book-gallery{margin-top:2px}
 .soft-rule{border:0;border-top:1px dashed #c3d9ef;margin:20px 0}.teacher-bank-manager{padding:14px;margin-top:15px;border:1px solid #cfe1f5;border-radius:17px;background:linear-gradient(150deg,#f8fbff,#fff)}
 .teacher-question-list{display:grid;gap:8px;margin-top:10px;max-height:680px;overflow:auto;padding:2px}
 .teacher-question-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#fff;border:1px solid #d8e7f6;border-radius:12px;padding:9px}
@@ -2794,7 +2794,7 @@ function renderMathSubtopicPageGallery(chapterId,sectionIndex,sectionTitle){
   if(!pages.length)return '';
   const title=escapeHtml(sectionTitle||'مبحث آموزشی');
   const cards=pages.map((page,index)=>'<button type="button" class="book-page-thumb" data-math-page-open="'+index+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(page)+'">'+
-    '<img loading="'+(index<2?'eager':'lazy')+'" src="./assets/book-pages/math/page-'+String(page).padStart(3,'0')+'.webp" alt="صفحهٔ '+fa(page)+' از کتاب ریاضی چهارم">'+
+    '<img loading="lazy" src="./assets/book-pages/math/page-'+String(page).padStart(3,'0')+'.webp" alt="صفحهٔ '+fa(page)+' از کتاب ریاضی چهارم">'+
     '<span>صفحهٔ '+fa(page)+'</span></button>').join('');
   return '<div class="book-page-gallery math-subtopic-book-gallery" data-math-page-list="'+pages.join(',')+'" aria-label="تصویرهای کتاب برای '+title+'">'+cards+'</div>';
 }
@@ -2832,9 +2832,16 @@ function renderChapter(id){
   const check=o.check?`<div class="lesson-check"><b>🧠 خودت را بسنج</b><p>${escapeHtml(o.check)}</p><details><summary>دیدن پاسخ و توضیح</summary><p>${escapeHtml(o.answer||"ابتدا نکته‌های کلیدی این مبحث را مرور کن و مثال را دوباره حل کن.")}</p></details></div>`:'';
   const title=escapeHtml(o.title||'مبحث آموزشی');
   const pageGallery=renderMathSubtopicPageGallery(id,i,o.title||'مبحث آموزشی');
-  return `<details class="lesson-note lesson-accordion math-subtopic-note math-subtopic-learning"><summary><span class="topic-number">📖</span><span>${title}<span class="topic-summary">برای دیدن تصویرهای کتاب و آموزش این مبحث باز کن</span></span></summary><div class="lesson-accordion-content">${pageGallery}<p>${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}</div></details>`;
+  return `<details class="lesson-note lesson-accordion math-subtopic-note math-subtopic-learning math-subtopic-accordion"><summary><span class="topic-number">📖</span><span class="math-subtopic-summary"><strong>${title}</strong><small class="topic-summary">برای دیدن تصویرهای کتاب و آموزش این مبحث باز کن</small></span></summary><div class="lesson-accordion-content math-subtopic-content">${pageGallery}<p class="math-subtopic-explanation">${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}</div></details>`;
  }).join('');
- $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب بخوان، مثال حل‌شده را بدون نگاه کردن دوباره حل کن، به سؤال «خودت را بسنج» پاسخ بده و سپس از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
+ $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب باز کن؛ ابتدا تصاویر همان بخش از کتاب را ببین، سپس توضیحات و مثال را بخوان، به سؤال «خودت را بسنج» پاسخ بده و در پایان از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
+ // Load textbook images only after a student opens that subsection; keep them above its explanation.
+ $('chapterLessonBody').querySelectorAll('details.math-subtopic-learning').forEach(section=>{
+  section.addEventListener('toggle',()=>{
+   if(!section.open)return;
+   section.querySelectorAll('.math-subtopic-book-gallery img').forEach(img=>{img.loading='eager'});
+  },{once:true});
+ });
  renderChapterPicker();updatePracticeTopicOptions();
 }
 if(location.hostname==='127.0.0.1'||location.hostname==='localhost')window.__renderMathChapterForTest=renderChapter;
@@ -7417,7 +7424,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v88',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v89',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });

@@ -134,15 +134,15 @@ try {
     // Open chapter 1 and expand its pages accordion so lazy images can load.
     window.__renderMathChapterForTest(1);
     const subsection=document.querySelector('#chapterLessonBody details.math-subtopic-learning');
-    if(subsection)subsection.open=true;
+    subsection?.querySelector('summary')?.click();
   });
   await page.waitForFunction(() => {
     const img=document.querySelector('#chapterLessonBody .math-subtopic-book-gallery img');
-    return !!img && img.complete && img.naturalWidth>0;
+    return !!img && img.loading==='eager' && img.complete && img.naturalWidth>0;
   }, {timeout:12000});
   const mathModal = await page.evaluate(() => {
     const subsection=document.querySelector('#chapterLessonBody details.math-subtopic-learning');
-    if(subsection)subsection.open=true;
+    subsection?.querySelector('summary')?.click();
     const gallery=subsection?.querySelector('.math-subtopic-book-gallery');
     const cards=[...(gallery?.querySelectorAll('[data-math-page-open]')||[])];
     const source=cards[0]?.querySelector('img')?.getAttribute('src')||'';
