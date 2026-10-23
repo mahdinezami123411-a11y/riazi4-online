@@ -296,7 +296,7 @@ assert.equal(lessonUi.galaxyMapRemoved, true, 'نقشهٔ کهکشانی کتا�
 assert.equal(lessonUi.progressRendererAvailable, true, 'تابع نمایش پیشرفت همهٔ کتاب‌ها تعریف نشده است');
 assert.deepEqual(lessonUi.progressBookNames, ['ریاضی','فارسی','علوم تجربی','مطالعات اجتماعی','هدیه‌های آسمانی'], 'گزارش پیشرفت باید هر پنج کتاب را نشان دهد');
 assert.equal(lessonUi.homeNavLabel, 'انتخاب کتاب', 'برچسب نوار اصلی باید «انتخاب کتاب» باشد');
-assert.deepEqual(lessonUi.mathBookTabs, ['file','chapters'], 'فقط فایل کتاب و توضیح فصل باید در نوار داخلی کتاب بمانند');
+assert.deepEqual(lessonUi.mathBookTabs, ['chapters'], 'تب PDF کامل کتاب ریاضی باید حذف شود و آموزش فصل‌ها باقی بماند');
 assert.equal(lessonUi.mainPracticeAndExamRetained, true, 'تمرین و امتحان باید از نوار اصلی بالای برنامه در دسترس بمانند');
 assert.equal(lessonUi.placement.homeInsideProfile, false, 'صفحهٔ انتخاب درس نباید داخل بخش پنهان پروفایل باشد');
 assert.equal(lessonUi.placement.reportInsideProfile, false, 'کارنامه باید جدا از پروفایل باشد');
