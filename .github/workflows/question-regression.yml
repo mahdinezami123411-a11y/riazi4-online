@@ -55,7 +55,7 @@ jobs:
           echo $! > "$RUNNER_TEMP/quiz-http.pid"
           cd "$RUNNER_TEMP/quiz-test"
           node "$GITHUB_WORKSPACE/tests/persian-gallery-browser.mjs"
-          if grep -Eq 'BUNDLED_COURSE_PAGE_IMAGES\\s*=\\s*true' "$GITHUB_WORKSPACE/index.html"; then
+          if grep -Fq 'BUNDLED_COURSE_PAGE_IMAGES = true' "$GITHUB_WORKSPACE/index.html"; then
             node "$GITHUB_WORKSPACE/tests/course-book-gallery-browser.mjs"
           fi
           node "$GITHUB_WORKSPACE/tests/quiz-browser.mjs"
