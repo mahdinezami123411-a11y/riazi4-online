@@ -274,8 +274,9 @@ const lessonUi = await page.evaluate(() => {
   const progressBookNames = [...document.querySelectorAll('#allBooksProgressMount .profile-progress-label')].map(el => el.textContent.trim());
   const homeNavLabel = document.querySelector('#studentAppNav [data-app-view="home"] small')?.textContent.trim() || '';
   const mathBookTabs = [...document.querySelectorAll('#bookView [data-book-tab]')].map(button => button.dataset.bookTab);
+  const mathChapterPickerAvailable = !!document.querySelector('#booktab-chapters #chapterPicker');
   const mainPracticeAndExamRetained = !!document.querySelector('#studentAppNav [data-app-view="practice"]') && !!document.querySelector('#studentAppNav [data-app-view="exam"]');
-  return {catalogCounts,selectors,mathPlanetCount,lessonPlanetCounts,galaxyMapRemoved,progressRendererAvailable,progressBookNames,homeNavLabel,mathBookTabs,mainPracticeAndExamRetained,placement,reportNav:!!document.querySelector('#studentAppNav [data-app-view="report"]')};
+  return {catalogCounts,selectors,mathPlanetCount,lessonPlanetCounts,galaxyMapRemoved,progressRendererAvailable,progressBookNames,homeNavLabel,mathBookTabs,mathChapterPickerAvailable,mainPracticeAndExamRetained,placement,reportNav:!!document.querySelector('#studentAppNav [data-app-view="report"]')};
 });
 const expectedCatalogCounts = {math:7,persian:17,science:13,social:22,gifts:19};
 for (const subject of ['math','persian','science','social','gifts']) {
@@ -296,7 +297,8 @@ assert.equal(lessonUi.galaxyMapRemoved, true, 'نقشهٔ کهکشانی کتا�
 assert.equal(lessonUi.progressRendererAvailable, true, 'تابع نمایش پیشرفت همهٔ کتاب‌ها تعریف نشده است');
 assert.deepEqual(lessonUi.progressBookNames, ['ریاضی','فارسی','علوم تجربی','مطالعات اجتماعی','هدیه‌های آسمانی'], 'گزارش پیشرفت باید هر پنج کتاب را نشان دهد');
 assert.equal(lessonUi.homeNavLabel, 'انتخاب کتاب', 'برچسب نوار اصلی باید «انتخاب کتاب» باشد');
-assert.deepEqual(lessonUi.mathBookTabs, ['chapters'], 'تب PDF کامل کتاب ریاضی باید حذف شود و آموزش فصل‌ها باقی بماند');
+assert.deepEqual(lessonUi.mathBookTabs, [], 'دکمهٔ قدیمی آموزش فصل‌ها و صفحات کتاب ریاضی باید حذف شده باشد');
+assert.equal(lessonUi.mathChapterPickerAvailable, true, 'فهرست فصل‌های ریاضی باید بدون دکمهٔ قدیمی در دسترس باشد');
 assert.equal(lessonUi.mainPracticeAndExamRetained, true, 'تمرین و امتحان باید از نوار اصلی بالای برنامه در دسترس بمانند');
 assert.equal(lessonUi.placement.homeInsideProfile, false, 'صفحهٔ انتخاب درس نباید داخل بخش پنهان پروفایل باشد');
 assert.equal(lessonUi.placement.reportInsideProfile, false, 'کارنامه باید جدا از پروفایل باشد');
