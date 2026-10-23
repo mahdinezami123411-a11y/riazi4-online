@@ -390,6 +390,7 @@ for (const subject of ['persian','science','social','gifts']) {
   assert.equal(item.renderedError, false, subject + ': نمایش درس به پیام خطا رسید');
   if (subject === 'persian') {
     assert.ok(item.persianSections.count >= 8, 'فارسی: بخش‌های درس باید به کارت‌های جداگانه تقسیم شوند');
+    assert.equal(item.persianSections.sectionNames.some(name => /متن و مفهوم درس/.test(name)), false, 'فارسی: بخش متن و مفهوم درس باید حذف شده باشد');
     assert.ok(item.persianSections.sectionNames.some(name => /کلمات سخت املایی/.test(name)), 'فارسی: کارت کلمات سخت املایی وجود ندارد');
     assert.ok(item.persianSections.sectionNames.some(name => /هم‌معنی‌ها/.test(name)), 'فارسی: کارت هم‌معنی‌ها وجود ندارد');
     assert.ok(item.persianSections.sectionNames.some(name => /متضادها/.test(name)), 'فارسی: کارت متضادها وجود ندارد');
