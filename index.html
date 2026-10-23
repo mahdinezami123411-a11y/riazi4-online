@@ -3380,7 +3380,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const example=o.example?`<div class="lesson-example"><b>✏️ مثال حل‌شده</b><p>${escapeHtml(o.example)}</p></div>`:'';
       const mistake=o.mistake?`<div class="lesson-mistake"><b>⚠️ اشتباه رایج</b><p>${escapeHtml(o.mistake)}</p></div>`:'';
       const check=o.check?`<div class="lesson-check"><b>🧠 خودت را بسنج</b><p>${escapeHtml(o.check)}</p><details><summary>دیدن پاسخ و توضیح</summary><p>${escapeHtml(o.answer||'مثال را یک بار دیگر با دقت بررسی کن.')}</p></details></div>`:'';
-      return `<details class="lesson-accordion"><summary><span class="topic-number">${fa(i+1)}</span><span>${escapeHtml(o.title||'مبحث آموزشی')}<span class="topic-summary">${escapeHtml(short||'برای دیدن آموزش، مثال و نکته‌ها باز کن.')}</span></span></summary><div class="lesson-accordion-content"><p>${escapeHtml(explanation)}</p>${steps}${example}${keys}${mistake}${check}</div></details>`;
+      return `<details class="lesson-accordion"><summary><span class="topic-number">${fa(i+1)}</span><span>${escapeHtml(o.title||'مبحث آموزشی')}<span class="topic-summary">${escapeHtml(short||'برای دیدن آموزش، مثال و نکته‌ها باز کن.')}</span></span></summary><div class="lesson-accordion-content"><p>${escapeHtml(explanation)}</p>${steps}${example}${keys}${mistake}${check}${renderMathSubtopicPageGallery(id,i,o.title||'مبحث آموزشی')}</div></details>`;
     }).join('');
     const videoMarkup=window.__studentChapterVideoMarkup?window.__studentChapterVideoMarkup(id):'';
     $('chapterLessonBody').innerHTML=intro+goals+sections+videoMarkup+`<div class="notice"><b>روش پیشنهادی:</b> هر نکته را جداگانه باز کن، مثال را خودت حل کن و بعد پاسخ «خودت را بسنج» را ببین.</div>`;
