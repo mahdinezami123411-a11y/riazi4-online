@@ -358,7 +358,21 @@ const subjectLessonUi = await page.evaluate(async () => {
     const body = document.getElementById('otherLessonContent')?.textContent.trim() || '';
     const viewVisible = !document.getElementById('otherSubjectLessonBody')?.classList.contains('hidden');
     const renderedError = /باز کردن این درس با خطا روبه‌رو شد/.test(body);
-    result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError};
+    let persianSections = null;
+    if (subject === 'persian') {
+      const cards = [...document.querySelectorAll('#persianLessonSectionMenu [data-persian-section-open]')];
+      const oppositesCard = document.querySelector('#persianLessonSectionMenu [data-persian-section-open="opposites"]');
+      const sectionNames = cards.map(card => card.textContent.trim());
+      oppositesCard?.click();
+      const visiblePage = document.querySelector('#otherLessonContent .persian-lesson-section-page:not(.hidden)');
+      const oppositesPageVisible = visiblePage?.dataset.persianSectionPage === 'opposites'
+        && /متضادها/.test(visiblePage.textContent || '');
+      document.getElementById('studentStageBack')?.click();
+      const sectionMenuRestored = !document.getElementById('persianLessonSectionMenu')?.classList.contains('hidden')
+        && document.getElementById('persianLessonSectionPages')?.classList.contains('hidden') === true;
+      persianSections = {count:cards.length,sectionNames,oppositesPageVisible,sectionMenuRestored};
+    }
+    result[subject] = {lessonId,title,bodyLength:body.length,viewVisible,renderedError,persianSections};
     document.getElementById('studentStageBack')?.click();
   }
   api.showStudentAppView('home');
@@ -374,6 +388,14 @@ for (const subject of ['persian','science','social','gifts']) {
   assert.ok(item.title.length > 0, subject + ': عنوان درس نمایش داده نشد');
   assert.ok(item.bodyLength > 30, subject + ': محتوای درس خالی است');
   assert.equal(item.renderedError, false, subject + ': نمایش درس به پیام خطا رسید');
+  if (subject === 'persian') {
+    assert.ok(item.persianSections.count >= 8, 'فارسی: بخش‌های درس باید به کارت‌های جداگانه تقسیم شوند');
+    assert.ok(item.persianSections.sectionNames.some(name => /کلمات سخت املایی/.test(name)), 'فارسی: کارت کلمات سخت املایی وجود ندارد');
+    assert.ok(item.persianSections.sectionNames.some(name => /هم‌معنی‌ها/.test(name)), 'فارسی: کارت هم‌معنی‌ها وجود ندارد');
+    assert.ok(item.persianSections.sectionNames.some(name => /متضادها/.test(name)), 'فارسی: کارت متضادها وجود ندارد');
+    assert.equal(item.persianSections.oppositesPageVisible, true, 'فارسی: انتخاب کارت متضادها صفحهٔ همان بخش را باز نکرد');
+    assert.equal(item.persianSections.sectionMenuRestored, true, 'فارسی: بازگشت از بخش باید فهرست بخش‌ها را نمایش دهد');
+  }
 }
 assert.deepEqual(subjectLessonUi.duplicateIds, [], 'شناسهٔ تکراری در DOM می‌تواند کلیک‌ها و کنترل‌ها را مختل کند: '+JSON.stringify(subjectLessonUi.duplicateIds));
 
