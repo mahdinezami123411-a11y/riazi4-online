@@ -8,6 +8,7 @@ on:
       - 'science-book-pages-assets.zip'
       - 'social-book-pages-assets.zip'
       - 'gifts-book-pages-assets.zip'
+      - 'quran-book-pages-github.zip'
       - '.github/workflows/install-course-book-pages.yml'
   workflow_dispatch:
 
@@ -31,7 +32,7 @@ jobs:
           root="$RUNNER_TEMP/other-book-pages"
           mkdir -p "$root"
           found=0
-          for bundle in math-book-pages-assets.zip science-book-pages-assets.zip social-book-pages-assets.zip gifts-book-pages-assets.zip; do
+          for bundle in math-book-pages-assets.zip science-book-pages-assets.zip social-book-pages-assets.zip gifts-book-pages-assets.zip quran-book-pages-github.zip; do
             if [ -f "$bundle" ]; then
               unzip -oq "$bundle" -d "$root"
               found=1
@@ -42,12 +43,13 @@ jobs:
             exit 0
           fi
 
-          for subject in math science social gifts; do
+          for subject in math science social gifts quran; do
             case "$subject" in
               math) archive="math-book-pages-assets.zip"; expected_pages=134; expected_lessons=7 ;;
               science) archive="science-book-pages-assets.zip"; expected_pages=120; expected_lessons=13 ;;
               social) archive="social-book-pages-assets.zip"; expected_pages=111; expected_lessons=22 ;;
               gifts) archive="gifts-book-pages-assets.zip"; expected_pages=121; expected_lessons=19 ;;
+              quran) archive="quran-book-pages-github.zip"; expected_pages=91; expected_lessons=15 ;;
             esac
             if [ -f "$archive" ]; then
               directory="$root/assets/book-pages/$subject"
@@ -88,7 +90,7 @@ jobs:
           const path = require('node:path');
           const subjects = {
             math:{pages:134,lessons:7}, science:{pages:120,lessons:13},
-            social:{pages:111,lessons:22}, gifts:{pages:121,lessons:19}
+            social:{pages:111,lessons:22}, gifts:{pages:121,lessons:19}, quran:{pages:91,lessons:15}
           };
           let ready = true;
           for (const [subject, expected] of Object.entries(subjects)) {
@@ -130,7 +132,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+actions-bot@users.noreply.github.com'
           git add assets/book-pages index.html sw.js
-          git rm --ignore-unmatch math-book-pages-assets.zip science-book-pages-assets.zip social-book-pages-assets.zip gifts-book-pages-assets.zip
+          git rm --ignore-unmatch math-book-pages-assets.zip science-book-pages-assets.zip social-book-pages-assets.zip gifts-book-pages-assets.zip quran-book-pages-github.zip
           if git diff --cached --quiet; then
             echo 'No textbook page assets changed.'
             exit 0
