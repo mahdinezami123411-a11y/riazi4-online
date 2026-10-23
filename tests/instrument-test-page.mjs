@@ -37,6 +37,7 @@ const bridge = `
       renderPrintableLessonChoices: () => typeof window.__refreshPrintableExamLessonChoices === 'function' ? window.__refreshPrintableExamLessonChoices() : null,
       renderPlanetaryChapterRoute: () => typeof renderPlanetaryChapterRoute === 'function' ? renderPlanetaryChapterRoute() : null,
       renderChapterPicker: () => typeof renderChapterPicker === 'function' ? renderChapterPicker() : null,
+      renderChapter: id => typeof renderChapter === 'function' ? renderChapter(id) : null,
       openOtherSubject: subject => typeof openOtherSubject === 'function' ? openOtherSubject(subject) : null,
       showStudentAppView: view => typeof showStudentAppView === 'function' ? showStudentAppView(view) : null,
       getProgressViewPlacement: () => ({
