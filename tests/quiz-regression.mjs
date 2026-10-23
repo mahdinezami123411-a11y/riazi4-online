@@ -50,6 +50,15 @@ assert.equal(manifest.lang, 'fa', 'زبان برنامه در manifest باید 
 assert.equal(manifest.dir, 'rtl', 'جهت برنامه در manifest باید راست‌به‌چپ باشد');
 assert.ok(manifest.start_url && manifest.start_url.startsWith('./'), 'نشانی شروع PWA باید نسبی باشد');
 
+// Persian textbook QR audio links must remain attached to the reading/lesson page.
+const persianAudioMap = html.match(/const\s+persianAudioResourcesByLesson\s*=\s*\{([\s\S]*?)\n\s*\};/);
+assert.ok(persianAudioMap, 'نگاشت صوت‌های QR کتاب فارسی پیدا نشد');
+const persianAudioUrls = [...persianAudioMap[1].matchAll(/url:'(https:\/\/www\.roshd\.ir\/403-[^']+)'/g)].map(match => match[1]);
+assert.equal(persianAudioUrls.length, 46, 'باید هر ۴۶ مقصد QR صوتی استخراج‌شده از PDF فارسی ثبت شده باشد');
+assert.equal(new Set(persianAudioUrls).size, 46, 'مقصد تکراری در فهرست صوت‌های کتاب فارسی وجود دارد');
+assert.match(html, /renderPersianAudioResources\(Number\(lesson\.id\)\)/, 'صوت‌های استخراج‌شده در صفحهٔ درس فارسی درج نمی‌شوند');
+assert.match(html, /target="_blank" rel="noopener noreferrer"/, 'پیوندهای صوتی باید با تنظیمات ایمن در پنجرهٔ جدید باز شوند');
+
 // Every asset explicitly precached by the service worker must exist in the repository.
 const shellMatch = serviceWorker.match(/const\s+APP_SHELL\s*=\s*\[([\s\S]*?)\];/);
 assert.ok(shellMatch, 'فهرست APP_SHELL در سرویس‌ورکر پیدا نشد');
