@@ -47,4 +47,5 @@ jobs:
           python3 -m http.server 8765 > "$RUNNER_TEMP/quiz-http.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/quiz-http.pid"
           cd "$RUNNER_TEMP/quiz-test"
+          node "$GITHUB_WORKSPACE/tests/persian-gallery-browser.mjs"
           node "$GITHUB_WORKSPACE/tests/quiz-browser.mjs"
