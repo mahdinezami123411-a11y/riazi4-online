@@ -2833,6 +2833,7 @@ function renderChapter(id){
  $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب بخوان، مثال حل‌شده را بدون نگاه کردن دوباره حل کن، به سؤال «خودت را بسنج» پاسخ بده و سپس از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
  renderChapterPicker();updatePracticeTopicOptions();
 }
+if(location.hostname==='127.0.0.1'||location.hostname==='localhost')window.__renderMathChapterForTest=renderChapter;
 function normalizeAnswer(v){return String(v??'').trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g,'.').replace(/٬/g,'').replace(/[،,]/g,'').replace(/\s/g,'').toLowerCase()}
 function shuffledCopy(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function shuffledQuestion(q){
