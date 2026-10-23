@@ -107,7 +107,7 @@ if (persianPageImagesEnabled) {
 
 const coursePageImagesEnabled = /BUNDLED_COURSE_PAGE_IMAGES\s*=\s*true/.test(html);
 if (coursePageImagesEnabled) {
-  const expectedCourseBooks = {math:{pages:134,lessons:7},science:{pages:120,lessons:13},social:{pages:111,lessons:22},gifts:{pages:121,lessons:19}};
+  const expectedCourseBooks = {math:{pages:134,lessons:7},science:{pages:120,lessons:13},social:{pages:111,lessons:22},gifts:{pages:121,lessons:19},quran:{pages:91,lessons:15}};
   for (const [subject, expected] of Object.entries(expectedCourseBooks)) {
     const dir = new URL('../assets/book-pages/'+subject+'/', import.meta.url);
     const manifest = JSON.parse(await readFile(new URL('page-map.json', dir), 'utf8'));
