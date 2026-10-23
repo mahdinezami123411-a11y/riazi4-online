@@ -2339,7 +2339,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </div>
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
-<div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">فصل‌ها، صفحه‌های کتاب، تمرین و امتحان</small></button></div></div>
+<div id="mathHomeMenu" class="card hidden"><div class="row"><h2>➗ ریاضی چهارم</h2></div><p class="muted">از بخش دلخواه ریاضی شروع کن؛ یادآوری مهارت‌های پایه، کتاب، تمرین یا آزمون.</p><div class="learn-nav"><button data-student-view="reminders">🧠 یادآوری ریاضی<small style="display:block;font-weight:400">جدول ضرب، تقسیم، جمع و تمرین</small></button><button class="outline" data-student-view="book">📘 کتاب ریاضی چهارم<small style="display:block;font-weight:400">آموزش فصل‌ها و مبحث‌های کتاب، تمرین و امتحان</small></button></div></div>
 <div id="studentDashboard" class="card progress-dashboard">
   <div class="row"><div><h2>🪐 نقشهٔ پیشرفت من</h2><p class="muted" id="studentWelcome">هر تمرین، یک قدم به جلو!</p></div><span class="level-emblem">📊</span></div>
   <div class="progress-summary"><div><b id="progressAttempts">۰</b><span>تلاش</span></div><div><b id="progressCorrect">۰</b><span>پاسخ درست</span></div><div><b id="progressPercent">۰٪</b><span>درستی پاسخ‌ها</span></div></div>
@@ -2769,7 +2769,7 @@ let activeChapter=1, currentPractice=null, selectedPracticeAnswer=null;
 
 const mathSubtopicPageLists = {
   // فصل اول: صفحه‌ها بر اساس موضوع واقعی هر بخش؛ صفحه‌های مشترک در بیش از یک مبحث می‌آیند.
-  1:[[4,5,6,7],[2,3,8],[3,9,10,11],[12,13,14,15],[16,17,18,19]],
+  1:[[4,5,6,7],[3,8,11],[2,3,8,9,10,11],[12,13,14,15,20],[16,17,18,19,20]],
   // فصل دوم: شناخت کسر، جمع و تفریق کسرها، کسرهای مساوی، ضرب عدد در کسر
   2:[[24,25,26,27,28,29],[30,31,32,33],[34,35,36,37],[38,39,40,41,42]],
   // فصل سوم: ضرب دورقمی، محاسبه حاصل‌ضرب، برآورد، بخش‌پذیری، تقسیم یک‌رقمی و دورقمی
@@ -2787,8 +2787,8 @@ function renderMathSubtopicPageGallery(chapterId,sectionIndex,sectionTitle){
   const pages=(mathSubtopicPageLists[Number(chapterId)]||[])[Number(sectionIndex)]||[];
   if(!pages.length)return '';
   return '<section class="lesson-book-pages math-subtopic-book-pages" aria-label="صفحات کتاب مربوط به '+escapeHtml(sectionTitle)+'">'+
-    '<h5>📖 صفحات همین مبحث از کتاب</h5>'+
-    '<p class="muted">تصویرهای مربوط به این سرفصل را ببین؛ برای بزرگ‌نمایی روی تصویر بزن.</p>'+
+    '<h5>📖 تصاویر کتاب برای این مبحث · '+fa(pages.length)+' صفحه</h5>'+
+    '<p class="muted">این تصاویر مربوط به همین سرفصل هستند؛ برای بزرگ‌نمایی هر صفحه روی تصویر بزن.</p>'+
     '<div class="book-page-gallery" data-math-page-list="'+pages.join(',')+'" aria-label="صفحات کتاب ریاضی">'+
     pages.map((page,index)=>'<button type="button" class="book-page-thumb" data-math-page-open="'+index+'" aria-label="بزرگ‌نمایی صفحهٔ '+fa(page)+'">'+
       '<img loading="'+(index<2?'eager':'lazy')+'" src="./assets/book-pages/math/page-'+String(page).padStart(3,'0')+'.webp" alt="صفحهٔ '+fa(page)+' از کتاب ریاضی چهارم">'+
@@ -2891,7 +2891,7 @@ const bookSubjectCatalog=[
  {id:'gifts',name:'هدیه‌های آسمانی',icon:'🌱',asset:'./assets/books/gifts-fourth.pdf',assetLabel:'assets/books/gifts-fourth.pdf'}
 ];
  // Only assets verified to exist in the deployed repository may be requested as bundled files.
- const BUNDLED_BOOK_ASSETS = new Set(['./assets/math-fourth.pdf', './assets/books/persian-pages.pdf']);
+ const BUNDLED_BOOK_ASSETS = new Set(['./assets/books/persian-pages.pdf']);
  // The lesson page images are not shipped in this repository yet; do not issue 404 requests for them.
  const BUNDLED_PERSIAN_PAGE_IMAGES = true;
  const BUNDLED_COURSE_PAGE_IMAGES = true;
@@ -6363,6 +6363,7 @@ const persianBookPageMap={
   });
   async function loadLessonBookSection(subjectId,lesson){
     const mount=$('lessonBookSection');if(!mount)return;
+    if(subjectId==='math'){mount.innerHTML='';return}
     const displayId=subjectId==='dictation'&&!courseSettingsBySubject.dictation?.bookFilePath?'persian':subjectId;
     const subject=bookSubjectCatalog.find(s=>s.id===displayId)||bookSubjectCatalog.find(s=>s.id===subjectId);
     if(!subject){mount.innerHTML='';return}
@@ -7411,7 +7412,7 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v80',{updateViaCache:'none'})
+    navigator.serviceWorker.register('./sw.js?v=20261023-v81',{updateViaCache:'none'})
       .then(registration=>registration.update().catch(()=>{}))
       .catch(err=>console.warn('PWA service worker registration failed',err));
   });
