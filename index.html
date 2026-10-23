@@ -3256,7 +3256,7 @@ $('attachBook').onclick=async()=>{
 document.querySelectorAll('[data-book-tab]').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x===b));
  document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-'+b.dataset.bookTab));
- if(b.dataset.bookTab==='chapters'){renderChapterPicker();if(!$('chapterLesson').classList.contains('hidden'))renderChapter(activeChapter)}
+ if(b.dataset.bookTab==='chapters'){$('bookView').classList.remove('hidden');$('mathChapterLessonView').classList.add('hidden');$('chapterPicker').classList.remove('hidden');$('chapterPickerIntro').classList.remove('hidden');$('chapterLesson').classList.add('hidden');renderChapterPicker()}
  if(b.dataset.bookTab==='practice'){updatePracticeTopicOptions();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice()}
  if(b.dataset.bookTab==='exam')$('examResult').classList.add('hidden');
 });
@@ -3528,7 +3528,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function setBookTab(tab){
     document.querySelectorAll('[data-book-tab]').forEach(b=>b.classList.toggle('active',b.dataset.bookTab===tab));
     document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-'+tab));
-    if(tab==='chapters'){renderChapterPicker();if(!$('chapterLesson').classList.contains('hidden'))renderChapter(activeChapter)}
+    if(tab==='chapters'){$('bookView')?.classList.remove('hidden');$('mathChapterLessonView')?.classList.add('hidden');$('chapterPicker')?.classList.remove('hidden');$('chapterPickerIntro')?.classList.remove('hidden');$('chapterLesson')?.classList.add('hidden');renderChapterPicker()}
     if(tab==='practice'){updatePracticeTopicOptions();syncPracticeModeUI();updatePracticeStats()}
     if(tab==='exam')$('examResult').classList.add('hidden');
   }
