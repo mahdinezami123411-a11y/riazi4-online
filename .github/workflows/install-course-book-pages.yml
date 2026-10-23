@@ -1,0 +1,139 @@
+name: Install additional textbook page images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'math-book-pages-assets.zip'
+      - 'science-book-pages-assets.zip'
+      - 'social-book-pages-assets.zip'
+      - 'gifts-book-pages-assets.zip'
+      - '.github/workflows/install-course-book-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install-course-book-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Validate and install uploaded page bundles
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/other-book-pages"
+          mkdir -p "$root"
+          found=0
+          for bundle in math-book-pages-assets.zip science-book-pages-assets.zip social-book-pages-assets.zip gifts-book-pages-assets.zip; do
+            if [ -f "$bundle" ]; then
+              unzip -oq "$bundle" -d "$root"
+              found=1
+            fi
+          done
+          if [ "$found" -eq 0 ]; then
+            echo 'No additional textbook page bundles are present.'
+            exit 0
+          fi
+
+          for subject in math science social gifts; do
+            case "$subject" in
+              math) archive="math-book-pages-assets.zip"; expected_pages=134; expected_lessons=7 ;;
+              science) archive="science-book-pages-assets.zip"; expected_pages=120; expected_lessons=13 ;;
+              social) archive="social-book-pages-assets.zip"; expected_pages=111; expected_lessons=22 ;;
+              gifts) archive="gifts-book-pages-assets.zip"; expected_pages=121; expected_lessons=19 ;;
+            esac
+            if [ -f "$archive" ]; then
+              directory="$root/assets/book-pages/$subject"
+              test -f "$directory/page-map.json" || { echo "Missing page-map.json for $subject" >&2; exit 1; }
+              count=$(find "$directory" -maxdepth 1 -type f -name 'page-*.webp' | wc -l)
+              test "$count" -eq "$expected_pages" || { echo "$subject expected $expected_pages images but found $count" >&2; exit 1; }
+              node - "$directory" "$subject" "$expected_pages" "$expected_lessons" <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const dir = process.argv[2], subject = process.argv[3];
+          const expectedPages = Number(process.argv[4]), expectedLessons = Number(process.argv[5]);
+          const map = JSON.parse(fs.readFileSync(path.join(dir, 'page-map.json'), 'utf8'));
+          if (map.subject !== subject || map.pageCount !== expectedPages || map.lessonCount !== expectedLessons) {
+            throw new Error('Manifest metadata mismatch for ' + subject);
+          }
+          if (Object.keys(map.lessons || {}).length !== expectedLessons) throw new Error('Incomplete lesson map for ' + subject);
+          for (const [id, range] of Object.entries(map.lessons)) {
+            if (!Number.isInteger(range.printedStart) || !Number.isInteger(range.printedEnd) || range.printedEnd < range.printedStart) {
+              throw new Error('Invalid printed-page range for ' + subject + ' lesson ' + id);
+            }
+            for (let page = range.printedStart; page <= range.printedEnd; page++) {
+              const file = path.join(dir, 'page-' + String(page).padStart(3, '0') + '.webp');
+              if (!fs.existsSync(file)) throw new Error('Missing ' + subject + ' page image ' + page);
+            }
+          }
+          console.log('Validated ' + subject + ': ' + expectedPages + ' images for ' + expectedLessons + ' lessons.');
+          NODE
+              mkdir -p "assets/book-pages/$subject"
+              cp -a "$directory/." "assets/book-pages/$subject/"
+            fi
+          done
+
+      - name: Enable course galleries after all four books are installed
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const path = require('node:path');
+          const subjects = {
+            math:{pages:134,lessons:7}, science:{pages:120,lessons:13},
+            social:{pages:111,lessons:22}, gifts:{pages:121,lessons:19}
+          };
+          let ready = true;
+          for (const [subject, expected] of Object.entries(subjects)) {
+            const dir = path.join('assets/book-pages', subject);
+            const manifestPath = path.join(dir, 'page-map.json');
+            if (!fs.existsSync(manifestPath)) { ready = false; break; }
+            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+            const files = fs.readdirSync(dir).filter(name => /^page-\d{3}\.webp$/.test(name));
+            if (manifest.pageCount !== expected.pages || manifest.lessonCount !== expected.lessons || files.length !== expected.pages) {
+              throw new Error('Existing page bundle failed validation: ' + subject);
+            }
+          }
+          if (ready) {
+            let html = fs.readFileSync('index.html', 'utf8');
+            let sw = fs.readFileSync('sw.js', 'utf8');
+            if (/const\s+BUNDLED_COURSE_PAGE_IMAGES\s*=\s*false\s*;/.test(html)) {
+              html = html.replace(/const\s+BUNDLED_COURSE_PAGE_IMAGES\s*=\s*false\s*;/, 'const BUNDLED_COURSE_PAGE_IMAGES = true;');
+            }
+            const registration = /(serviceWorker\.register\(['"]\.\/sw\.js\?v=)(202610\d+-v)(\d+)/;
+            const cacheName = /(const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v)(\d+)/;
+            const reg = html.match(registration), cache = sw.match(cacheName);
+            if (!reg || !cache) throw new Error('PWA cache version strings were not found');
+            if (reg[3] !== cache[2]) throw new Error('PWA registration and cache versions were out of sync');
+            const next = String(Number(reg[3]) + 1);
+            html = html.replace(registration, (_all,prefix,date) => prefix + date + next);
+            sw = sw.replace(cacheName, (_all,prefix) => prefix + next);
+            fs.writeFileSync('index.html', html);
+            fs.writeFileSync('sw.js', sw);
+            console.log('All four page galleries are validated and enabled. PWA cache v' + next);
+          } else {
+            console.log('Some bundles remain to be uploaded; galleries stay disabled until all four are installed.');
+          }
+          NODE
+
+      - name: Commit images and remove upload bundles
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+actions-bot@users.noreply.github.com'
+          git add assets/book-pages index.html sw.js
+          git rm --ignore-unmatch math-book-pages-assets.zip science-book-pages-assets.zip social-book-pages-assets.zip gifts-book-pages-assets.zip
+          if git diff --cached --quiet; then
+            echo 'No textbook page assets changed.'
+            exit 0
+          fi
+          git commit -m 'Add lesson-specific textbook page galleries'
+          git push
