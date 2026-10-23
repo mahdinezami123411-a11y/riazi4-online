@@ -2828,7 +2828,7 @@ function renderChapter(id){
   const mistake=o.mistake?`<div class="lesson-mistake"><b>⚠️ اشتباه رایج</b><p>${escapeHtml(o.mistake)}</p></div>`:'';
   const check=o.check?`<div class="lesson-check"><b>🧠 خودت را بسنج</b><p>${escapeHtml(o.check)}</p><details><summary>دیدن پاسخ و توضیح</summary><p>${escapeHtml(o.answer||"ابتدا نکته‌های کلیدی این مبحث را مرور کن و مثال را دوباره حل کن.")}</p></details></div>`:'';
   const pageGallery=renderMathSubtopicPageGallery(id,i,o.title||'مبحث آموزشی');
-  return `<article class="lesson-note math-subtopic-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${steps}${example}${keys}${mistake}${check}${pageGallery}</article>`;
+  return `<article class="lesson-note math-subtopic-note"><h4>${i+1}. ${escapeHtml(o.title||'مبحث آموزشی')}</h4><p>${escapeHtml(o.explain||o[1]||'')}</p>${pageGallery}${steps}${example}${keys}${mistake}${check}</article>`;
  }).join('');
  $('chapterLessonBody').innerHTML=intro+goals+sections+`<div class="notice"><b>روش پیشنهادی یادگیری:</b> هر مبحث را به‌ترتیب بخوان، مثال حل‌شده را بدون نگاه کردن دوباره حل کن، به سؤال «خودت را بسنج» پاسخ بده و سپس از بخش «تمرین کتاب» چند سؤال حل کن.</div>`;
  renderChapterPicker();updatePracticeTopicOptions();
