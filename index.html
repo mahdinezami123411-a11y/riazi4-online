@@ -5449,6 +5449,72 @@ function renderSourceQuestionBankPanel(subjectId,lessonId,mode){
       '</details></section>';
   }
   
+function buildExpandableSubjectSections(subjectId){
+ const content=$('otherLessonContent');
+ if(!content||!['science','social','gifts'].includes(subjectId))return;
+ const originalNodes=[...content.children];
+ if(!originalNodes.length)return;
+ const lessonMenu=document.createElement('section');
+ lessonMenu.className='persian-lesson-section-menu';
+ lessonMenu.innerHTML='<div class="persian-lesson-menu-intro"><h4>📚 بخش‌های این درس</h4><p>برای دیدن هر قسمت، کارت آن را انتخاب کن. صفحات کتاب، توضیح درس و مرور پرسش‌وپاسخ جداگانه باز می‌شوند.</p></div><div class="persian-lesson-section-grid"></div>';
+ const lessonPageHost=document.createElement('div');
+ lessonPageHost.className='persian-lesson-section-pages hidden';
+ const grid=lessonMenu.querySelector('.persian-lesson-section-grid');
+ const sectionMeta=(node,index)=>{
+  if(node.id==='lessonBookSection')return {key:'book-pages',title:'صفحات کتاب',description:'صفحات مربوط به همین درس را ببین.',icon:'📚'};
+  if(node.classList?.contains('science-lab'))return {key:'science-lab',title:'آزمایشگاه تصویری',description:'فعالیت علمی تعاملی این درس را انجام بده.',icon:'🔬'};
+  const heading=String(node.querySelector('h4')?.textContent||'').replace(/\s+/g,' ').trim();
+  if(heading.includes('توضیح کامل درس'))return {key:'lesson-explanation',title:'توضیح کامل درس',description:'متن آموزشی و نکته‌های همین درس را بخوان.',icon:'📘'};
+  if(/پرسش‌وپاسخ|پرسش و پاسخ|مرور پرسش‌ها و پاسخ‌ها/.test(node.textContent||'')){
+   node.querySelector(':scope > details')?.setAttribute('open','');
+   return {key:'review-qa',title:'مرور پرسش و پاسخ',description:'پرسش‌ها و پاسخ‌های ثبت‌شده برای همین درس را مرور کن.',icon:'❔'};
+  }
+  return {key:'extra-'+index,title:heading||'بخش تکمیلی',description:'محتوای این بخش از درس را مشاهده کن.',icon:'🌟'};
+ };
+ originalNodes.forEach((node,index)=>{
+  const meta=sectionMeta(node,index);
+  const page=document.createElement('section');
+  page.className='persian-lesson-section-page hidden';
+  page.dataset.otherSubjectSectionPage=meta.key;
+  const heading=document.createElement('div');
+  heading.className='persian-section-page-heading';
+  const icon=document.createElement('span');
+  icon.className='persian-section-icon';
+  icon.setAttribute('aria-hidden','true');
+  icon.textContent=meta.icon;
+  const copy=document.createElement('div');
+  copy.style.minWidth='0';
+  const title=document.createElement('h4');title.textContent=meta.title;
+  const description=document.createElement('p');description.textContent=meta.description;
+  copy.append(title,description);heading.append(icon,copy);
+  const back=document.createElement('button');
+  back.type='button';back.className='persian-section-card';back.dataset.otherSubjectSectionBack='';
+  back.style.cssText='min-height:48px;margin:0 0 10px;padding:8px 11px;box-shadow:none!important;';
+  back.innerHTML='<span class="persian-section-icon" aria-hidden="true">↩️</span><span class="persian-section-card-copy"><b>بازگشت به فهرست بخش‌ها</b></span>';
+  page.append(heading,back,node);
+  lessonPageHost.appendChild(page);
+  const card=document.createElement('button');
+  card.type='button';card.className='persian-section-card';card.dataset.otherSubjectSectionOpen=meta.key;
+  card.setAttribute('aria-label','باز کردن بخش '+meta.title);
+  card.innerHTML='<span class="persian-section-icon" aria-hidden="true">'+meta.icon+'</span><span class="persian-section-card-copy"><b>'+escapeForHtmlText(meta.title)+'</b><small>'+escapeForHtmlText(meta.description)+'</small></span><span class="persian-section-arrow" aria-hidden="true">←</span>';
+  grid.appendChild(card);
+ });
+ content.replaceChildren(lessonMenu,lessonPageHost);
+ grid.querySelectorAll('[data-other-subject-section-open]').forEach(button=>{
+  button.onclick=()=>{
+   lessonMenu.classList.add('hidden');lessonPageHost.classList.remove('hidden');
+   lessonPageHost.querySelectorAll('.persian-lesson-section-page').forEach(page=>page.classList.toggle('hidden',page.dataset.otherSubjectSectionPage!==button.dataset.otherSubjectSectionOpen));
+   window.scrollTo({top:0,behavior:'smooth'});
+  };
+ });
+ lessonPageHost.querySelectorAll('[data-other-subject-section-back]').forEach(button=>{
+  button.onclick=()=>{
+   lessonPageHost.classList.add('hidden');lessonMenu.classList.remove('hidden');
+   window.scrollTo({top:0,behavior:'smooth'});
+  };
+ });
+}
+
 function buildPersianMatchingQuizzes(lesson){
  const sets=[
   {kind:'جورکردنی واژه و معنی',pairs:(lesson.meanings||[]).map(x=>({left:String(x[0]||''),right:String(x[1]||'')}))},
@@ -6909,6 +6975,7 @@ const persianBookPageMap={
         const lessonExplainBlock=(['science','social','gifts'].includes(subject.id)&&l.content)?('<section class="lesson-note"><h4>📘 توضیح کامل درس</h4>'+formatCourseLessonExplanation(l.content)+'<p class="muted">صفحهٔ کتاب: '+fa(l.page||'—')+'</p></section>'):'';
         const scienceLabBlock=subject.id==='science'&&Number(l.id)===1?'<section class="science-lab lesson-note" aria-labelledby="scienceLabTitle"><h4 id="scienceLabTitle">🔬 آزمایشگاه تصویری: کدام سطح گرم‌تر می‌شود؟</h4><p>تصور کن دو ظرف یکسان، یکی سیاه و دیگری سفید، زیر نور خورشید قرار گرفته‌اند. پیش از دیدن نتیجه، حدست را انتخاب کن.</p><div class="science-lab-scenes"><div class="science-lab-scene"><span class="science-lab-sun">☀️</span><div class="science-lab-cup dark" aria-label="ظرف سیاه"><span>🌡️</span></div><b>ظرف سیاه</b><small>جذب نور بیشتر</small></div><div class="science-lab-scene"><span class="science-lab-sun">☀️</span><div class="science-lab-cup light" aria-label="ظرف سفید"><span>🌡️</span></div><b>ظرف سفید</b><small>بازتاب نور بیشتر</small></div></div><div class="science-lab-actions"><button type="button" data-science-guess="dark">ظرف سیاه گرم‌تر می‌شود</button><button type="button" data-science-guess="light">ظرف سفید گرم‌تر می‌شود</button></div><div class="science-lab-result hidden" id="scienceLabResult" aria-live="polite"></div><p class="muted">این یک شبیه‌سازی آموزشی است؛ در آزمایش واقعی، دما باید اندازه‌گیری شود.</p></section>':'';
         $('otherLessonContent').innerHTML='<div id="lessonBookSection"></div>'+lessonExplainBlock+scienceLabBlock+renderSourceQuestionBankPanel(subject.id,l.id,'student');
+        buildExpandableSubjectSections(subject.id);
         $('otherLessonContent').querySelectorAll('[data-science-guess]').forEach(button=>button.onclick=()=>{
           const result=$('scienceLabResult');if(!result)return;
           const correct=button.dataset.scienceGuess==='dark';
