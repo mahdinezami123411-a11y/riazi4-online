@@ -2369,6 +2369,29 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 }
 @media(max-width:360px){.attendance-month-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.attendance-day-cell{min-height:58px}}
 </style>
+
+<style>
+/* ارزشیابی ماهانه و نمایش کارنامهٔ رسمی دانش‌آموز */
+.teacher-evaluation-month-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+.teacher-evaluation-month{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:84px;padding:10px 6px;border:1px solid var(--line);border-radius:15px;background:color-mix(in srgb,var(--primary) 9%,var(--card));color:var(--text);text-align:center}
+.teacher-evaluation-month b{font-size:15px}
+.teacher-evaluation-month small{font-size:10px;line-height:1.5;color:var(--muted)}
+.teacher-evaluation-subjects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+.teacher-evaluation-subjects>div{min-width:0;padding:10px;border:1px solid var(--line);border-radius:13px;background:var(--card)}
+.teacher-evaluation-subjects label{display:block;font-size:13px;font-weight:800;color:var(--text)}
+.teacher-evaluation-subjects select{width:100%;min-width:0;margin-top:7px}
+.student-monthly-evaluation-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+.student-monthly-evaluation-month{min-width:0;padding:12px;border:1px solid var(--line);border-radius:15px;background:var(--card)}
+.student-monthly-evaluation-month h3{margin:0 0 3px;font-size:15px}
+.student-monthly-evaluation-month>small{display:block;color:var(--muted);font-size:10px;margin-bottom:10px}
+.student-monthly-evaluation-subjects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.student-monthly-evaluation-subject{min-width:0;padding:8px 7px;border:1px solid var(--line);border-radius:10px;background:color-mix(in srgb,var(--primary) 6%,var(--card))}
+.student-monthly-evaluation-subject b{display:block;font-size:11px;line-height:1.6;color:var(--muted)}
+.student-monthly-evaluation-subject strong{display:block;font-size:13px;line-height:1.7;color:var(--primary);overflow-wrap:anywhere}
+.student-monthly-evaluation-subject small{display:block;font-size:9px;line-height:1.6;color:var(--muted)}
+.student-monthly-evaluation-subject .not-recorded{color:var(--muted);font-weight:700}
+@media(max-width:560px){.teacher-evaluation-month-grid{gap:7px}.teacher-evaluation-month{min-height:76px;padding:8px 3px}.teacher-evaluation-month b{font-size:13px}.student-monthly-evaluation-cards{grid-template-columns:1fr}.teacher-evaluation-subjects{gap:7px}.teacher-evaluation-subjects>div{padding:8px}}
+</style>
 </head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo"><img src="./icons/app-icon-2.png" alt="نشان فضانورد کتاب‌به‌دست چهارمی‌ها" width="66" height="66" decoding="async"></div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p><small class="teacher-name" data-teacher-name>آموزگار: نظامی</small></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -2416,6 +2439,13 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   <div id="unifiedProgressSummary" class="unified-progress-summary"></div>
   <div id="unifiedSubjectCards" class="unified-subject-cards"><div class="notice">در حال آماده‌سازی کارنامه…</div></div>
 </section>
+
+<section id="studentMonthlyEvaluationReport" class="card student-monthly-evaluation-report" aria-live="polite">
+  <div class="row" style="flex-wrap:wrap;align-items:flex-start"><div><h2>📋 کارنامهٔ ارزشیابی ماهانه</h2><p class="muted">ارزشیابی‌هایی که معلم برای تو ثبت کرده است در اینجا نمایش داده می‌شود.</p></div><button type="button" id="refreshStudentMonthlyEvaluations" class="outline">🔄 تازه‌سازی کارنامه</button></div>
+  <div id="studentMonthlyEvaluationStatus" class="notice" role="status">در حال آماده‌سازی کارنامهٔ ارزشیابی…</div>
+  <div id="studentMonthlyEvaluationCards" class="student-monthly-evaluation-cards"><div class="notice">هنوز کارنامه بارگذاری نشده است.</div></div>
+</section>
+
 </div>
 <div id="studentHomeView" class="student-screen">
 <div id="studentSubjectHub" class="card"><h2>📚 کتاب‌های پایهٔ چهارم</h2><p class="muted">کتاب موردنظرت را انتخاب کن؛ بعد پنل همان درس و بخش‌های آموزشی‌اش باز می‌شود.</p><div id="studentSubjectPicker" class="subjects"></div></div>
@@ -2550,8 +2580,41 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </section>
 <div id="mathChapterLessonView" class="card hidden"><div class="row"><h2>📘 آموزش فصل ریاضی</h2></div><div id="chapterLesson" class="item hidden" aria-live="polite"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div><h3 id="chapterLessonTitle">آموزش فصل</h3><span class="pill" id="chapterLessonTag">یاد بگیر</span></div></div><div id="chapterLessonBody"></div><button class="outline" id="chapterToPractice" style="width:100%;margin-top:10px">✏️ تمرین همین فصل</button></div></div>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
-<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🗓️ تقویم حضور</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
+<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🗓️ تقویم حضور</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="evaluations">📝 ارزشیابی ماهانه</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
+<button type="button" id="teacherStageBack" class="student-stage-back hidden" aria-label="بازگشت به مرحلهٔ قبلی پنل معلم" title="بازگشت به مرحلهٔ قبلی پنل معلم"><span aria-hidden="true">⬅️</span><span>بازگشت به مرحلهٔ قبل</span></button>
 <div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس‌های فعال در همهٔ کتاب‌ها</span><strong id="teacherActiveLessonCount">۰</strong></div><div class="metric"><span class="muted">کتاب‌های دارای درس باز</span><strong id="teacherActiveBookCount">۰</strong></div><div class="metric"><span class="muted">تعداد کتاب‌های برنامه</span><strong id="teacherBookTotalCount">۶</strong></div></div><h3 style="margin-top:16px">وضعیت دسترسی درس‌ها به تفکیک کتاب</h3><p class="muted">تعداد درس‌های باز و عنوان همان درس‌ها، بر اساس تنظیمات فعلی کلاس و زمان‌بندی دسترسی، در این فهرست نمایش داده می‌شود.</p><div id="teacherCourseOverviewList" class="stack"></div><div id="teacherOverviewStatus" class="notice">برای مشاهدهٔ وضعیت دقیق، تنظیمات کتاب‌های کلاس از سرور دریافت می‌شود.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><div id="teacherOverviewStudentCards" class="teacher-student-grid" aria-label="فهرست دانش‌آموزان کلاس"></div><div id="teacherOverviewStudentDetail" class="teacher-student-detail hidden" aria-live="polite"></div><label class="field" for="teacherOverviewStudentFilter">فیلتر برگه‌های ثبت‌شده</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
+
+<div id="tab-evaluations" class="tabpane">
+  <div class="row" style="flex-wrap:wrap;align-items:flex-start">
+    <div><h3>📝 ارزشیابی ماهانهٔ حضوری</h3><p class="muted">ماه را انتخاب کن، سپس برای هر دانش‌آموز معیار ارزشیابی هشت درس را ثبت و ذخیره کن.</p></div>
+    <span class="pill">سال تحصیلی <b id="teacherEvaluationSchoolYear">—</b></span>
+  </div>
+  <div id="teacherEvaluationStatus" class="notice" role="status">برای شروع، یکی از ماه‌ها را انتخاب کن.</div>
+  <div id="teacherEvaluationMonthPicker">
+    <h4>انتخاب ماه یا نوبت ارزشیابی</h4>
+    <div id="teacherEvaluationMonthGrid" class="teacher-evaluation-month-grid"></div>
+  </div>
+  <div id="teacherEvaluationEditor" class="hidden">
+    <div class="item">
+      <div class="row" style="flex-wrap:wrap;align-items:flex-start"><div><h3 id="teacherEvaluationMonthTitle">ارزشیابی ماه</h3><p class="muted">برای هر درس یکی از چهار معیار را انتخاب کن. گزینهٔ خالی یعنی هنوز ارزشیابی ثبت نشده است.</p></div></div>
+      <label class="field" for="teacherEvaluationStudentSelect">انتخاب دانش‌آموز</label>
+      <select id="teacherEvaluationStudentSelect"><option value="">در حال بارگذاری فهرست دانش‌آموزان…</option></select>
+      <div id="teacherEvaluationSubjectFields" class="teacher-evaluation-subjects">
+        <div><label for="teacherEvaluation-quran">قرآن</label><select id="teacherEvaluation-quran" data-evaluation-subject="quran"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-persian">فارسی</label><select id="teacherEvaluation-persian" data-evaluation-subject="persian"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-math">ریاضی</label><select id="teacherEvaluation-math" data-evaluation-subject="math"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-science">علوم تجربی</label><select id="teacherEvaluation-science" data-evaluation-subject="science"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-social_studies">مطالعات اجتماعی</label><select id="teacherEvaluation-social_studies" data-evaluation-subject="social_studies"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-heavenly_gifts">هدیه‌های آسمانی</label><select id="teacherEvaluation-heavenly_gifts" data-evaluation-subject="heavenly_gifts"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-art">هنر</label><select id="teacherEvaluation-art" data-evaluation-subject="art"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+        <div><label for="teacherEvaluation-physical_education">تربیت بدنی</label><select id="teacherEvaluation-physical_education" data-evaluation-subject="physical_education"><option value="">ثبت نشده</option><option value="خ.خ">خ.خ — خیلی خوب</option><option value="خ">خ — خوب</option><option value="ق.ق">ق.ق — قابل قبول</option><option value="ن.ت">ن.ت — نیاز به تلاش بیشتر</option></select></div>
+      </div>
+      <button type="button" id="saveTeacherEvaluation" style="width:100%">💾 ذخیرهٔ ارزشیابی این دانش‌آموز</button>
+      <div id="teacherEvaluationSaveStatus" class="notice" role="status" style="margin-top:10px">بعد از انتخاب معیارها، دکمهٔ ذخیره را بزن.</div>
+    </div>
+  </div>
+</div>
+
 <div id="tab-questions" class="tabpane">
 <section id="teacherBankManager" class="teacher-bank-manager">
   <div class="row"><div><h3>🗂️ بانک سؤال مستقل برای هر کتاب و هر درس</h3><p class="muted">ابتدا کتاب و سپس درس را انتخاب کن؛ مشاهده، جست‌وجو، افزودن و ویرایش سؤال‌ها فقط برای همان کتاب و درس انجام می‌شود.</p></div><span class="pill" id="teacherBankTotal">۷۰۰ سؤال</span></div>
@@ -3707,7 +3770,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(activeStudentSubject==='math'&&view==='practice'){setBookTab('practice');syncPracticeModeUI();updatePracticeStats()}
     if(activeStudentSubject==='math'&&view==='exam'){setBookTab('exam');populateChapterExamSelect()}
     if(view==='profile'){renderStudentDashboard();}
-    if(view==='report')renderUnifiedLearningReport();
+    if(view==='report'){renderUnifiedLearningReport();loadStudentMonthlyEvaluationReport();}
     if(view==='profile')renderProfileProgressChart();
     if(view==='assignments')loadStudentAssignments();
     window.scrollTo({top:0,behavior:'smooth'});
@@ -4243,6 +4306,325 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     $('studentAttendanceMonthView').classList.remove('hidden');
   });
   initializeStudentAttendanceMonthSelector();
+
+
+  /* ارزشیابی حضوری ماهانه؛ دسترسی داده‌ها با RLS و حساب واردشده کنترل می‌شود. */
+  const yareEvaluationSubjects=[
+    {key:'quran',name:'قرآن'},
+    {key:'persian',name:'فارسی'},
+    {key:'math',name:'ریاضی'},
+    {key:'science',name:'علوم تجربی'},
+    {key:'social_studies',name:'مطالعات اجتماعی'},
+    {key:'heavenly_gifts',name:'هدیه‌های آسمانی'},
+    {key:'art',name:'هنر'},
+    {key:'physical_education',name:'تربیت بدنی'}
+  ];
+  const yareEvaluationMonthSlots=[
+    {month:7,title:'مهر',subtitle:''},
+    {month:8,title:'آبان',subtitle:''},
+    {month:9,title:'آذر',subtitle:''},
+    {month:10,title:'نوبت اول',subtitle:'به‌جای دی'},
+    {month:11,title:'بهمن',subtitle:''},
+    {month:12,title:'اسفند',subtitle:''},
+    {month:1,title:'فروردین',subtitle:''},
+    {month:2,title:'اردیبهشت',subtitle:''},
+    {month:3,title:'نوبت دوم',subtitle:'به‌جای خرداد'}
+  ];
+  const yareEvaluationLongLabels={
+    'خ.خ':'خیلی خوب',
+    'خ':'خوب',
+    'ق.ق':'قابل قبول',
+    'ن.ت':'نیاز به تلاش بیشتر'
+  };
+  let yareTeacherEvaluationStudents=[];
+  let yareTeacherEvaluationRecords=new Map();
+  let yareTeacherEvaluationSelectedMonth=null;
+  let yareTeacherEvaluationSelectedYear=null;
+  const yareTeacherStageHistory=[];
+  let yareTeacherStagePendingNavigation=null;
+
+  function yareEvaluationYearForMonth(month){
+    const schoolYear=yareAttendanceSchoolStartYear(new Date());
+    return month>=7?schoolYear:schoolYear+1;
+  }
+  function yareEvaluationMonthSlot(month){
+    return yareEvaluationMonthSlots.find(slot=>slot.month===Number(month))||null;
+  }
+  function yareEvaluationRenderMonthGrid(){
+    const grid=$('teacherEvaluationMonthGrid');
+    if(!grid)return;
+    const schoolYear=yareAttendanceSchoolStartYear(new Date());
+    const nextYear=schoolYear+1;
+    $('teacherEvaluationSchoolYear').textContent=schoolYear.toLocaleString('fa-IR')+'–'+nextYear.toLocaleString('fa-IR');
+    grid.innerHTML=yareEvaluationMonthSlots.map(slot=>{
+      const year=slot.month>=7?schoolYear:nextYear;
+      return '<button type="button" class="teacher-evaluation-month" data-evaluation-month="'+slot.month+'"><b>'+escapeHtml(slot.title)+'</b>'+
+        (slot.subtitle?'<small>'+escapeHtml(slot.subtitle)+'</small>':'<small>ماه '+slot.month.toLocaleString('fa-IR')+'</small>')+
+        '<small>سال '+year.toLocaleString('fa-IR')+'</small></button>';
+    }).join('');
+  }
+  async function yareTeacherEvaluationLoadRoster(force=false){
+    if(!cloudSession||cloudSession.role!=='teacher')throw new Error('ابتدا با حساب معلم وارد شو.');
+    if(!force&&yareTeacherEvaluationStudents.length)return yareTeacherEvaluationStudents;
+    const result=await cloudFetch('/functions/v1/student-presence',{method:'POST',body:{action:'list'}});
+    yareTeacherEvaluationStudents=Array.isArray(result?.students)?result.students:[];
+    const select=$('teacherEvaluationStudentSelect');
+    if(select){
+      const previous=select.value;
+      select.innerHTML='<option value="">انتخاب دانش‌آموز</option>'+yareTeacherEvaluationStudents.map(student=>
+        '<option value="'+escapeHtml(student.id)+'">'+escapeHtml(student.display_name||'دانش‌آموز')+'</option>'
+      ).join('');
+      select.value=yareTeacherEvaluationStudents.some(student=>student.id===previous)?previous:(yareTeacherEvaluationStudents[0]?.id||'');
+    }
+    return yareTeacherEvaluationStudents;
+  }
+  async function yareTeacherEvaluationLoadMonthRecords(){
+    if(yareTeacherEvaluationSelectedMonth===null||!cloudSession?.profile?.class_id)return;
+    const year=yareTeacherEvaluationSelectedYear;
+    const month=yareTeacherEvaluationSelectedMonth;
+    const columns=yareEvaluationSubjects.map(subject=>subject.key).join(',');
+    const query='?select=student_id,class_id,jalali_year,jalali_month,'+columns+',updated_at'+
+      '&class_id=eq.'+encodeURIComponent(cloudSession.profile.class_id)+
+      '&jalali_year=eq.'+year+'&jalali_month=eq.'+month+'&order=updated_at.desc';
+    const rows=await cloudFetch('/rest/v1/yare_student_monthly_evaluations'+query,{method:'GET'});
+    if(!Array.isArray(rows))throw new Error('ساختار پاسخ ارزشیابی‌های ماهانه معتبر نیست.');
+    yareTeacherEvaluationRecords=new Map(rows.map(row=>[row.student_id,row]));
+    yareTeacherEvaluationRenderFields();
+    const slot=yareEvaluationMonthSlot(month);
+    $('teacherEvaluationStatus').textContent='برای '+slot.title+'، '+rows.length.toLocaleString('fa-IR')+' برگهٔ ارزشیابی ثبت‌شده از '+yareTeacherEvaluationStudents.length.toLocaleString('fa-IR')+' دانش‌آموز بارگذاری شد.';
+    $('teacherEvaluationStatus').style.color='';
+  }
+  function yareTeacherEvaluationRenderFields(){
+    const studentId=$('teacherEvaluationStudentSelect')?.value||'';
+    const row=yareTeacherEvaluationRecords.get(studentId)||null;
+    document.querySelectorAll('#teacherEvaluationSubjectFields [data-evaluation-subject]').forEach(select=>{
+      const key=select.dataset.evaluationSubject;
+      select.value=row&&yareEvaluationLongLabels[row[key]]?row[key]:'';
+    });
+    const saveStatus=$('teacherEvaluationSaveStatus');
+    if(saveStatus)saveStatus.textContent=studentId?'معیارهای این دانش‌آموز را انتخاب یا اصلاح کن و ذخیره را بزن.':'برای ثبت ارزشیابی، ابتدا دانش‌آموز را انتخاب کن.';
+  }
+  async function loadTeacherEvaluations(force=true){
+    const status=$('teacherEvaluationStatus');
+    if(!status)return;
+    if(!cloudSession||cloudSession.role!=='teacher'){
+      status.textContent='برای ثبت ارزشیابی، ابتدا با حساب معلم وارد شو.';
+      return;
+    }
+    status.textContent='در حال دریافت فهرست دانش‌آموزان…';
+    try{
+      await yareTeacherEvaluationLoadRoster(force);
+      if(yareTeacherEvaluationSelectedMonth!==null&&!$('teacherEvaluationEditor')?.classList.contains('hidden')){
+        status.textContent='در حال بارگذاری ارزشیابی‌های این ماه…';
+        await yareTeacherEvaluationLoadMonthRecords();
+      }else{
+        status.textContent='فهرست '+yareTeacherEvaluationStudents.length.toLocaleString('fa-IR')+' دانش‌آموز آماده است. ماه موردنظر را انتخاب کن.';
+        status.style.color='';
+      }
+    }catch(error){
+      status.textContent='بارگذاری بخش ارزشیابی ناموفق بود: '+cloudMessage(error);
+      status.style.color='#a62638';
+    }
+  }
+  async function yareTeacherEvaluationOpenMonth(month){
+    if(!yareEvaluationMonthSlot(month))return;
+    yareTeacherEvaluationSelectedMonth=Number(month);
+    yareTeacherEvaluationSelectedYear=yareEvaluationYearForMonth(month);
+    const slot=yareEvaluationMonthSlot(month);
+    $('teacherEvaluationMonthTitle').textContent='ارزشیابی '+slot.title+(slot.subtitle?' ('+slot.subtitle+')':'')+' · سال '+yareTeacherEvaluationSelectedYear.toLocaleString('fa-IR');
+    $('teacherEvaluationMonthPicker').classList.add('hidden');
+    $('teacherEvaluationEditor').classList.remove('hidden');
+    $('teacherEvaluationSaveStatus').textContent='در حال آماده‌سازی فرم ارزشیابی…';
+    yareTeacherStageSyncButton();
+    try{
+      await yareTeacherEvaluationLoadRoster(false);
+      await yareTeacherEvaluationLoadMonthRecords();
+      yareTeacherEvaluationRenderFields();
+    }catch(error){
+      $('teacherEvaluationStatus').textContent='بارگذاری ارزشیابی این ماه ناموفق بود: '+cloudMessage(error);
+      $('teacherEvaluationStatus').style.color='#a62638';
+      $('teacherEvaluationSaveStatus').textContent='بارگذاری ناموفق بود. اتصال اینترنت و دسترسی Supabase را بررسی کن.';
+    }
+  }
+  function yareTeacherEvaluationReturnToMonths(){
+    yareTeacherEvaluationSelectedMonth=null;
+    yareTeacherEvaluationSelectedYear=null;
+    yareTeacherEvaluationRecords=new Map();
+    $('teacherEvaluationEditor')?.classList.add('hidden');
+    $('teacherEvaluationMonthPicker')?.classList.remove('hidden');
+    yareTeacherStageSyncButton();
+  }
+  async function saveTeacherEvaluation(){
+    const status=$('teacherEvaluationSaveStatus');
+    const button=$('saveTeacherEvaluation');
+    const studentId=$('teacherEvaluationStudentSelect')?.value;
+    const classId=cloudSession?.profile?.class_id;
+    const teacherId=cloudSession?.user?.id||cloudSession?.profile?.id;
+    if(!cloudSession||cloudSession.role!=='teacher'||!classId||!teacherId){
+      status.textContent='نشست معلم یا شناسهٔ کلاس معتبر نیست. دوباره وارد شو.';
+      status.style.color='#a62638';
+      return;
+    }
+    if(!studentId){
+      status.textContent='ابتدا یک دانش‌آموز انتخاب کن.';
+      status.style.color='#a62638';
+      return;
+    }
+    if(yareTeacherEvaluationSelectedMonth===null||!Number.isInteger(yareTeacherEvaluationSelectedYear)){
+      status.textContent='ابتدا ماه یا نوبت ارزشیابی را انتخاب کن.';
+      status.style.color='#a62638';
+      return;
+    }
+    const row={
+      student_id:studentId,
+      class_id:classId,
+      jalali_year:yareTeacherEvaluationSelectedYear,
+      jalali_month:yareTeacherEvaluationSelectedMonth,
+      updated_by:teacherId,
+      updated_at:new Date().toISOString()
+    };
+    yareEvaluationSubjects.forEach(subject=>{
+      const value=$('teacherEvaluation-'+subject.key)?.value||'';
+      row[subject.key]=value||null;
+    });
+    setBusy(button,true,'در حال ذخیرهٔ ارزشیابی…');
+    status.textContent='در حال ذخیرهٔ معیارها در کارنامهٔ دانش‌آموز…';
+    status.style.color='';
+    try{
+      const saved=await cloudFetch('/rest/v1/yare_student_monthly_evaluations?on_conflict=student_id,jalali_year,jalali_month',{
+        method:'POST',
+        headers:{Prefer:'resolution=merge-duplicates,return=representation'},
+        body:row
+      });
+      const savedRow=Array.isArray(saved)?saved[0]:saved;
+      yareTeacherEvaluationRecords.set(studentId,savedRow||row);
+      yareTeacherEvaluationRenderFields();
+      status.textContent='✅ ارزشیابی '+yareEvaluationMonthSlot(yareTeacherEvaluationSelectedMonth).title+' برای این دانش‌آموز ذخیره شد و در کارنامهٔ حساب او نمایش داده می‌شود.';
+      status.style.color='#08774e';
+    }catch(error){
+      status.textContent='ذخیرهٔ ارزشیابی ناموفق بود: '+cloudMessage(error);
+      status.style.color='#a62638';
+    }finally{
+      setBusy(button,false);
+    }
+  }
+  function loadStudentMonthlyEvaluationReport(){
+    const status=$('studentMonthlyEvaluationStatus');
+    const cards=$('studentMonthlyEvaluationCards');
+    if(!status||!cards)return;
+    if(!cloudSession||cloudSession.role!=='student'||cloudSession.studentViewAsTeacher){
+      status.textContent='این کارنامه برای حساب دانش‌آموز نمایش داده می‌شود. از پیش‌نمایش معلم نمی‌توان کارنامهٔ یک دانش‌آموز را دید.';
+      cards.innerHTML='<div class="notice">برای دیدن نمره‌های خودت، با نام کاربری و رمز دانش‌آموز وارد شو.</div>';
+      return;
+    }
+    const studentId=cloudSession.user?.id||cloudSession.profile?.id;
+    if(!studentId){
+      status.textContent='شناسهٔ حساب پیدا نشد؛ یک‌بار خارج شو و دوباره وارد شو.';
+      cards.innerHTML='';
+      return;
+    }
+    status.textContent='در حال دریافت ارزشیابی‌های ثبت‌شده توسط معلم…';
+    status.style.color='';
+    const schoolYear=yareAttendanceSchoolStartYear(new Date());
+    const nextYear=schoolYear+1;
+    const columns=yareEvaluationSubjects.map(subject=>subject.key).join(',');
+    const query='?select=jalali_year,jalali_month,'+columns+',updated_at&student_id=eq.'+encodeURIComponent(studentId)+'&order=jalali_year.desc,jalali_month.asc';
+    cloudFetch('/rest/v1/yare_student_monthly_evaluations'+query,{method:'GET'}).then(rows=>{
+      if(!Array.isArray(rows))throw new Error('ساختار پاسخ کارنامه معتبر نیست.');
+      const recordsByMonth=new Map();
+      rows.forEach(row=>recordsByMonth.set(Number(row.jalali_year)+'-'+Number(row.jalali_month),row));
+      cards.innerHTML=yareEvaluationMonthSlots.map(slot=>{
+        const year=slot.month>=7?schoolYear:nextYear;
+        const row=recordsByMonth.get(year+'-'+slot.month)||null;
+        const subjectHtml=yareEvaluationSubjects.map(subject=>{
+          const grade=row&&yareEvaluationLongLabels[row[subject.key]]?row[subject.key]:'';
+          return '<div class="student-monthly-evaluation-subject"><b>'+escapeHtml(subject.name)+'</b>'+
+            (grade?'<strong>'+escapeHtml(grade)+'</strong><small>'+escapeHtml(yareEvaluationLongLabels[grade])+'</small>':'<strong class="not-recorded">ثبت نشده</strong>')+
+            '</div>';
+        }).join('');
+        return '<article class="student-monthly-evaluation-month"><h3>'+escapeHtml(slot.title)+'</h3>'+
+          (slot.subtitle?'<small>'+escapeHtml(slot.subtitle)+' · سال '+year.toLocaleString('fa-IR')+'</small>':'<small>سال '+year.toLocaleString('fa-IR')+'</small>')+
+          '<div class="student-monthly-evaluation-subjects">'+subjectHtml+'</div></article>';
+      }).join('');
+      status.textContent='کارنامهٔ ارزشیابی سال تحصیلی '+schoolYear.toLocaleString('fa-IR')+'–'+nextYear.toLocaleString('fa-IR')+' نمایش داده شده است. موارد «ثبت نشده» هنوز از طرف معلم وارد نشده‌اند.';
+      status.style.color='';
+    }).catch(error=>{
+      status.textContent='دریافت کارنامهٔ ارزشیابی ناموفق بود: '+cloudMessage(error);
+      status.style.color='#a62638';
+      cards.innerHTML='<div class="notice">بارگذاری کارنامه ناموفق بود. اتصال اینترنت را بررسی و دوباره تازه‌سازی کن.</div>';
+    });
+  }
+
+  function yareTeacherStageSyncButton(){
+    const teacher=$('teacher');
+    const button=$('teacherStageBack');
+    if(!button)return;
+    const evaluationDetail=!!$('tab-evaluations')?.classList.contains('active')&&
+      !!$('teacherEvaluationEditor')&&!$('teacherEvaluationEditor').classList.contains('hidden');
+    const visible=!!teacher&&!teacher.classList.contains('hidden')&&
+      (yareTeacherStageHistory.length>0||evaluationDetail);
+    button.classList.toggle('hidden',!visible);
+  }
+  function yareTeacherActivateTab(tab){
+    const target=document.querySelector('#teacherNav [data-tab="'+tab+'"]');
+    if(!target)return;
+    document.querySelectorAll('#teacherNav [data-tab]').forEach(button=>button.classList.toggle('active',button===target));
+    document.querySelectorAll('#teacher .tabpane').forEach(pane=>pane.classList.toggle('active',pane.id==='tab-'+tab));
+    if(tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}
+    if(tab==='evaluations')loadTeacherEvaluations(true);
+    yareTeacherStageSyncButton();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function yareTeacherStageGoBack(){
+    const evaluationDetail=!!$('tab-evaluations')?.classList.contains('active')&&
+      !!$('teacherEvaluationEditor')&&!$('teacherEvaluationEditor').classList.contains('hidden');
+    if(evaluationDetail){
+      yareTeacherEvaluationReturnToMonths();
+      return;
+    }
+    const previousTab=yareTeacherStageHistory.pop();
+    if(previousTab)yareTeacherActivateTab(previousTab);
+    yareTeacherStageSyncButton();
+  }
+  function yareTeacherStageCaptureTab(event){
+    const button=event.target?.closest?.('#teacherNav [data-tab]');
+    if(!button)return;
+    yareTeacherStagePendingNavigation={
+      previous:document.querySelector('#teacherNav [data-tab].active')?.dataset.tab||'',
+      next:button.dataset.tab||''
+    };
+  }
+  function yareTeacherStageFinishTab(event){
+    const button=event.target?.closest?.('#teacherNav [data-tab]');
+    if(!button)return;
+    const pending=yareTeacherStagePendingNavigation;
+    yareTeacherStagePendingNavigation=null;
+    if(pending&&pending.previous&&pending.previous!==pending.next&&pending.next===button.dataset.tab){
+      yareTeacherStageHistory.push(pending.previous);
+    }
+    if(button.dataset.tab==='evaluations')loadTeacherEvaluations(true);
+    yareTeacherStageSyncButton();
+  }
+  document.addEventListener('click',yareTeacherStageCaptureTab,true);
+  document.addEventListener('click',yareTeacherStageFinishTab,false);
+  $('teacherStageBack')?.addEventListener('click',yareTeacherStageGoBack);
+  $('teacherHome')?.addEventListener('click',()=>{
+    yareTeacherStageHistory.length=0;
+    yareTeacherEvaluationSelectedMonth=null;
+    yareTeacherEvaluationSelectedYear=null;
+    yareTeacherEvaluationRecords=new Map();
+    yareTeacherStageSyncButton();
+  });
+  $('studentBack')?.addEventListener('click',()=>setTimeout(yareTeacherStageSyncButton,0));
+  $('teacherEvaluationMonthGrid')?.addEventListener('click',event=>{
+    const button=event.target?.closest?.('[data-evaluation-month]');
+    if(button)yareTeacherEvaluationOpenMonth(Number(button.dataset.evaluationMonth));
+  });
+  $('teacherEvaluationStudentSelect')?.addEventListener('change',yareTeacherEvaluationRenderFields);
+  $('saveTeacherEvaluation')?.addEventListener('click',saveTeacherEvaluation);
+  $('refreshStudentMonthlyEvaluations')?.addEventListener('click',loadStudentMonthlyEvaluationReport);
+  yareEvaluationRenderMonthGrid();
+  yareTeacherStageSyncButton();
 
   $('studentAccountForm').addEventListener('submit',async event=>{
     event.preventDefault();
@@ -7377,6 +7759,14 @@ const persianBookPageMap={
         return;
       }
       $('studentBack')?.click();
+      return;
+    }
+    const teacherPanel=$('teacher');
+    if(teacherPanel&&!teacherPanel.classList.contains('hidden')){
+      const backButton=$('teacherStageBack');
+      if(backButton&&!backButton.classList.contains('hidden'))backButton.click();
+      else $('teacherHome')?.click();
+      yareAppEnsureExitGuard();
       return;
     }
     const studentLogin=$('studentNamePage');
