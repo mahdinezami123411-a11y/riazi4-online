@@ -2329,6 +2329,46 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 .attendance-month-note{margin:10px 0;font-size:12px;line-height:1.9}
 @media(max-width:560px){.attendance-month-card{padding:10px}.attendance-month-head{align-items:stretch}.attendance-month-select{width:100%}.attendance-week-content{padding:6px}.attendance-day>summary{padding:9px;font-size:13px}}
 </style>
+<style>
+.attendance-live-summary{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.attendance-month-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}
+.attendance-month-tile{min-height:94px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid var(--line,#3a4d72);border-radius:14px;background:linear-gradient(145deg,#263656,#182342);color:var(--text,#f3f6ff);font-weight:900;box-shadow:0 3px 0 #10182c}
+.attendance-month-tile .month-icon{font-size:23px;line-height:1.2}
+.attendance-month-tile .month-year{font-size:11px;color:var(--muted,#aab9d8);font-weight:600}
+.attendance-month-tile.current{border-color:#7be5db;box-shadow:inset 0 0 0 1px #7be5db,0 3px 0 #10182c}
+.attendance-month-tile:focus-visible,.attendance-day-cell:focus-visible{outline:3px solid #8be7ef;outline-offset:2px}
+.attendance-calendar-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:10px 0 14px}
+.attendance-calendar-heading h3{margin:0}
+.attendance-weekday-grid,.attendance-day-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}
+.attendance-weekday-grid{margin-bottom:6px}
+.attendance-weekday-grid span{text-align:center;padding:7px 0;font-size:11px;font-weight:900;color:var(--muted,#aab9d8)}
+.attendance-day-cell{position:relative;display:flex;min-width:0;min-height:76px;padding:7px 2px;flex-direction:column;align-items:center;justify-content:flex-start;gap:5px;border:1px solid var(--line,#3a4d72);border-radius:10px;background:linear-gradient(145deg,#202e4d,#17213b);color:var(--text,#f3f6ff);box-shadow:0 2px 0 #10182c}
+.attendance-day-cell .day-number{font-size:15px;font-weight:950;line-height:1.2}
+.attendance-day-cell .day-status{font-size:9px;font-weight:800;line-height:1.5;text-align:center;overflow-wrap:anywhere;color:var(--muted,#aab9d8)}
+.attendance-day-cell.has-attendance{border-color:#3bcba4;background:linear-gradient(145deg,#163b42,#172d42)}
+.attendance-day-cell.has-attendance .day-status{color:#6bf0be}
+.attendance-day-cell.today{outline:2px solid #82dff0;outline-offset:-3px}
+.attendance-day-cell.future{opacity:.7}
+.attendance-day-cell.empty{visibility:hidden;border:0;background:transparent;box-shadow:none;pointer-events:none}
+.attendance-day-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.attendance-day-summary .metric{padding:10px}
+.attendance-day-summary strong{font-size:16px}
+@media(max-width:560px){
+ .attendance-month-card{padding:10px}
+ .attendance-month-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+ .attendance-month-tile{min-height:82px;font-size:13px}
+ .attendance-month-tile .month-icon{font-size:20px}
+ .attendance-weekday-grid,.attendance-day-grid{gap:3px}
+ .attendance-weekday-grid span{font-size:9px;padding:6px 0}
+ .attendance-day-cell{min-height:64px;padding:7px 1px;border-radius:8px;gap:4px}
+ .attendance-day-cell .day-number{font-size:14px}
+ .attendance-day-cell .day-status{font-size:8px}
+ .attendance-calendar-heading{align-items:stretch}
+ .attendance-calendar-heading button{width:100%}
+ .attendance-day-summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:360px){.attendance-month-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.attendance-day-cell{min-height:58px}}
+</style>
 </head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo"><img src="./icons/app-icon-2.png" alt="نشان فضانورد کتاب‌به‌دست چهارمی‌ها" width="66" height="66" decoding="async"></div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p><small class="teacher-name" data-teacher-name>آموزگار: نظامی</small></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -2607,29 +2647,49 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
   <div id="studentAccountsList" class="student-accounts-list"><p class="muted">هنوز فهرست بارگذاری نشده است.</p></div>
 </div>
 <div id="tab-presence" class="tabpane">
-  <div class="row" style="flex-wrap:wrap;align-items:flex-start"><div><h3>🟢 حضور دانش‌آموزان</h3><p class="muted">«آنلاین» یعنی در دو دقیقهٔ اخیر از سامانه فعالیت ثبت شده است. «امروز وارد شده» یعنی آخرین فعالیت دانش‌آموز مربوط به امروز است.</p></div><button id="refreshStudentPresence" type="button" class="outline">🔄 به‌روزرسانی حضور</button></div>
-  <div class="grid3 presence-summary" style="margin:12px 0">
+  <div class="row" style="flex-wrap:wrap;align-items:flex-start">
+    <div><h3>🗓️ تقویم حضور و غیاب</h3><p class="muted">ابتدا ماه را انتخاب کن، سپس روی روز دلخواه بزن تا حضور و مدت استفادهٔ دانش‌آموزان را ببینی.</p></div>
+    <button id="refreshStudentPresence" type="button" class="outline">🔄 تازه‌سازی وضعیت آنلاین</button>
+  </div>
+  <div class="grid3 presence-summary attendance-live-summary" style="margin:12px 0">
     <div class="metric"><span class="muted">تعداد دانش‌آموزان</span><strong id="studentPresenceTotal">—</strong></div>
     <div class="metric"><span class="muted">آنلاین در همین لحظه</span><strong id="studentPresenceOnline">—</strong></div>
-    <div class="metric"><span class="muted">فعال در امروز</span><strong id="studentPresenceToday">—</strong></div>
   </div>
-  <div id="studentPresenceStatus" class="notice" role="status">برای دیدن حضور امروز، این بخش را تازه‌سازی کن.</div>
-  <div id="studentPresenceList" class="student-accounts-list"><p class="muted">هنوز وضعیت حضور بارگذاری نشده است.</p></div>
+  <div id="studentPresenceStatus" class="notice" role="status">برای به‌روزرسانی تعداد دانش‌آموزان و وضعیت آنلاین، تازه‌سازی را بزن.</div>
 
   <section id="studentAttendanceCalendar" class="attendance-month-card">
-    <div class="attendance-month-head">
-      <div>
-        <h3>🗓️ حضور روزانه و مدت استفاده</h3>
-        <p class="muted">ماه را انتخاب کن؛ هر هفته را باز کن و برای دیدن وضعیت همهٔ دانش‌آموزان روی تاریخ بزن.</p>
+    <div id="studentAttendanceMonthPickerView">
+      <div class="attendance-month-head">
+        <div>
+          <h3>📅 ماه‌های سال تحصیلی</h3>
+          <p class="muted">یکی از ماه‌ها را انتخاب کن تا تقویم روزهای آن باز شود.</p>
+        </div>
       </div>
-      <label class="attendance-month-select" for="studentAttendanceMonth">
-        <span>انتخاب ماه سال تحصیلی</span>
-        <select id="studentAttendanceMonth" aria-label="انتخاب ماه حضور و غیاب"></select>
-      </label>
+      <div id="studentAttendanceMonths" class="attendance-month-grid"></div>
     </div>
-    <p class="attendance-month-note muted">مدت حضور تقریبی است و زمانی را جمع می‌زند که برنامه در صفحهٔ قابل‌مشاهده بوده است. اطلاعات گذشته پیش از فعال‌شدن این ثبت‌کننده قابل بازیابی نیست؛ نبودن رکورد به‌تنهایی غیبت قطعی را ثابت نمی‌کند.</p>
-    <div id="studentAttendanceMonthStatus" class="notice" role="status">برای مشاهدهٔ گزارش ماهانه، این بخش را تازه‌سازی کن.</div>
-    <div id="studentAttendanceMonthContent"></div>
+
+    <div id="studentAttendanceMonthView" class="hidden">
+      <div class="attendance-calendar-heading">
+        <button id="studentAttendanceBackToMonths" type="button" class="outline">⬅️ بازگشت به ماه‌ها</button>
+        <h3 id="studentAttendanceMonthTitle"></h3>
+      </div>
+      <div class="attendance-weekday-grid" aria-hidden="true">
+        <span>شنبه</span><span>یکشنبه</span><span>دوشنبه</span><span>سه‌شنبه</span><span>چهارشنبه</span><span>پنجشنبه</span><span>جمعه</span>
+      </div>
+      <div id="studentAttendanceCalendarGrid" class="attendance-day-grid" aria-label="روزهای ماه"></div>
+      <p class="attendance-month-note muted">روزهای دارای سابقه مشخص می‌شوند. برای گزارش کامل همهٔ دانش‌آموزان، روی هر روز بزن.</p>
+    </div>
+
+    <div id="studentAttendanceDayView" class="hidden">
+      <div class="attendance-calendar-heading">
+        <button id="studentAttendanceBackToCalendar" type="button" class="outline">⬅️ بازگشت به تقویم ماه</button>
+        <h3 id="studentAttendanceDayTitle"></h3>
+      </div>
+      <div id="studentAttendanceDaySummary" class="attendance-day-summary"></div>
+      <div id="studentAttendanceDayTable"></div>
+    </div>
+    <p class="attendance-month-note muted">مدت حضور تقریبی است و از فاصلهٔ ثبت‌های دوره‌ای زمانی محاسبه می‌شود که برنامه قابل‌مشاهده بوده است. اطلاعات گذشته پیش از فعال‌شدن این ثبت‌کننده قابل بازیابی نیست؛ نبودن رکورد به‌تنهایی غیبت قطعی را ثابت نمی‌کند.</p>
+    <div id="studentAttendanceMonthStatus" class="notice" role="status">برای دیدن تقویم، یکی از ماه‌ها را انتخاب کن.</div>
   </section>
 </div>
 <div id="tab-settings" class="tabpane">
@@ -3955,49 +4015,30 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
 
   async function loadStudentPresence(silent=false){
-    const list=$('studentPresenceList'),status=$('studentPresenceStatus');
-    if(!list||!status)return;
+    const status=$('studentPresenceStatus');
+    if(!status)return;
     if(!cloudSession||cloudSession.role!=='teacher'){
-      status.textContent='برای مشاهدهٔ حضور، ابتدا با حساب معلم وارد شو.';
+      status.textContent='برای مشاهدهٔ تعداد دانش‌آموزان و وضعیت آنلاین، ابتدا با حساب معلم وارد شو.';
       return;
     }
-    if(!silent)status.textContent='در حال بررسی آخرین فعالیت دانش‌آموزان…';
+    if(!silent)status.textContent='در حال به‌روزرسانی تعداد دانش‌آموزان و وضعیت آنلاین…';
     try{
       const result=await cloudFetch('/functions/v1/student-presence',{method:'POST',body:{action:'list'}});
       const students=Array.isArray(result?.students)?result.students:[];
-      const now=Date.now(),todayStart=new Date();todayStart.setHours(0,0,0,0);
-      let onlineCount=0,todayCount=0;
-      list.replaceChildren();
-      if(!students.length){
-        const p=document.createElement('p');p.className='muted';p.textContent='هنوز دانش‌آموزی در این کلاس ثبت نشده است.';list.appendChild(p);
-      }else{
-        const table=document.createElement('table');table.className='presence-table';
-        const thead=document.createElement('thead'),headRow=document.createElement('tr');
-        ['ردیف','نام دانش‌آموز','نام کاربری','آخرین فعالیت','وضعیت امروز'].forEach(label=>{const th=document.createElement('th');th.textContent=label;headRow.appendChild(th)});
-        thead.appendChild(headRow);table.appendChild(thead);
-        const tbody=document.createElement('tbody');
-        students.forEach((student,index)=>{
-          const tr=document.createElement('tr'),last=student.last_seen_at?Date.parse(student.last_seen_at):NaN;
-          const valid=Number.isFinite(last),isToday=valid&&last>=todayStart.getTime(),isOnline=valid&&(now-last)<=120000&&(now-last)>=-15000;
-          if(isOnline)onlineCount++;
-          if(isToday)todayCount++;
-          const number=document.createElement('td');number.className='row-number';number.textContent=(index+1).toLocaleString('fa-IR');tr.appendChild(number);
-          const name=document.createElement('td');name.textContent=student.display_name||'—';tr.appendChild(name);
-          const username=document.createElement('td');username.className='username';username.textContent=student.student_code||'—';tr.appendChild(username);
-          const seen=document.createElement('td');seen.textContent=valid?formatPresenceTime(student.last_seen_at):'—';tr.appendChild(seen);
-          const state=document.createElement('td');state.className='presence-status '+(isOnline?'online':isToday?'today':'offline');
-          state.textContent=isOnline?'🟢 آنلاین':isToday?'🟡 امروز وارد شده':valid?'⚪ امروز وارد نشده':'— هنوز وارد نشده';
-          tr.appendChild(state);tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);list.appendChild(table);
-      }
+      const now=Date.now();
+      let onlineCount=0;
+      students.forEach(student=>{
+        const last=student.last_seen_at?Date.parse(student.last_seen_at):NaN;
+        const valid=Number.isFinite(last);
+        const isOnline=valid&&(now-last)<=120000&&(now-last)>=-15000;
+        if(isOnline)onlineCount++;
+      });
       $('studentPresenceTotal').textContent=students.length.toLocaleString('fa-IR');
       $('studentPresenceOnline').textContent=onlineCount.toLocaleString('fa-IR');
-      $('studentPresenceToday').textContent=todayCount.toLocaleString('fa-IR');
-      status.textContent='آخرین به‌روزرسانی: '+new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})+' — وضعیت آنلاین بر اساس فعالیت ثبت‌شده در دو دقیقهٔ اخیر محاسبه می‌شود.';
+      status.textContent='آخرین به‌روزرسانی: '+new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})+' — آنلاین بودن بر اساس فعالیت ثبت‌شده در دو دقیقهٔ اخیر محاسبه می‌شود.';
       status.style.color='';
     }catch(e){
-      status.textContent='بارگذاری وضعیت حضور ناموفق بود: '+cloudMessage(e);
+      status.textContent='بارگذاری وضعیت آنلاین ناموفق بود: '+cloudMessage(e);
       status.style.color='#a62638';
     }
   }
@@ -4052,24 +4093,27 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(Number.isNaN(date.getTime()))return '—';
     return date.toLocaleTimeString('fa-IR',{timeZone:'Asia/Tehran',hour:'2-digit',minute:'2-digit'});
   }
+  let yareAttendanceSelectedMonth=null;
+  let yareAttendanceMonthData={students:[],attendance:[],recordsByStudentDay:new Map()};
   function initializeStudentAttendanceMonthSelector(){
-    const select=$('studentAttendanceMonth');
-    if(!select)return;
+    const monthsBox=$('studentAttendanceMonths');
+    if(!monthsBox)return;
     const now=yareAttendanceDateParts(new Date());
     const startYear=yareAttendanceSchoolStartYear(new Date());
-    select.replaceChildren();
+    monthsBox.replaceChildren();
+    const icons={7:'🍁',8:'🍂',9:'🌧️',10:'❄️',11:'🌨️',12:'🌱',1:'🌷',2:'🌸',3:'☀️'};
     yareAttendanceSchoolMonths.forEach(month=>{
       const year=month>=7?startYear:startYear+1;
-      const option=document.createElement('option');
-      option.value=year+'-'+month;
-      option.textContent=yareAttendanceMonthNames[month]+' '+yareAttendanceDigits(year);
-      select.appendChild(option);
+      const tile=document.createElement('button');
+      tile.type='button';
+      tile.className='attendance-month-tile'+(now.year===year&&now.month===month?' current':'');
+      tile.innerHTML='';
+      const icon=document.createElement('span');icon.className='month-icon';icon.textContent=icons[month]||'📅';tile.appendChild(icon);
+      const name=document.createElement('span');name.textContent=yareAttendanceMonthNames[month];tile.appendChild(name);
+      const schoolYear=document.createElement('span');schoolYear.className='month-year';schoolYear.textContent='سال '+yareAttendanceDigits(year);tile.appendChild(schoolYear);
+      tile.addEventListener('click',()=>loadStudentAttendanceMonth(year,month));
+      monthsBox.appendChild(tile);
     });
-    const currentMonthIsInSchoolYear=yareAttendanceSchoolMonths.includes(now.month);
-    select.value=currentMonthIsInSchoolYear
-      ?(now.month>=7?startYear:startYear+1)+'-'+now.month
-      :(startYear+1)+'-3';
-    select.addEventListener('change',()=>loadStudentAttendanceMonth());
   }
   function yareAttendanceCreateRosterTable(students,recordsByStudentDay,year,month,day,isFuture){
     const scroll=document.createElement('div');scroll.className='attendance-roster-scroll';
@@ -4101,65 +4145,103 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     }
     table.appendChild(tbody);scroll.appendChild(table);return scroll;
   }
-  async function loadStudentAttendanceMonth(){
-    const select=$('studentAttendanceMonth'),status=$('studentAttendanceMonthStatus'),content=$('studentAttendanceMonthContent');
-    if(!select||!status||!content)return;
+  function yareAttendanceIsFuture(year,month,day){
+    const today=yareAttendanceDateParts(new Date());
+    return year>today.year||(year===today.year&&(month>today.month||(month===today.month&&day>today.day)));
+  }
+  function yareAttendanceRenderMonthCalendar(year,month){
+    const start=yareAttendanceFindMonthStart(year,month);
+    const dayCount=yareAttendanceMonthDayCount(year,month);
+    const grid=$('studentAttendanceCalendarGrid');
+    if(!grid||!start||!dayCount)return;
+    $('studentAttendanceMonthTitle').textContent=yareAttendanceMonthNames[month]+' '+yareAttendanceDigits(year);
+    grid.replaceChildren();
+    const offset=(start.getUTCDay()+1)%7;
+    for(let i=0;i<offset;i++){
+      const empty=document.createElement('span');empty.className='attendance-day-cell empty';empty.setAttribute('aria-hidden','true');grid.appendChild(empty);
+    }
+    const now=yareAttendanceDateParts(new Date());
+    const monthRecords=yareAttendanceMonthData.attendance;
+    for(let day=1;day<=dayCount;day++){
+      const button=document.createElement('button');button.type='button';button.className='attendance-day-cell';
+      if(monthRecords.some(record=>Number(record.jalali_day)===day))button.classList.add('has-attendance');
+      if(now.year===year&&now.month===month&&now.day===day)button.classList.add('today');
+      if(yareAttendanceIsFuture(year,month,day))button.classList.add('future');
+      const number=document.createElement('span');number.className='day-number';number.textContent=yareAttendanceDigits(day);button.appendChild(number);
+      const status=document.createElement('span');status.className='day-status';
+      const dayRecords=monthRecords.filter(record=>Number(record.jalali_day)===day);
+      if(yareAttendanceIsFuture(year,month,day))status.textContent='آینده';
+      else if(dayRecords.length)status.textContent=yareAttendanceDigits(dayRecords.length)+' ثبت';
+      else status.textContent='بدون ثبت';
+      button.appendChild(status);
+      button.setAttribute('aria-label',day+' '+yareAttendanceMonthNames[month]+', '+status.textContent);
+      button.addEventListener('click',()=>yareAttendanceOpenDay(year,month,day));
+      grid.appendChild(button);
+    }
+    $('studentAttendanceMonthPickerView').classList.add('hidden');
+    $('studentAttendanceDayView').classList.add('hidden');
+    $('studentAttendanceMonthView').classList.remove('hidden');
+  }
+  function yareAttendanceOpenDay(year,month,day){
+    const records=yareAttendanceMonthData.attendance.filter(record=>Number(record.jalali_day)===day);
+    const totalSeconds=records.reduce((sum,record)=>sum+(Number(record.active_seconds)||0),0);
+    const presentCount=records.length;
+    $('studentAttendanceDayTitle').textContent=yareAttendanceDigits(day)+' '+yareAttendanceMonthNames[month]+' '+yareAttendanceDigits(year);
+    const summary=$('studentAttendanceDaySummary');summary.replaceChildren();
+    [
+      {label:'تعداد دانش‌آموزان',value:yareAttendanceDigits(yareAttendanceMonthData.students.length)},
+      {label:'حضور ثبت‌شده',value:yareAttendanceDigits(presentCount)},
+      {label:'بدون ثبت حضور',value:yareAttendanceDigits(Math.max(0,yareAttendanceMonthData.students.length-presentCount))},
+      {label:'مجموع مدت ثبت‌شده',value:yareAttendanceDuration(totalSeconds)}
+    ].forEach(item=>{
+      const box=document.createElement('div');box.className='metric';
+      const label=document.createElement('span');label.className='muted';label.textContent=item.label;box.appendChild(label);
+      const value=document.createElement('strong');value.textContent=item.value;box.appendChild(value);summary.appendChild(box);
+    });
+    $('studentAttendanceDayTable').replaceChildren(
+      yareAttendanceCreateRosterTable(yareAttendanceMonthData.students,yareAttendanceMonthData.recordsByStudentDay,year,month,day,yareAttendanceIsFuture(year,month,day))
+    );
+    $('studentAttendanceMonthView').classList.add('hidden');
+    $('studentAttendanceDayView').classList.remove('hidden');
+  }
+  async function loadStudentAttendanceMonth(year,month){
+    const status=$('studentAttendanceMonthStatus');
+    if(!status)return;
     if(!cloudSession||cloudSession.role!=='teacher'){
-      status.textContent='برای مشاهدهٔ گزارش ماهانه، ابتدا با حساب معلم وارد شو.';
+      status.textContent='برای مشاهدهٔ تقویم حضور، ابتدا با حساب معلم وارد شو.';
       return;
     }
-    const [year,month]=select.value.split('-').map(Number);
-    if(!Number.isInteger(year)||!Number.isInteger(month)){
-      status.textContent='ماه معتبر انتخاب نشده است.';return;
-    }
-    status.textContent='در حال بارگذاری گزارش ماهانه…';
-    content.replaceChildren();
+    status.textContent='در حال بارگذاری تقویم ماه…';
     try{
       const result=await cloudFetch('/functions/v1/student-presence',{
         method:'POST',body:{action:'attendance_month',jalali_year:year,jalali_month:month}
       });
-      const students=Array.isArray(result?.students)?result.students:[];
-      const attendance=Array.isArray(result?.attendance)?result.attendance:[];
-      const recordsByStudentDay=new Map();
-      attendance.forEach(record=>recordsByStudentDay.set(record.student_id+'-'+Number(record.jalali_day),record));
-      const today=yareAttendanceDateParts(new Date());
-      const dayCount=yareAttendanceMonthDayCount(year,month);
-      const weeks=document.createElement('div');weeks.className='attendance-week-list';
-      for(let weekStart=1,weekIndex=0;weekStart<=dayCount;weekStart+=7,weekIndex++){
-        const weekEnd=Math.min(dayCount,weekStart+6);
-        const weekRecords=attendance.filter(record=>Number(record.jalali_day)>=weekStart&&Number(record.jalali_day)<=weekEnd);
-        const weekDetails=document.createElement('details');weekDetails.className='attendance-week';
-        weekDetails.open=(today.year===year&&today.month===month&&today.day>=weekStart&&today.day<=weekEnd)||(!(today.year===year&&today.month===month)&&weekIndex===0);
-        const weekSummary=document.createElement('summary');
-        const daysWithRecords=new Set(weekRecords.map(record=>Number(record.jalali_day))).size;
-        const weekSeconds=weekRecords.reduce((sum,record)=>sum+(Number(record.active_seconds)||0),0);
-        weekSummary.textContent='هفتهٔ '+yareAttendanceDigits(weekIndex+1)+' · روزهای '+yareAttendanceDigits(weekStart)+' تا '+yareAttendanceDigits(weekEnd)+' · '+yareAttendanceDigits(daysWithRecords)+' روز دارای ثبت · مجموع '+yareAttendanceDuration(weekSeconds);
-        weekDetails.appendChild(weekSummary);
-        const weekContent=document.createElement('div');weekContent.className='attendance-week-content';
-        for(let day=weekStart;day<=weekEnd;day++){
-          const isFuture=year>today.year||(year===today.year&&(month>today.month||(month===today.month&&day>today.day)));
-          const dayRecords=attendance.filter(record=>Number(record.jalali_day)===day);
-          const totalSeconds=dayRecords.reduce((sum,record)=>sum+(Number(record.active_seconds)||0),0);
-          const dayDetails=document.createElement('details');dayDetails.className='attendance-day';
-          const daySummary=document.createElement('summary');
-          const dayTitle=document.createElement('span');dayTitle.className='attendance-day-title';
-          dayTitle.textContent=yareAttendanceDigits(day)+' '+yareAttendanceMonthNames[month];
-          const dayStats=document.createElement('span');dayStats.className='attendance-day-stats';
-          dayStats.textContent=(isFuture?'هنوز فرا نرسیده':yareAttendanceDigits(dayRecords.length)+' نفر با ثبت حضور')+' · مجموع '+yareAttendanceDuration(totalSeconds);
-          daySummary.appendChild(dayTitle);daySummary.appendChild(dayStats);dayDetails.appendChild(daySummary);
-          dayDetails.appendChild(yareAttendanceCreateRosterTable(students,recordsByStudentDay,year,month,day,isFuture));
-          weekContent.appendChild(dayDetails);
-        }
-        weekDetails.appendChild(weekContent);weeks.appendChild(weekDetails);
-      }
-      content.appendChild(weeks);
-      status.textContent='گزارش '+yareAttendanceMonthNames[month]+' '+yareAttendanceDigits(year)+' بارگذاری شد. تعداد ثبت‌های روزانه: '+yareAttendanceDigits(attendance.length)+'؛ زمان‌ها تقریبی و بر اساس ضربان‌های ثبت‌شده در سرور هستند.';
+      yareAttendanceSelectedMonth={year,month};
+      yareAttendanceMonthData={
+        students:Array.isArray(result?.students)?result.students:[],
+        attendance:Array.isArray(result?.attendance)?result.attendance:[],
+        recordsByStudentDay:new Map()
+      };
+      yareAttendanceMonthData.attendance.forEach(record=>{
+        yareAttendanceMonthData.recordsByStudentDay.set(record.student_id+'-'+Number(record.jalali_day),record);
+      });
+      yareAttendanceRenderMonthCalendar(year,month);
+      status.textContent='تقویم '+yareAttendanceMonthNames[month]+' '+yareAttendanceDigits(year)+' آماده است. روزهای دارای ثبت حضور با رنگ سبز مشخص شده‌اند.';
       status.style.color='';
     }catch(error){
-      status.textContent='بارگذاری گزارش ماهانه ناموفق بود: '+cloudMessage(error);
+      status.textContent='بارگذاری تقویم ماه ناموفق بود: '+cloudMessage(error);
       status.style.color='#a62638';
     }
   }
+  $('studentAttendanceBackToMonths')?.addEventListener('click',()=>{
+    $('studentAttendanceMonthView').classList.add('hidden');
+    $('studentAttendanceDayView').classList.add('hidden');
+    $('studentAttendanceMonthPickerView').classList.remove('hidden');
+  });
+  $('studentAttendanceBackToCalendar')?.addEventListener('click',()=>{
+    $('studentAttendanceDayView').classList.add('hidden');
+    $('studentAttendanceMonthView').classList.remove('hidden');
+  });
   initializeStudentAttendanceMonthSelector();
 
   $('studentAccountForm').addEventListener('submit',async event=>{
@@ -4185,9 +4267,9 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     }
   });
   $('refreshStudentAccounts').onclick=loadStudentAccounts;
-  $('refreshStudentPresence').onclick=()=>{loadStudentPresence();loadStudentAttendanceMonth()};
+  $('refreshStudentPresence').onclick=()=>loadStudentPresence();
   document.querySelectorAll('#teacherNav [data-tab="students"]').forEach(button=>button.addEventListener('click',()=>loadStudentAccounts()));
-  document.querySelectorAll('#teacherNav [data-tab="presence"]').forEach(button=>button.addEventListener('click',()=>{loadStudentPresence();loadStudentAttendanceMonth()}));
+  document.querySelectorAll('#teacherNav [data-tab="presence"]').forEach(button=>button.addEventListener('click',()=>loadStudentPresence()));
   setInterval(()=>{
     if(cloudSession?.role==='teacher'&&$('tab-presence')?.classList.contains('active')&&document.visibilityState==='visible')loadStudentPresence(true);
   },30000);
