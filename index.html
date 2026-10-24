@@ -2394,67 +2394,76 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </style>
 
 <style>
-/* چیدمان بهبودیافتهٔ نوار موجود پنل معلم؛ همهٔ بخش‌ها حفظ شده‌اند */
-#teacherNav{
-  position:sticky;
-  top:max(6px,env(safe-area-inset-top,6px));
-  z-index:70;
+/* صفحهٔ انتخاب بخش پنل معلم؛ کارت‌های بزرگ و شبکه‌ای، مشابه انتخاب کتاب دانش‌آموز */
+#teacherNav.teacher-section-grid{
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:8px;
-  margin:10px 0 16px;
-  padding:9px;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin:14px 0 20px;
+  padding:0;
   overflow:visible;
-  background:color-mix(in srgb,var(--card) 96%,transparent);
-  border:1px solid var(--line);
-  border-radius:17px;
-  box-shadow:0 5px 18px rgba(8,24,52,.12);
-  scrollbar-width:thin;
+  background:transparent;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
 }
-#teacherNav button{
+#teacherNav.teacher-section-grid .teacher-section-tile{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:flex-start;
+  gap:9px;
+  min-width:0;
+  min-height:148px;
+  padding:17px 15px;
+  white-space:normal;
+  text-align:right;
+  border:1px solid var(--line)!important;
+  border-radius:19px!important;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--primary) 12%,var(--card)),var(--card))!important;
+  color:var(--text)!important;
+  box-shadow:0 5px 0 color-mix(in srgb,var(--primary) 17%,var(--card)),0 9px 18px rgba(7,28,65,.08)!important;
+  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+  scroll-snap-align:unset;
+}
+#teacherNav.teacher-section-grid .teacher-section-tile:hover,
+#teacherNav.teacher-section-grid .teacher-section-tile:focus-visible{
+  transform:translateY(-2px);
+  border-color:var(--primary)!important;
+  box-shadow:0 5px 0 color-mix(in srgb,var(--primary) 19%,var(--card)),0 12px 22px rgba(7,28,65,.13)!important;
+}
+#teacherNav .teacher-tile-icon{
   display:flex;
   align-items:center;
   justify-content:center;
-  min-width:0;
-  min-height:46px;
-  padding:8px 7px;
-  border-radius:12px!important;
-  white-space:normal;
-  text-align:center;
-  line-height:1.5;
-  font-size:12px;
-  font-weight:800;
-  scroll-snap-align:start;
+  width:49px;
+  height:49px;
+  flex:0 0 49px;
+  border:1px solid color-mix(in srgb,var(--primary) 28%,var(--line));
+  border-radius:15px;
+  background:color-mix(in srgb,var(--primary) 15%,var(--card));
+  font-size:26px;
 }
+#teacherNav .teacher-section-tile>b{font-size:15px;line-height:1.5;font-weight:900;color:var(--text)}
+#teacherNav .teacher-section-tile>small{display:block;font-size:11px;line-height:1.8;font-weight:500;color:var(--muted)}
+#teacherNav.teacher-section-grid.hidden{display:none!important}
+#teacher .tabpane{min-width:0}
+#teacherStageBack{bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 @media(min-width:561px) and (max-width:900px){
-  #teacherNav{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:8px}
-  #teacherNav button{font-size:11px;padding:8px 5px}
+  #teacherNav.teacher-section-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  #teacherNav.teacher-section-grid .teacher-section-tile{min-height:136px;padding:14px}
 }
 @media(max-width:560px){
-  #teacherNav{
-    display:flex;
-    flex-wrap:nowrap;
-    align-items:stretch;
-    gap:6px;
-    padding:7px 6px;
-    top:4px;
-    margin:8px 0 13px;
-    overflow-x:auto;
-    overflow-y:hidden;
-    scroll-snap-type:x proximity;
-    -webkit-overflow-scrolling:touch;
-    overscroll-behavior-x:contain;
-    scrollbar-width:thin;
-  }
-  #teacherNav button{
-    flex:0 0 auto;
-    min-width:112px;
-    max-width:145px;
-    min-height:44px;
-    padding:8px 10px;
-    white-space:nowrap;
-    font-size:12px;
-  }
+  #teacherNav.teacher-section-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0 18px}
+  #teacherNav.teacher-section-grid .teacher-section-tile{min-height:142px;padding:13px 11px;gap:7px;border-radius:16px!important}
+  #teacherNav .teacher-tile-icon{width:42px;height:42px;flex-basis:42px;border-radius:13px;font-size:23px}
+  #teacherNav .teacher-section-tile>b{font-size:13px}
+  #teacherNav .teacher-section-tile>small{font-size:10px;line-height:1.7}
+  #teacherStageBack{bottom:calc(12px + env(safe-area-inset-bottom,0px));right:10px;min-height:46px}
+}
+@media(max-width:350px){
+  #teacherNav.teacher-section-grid{gap:7px}
+  #teacherNav.teacher-section-grid .teacher-section-tile{padding:10px 8px;min-height:132px}
 }
 </style>
 
@@ -2642,9 +2651,20 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </section>
 <div id="mathChapterLessonView" class="card hidden"><div class="row"><h2>📘 آموزش فصل ریاضی</h2></div><div id="chapterLesson" class="item hidden" aria-live="polite"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div><h3 id="chapterLessonTitle">آموزش فصل</h3><span class="pill" id="chapterLessonTag">یاد بگیر</span></div></div><div id="chapterLessonBody"></div><button class="outline" id="chapterToPractice" style="width:100%;margin-top:10px">✏️ تمرین همین فصل</button></div></div>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
-<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav" aria-label="دسترسی بخش‌های پنل معلم"><button class="active" data-tab="overview">📊 نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="curriculum">📚 کتاب و سرفصل</button><button data-tab="questions">🗂️ بانک سؤال</button><button data-tab="assignments">📝 تمرین و آزمون</button><button data-tab="results">📈 بازخورد و نمرات</button><button data-tab="evaluations">🧾 ارزشیابی ماهانه</button><button data-tab="presence">🗓️ تقویم حضور</button><button data-tab="reports">📑 گزارش‌ها</button><button data-tab="settings">⚙️ تنظیمات</button></div>
-<button type="button" id="teacherStageBack" class="student-stage-back hidden" aria-label="بازگشت به مرحلهٔ قبلی پنل معلم" title="بازگشت به مرحلهٔ قبلی پنل معلم"><span aria-hidden="true">⬅️</span><span>بازگشت به مرحلهٔ قبل</span></button>
-<div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس‌های فعال در همهٔ کتاب‌ها</span><strong id="teacherActiveLessonCount">۰</strong></div><div class="metric"><span class="muted">کتاب‌های دارای درس باز</span><strong id="teacherActiveBookCount">۰</strong></div><div class="metric"><span class="muted">تعداد کتاب‌های برنامه</span><strong id="teacherBookTotalCount">۶</strong></div></div><h3 style="margin-top:16px">وضعیت دسترسی درس‌ها به تفکیک کتاب</h3><p class="muted">تعداد درس‌های باز و عنوان همان درس‌ها، بر اساس تنظیمات فعلی کلاس و زمان‌بندی دسترسی، در این فهرست نمایش داده می‌شود.</p><div id="teacherCourseOverviewList" class="stack"></div><div id="teacherOverviewStatus" class="notice">برای مشاهدهٔ وضعیت دقیق، تنظیمات کتاب‌های کلاس از سرور دریافت می‌شود.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><div id="teacherOverviewStudentCards" class="teacher-student-grid" aria-label="فهرست دانش‌آموزان کلاس"></div><div id="teacherOverviewStudentDetail" class="teacher-student-detail hidden" aria-live="polite"></div><label class="field" for="teacherOverviewStudentFilter">فیلتر برگه‌های ثبت‌شده</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
+<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav teacher-section-grid" id="teacherNav" aria-label="انتخاب بخش پنل معلم">
+  <button type="button" class="teacher-section-tile" data-tab="overview"><span class="teacher-tile-icon" aria-hidden="true">📊</span><b>نمای کلی</b><small>نمایش خلاصهٔ وضعیت کلاس و نتایج</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="students"><span class="teacher-tile-icon" aria-hidden="true">👩‍🎓</span><b>حساب دانش‌آموزان</b><small>ساخت و مدیریت حساب‌های کلاس</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="curriculum"><span class="teacher-tile-icon" aria-hidden="true">📚</span><b>کتاب و سرفصل</b><small>مدیریت درس‌ها و دسترسی‌ها</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="questions"><span class="teacher-tile-icon" aria-hidden="true">🗂️</span><b>بانک سؤال</b><small>مدیریت سؤال‌های هر کتاب</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="assignments"><span class="teacher-tile-icon" aria-hidden="true">📝</span><b>تمرین و آزمون</b><small>آماده‌سازی و انتشار فعالیت‌ها</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="results"><span class="teacher-tile-icon" aria-hidden="true">📈</span><b>بازخورد و نمرات</b><small>بررسی پاسخ‌ها و نتیجهٔ آزمون‌ها</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="evaluations"><span class="teacher-tile-icon" aria-hidden="true">🧾</span><b>ارزشیابی ماهانه</b><small>ثبت ارزشیابی حضوری هر دانش‌آموز</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="presence"><span class="teacher-tile-icon" aria-hidden="true">🗓️</span><b>تقویم حضور</b><small>بررسی روزهای حضور و وضعیت آنلاین</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="reports"><span class="teacher-tile-icon" aria-hidden="true">📑</span><b>گزارش‌ها</b><small>گزارش‌های عملکرد و پیشرفت</small></button>
+  <button type="button" class="teacher-section-tile" data-tab="settings"><span class="teacher-tile-icon" aria-hidden="true">⚙️</span><b>تنظیمات</b><small>تنظیمات فعلی کلاس و برنامه</small></button>
+</div>
+<button type="button" id="teacherStageBack" class="student-stage-back hidden" aria-label="بازگشت به انتخاب بخش‌های پنل معلم" title="بازگشت به صفحهٔ انتخاب بخش‌ها"><span aria-hidden="true">⬅️</span><span>بازگشت به انتخاب بخش‌ها</span></button>
+<div id="tab-overview" class="tabpane"><div class="grid3"><div class="metric"><span class="muted">درس‌های فعال در همهٔ کتاب‌ها</span><strong id="teacherActiveLessonCount">۰</strong></div><div class="metric"><span class="muted">کتاب‌های دارای درس باز</span><strong id="teacherActiveBookCount">۰</strong></div><div class="metric"><span class="muted">تعداد کتاب‌های برنامه</span><strong id="teacherBookTotalCount">۶</strong></div></div><h3 style="margin-top:16px">وضعیت دسترسی درس‌ها به تفکیک کتاب</h3><p class="muted">تعداد درس‌های باز و عنوان همان درس‌ها، بر اساس تنظیمات فعلی کلاس و زمان‌بندی دسترسی، در این فهرست نمایش داده می‌شود.</p><div id="teacherCourseOverviewList" class="stack"></div><div id="teacherOverviewStatus" class="notice">برای مشاهدهٔ وضعیت دقیق، تنظیمات کتاب‌های کلاس از سرور دریافت می‌شود.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><div id="teacherOverviewStudentCards" class="teacher-student-grid" aria-label="فهرست دانش‌آموزان کلاس"></div><div id="teacherOverviewStudentDetail" class="teacher-student-detail hidden" aria-live="polite"></div><label class="field" for="teacherOverviewStudentFilter">فیلتر برگه‌های ثبت‌شده</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
 
 <div id="tab-evaluations" class="tabpane">
   <div class="row" style="flex-wrap:wrap;align-items:flex-start">
@@ -3571,7 +3591,16 @@ $('examSubmit').onclick=()=>{if(!examItems.length){alert('برای شروع، د
 
 
 // Online CSV export is bound after Supabase report data has loaded.
-document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#teacherNav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#teacher .tabpane').forEach(x=>x.classList.toggle('active',x.id==='tab-'+b.dataset.tab));if(b.dataset.tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}});
+document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#teacherNav [data-tab]').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('#teacher .tabpane').forEach(x=>x.classList.toggle('active',x.id==='tab-'+b.dataset.tab));
+  const sectionMenu=$('teacherNav');
+  if(sectionMenu)sectionMenu.classList.add('hidden');
+  const back=$('teacherStageBack');
+  if(back)back.classList.remove('hidden');
+  if(b.dataset.tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
 renderFullTimesTable();
 if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
@@ -3950,7 +3979,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   $('studentEnter').onclick=()=>show('studentNamePage');
   $('studentLoginBack').onclick=()=>show('home');
   $('teacherEnter').onclick=()=>show('teacherGate');
-  $('studentBack').onclick=()=>{if(cloudSession?.studentViewAsTeacher){cloudSession.studentViewAsTeacher=false;show('teacher');return}clearCloudSession(true)};
+  $('studentBack').onclick=()=>{if(cloudSession?.studentViewAsTeacher){cloudSession.studentViewAsTeacher=false;show('teacher');yareTeacherShowSectionMenu();return}clearCloudSession(true)};
   $('teacherBack').onclick=()=>show('home');
   $('teacherHome').onclick=()=>clearCloudSession(true);
 
@@ -4053,7 +4082,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const profile=await loadCloudProfile(auth.access_token,auth.user.id);
       if(profile.role!=='teacher')throw new Error('این حساب در جدول yare_profiles نقش معلم ندارد.');
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user:auth.user,role:'teacher',profile};saveCloudSession();
-      $('teacherPassword').value='';show('teacher');
+      $('teacherPassword').value='';show('teacher');yareTeacherShowSectionMenu();
       setCloudStatus('ورود معلم تأیید شد. اطلاعات گزارش از پایگاه دادهٔ Supabase خوانده می‌شود.');
       await loadCourseSettings(true);await loadTeacherReport();await loadTeacherQuestionBank();populateAssignmentLessons();await previewSelectedVideo();
     }catch(e){clearCloudSession(false);alert('ورود معلم انجام نشد: '+friendlyAuthError(e))}
@@ -4619,21 +4648,36 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function yareTeacherStageSyncButton(){
     const teacher=$('teacher');
     const button=$('teacherStageBack');
-    if(!button)return;
-    const evaluationDetail=!!$('tab-evaluations')?.classList.contains('active')&&
-      !!$('teacherEvaluationEditor')&&!$('teacherEvaluationEditor').classList.contains('hidden');
-    const visible=!!teacher&&!teacher.classList.contains('hidden')&&
-      (yareTeacherStageHistory.length>0||evaluationDetail);
-    button.classList.toggle('hidden',!visible);
+    const menu=$('teacherNav');
+    if(!button||!menu)return;
+    const teacherVisible=!!teacher&&!teacher.classList.contains('hidden');
+    const sectionOpen=[...document.querySelectorAll('#teacher .tabpane')].some(pane=>pane.classList.contains('active'));
+    button.classList.toggle('hidden',!teacherVisible||menu.classList.contains('hidden')===false||!sectionOpen);
+    button.querySelector('span:last-child').textContent='بازگشت به انتخاب بخش‌ها';
+    button.setAttribute('aria-label','بازگشت به انتخاب بخش‌های پنل معلم');
   }
   function yareTeacherActivateTab(tab){
     const target=document.querySelector('#teacherNav [data-tab="'+tab+'"]');
     if(!target)return;
     document.querySelectorAll('#teacherNav [data-tab]').forEach(button=>button.classList.toggle('active',button===target));
     document.querySelectorAll('#teacher .tabpane').forEach(pane=>pane.classList.toggle('active',pane.id==='tab-'+tab));
+    $('teacherNav')?.classList.add('hidden');
     if(tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}
     if(tab==='evaluations')loadTeacherEvaluations(true);
     yareTeacherStageSyncButton();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function yareTeacherShowSectionMenu(){
+    yareTeacherStageHistory.length=0;
+    $('teacherNav')?.classList.remove('hidden');
+    document.querySelectorAll('#teacher .tabpane').forEach(pane=>pane.classList.remove('active'));
+    document.querySelectorAll('#teacherNav [data-tab]').forEach(button=>button.classList.remove('active'));
+    yareTeacherEvaluationSelectedMonth=null;
+    yareTeacherEvaluationSelectedYear=null;
+    yareTeacherEvaluationRecords=new Map();
+    $('teacherEvaluationEditor')?.classList.add('hidden');
+    $('teacherEvaluationMonthPicker')?.classList.remove('hidden');
+    $('teacherStageBack')?.classList.add('hidden');
     window.scrollTo({top:0,behavior:'smooth'});
   }
   function yareTeacherStageGoBack(){
@@ -4643,9 +4687,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       yareTeacherEvaluationReturnToMonths();
       return;
     }
-    const previousTab=yareTeacherStageHistory.pop();
-    if(previousTab)yareTeacherActivateTab(previousTab);
-    yareTeacherStageSyncButton();
+    yareTeacherShowSectionMenu();
   }
   function yareTeacherStageCaptureTab(event){
     const button=event.target?.closest?.('#teacherNav [data-tab]');
@@ -4658,11 +4700,8 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function yareTeacherStageFinishTab(event){
     const button=event.target?.closest?.('#teacherNav [data-tab]');
     if(!button)return;
-    const pending=yareTeacherStagePendingNavigation;
     yareTeacherStagePendingNavigation=null;
-    if(pending&&pending.previous&&pending.previous!==pending.next&&pending.next===button.dataset.tab){
-      yareTeacherStageHistory.push(pending.previous);
-    }
+    yareTeacherStageHistory.length=0;
     if(button.dataset.tab==='evaluations')loadTeacherEvaluations(true);
     yareTeacherStageSyncButton();
   }
@@ -7826,7 +7865,8 @@ const persianBookPageMap={
     if(teacherPanel&&!teacherPanel.classList.contains('hidden')){
       const backButton=$('teacherStageBack');
       if(backButton&&!backButton.classList.contains('hidden'))backButton.click();
-      else $('teacherHome')?.click();
+      else if($('teacherNav')&&!$('teacherNav').classList.contains('hidden'))$('teacherHome')?.click();
+      else $('teacherNav')?.classList.remove('hidden');
       yareAppEnsureExitGuard();
       return;
     }
