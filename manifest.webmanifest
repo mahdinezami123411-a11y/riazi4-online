@@ -16,9 +16,9 @@
   ],
   "icons": [
     {
-      "src": "./icons/app-icon-2.png",
+      "src": "./icons/app-icon.svg",
       "sizes": "any",
-      "type": "image/png",
+      "type": "image/svg+xml",
       "purpose": "any"
     }
   ]
