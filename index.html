@@ -2467,7 +2467,118 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 }
 </style>
 
-</head>
+
+<style id="chahromiha-install-style">
+#chahromiha-install-overlay{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(4,8,25,.82);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);font-family:Tahoma,Arial,sans-serif;direction:rtl;box-sizing:border-box}
+#chahromiha-install-overlay[hidden]{display:none!important}
+#chahromiha-install-overlay *{box-sizing:border-box}
+#chahromiha-install-card{width:min(100%,420px);padding:26px 22px 20px;border:1px solid rgba(167,139,250,.45);border-radius:25px;background:radial-gradient(circle at 85% 0%,rgba(99,102,241,.28),transparent 42%),linear-gradient(145deg,#111a38,#17112f);color:#f8fafc;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.48)}
+#chahromiha-install-rocket{font-size:48px;line-height:1.2;margin-bottom:12px}
+#chahromiha-install-card h2{font-size:22px;line-height:1.6;margin:0 0 8px;font-weight:800;color:#fff}
+#chahromiha-install-card p{font-size:14px;line-height:2;margin:0 0 16px;color:#dbeafe}
+#chahromiha-install-help{padding:11px 12px;margin:0 0 14px;border-radius:13px;background:rgba(15,23,42,.72);color:#fef3c7!important;text-align:right}
+#chahromiha-install-help[hidden]{display:none!important}
+#chahromiha-install-actions{display:flex;flex-direction:column;gap:10px}
+#chahromiha-install-actions button{width:100%;min-height:48px;border:0;border-radius:14px;font:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:none}
+#chahromiha-install-action{background:linear-gradient(100deg,#818cf8,#c084fc);color:#111827}
+#chahromiha-install-later{background:rgba(148,163,184,.13);color:#e2e8f0;border:1px solid rgba(203,213,225,.24)}
+</style>
+<script id="chahromiha-install-script">
+(function () {
+  'use strict';
+  const storageKey = 'chahromiha_install_prompt_seen_v1';
+  let deferredInstallPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', function (event) {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    const action = document.getElementById('chahromiha-install-action');
+    const help = document.getElementById('chahromiha-install-help');
+    if (action) action.textContent = 'نصب برنامه';
+    if (help) help.hidden = true;
+  });
+
+  window.addEventListener('appinstalled', function () {
+    try { localStorage.setItem(storageKey, '1'); } catch (_) {}
+    const overlay = document.getElementById('chahromiha-install-overlay');
+    if (overlay) overlay.hidden = true;
+  });
+
+  function initializeInstallPrompt() {
+    const overlay = document.getElementById('chahromiha-install-overlay');
+    const action = document.getElementById('chahromiha-install-action');
+    const later = document.getElementById('chahromiha-install-later');
+    const help = document.getElementById('chahromiha-install-help');
+    if (!overlay || !action || !later || !help) return;
+
+    const mobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 1 && window.matchMedia('(max-width: 900px)').matches);
+    const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+      navigator.standalone === true;
+    const pwaLaunch = new URL(window.location.href).searchParams.get('source') === 'pwa';
+
+    if (!mobile) return;
+    if (standalone || pwaLaunch) {
+      try { localStorage.setItem(storageKey, '1'); } catch (_) {}
+      return;
+    }
+
+    let wasSeen = false;
+    try { wasSeen = localStorage.getItem(storageKey) === '1'; } catch (_) {}
+    if (wasSeen) return;
+
+    let helpMode = false;
+    function closePrompt(markSeen) {
+      overlay.hidden = true;
+      if (markSeen) {
+        try { localStorage.setItem(storageKey, '1'); } catch (_) {}
+      }
+    }
+
+    function showManualInstructions() {
+      helpMode = true;
+      help.hidden = false;
+      help.textContent = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+        ? 'دکمهٔ اشتراک‌گذاری مرورگر را بزن و گزینهٔ «افزودن به صفحهٔ اصلی» (Add to Home Screen) را انتخاب کن.'
+        : 'منوی مرورگر (⋮) را باز کن و گزینهٔ «نصب برنامه» یا «افزودن به صفحهٔ اصلی» را انتخاب کن.';
+      action.textContent = 'متوجه شدم';
+    }
+
+    if (deferredInstallPrompt) action.textContent = 'نصب برنامه';
+
+    action.addEventListener('click', async function () {
+      if (helpMode) {
+        closePrompt(true);
+        return;
+      }
+      if (!deferredInstallPrompt) {
+        showManualInstructions();
+        return;
+      }
+      const promptEvent = deferredInstallPrompt;
+      deferredInstallPrompt = null;
+      try {
+        await promptEvent.prompt();
+        await promptEvent.userChoice;
+        closePrompt(true);
+      } catch (_) {
+        showManualInstructions();
+      }
+    });
+
+    later.addEventListener('click', function () { closePrompt(true); });
+    window.setTimeout(function () {
+      if (document.visibilityState === 'visible') overlay.hidden = false;
+    }, 650);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeInstallPrompt, { once: true });
+  } else {
+    initializeInstallPrompt();
+  }
+})();
+</script></head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo"><img src="./icons/app-icon-2.png" alt="نشان فضانورد کتاب‌به‌دست چهارمی‌ها" width="66" height="66" decoding="async"></div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p><small class="teacher-name" data-teacher-name>آموزگار: نظامی</small></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
 <section class="card" id="home"><div class="home-kicker"><span>📚</span> چهارمی ها</div><h2>سلام دانش‌آموز چهارمی! کدام کتاب را می‌خواهی شروع کنی؟</h2><div class="grid"><button id="studentEnter">🎒 ورود دانش‌آموز</button><button class="outline" id="teacherEnter">🧑‍🏫 ورود معلم</button></div><p class="muted">بعد از ورود، کتاب موردنظرت را انتخاب کن و آموزش، یادآوری، تمرین و آزمون همان درس را باز کن.</p><div class="mission-strip"><div class="mission-chip"><span>📖</span><b>یادگیری</b><small>درس را مرحله‌به‌مرحله بخوان</small></div><div class="mission-chip"><span>✏️</span><b>تمرین</b><small>دانسته‌هایت را بسنج</small></div><div class="mission-chip"><span>🌟</span><b>پیشرفت</b><small>قدم‌به‌قدم بهتر شو</small></div></div><div class="notice adventure-note">🧭 برای شروع، با حساب دانش‌آموز وارد شو؛ سپس یکی از کتاب‌های پایهٔ چهارم را انتخاب کن. بخش‌های هر کتاب متناسب با همان درس نمایش داده می‌شوند.</div></section>
@@ -9666,4 +9777,16 @@ function paintMathQuestionVisual(q,target){
   }
 })();
 
-</script></body></html>
+</script>
+<div id="chahromiha-install-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="chahromiha-install-title" dir="rtl">
+  <section id="chahromiha-install-card">
+    <div id="chahromiha-install-rocket" aria-hidden="true">🚀</div>
+    <h2 id="chahromiha-install-title">برنامهٔ چهارمی‌ها را نصب کن</h2>
+    <p>برای دسترسی سریع‌تر و تجربهٔ بهتر، برنامه را به صفحهٔ اصلی گوشی اضافه کن.</p>
+    <p id="chahromiha-install-help" hidden></p>
+    <div id="chahromiha-install-actions">
+      <button id="chahromiha-install-action" type="button">نصب برنامه</button>
+      <button id="chahromiha-install-later" type="button">فعلاً نه</button>
+    </div>
+  </section>
+</div></body></html>
