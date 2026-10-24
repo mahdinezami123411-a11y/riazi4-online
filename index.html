@@ -3811,7 +3811,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress read failed',e)}
       const oldCard=document.querySelector('.student-identity-card');if(oldCard)oldCard.classList.remove('hidden');
       setCloudStatus('ورود موفق بود؛ پاسخ‌هایت ثبت می‌شوند و پیشرفتت هنگام ورود از حساب آنلاین بازیابی می‌شود.');
-      startStudentPresenceHeartbeat();show('student');showStudentAppView('home');
+      startStudentPresenceHeartbeat();show('student');showStudentAppView('home');yareAppPushStudentRootHistory();
     }catch(e){clearCloudSession(false);err.textContent=friendlyAuthError(e);err.classList.remove('hidden')}
     finally{cloudBusy=false;setBusy($('studentLoginConfirm'),false)}
   }
@@ -3841,7 +3841,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     cloudSession.studentViewAsTeacher=true;
     activeStudentName=cloudSession.profile?.display_name||'معلم';
     activeUsername='teacher-preview';
-    show('student');showStudentAppView('home');
+    show('student');showStudentAppView('home');yareAppPushStudentRootHistory();
     try{await loadCourseSettings(true);await loadStudentQuestionBank();}catch(e){console.warn('Student preview question load:',e)}
     showStudentAppView('home');
     try{await renderStudentDashboard();}catch(e){console.warn('Student preview dashboard:',e)}
@@ -7044,14 +7044,86 @@ const persianBookPageMap={
     yareStudentStageIgnorePopstate=true;
     history.back();
   }
-  window.addEventListener('popstate',()=>{
+  let yareAppExitConfirmationAt=0;
+  let yareAppExitHintTimer=null;
+  function yareAppPushStudentRootHistory(){
+    const state=history.state&&typeof history.state==='object'?history.state:{};
+    history.pushState({...state,__yareStudentRootMarker:true},'');
+  }
+  function yareAppEnsureExitGuard(){
+    const state=history.state&&typeof history.state==='object'?history.state:{};
+    if(state.__yareAppExitGuard!==true)history.pushState({...state,__yareAppExitGuard:true},'');
+  }
+  function yareAppShowExitHint(){
+    let hint=$('yareExitBackHint');
+    if(!hint){
+      hint=document.createElement('div');
+      hint.id='yareExitBackHint';
+      hint.setAttribute('role','status');
+      hint.setAttribute('aria-live','polite');
+      hint.style.cssText='position:fixed;left:16px;right:16px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:10000;padding:14px 16px;border:1px solid #8be7ef;border-radius:14px;background:#172544;color:#f5f8ff;text-align:center;font-weight:800;line-height:1.8;box-shadow:0 8px 24px #0005';
+      document.body.appendChild(hint);
+    }
+    hint.textContent='برای خروج از برنامه، دوباره دکمهٔ برگشت را بزن.';
+    hint.style.display='block';
+    clearTimeout(yareAppExitHintTimer);
+    yareAppExitHintTimer=setTimeout(()=>{hint.style.display='none'},2200);
+  }
+  function yareAppReturnStudentToEntry(){
+    const stageDepth=yareStudentStageHistory.length;
+    yareStudentStageClearHistory();
+    $('studentBack')?.click();
+    if(stageDepth>0){
+      yareStudentStageIgnorePopstate=true;
+      history.go(-stageDepth);
+    }
+  }
+  function yareAppHandlePopstate(){
     if(yareStudentStageIgnorePopstate){yareStudentStageIgnorePopstate=false;return;}
     const student=$('student');
-    if(!student||student.classList.contains('hidden')||!yareStudentStageHistory.length)return;
-    yareStudentStageHandlingPopstate=true;
-    yareStudentStageBackButton?.click();
-    yareStudentStageHandlingPopstate=false;
-  });
+    if(student&&!student.classList.contains('hidden')){
+      const studentHome=$('studentHomeView');
+      if(studentHome&&!studentHome.classList.contains('hidden')){
+        yareAppReturnStudentToEntry();
+        return;
+      }
+      if(yareStudentStageHistory.length){
+        yareStudentStageHandlingPopstate=true;
+        yareStudentStageBackButton?.click();
+        yareStudentStageHandlingPopstate=false;
+        return;
+      }
+      $('studentBack')?.click();
+      return;
+    }
+    const studentLogin=$('studentNamePage');
+    if(studentLogin&&!studentLogin.classList.contains('hidden')){
+      $('studentLoginBack')?.click();
+      yareAppEnsureExitGuard();
+      return;
+    }
+    const teacherLogin=$('teacherGate');
+    if(teacherLogin&&!teacherLogin.classList.contains('hidden')){
+      $('teacherBack')?.click();
+      yareAppEnsureExitGuard();
+      return;
+    }
+    const entry=$('home');
+    if(entry&&!entry.classList.contains('hidden')){
+      const now=Date.now();
+      if(yareAppExitConfirmationAt&&now-yareAppExitConfirmationAt<=2200){
+        yareAppExitConfirmationAt=0;
+        history.back();
+        return;
+      }
+      yareAppExitConfirmationAt=now;
+      yareAppShowExitHint();
+      history.pushState({__yareAppExitGuard:true},'');
+    }
+  }
+  window.addEventListener('popstate',yareAppHandlePopstate);
+  history.replaceState({__yareAppBaseEntry:true},'');
+  history.pushState({__yareAppExitGuard:true},'');
   const yareStudentStageTopViews=[
     '#studentHomeView','#remindersView','#bookView','#mathChapterLessonView',
     '#otherSubjectsView','#assignmentsStudentView','#studentReportView','#profileView'
