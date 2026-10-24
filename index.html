@@ -2392,6 +2392,72 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 .student-monthly-evaluation-subject .not-recorded{color:var(--muted);font-weight:700}
 @media(max-width:560px){.teacher-evaluation-month-grid{gap:7px}.teacher-evaluation-month{min-height:76px;padding:8px 3px}.teacher-evaluation-month b{font-size:13px}.student-monthly-evaluation-cards{grid-template-columns:1fr}.teacher-evaluation-subjects{gap:7px}.teacher-evaluation-subjects>div{padding:8px}}
 </style>
+
+<style>
+/* چیدمان بهبودیافتهٔ نوار موجود پنل معلم؛ همهٔ بخش‌ها حفظ شده‌اند */
+#teacherNav{
+  position:sticky;
+  top:max(6px,env(safe-area-inset-top,6px));
+  z-index:70;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:8px;
+  margin:10px 0 16px;
+  padding:9px;
+  overflow:visible;
+  background:color-mix(in srgb,var(--card) 96%,transparent);
+  border:1px solid var(--line);
+  border-radius:17px;
+  box-shadow:0 5px 18px rgba(8,24,52,.12);
+  scrollbar-width:thin;
+}
+#teacherNav button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+  min-height:46px;
+  padding:8px 7px;
+  border-radius:12px!important;
+  white-space:normal;
+  text-align:center;
+  line-height:1.5;
+  font-size:12px;
+  font-weight:800;
+  scroll-snap-align:start;
+}
+@media(min-width:561px) and (max-width:900px){
+  #teacherNav{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding:8px}
+  #teacherNav button{font-size:11px;padding:8px 5px}
+}
+@media(max-width:560px){
+  #teacherNav{
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:stretch;
+    gap:6px;
+    padding:7px 6px;
+    top:4px;
+    margin:8px 0 13px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    scrollbar-width:thin;
+  }
+  #teacherNav button{
+    flex:0 0 auto;
+    min-width:112px;
+    max-width:145px;
+    min-height:44px;
+    padding:8px 10px;
+    white-space:nowrap;
+    font-size:12px;
+  }
+}
+</style>
+
 </head>
 <body data-build="chahromiha-v5-20261016-custom-lessons"><main class="wrap">
 <header class="hero"><div class="brand"><div class="logo"><img src="./icons/app-icon-2.png" alt="نشان فضانورد کتاب‌به‌دست چهارمی‌ها" width="66" height="66" decoding="async"></div><div><h1>چهارمی ها</h1><p>همهٔ کتاب‌های پایهٔ چهارم، در یک جا</p><small class="teacher-name" data-teacher-name>آموزگار: نظامی</small></div></div><div class="hero-statusline"><span class="hero-status-dot"></span><span>محیط یادگیری، تمرین و مرور درس‌های چهارم</span><span class="hero-mini-badge">GRADE 4</span></div></header>
@@ -2434,11 +2500,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 
 </div>
 <div id="studentReportView" class="student-screen hidden">
-<section id="unifiedLearningReport" class="card unified-learning-report">
-  <div class="row unified-report-heading"><div><h2>📈 کارنامهٔ یادگیری همهٔ کتاب‌ها</h2><p class="muted">براساس پاسخ‌هایی که در این حساب ثبت شده‌اند؛ برای تمرین متمرکز، مبحث پیشنهادی را باز کن.</p></div><span class="pill">همهٔ درس‌ها</span></div>
-  <div id="unifiedProgressSummary" class="unified-progress-summary"></div>
-  <div id="unifiedSubjectCards" class="unified-subject-cards"><div class="notice">در حال آماده‌سازی کارنامه…</div></div>
-</section>
+
 
 <section id="studentMonthlyEvaluationReport" class="card student-monthly-evaluation-report" aria-live="polite">
   <div class="row" style="flex-wrap:wrap;align-items:flex-start"><div><h2>📋 کارنامهٔ ارزشیابی ماهانه</h2><p class="muted">ارزشیابی‌هایی که معلم برای تو ثبت کرده است در اینجا نمایش داده می‌شود.</p></div><button type="button" id="refreshStudentMonthlyEvaluations" class="outline">🔄 تازه‌سازی کارنامه</button></div>
@@ -2580,7 +2642,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </section>
 <div id="mathChapterLessonView" class="card hidden"><div class="row"><h2>📘 آموزش فصل ریاضی</h2></div><div id="chapterLesson" class="item hidden" aria-live="polite"><div class="row" style="align-items:flex-start;flex-wrap:wrap"><div><h3 id="chapterLessonTitle">آموزش فصل</h3><span class="pill" id="chapterLessonTag">یاد بگیر</span></div></div><div id="chapterLessonBody"></div><button class="outline" id="chapterToPractice" style="width:100%;margin-top:10px">✏️ تمرین همین فصل</button></div></div>
 <section id="teacherGate" class="card hidden"><div class="row"><h2>🧑‍🏫 ورود معلم</h2><button class="outline" id="teacherBack">بازگشت</button></div><label class="field" for="teacherEmail">ایمیل معلم</label><input id="teacherEmail" type="email" placeholder="ایمیل معلم در نسخه آنلاین"><label class="field" for="teacherPassword">رمز عبور</label><input id="teacherPassword" type="password" placeholder="رمز ورود معلم را وارد کن"><button id="demoTeacherLogin" style="width:100%;margin-top:12px">ورود به پنل معلم</button></section>
-<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav"><button class="active" data-tab="overview">نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="presence">🗓️ تقویم حضور</button><button data-tab="questions">بانک سؤال</button><button data-tab="curriculum">کتاب و سرفصل</button><button data-tab="assignments">تمرین و آزمون</button><button data-tab="results">بازخورد و نمرات</button><button data-tab="evaluations">📝 ارزشیابی ماهانه</button><button data-tab="reports">گزارش‌ها</button><button data-tab="settings">تنظیمات</button></div>
+<section id="teacher" class="hidden"><div class="card"><div class="row"><h2>🧑‍🏫 پنل معلم</h2><button class="outline" id="teacherHome">🚪 خروج</button></div><div class="teacher-preview-entry"><div class="teacher-preview-copy"><b>پیش‌نمایش پنل دانش‌آموز</b><small>تمرین‌ها و محیط دانش‌آموز را بدون خروج از حساب معلم ببین.</small></div><button id="teacherStudentPreview" type="button">🎒 مشاهده پنل دانش‌آموز</button></div><div class="nav" id="teacherNav" aria-label="دسترسی بخش‌های پنل معلم"><button class="active" data-tab="overview">📊 نمای کلی</button><button data-tab="students">👩‍🎓 حساب دانش‌آموزان</button><button data-tab="curriculum">📚 کتاب و سرفصل</button><button data-tab="questions">🗂️ بانک سؤال</button><button data-tab="assignments">📝 تمرین و آزمون</button><button data-tab="results">📈 بازخورد و نمرات</button><button data-tab="evaluations">🧾 ارزشیابی ماهانه</button><button data-tab="presence">🗓️ تقویم حضور</button><button data-tab="reports">📑 گزارش‌ها</button><button data-tab="settings">⚙️ تنظیمات</button></div>
 <button type="button" id="teacherStageBack" class="student-stage-back hidden" aria-label="بازگشت به مرحلهٔ قبلی پنل معلم" title="بازگشت به مرحلهٔ قبلی پنل معلم"><span aria-hidden="true">⬅️</span><span>بازگشت به مرحلهٔ قبل</span></button>
 <div id="tab-overview" class="tabpane active"><div class="grid3"><div class="metric"><span class="muted">درس‌های فعال در همهٔ کتاب‌ها</span><strong id="teacherActiveLessonCount">۰</strong></div><div class="metric"><span class="muted">کتاب‌های دارای درس باز</span><strong id="teacherActiveBookCount">۰</strong></div><div class="metric"><span class="muted">تعداد کتاب‌های برنامه</span><strong id="teacherBookTotalCount">۶</strong></div></div><h3 style="margin-top:16px">وضعیت دسترسی درس‌ها به تفکیک کتاب</h3><p class="muted">تعداد درس‌های باز و عنوان همان درس‌ها، بر اساس تنظیمات فعلی کلاس و زمان‌بندی دسترسی، در این فهرست نمایش داده می‌شود.</p><div id="teacherCourseOverviewList" class="stack"></div><div id="teacherOverviewStatus" class="notice">برای مشاهدهٔ وضعیت دقیق، تنظیمات کتاب‌های کلاس از سرور دریافت می‌شود.</div><section class="item" style="margin-top:16px"><h3>📝 برگه‌های آزمون و پاسخ دانش‌آموزان</h3><p class="muted">آزمون‌ها و تمرین‌های ثبت‌شده را به تفکیک دانش‌آموز ببین؛ متن سؤال، پاسخ دانش‌آموز و نتیجهٔ هر پاسخ نمایش داده می‌شود.</p><div id="teacherOverviewStudentCards" class="teacher-student-grid" aria-label="فهرست دانش‌آموزان کلاس"></div><div id="teacherOverviewStudentDetail" class="teacher-student-detail hidden" aria-live="polite"></div><label class="field" for="teacherOverviewStudentFilter">فیلتر برگه‌های ثبت‌شده</label><select id="teacherOverviewStudentFilter"><option value="all">همهٔ دانش‌آموزان</option></select><div id="teacherOverviewPapers" class="stack" style="margin-top:12px"><div class="notice">برای دریافت برگه‌ها، پنل معلم را باز کن و منتظر بارگذاری گزارش آنلاین بمان.</div></div></section></div>
 
@@ -3602,7 +3664,6 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(!$('studentDashboard'))return;
     $('studentWelcome').textContent='آماده‌ای '+(activeStudentName||'دانش‌آموز چهارمی')+'؟ پیشرفتت را در همهٔ کتاب‌ها دنبال کن.';
     if(typeof window.__renderAllBooksProgressDashboard==='function')window.__renderAllBooksProgressDashboard();
-    renderUnifiedLearningReport();
   }
   $('studentEnter').onclick=()=>{show('studentNamePage');$('studentLoginError').classList.add('hidden');$('studentNameInput').value='';$('studentPasswordInput').value='';setTimeout(()=>$('studentNameInput').focus(),80)};
   $('studentLoginBack').onclick=()=>show('home');
@@ -3770,7 +3831,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(activeStudentSubject==='math'&&view==='practice'){setBookTab('practice');syncPracticeModeUI();updatePracticeStats()}
     if(activeStudentSubject==='math'&&view==='exam'){setBookTab('exam');populateChapterExamSelect()}
     if(view==='profile'){renderStudentDashboard();}
-    if(view==='report'){renderUnifiedLearningReport();loadStudentMonthlyEvaluationReport();}
+    if(view==='report')loadStudentMonthlyEvaluationReport();
     if(view==='profile')renderProfileProgressChart();
     if(view==='assignments')loadStudentAssignments();
     window.scrollTo({top:0,behavior:'smooth'});
