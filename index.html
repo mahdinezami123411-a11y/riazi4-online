@@ -8791,7 +8791,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v108',{updateViaCache:'none'});
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-v109',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }
