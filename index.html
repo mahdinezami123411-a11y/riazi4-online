@@ -4055,7 +4055,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       if(!user?.id)throw new Error('توکن تابع student-login، نشست معتبر Supabase Auth نیست. تابع باید access_token معتبر همان پروژه را برگرداند.');
       const profile=await loadCloudProfile(auth.access_token,user.id);
       if(profile.role!=='student'&&profile.role!=='teacher')throw new Error('این حساب نقش دانش‌آموز یا معلم ندارد.');
-      cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:profile.role,profile,username,studentViewAsTeacher:profile.role==='teacher'};
+      cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:'student',profile,username,studentViewAsTeacher:profile.role==='teacher'};
       saveCloudSession();
       activeStudentName=username;activeUsername=username;
       activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};
@@ -8688,7 +8688,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v105',{updateViaCache:'none'});
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v106',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }
