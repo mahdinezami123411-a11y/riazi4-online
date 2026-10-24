@@ -7037,6 +7037,21 @@ const persianBookPageMap={
   /* بازگشت مرحله‌ای در تمام مسیرهای یادگیری دانش‌آموز */
   const yareStudentStageBackButton=$('studentStageBack');
   const yareStudentStageHistory=[];
+  let yareStudentStageHandlingPopstate=false;
+  let yareStudentStageIgnorePopstate=false;
+  function yareStudentStageSyncBrowserHistory(){
+    if(history.state?.__yareStudentStageMarker!==true)return;
+    yareStudentStageIgnorePopstate=true;
+    history.back();
+  }
+  window.addEventListener('popstate',()=>{
+    if(yareStudentStageIgnorePopstate){yareStudentStageIgnorePopstate=false;return;}
+    const student=$('student');
+    if(!student||student.classList.contains('hidden')||!yareStudentStageHistory.length)return;
+    yareStudentStageHandlingPopstate=true;
+    yareStudentStageBackButton?.click();
+    yareStudentStageHandlingPopstate=false;
+  });
   const yareStudentStageTopViews=[
     '#studentHomeView','#remindersView','#bookView','#mathChapterLessonView',
     '#otherSubjectsView','#assignmentsStudentView','#studentReportView','#profileView'
@@ -7147,7 +7162,10 @@ const persianBookPageMap={
     const lessonsTabBack=target.matches('#otherSubjectTabs [data-other-subject-tab="lessons"]')&&
       !!$('otherSubjectLessonBody')&&!$('otherSubjectLessonBody').classList.contains('hidden');
     if(lessonsTabBack){
-      if(yareStudentStageHistory.length)yareStudentStageHistory.pop();
+      if(yareStudentStageHistory.length){
+        yareStudentStageHistory.pop();
+        yareStudentStageSyncBrowserHistory();
+      }
       yareStudentStageUpdateButton();
       return;
     }
@@ -7164,6 +7182,8 @@ const persianBookPageMap={
     const snapshot=yareStudentStageCapture();
     if(yareStudentStageHistory.at(-1)?.signature!==snapshot.signature){
       yareStudentStageHistory.push(snapshot);
+      const currentHistoryState=history.state&&typeof history.state==='object'?history.state:{};
+      history.pushState({...currentHistoryState,__yareStudentStageMarker:true},'');
       if(yareStudentStageHistory.length>40)yareStudentStageHistory.shift();
     }
     yareStudentStageUpdateButton();
@@ -7173,6 +7193,7 @@ const persianBookPageMap={
     const snapshot=yareStudentStageHistory.pop();
     if(snapshot)yareStudentStageRestore(snapshot);
     yareStudentStageUpdateButton();
+    if(!yareStudentStageHandlingPopstate)yareStudentStageSyncBrowserHistory();
   });
   yareStudentStageUpdateButton();
 
