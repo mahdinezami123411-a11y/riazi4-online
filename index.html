@@ -8649,12 +8649,38 @@ const persianBookPageMap={
 
 if('serviceWorker' in navigator){
   let refreshingForWorkerUpdate=false;
+  let yarePendingWorkerReload=false;
   let yareSwRegistration=null;
   let yareSwCheckBusy=false;
-  navigator.serviceWorker.addEventListener('controllerchange',()=>{
-    if(refreshingForWorkerUpdate)return;
+  function yareCanSafelyReloadForUpdate(){
+    if(document.visibilityState!=='visible')return false;
+    const focused=document.activeElement;
+    if(focused&&focused.matches('input,textarea,select,[contenteditable="true"]'))return false;
+    const studentVisible=!!document.querySelector('#student:not(.hidden)');
+    if(studentVisible){
+      const view=document.querySelector('#studentAppNav [data-app-view].active')?.dataset.appView||'home';
+      if(['learn','practice','exam','assignments'].includes(view))return false;
+    }
+    const teacherVisible=!!document.querySelector('#teacher:not(.hidden)');
+    if(teacherVisible){
+      const pane=document.querySelector('#teacher .tabpane.active');
+      const tab=pane?.id?.replace(/^tab-/,'')||'';
+      if(['assignments','curriculum','evaluations','settings'].includes(tab))return false;
+      const questionEditor=document.querySelector('#teacherQuestionEditor');
+      const evaluationEditor=document.querySelector('#teacherEvaluationEditor');
+      if((questionEditor&&!questionEditor.classList.contains('hidden'))||(evaluationEditor&&!evaluationEditor.classList.contains('hidden')))return false;
+    }
+    return true;
+  }
+  function yareTryWorkerReload(){
+    if(!yarePendingWorkerReload||refreshingForWorkerUpdate||!yareCanSafelyReloadForUpdate())return;
+    yarePendingWorkerReload=false;
     refreshingForWorkerUpdate=true;
     window.location.reload();
+  }
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    yarePendingWorkerReload=true;
+    yareTryWorkerReload();
   });
   async function yareCheckForAppUpdate(){
     if(!navigator.onLine||yareSwCheckBusy)return;
@@ -8662,9 +8688,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v104',{updateViaCache:'none'});
-      }else if(!yareSwRegistration.active){
-        await yareSwRegistration.update();
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v105',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }
@@ -8673,9 +8697,10 @@ if('serviceWorker' in navigator){
   }
   window.addEventListener('load',()=>{void yareCheckForAppUpdate()});
   window.addEventListener('online',()=>{void yareCheckForAppUpdate()});
-  window.addEventListener('focus',()=>{void yareCheckForAppUpdate()});
-  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void yareCheckForAppUpdate()});
-  window.setInterval(()=>{if(document.visibilityState==='visible')void yareCheckForAppUpdate()},180000);
+  window.addEventListener('focus',()=>{void yareCheckForAppUpdate();yareTryWorkerReload()});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){void yareCheckForAppUpdate();yareTryWorkerReload()}});
+  window.setInterval(()=>{if(document.visibilityState==='visible'){void yareCheckForAppUpdate();yareTryWorkerReload()}},180000);
+  window.setInterval(yareTryWorkerReload,15000);
 }
 
 /* ماشین سه‌عملیاتی داخل خود برنامه؛ هیچ فایل یا سرویس جداگانه‌ای را دریافت نمی‌کند. */
