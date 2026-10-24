@@ -4122,6 +4122,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
           ]);
           if(!isCurrentLogin())return;
           populateAssignmentLessons();
+          try{await previewSelectedVideo()}catch(previewError){console.warn('Teacher video preview could not be loaded after login',previewError)}
           setCloudStatus('ورود معلم موفق بود؛ گزارش‌ها هنگام باز کردن بخش مربوط به‌روزرسانی می‌شوند.');
         }catch(backgroundError){console.warn('Teacher post-login sync failed',backgroundError)}
       })();
@@ -8688,7 +8689,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v106',{updateViaCache:'none'});
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v107',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }
