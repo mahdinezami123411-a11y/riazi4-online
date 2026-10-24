@@ -3908,6 +3908,8 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   let currentCloudAttemptGroup = null;
   let cloudBankRows = [];
   let cloudBusy = false;
+  let yareCloudWarmupActive = false;
+  let yareCloudWarmupUserId = null;
 
   function setCloudStatus(message, isError=false){
     const text=String(message||'');
@@ -4051,20 +4053,46 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       if(!auth?.access_token)throw new Error('تابع student-login توکن ورود برنگرداند؛ کد تابع را بررسی کن.');
       const user=await authUserForToken(auth.access_token);
       if(!user?.id)throw new Error('توکن تابع student-login، نشست معتبر Supabase Auth نیست. تابع باید access_token معتبر همان پروژه را برگرداند.');
-      cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:'student',profile:null,username};
       const profile=await loadCloudProfile(auth.access_token,user.id);
       if(profile.role!=='student'&&profile.role!=='teacher')throw new Error('این حساب نقش دانش‌آموز یا معلم ندارد.');
-      cloudSession.profile=profile;cloudSession.studentViewAsTeacher=profile.role==='teacher';saveCloudSession();
-      try{await loadCourseSettings(true)}catch(settingsError){console.warn('Course settings could not be loaded for student view',settingsError)}
+      cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:profile.role,profile,username,studentViewAsTeacher:profile.role==='teacher'};
+      saveCloudSession();
       activeStudentName=username;activeUsername=username;
-      activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};saveProfileData(activeProfile);await loadStudentAvatar(profile.avatar_path);
+      activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};
+      saveProfileData(activeProfile);
+      studentProgress=loadStudentProgress(username);
+      renderStudentDashboard();
       $('studentPasswordInput').value='';
-      await loadStudentQuestionBank();
-      try{await refreshStudentProgressFromCloud()}catch(e){console.warn('Cloud progress read failed',e);studentProgress=loadStudentProgress(username);renderStudentDashboard()}
-      try{await loadOtherSubjectProgressFromCloud()}catch(e){console.warn('Cloud other-subject progress read failed',e)}
       const oldCard=document.querySelector('.student-identity-card');if(oldCard)oldCard.classList.remove('hidden');
-      setCloudStatus('ورود موفق بود؛ پاسخ‌هایت ثبت می‌شوند و پیشرفتت هنگام ورود از حساب آنلاین بازیابی می‌شود.');
-      startStudentPresenceHeartbeat();show('student');showStudentAppView('home');yareAppPushStudentRootHistory();
+      setCloudStatus('ورود موفق بود؛ اطلاعات تکمیلی در پس‌زمینه همگام‌سازی می‌شود.');
+      startStudentPresenceHeartbeat();
+      show('student');showStudentAppView('home');yareAppPushStudentRootHistory();
+
+      const loginUserId=user.id;
+      yareCloudWarmupActive=true;yareCloudWarmupUserId=loginUserId;
+      void (async()=>{
+        const isCurrentLogin=()=>cloudSession?.user?.id===loginUserId&&cloudSession?.username===username;
+        try{
+          const settingsTask=loadCourseSettings(true).catch(settingsError=>{console.warn('Course settings could not be loaded for student view',settingsError)});
+          const avatarTask=loadStudentAvatar(profile.avatar_path).catch(avatarError=>{console.warn('Student avatar could not be loaded',avatarError)});
+          await settingsTask;
+          if(!isCurrentLogin())return;
+          let bankLoaded=true;
+          try{await loadStudentQuestionBank()}catch(bankError){bankLoaded=false;console.warn('Student question bank could not be loaded after login',bankError)}
+          if(!isCurrentLogin())return;
+          const syncResults=await Promise.allSettled([
+            refreshStudentProgressFromCloud(),
+            loadOtherSubjectProgressFromCloud(),
+            avatarTask
+          ]);
+          if(!isCurrentLogin())return;
+          if(syncResults[0].status==='rejected'){console.warn('Cloud progress read failed',syncResults[0].reason);studentProgress=loadStudentProgress(username);renderStudentDashboard()}
+          if(syncResults[1].status==='rejected')console.warn('Cloud other-subject progress read failed',syncResults[1].reason);
+          if(!bankLoaded)console.warn('Student login completed, but the server question bank did not load.');
+          setCloudStatus('ورود موفق بود؛ همگام‌سازی اطلاعات انجام شد و هنگام اتصال اینترنت، بخش‌های باز به‌طور خودکار تازه می‌شوند.');
+        }catch(warmupError){console.warn('Student post-login sync failed',warmupError)}
+        finally{if(yareCloudWarmupUserId===loginUserId){yareCloudWarmupActive=false;yareCloudWarmupUserId=null}}
+      })();
     }catch(e){clearCloudSession(false);err.textContent=friendlyAuthError(e);err.classList.remove('hidden')}
     finally{cloudBusy=false;setBusy($('studentLoginConfirm'),false)}
   }
@@ -4083,8 +4111,20 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       if(profile.role!=='teacher')throw new Error('این حساب در جدول yare_profiles نقش معلم ندارد.');
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user:auth.user,role:'teacher',profile};saveCloudSession();
       $('teacherPassword').value='';show('teacher');yareTeacherShowSectionMenu();
-      setCloudStatus('ورود معلم تأیید شد. اطلاعات گزارش از پایگاه دادهٔ Supabase خوانده می‌شود.');
-      await loadCourseSettings(true);await loadTeacherReport();await loadTeacherQuestionBank();populateAssignmentLessons();await previewSelectedVideo();
+      setCloudStatus('ورود معلم تأیید شد؛ اطلاعات تکمیلی در پس‌زمینه بارگیری می‌شود.');
+      const loginUserId=auth.user.id;
+      void (async()=>{
+        const isCurrentLogin=()=>cloudSession?.user?.id===loginUserId&&cloudSession?.role==='teacher';
+        try{
+          await Promise.allSettled([
+            loadCourseSettings(true),
+            loadTeacherQuestionBank()
+          ]);
+          if(!isCurrentLogin())return;
+          populateAssignmentLessons();
+          setCloudStatus('ورود معلم موفق بود؛ گزارش‌ها هنگام باز کردن بخش مربوط به‌روزرسانی می‌شوند.');
+        }catch(backgroundError){console.warn('Teacher post-login sync failed',backgroundError)}
+      })();
     }catch(e){clearCloudSession(false);alert('ورود معلم انجام نشد: '+friendlyAuthError(e))}
     finally{cloudBusy=false;setBusy($('demoTeacherLogin'),false)}
   }
@@ -8550,20 +8590,92 @@ const persianBookPageMap={
   }
   window.__renderAllBooksProgressDashboard=()=>renderProfileProgressChart('allBooksProgressMount',false);
 
+  // Refresh only the active, safe-to-refresh screen; avoid interrupting editors or practice sessions.
+  let yareCloudSyncBusy=false;
+  const yareCloudSyncLastAt=new Map();
+  async function yareSyncActiveCloudView(force=false){
+    if(!navigator.onLine||document.visibilityState!=='visible'||!cloudSession?.access_token||yareCloudWarmupActive||yareCloudSyncBusy||cloudSession.studentViewAsTeacher)return;
+    const focused=document.activeElement;
+    if(focused&&focused.matches('input,textarea,select,[contenteditable="true"]'))return;
+    let key='',interval=60000,task=null;
+    if(cloudSession.role==='teacher'&&!$('teacher')?.classList.contains('hidden')){
+      const pane=document.querySelector('#teacher .tabpane.active');
+      const tab=pane?.id?.replace(/^tab-/,'')||'';
+      if(!tab)return;
+      key='teacher:'+tab;
+      if(['overview','results','reports'].includes(tab)){interval=120000;task=()=>loadTeacherReport()}
+      else if(tab==='students'){task=()=>loadStudentAccounts()}
+      else if(tab==='assignments'){task=()=>loadTeacherAssignments()}
+      else if(tab==='evaluations'){
+        const editor=$('teacherEvaluationEditor');
+        if(editor&&!editor.classList.contains('hidden'))return;
+        task=()=>loadTeacherEvaluations(false);
+      }else if(tab==='questions'){
+        const editor=$('teacherQuestionEditor');
+        if(editor&&!editor.classList.contains('hidden'))return;
+        interval=120000;task=()=>loadTeacherQuestionBank();
+      }
+      // The presence panel already has its own 30-second refresh timer.
+      else return;
+    }else if(cloudSession.role==='student'&&!$('student')?.classList.contains('hidden')){
+      const view=document.querySelector('#studentAppNav [data-app-view].active')?.dataset.appView||'home';
+      key='student:'+view;
+      if(['home','subjects','reminders'].includes(view)){
+        interval=120000;
+        task=async()=>{await loadCourseSettings(true);await loadStudentQuestionBank()};
+      }else if(view==='report'){task=async()=>{loadStudentMonthlyEvaluationReport()}}
+      else if(view==='profile'){
+        interval=120000;
+        task=async()=>{
+          const results=await Promise.allSettled([refreshStudentProgressFromCloud(),loadOtherSubjectProgressFromCloud()]);
+          if(cloudSession?.role==='student'&&!cloudSession.studentViewAsTeacher){renderStudentDashboard();renderProfileProgressChart()}
+          results.forEach(result=>{if(result.status==='rejected')console.warn('Automatic student progress sync failed',result.reason)});
+        };
+      }else return;
+    }else return;
+    const now=Date.now(),last=yareCloudSyncLastAt.get(key)||0;
+    if(!force&&now-last<interval)return;
+    yareCloudSyncLastAt.set(key,now);
+    yareCloudSyncBusy=true;
+    try{await task()}catch(syncError){console.warn('Automatic cloud sync failed',syncError)}
+    finally{yareCloudSyncBusy=false}
+  }
+  window.addEventListener('online',()=>{void yareSyncActiveCloudView(true)});
+  window.addEventListener('focus',()=>{void yareSyncActiveCloudView(false)});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void yareSyncActiveCloudView(false)});
+  window.setInterval(()=>{void yareSyncActiveCloudView(false)},30000);
+
 })();
 
 if('serviceWorker' in navigator){
   let refreshingForWorkerUpdate=false;
+  let yareSwRegistration=null;
+  let yareSwCheckBusy=false;
   navigator.serviceWorker.addEventListener('controllerchange',()=>{
     if(refreshingForWorkerUpdate)return;
     refreshingForWorkerUpdate=true;
     window.location.reload();
   });
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js?v=20261023-v97',{updateViaCache:'none'})
-      .then(registration=>registration.update().catch(()=>{}))
-      .catch(err=>console.warn('PWA service worker registration failed',err));
-  });
+  async function yareCheckForAppUpdate(){
+    if(!navigator.onLine||yareSwCheckBusy)return;
+    yareSwCheckBusy=true;
+    try{
+      yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
+      if(!yareSwRegistration){
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261024-auto-v104',{updateViaCache:'none'});
+      }else if(!yareSwRegistration.active){
+        await yareSwRegistration.update();
+      }else{
+        await yareSwRegistration.update();
+      }
+    }catch(err){console.warn('PWA update check failed',err)}
+    finally{yareSwCheckBusy=false}
+  }
+  window.addEventListener('load',()=>{void yareCheckForAppUpdate()});
+  window.addEventListener('online',()=>{void yareCheckForAppUpdate()});
+  window.addEventListener('focus',()=>{void yareCheckForAppUpdate()});
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void yareCheckForAppUpdate()});
+  window.setInterval(()=>{if(document.visibilityState==='visible')void yareCheckForAppUpdate()},180000);
 }
 
 /* ماشین سه‌عملیاتی داخل خود برنامه؛ هیچ فایل یا سرویس جداگانه‌ای را دریافت نمی‌کند. */
