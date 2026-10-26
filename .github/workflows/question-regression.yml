@@ -47,7 +47,7 @@ jobs:
               cp assets/book-pages/"$subject"/page-*.webp assets/book-pages/"$subject"/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/$subject/"
             fi
           done
-          cp sw.js manifest.webmanifest "$RUNNER_TEMP/quiz-site/"
+          cp offline.js sw.js manifest.webmanifest "$RUNNER_TEMP/quiz-site/"
       - name: Run browser checks
         run: |
           cd "$RUNNER_TEMP/quiz-site"
