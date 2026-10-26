@@ -15,10 +15,6 @@
   let fouramiOfflineRecord=null;
   let fouramiOfflineSaveChain=Promise.resolve();
   let fouramiOfflineSyncInProgress=false;
-  const FOURAMI_OFFLINE_BOOK_CACHE='fourami-book-pages-v1';
-  const FOURAMI_BOOK_SUBJECTS=['math','persian','science','social','gifts','quran'];
-  let fouramiOfflineAssetPreloadPromise=null;
-  let fouramiOfflinePersistentStorageGranted=false;
   if(!Array.isArray(window.cloudBankRows))window.cloudBankRows=[];
   // Clone JSON-compatible app data without depending on a helper from index.html.
   function fouramiClone(value){
@@ -421,7 +417,7 @@
     onlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';
     onlineColumn.appendChild(onlineTitle);
     const offlineDescription=panel.querySelector('h3 + p');
-    if(offlineDescription){offlineDescription.textContent='فقط با نام کاربری و PIN ذخیره‌شده روی همین دستگاه.';offlineDescription.style.cssText='font-size:10px;line-height:1.3;margin:6px 0 0;';}
+    if(offlineDescription){offlineDescription.textContent='ورود با نام کاربری و PIN ذخیره‌شده روی همین دستگاه. در حالت آفلاین، تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌ها فعال می‌مانند.';offlineDescription.style.cssText='font-size:10px;line-height:1.45;margin:6px 0 0;';}
     const offlineTitle=panel.querySelector('h3');
     if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;'}
     panel.classList.add('fourami-login-offline-column');
@@ -471,13 +467,7 @@
     const passwordLabel=document.querySelector('label[for="studentPasswordInput"]');
     if(passwordLabel)passwordLabel.style.cssText='display:block;min-height:18px;line-height:18px;margin:0;font-size:12px;';
     onlineButton.style.cssText='display:block;width:100%;min-height:38px;box-sizing:border-box;margin-top:auto;padding:8px 4px;font-size:12px;white-space:normal;';
-    const assetStatus=document.createElement('p');
-    assetStatus.id='fouramiOfflineAssetsStatus';
-    assetStatus.className='muted';
-    assetStatus.setAttribute('role','status');
-    assetStatus.style.cssText='font-size:11px;line-height:1.4;margin:8px 0 0;overflow-wrap:anywhere;';
-    assetStatus.textContent='هنگام استفادهٔ آنلاین، تصاویر کتاب‌ها به‌تدریج برای استفادهٔ آفلاین ذخیره می‌شوند.';
-    layout.append(columns,assetStatus);
+    layout.append(columns);
     columns.append(onlineColumn,panel);
     if(insertBefore.parentElement===host)host.insertBefore(layout,insertBefore);
     else host.prepend(layout);
@@ -494,232 +484,11 @@
       if(!oldParent.querySelector('input,button,select,textarea')&&!oldParent.textContent.trim()&&!oldParent.children.length)oldParent.remove();
     }
   }
-  function updateOfflineAssetsStatus(message,isError=false){
-    const status=$offline('fouramiOfflineAssetsStatus');
-    if(!status)return;
-    status.textContent=message;
-    status.style.color=isError?'#b3263c':'';
-  }
-  const fouramiOfflineImageCacheJobs=new Map();
-  function getFouramiBookImageUrl(rawUrl){
-    try{
-      const url=new URL(rawUrl,document.baseURI);
-      if(url.origin!==location.origin||!url.pathname.includes('/assets/book-pages/')||!/\.webp$/i.test(url.pathname))return null;
-      return url;
-    }catch{return null}
-  }
-  async function cacheFouramiBookImage(rawUrl){
-    const url=getFouramiBookImageUrl(rawUrl);
-    if(!url||!('caches' in window))return false;
-    const key=url.href;
-    if(fouramiOfflineImageCacheJobs.has(key))return fouramiOfflineImageCacheJobs.get(key);
-    const job=(async()=>{
-      const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
-      if(await cache.match(url.href,{ignoreSearch:true}))return true;
-      if(!navigator.onLine)return false;
-      const response=await fetch(url.href,{cache:'force-cache'});
-      if(!response.ok)throw new Error('HTTP '+response.status);
-      await cache.put(url.href,response.clone());
-      return true;
-    })().catch(error=>{
-      console.warn('Could not keep this textbook image for offline use',url.pathname,error);
-      return false;
-    }).finally(()=>fouramiOfflineImageCacheJobs.delete(key));
-    fouramiOfflineImageCacheJobs.set(key,job);
-    return job;
-  }
-  async function restoreFouramiBookImageFromCache(image){
-    if(!image||image.dataset.fouramiOfflineRestore==='checking'||image.dataset.fouramiOfflineRestore==='done')return;
-    const url=getFouramiBookImageUrl(image.currentSrc||image.src);
-    if(!url)return;
-    image.dataset.fouramiOfflineRestore='checking';
-    try{
-      const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
-      const saved=await cache.match(url.href,{ignoreSearch:true})||await caches.match(url.href,{ignoreSearch:true});
-      if(!saved){image.dataset.fouramiOfflineRestore='missing';return}
-      const blob=await saved.blob();
-      const objectUrl=URL.createObjectURL(blob);
-      const previous=image.dataset.fouramiOfflineObjectUrl;
-      if(previous)URL.revokeObjectURL(previous);
-      image.dataset.fouramiOfflineObjectUrl=objectUrl;
-      image.dataset.fouramiOfflineRestore='done';
-      image.src=objectUrl;
-    }catch(error){
-      image.dataset.fouramiOfflineRestore='missing';
-      console.warn('Could not restore a textbook page from offline storage',url.pathname,error);
-    }
-  }
-  function setupFouramiOfflineBookImageCache(){
-    if(window.__fouramiOfflineBookImageCacheReady)return;
-    window.__fouramiOfflineBookImageCacheReady=true;
-    document.addEventListener('load',event=>{
-      const image=event.target;
-      if(image instanceof HTMLImageElement&&image.naturalWidth>0)void cacheFouramiBookImage(image.currentSrc||image.src);
-    },true);
-    document.addEventListener('error',event=>{
-      const image=event.target;
-      if(image instanceof HTMLImageElement)void restoreFouramiBookImageFromCache(image);
-    },true);
-    document.querySelectorAll('img').forEach(image=>{
-      if(image.complete&&image.naturalWidth>0)void cacheFouramiBookImage(image.currentSrc||image.src);
-    });
-  }
-  function markFouramiPersistentStorageGranted(){
-    fouramiOfflinePersistentStorageGranted=true;
-    const status=$offline('fouramiOfflineAssetsStatus');
-    if(status)status.textContent=status.textContent.replace('هشدار: مرورگر ذخیره‌سازی پایدار را تأیید نکرد؛ ممکن است در شرایط کمبود فضا داده‌های سایت را پاک کند.','ذخیره‌سازی پایدار مرورگر فعال است.');
-  }
-  function requestFouramiPersistentStorageFromGesture(){
-    try{
-      if(!navigator.storage||typeof navigator.storage.persist!=='function')return;
-      void navigator.storage.persist().then(granted=>{
-        if(granted)markFouramiPersistentStorageGranted();
-      }).catch(error=>console.warn('Persistent storage request was denied',error));
-    }catch(error){
-      console.warn('Persistent storage request is unavailable',error);
-    }
-  }
-  async function ensureFouramiPersistentStorage(){
-    try{
-      if(!navigator.storage)return false;
-      if(typeof navigator.storage.persisted==='function'&&await navigator.storage.persisted()){
-        markFouramiPersistentStorageGranted();
-        return true;
-      }
-      if(typeof navigator.storage.persist==='function'&&await navigator.storage.persist()){
-        markFouramiPersistentStorageGranted();
-        return true;
-      }
-    }catch(error){
-      console.warn('Persistent browser storage could not be requested',error);
-    }
-    fouramiOfflinePersistentStorageGranted=false;
-    return false;
-  }
-  async function auditFouramiOfflineBookCache(){
-    try{
-      const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
-      const requests=await cache.keys();
-      const images=requests.filter(request=>{
-        const url=new URL(request.url);
-        return url.pathname.includes('/assets/book-pages/')&&/\.webp$/i.test(url.pathname);
-      }).length;
-      let persistent=false;
-      try{persistent=!!(navigator.storage&&typeof navigator.storage.persisted==='function'&&await navigator.storage.persisted())}catch{}
-      return {images,entries:requests.length,persistent};
-    }catch(error){
-      return {images:0,entries:0,persistent:false,error:String(error)};
-    }
-  }
-  async function preloadOfflineBookAssets(){
-    if(!navigator.onLine||!('caches' in window)||fouramiOfflineAssetPreloadPromise)return fouramiOfflineAssetPreloadPromise;
-    fouramiOfflineAssetPreloadPromise=(async()=>{
-      const persistentStorageGranted=await ensureFouramiPersistentStorage();
-      const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
-      updateOfflineAssetsStatus('در حال بررسی صفحات کتاب‌ها برای ذخیرهٔ آفلاین…');
-      const paths=new Set([
-        './manifest.webmanifest',
-        './icons/app-icon-2.png',
-        './assets/source-question-banks.json.gz.b64',
-        './assets/persian-vocabulary.json.gz.b64',
-        './assets/math-fourth.pdf',
-        './assets/books/persian-pages.pdf'
-      ]);
-      const manifestFailures=[];
-      for(const subject of FOURAMI_BOOK_SUBJECTS){
-        const relative='./assets/book-pages/'+subject+'/page-map.json';
-        const url=new URL(relative,document.baseURI).href;
-        try{
-          let response=await cache.match(url,{ignoreSearch:true});
-          if(!response){
-            response=await fetch(url);
-            if(!response.ok)throw new Error('HTTP '+response.status);
-            await cache.put(url,response.clone());
-          }
-          const manifest=await response.json();
-          const lessons=manifest&&manifest.lessons&&typeof manifest.lessons==='object'?Object.values(manifest.lessons):Object.values(manifest||{}).filter(value=>value&&typeof value==='object'&&('printedStart' in value)&&('printedEnd' in value));
-          const pages=new Set();
-          for(const lesson of lessons){
-            const first=Number(lesson?.printedStart),last=Number(lesson?.printedEnd);
-            if(!Number.isInteger(first)||!Number.isInteger(last)||first<1||last<first||last>999)continue;
-            for(let page=first;page<=last;page++)pages.add(page);
-          }
-          paths.add(relative);
-          for(const page of pages)paths.add('./assets/book-pages/'+subject+'/page-'+String(page).padStart(3,'0')+'.webp');
-        }catch(error){
-          manifestFailures.push(relative);
-          console.warn('Could not prepare offline textbook manifest',subject,error);
-        }
-      }
-      const urls=[...paths].map(path=>new URL(path,document.baseURI).href);
-      let next=0,completed=0,downloadedThisRun=0,reusedFromCache=0;
-      const failed=[];
-      const worker=async()=>{
-        while(true){
-          const index=next++;
-          if(index>=urls.length)return;
-          const url=urls[index];
-          try{
-            let response=await cache.match(url,{ignoreSearch:true});
-            if(!response){
-              let lastError=null;
-              for(let attempt=0;attempt<3&&!response;attempt++){
-                try{
-                  const fetched=await fetch(url);
-                  if(!fetched.ok)throw new Error('HTTP '+fetched.status);
-                  response=fetched;
-                }catch(error){
-                  lastError=error;
-                  if(attempt<2)await new Promise(resolve=>setTimeout(resolve,500*(attempt+1)));
-                }
-              }
-              if(!response)throw lastError||new Error('Network request failed');
-              await cache.put(url,response.clone());
-              downloadedThisRun++;
-            }else{
-              reusedFromCache++;
-            }
-          }catch(error){
-            failed.push(url);
-            console.warn('Could not cache offline textbook asset',url,error);
-          }
-          completed++;
-          if(completed===urls.length||completed%6===0){
-            updateOfflineAssetsStatus('در حال ذخیرهٔ صفحه‌ها و فایل‌های کتاب برای استفادهٔ آفلاین: '+completed.toLocaleString('fa-IR')+' از '+urls.length.toLocaleString('fa-IR'));
-          }
-          await new Promise(resolve=>setTimeout(resolve,90));
-        }
-      };
-      updateOfflineAssetsStatus('در حال آماده‌سازی صفحه‌های کتاب برای آفلاین… بارگیری اولیه حدود ۶۰ مگابایت است.');
-      await Promise.all(Array.from({length:2},()=>worker()));
-      const missingAfterDownload=[];
-      for(const url of urls){
-        try{if(!await cache.match(url,{ignoreSearch:true}))missingAfterDownload.push(url)}catch{missingAfterDownload.push(url)}
-      }
-      const failures=[...new Set([...manifestFailures.map(path=>new URL(path,document.baseURI).href),...failed,...missingAfterDownload])];
-      const storagePersistedAtEnd=persistentStorageGranted||fouramiOfflinePersistentStorageGranted;
-      const persistenceMessage=storagePersistedAtEnd
-        ?'ذخیره‌سازی پایدار مرورگر فعال است.'
-        :'هشدار: مرورگر ذخیره‌سازی پایدار را تأیید نکرد؛ ممکن است در شرایط کمبود فضا داده‌های سایت را پاک کند.';
-      if(failures.length){
-        updateOfflineAssetsStatus('ذخیرهٔ آفلاین کامل نشد؛ '+failures.length.toLocaleString('fa-IR')+' فایل واقعاً در حافظه پیدا نشد. با اتصال اینترنت دوباره تلاش می‌شود. '+persistenceMessage,true);
-      }else{
-        updateOfflineAssetsStatus('تأیید شد: '+urls.filter(url=>url.includes('/assets/book-pages/')&&url.endsWith('.webp')).length.toLocaleString('fa-IR')+' تصویر کتاب و فایل‌های لازم در ذخیره‌سازی محلی این دستگاه وجود دارند. این نوبت '+downloadedThisRun.toLocaleString('fa-IR')+' فایل تازه ذخیره شد و '+reusedFromCache.toLocaleString('fa-IR')+' فایل از حافظهٔ قبلی استفاده شد. '+persistenceMessage);
-      }
-      return {total:urls.length,failed:failures.length,downloaded:downloadedThisRun,reused:reusedFromCache,persistentStorageGranted:storagePersistedAtEnd};
-    })().catch(error=>{
-      updateOfflineAssetsStatus('ذخیرهٔ آفلاین فعلاً انجام نشد؛ اتصال اینترنت را بررسی کن و دوباره برنامه را باز کن.',true);
-      console.warn('Offline textbook preloading failed',error);
-      return {total:0,failed:1};
-    }).finally(()=>{fouramiOfflineAssetPreloadPromise=null});
-    return fouramiOfflineAssetPreloadPromise;
-  }
-
   function addOfflineLoginUi(){
     const onlineButton=$offline('studentLoginConfirm');
     if(!onlineButton||$offline('fouramiOfflineLoginPanel'))return;
     const panel=document.createElement('section');panel.id='fouramiOfflineLoginPanel';panel.className='item';panel.style.marginTop='12px';
-    panel.innerHTML='<h3 style="margin-top:0">📴 ورود بدون اینترنت</h3><p class="muted">فقط برای حسابی که قبلاً روی همین گوشی حالت آفلاین آن فعال شده است.</p><label class="field" for="fouramiOfflinePinLogin">PIN آفلاین</label><input id="fouramiOfflinePinLogin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN عددی"><button type="button" id="fouramiOfflineLoginButton" class="outline" style="width:100%;margin-top:10px">ورود با PIN آفلاین</button><p id="fouramiOfflineLoginStatus" class="muted" role="status"></p>';
+    panel.innerHTML='<h3 style="margin-top:0">📴 ورود بدون اینترنت</h3><p class="muted">در حالت آفلاین، تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌ها همچنان فعال‌اند.</p><label class="field" for="fouramiOfflinePinLogin">PIN آفلاین</label><input id="fouramiOfflinePinLogin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN عددی"><button type="button" id="fouramiOfflineLoginButton" class="outline" style="width:100%;margin-top:10px">ورود با PIN آفلاین</button><p id="fouramiOfflineLoginStatus" class="muted" role="status"></p>';
     onlineButton.insertAdjacentElement('afterend',panel);
     $offline('fouramiOfflinePinLogin').addEventListener('input',e=>{e.target.value=fouramiNormalizePin(e.target.value).slice(0,12)});
     $offline('fouramiOfflineLoginButton').addEventListener('click',loginWithOfflinePin);
@@ -738,10 +507,7 @@
     const banner=$offline('fouramiOfflineSessionBanner');if(banner)banner.classList.add('hidden');
   }
   function init(){
-    setupFouramiOfflineBookImageCache();
-    document.addEventListener('pointerdown',()=>{if(navigator.onLine)requestFouramiPersistentStorageFromGesture()},{once:true,capture:true,passive:true});
     addOfflineLoginUi();addOfflineSessionBanner();setupOfflinePackagePanel();
-    if(navigator.onLine)void preloadOfflineBookAssets();
     const profileNav=document.querySelector('[data-app-view="profile"]');
     if(profileNav)profileNav.addEventListener('click',()=>setTimeout(()=>{void refreshOfflineProfilePanel()},0));
     const studentEnter=$offline('studentEnter');
@@ -761,14 +527,12 @@
       }
       if(originalStudentBack)originalStudentBack.call(this);
     };
-    window.addEventListener('online',()=>{if(fouramiOfflineData&&cloudSession?.profile?.role==='student')void syncPending();void preloadOfflineBookAssets()});
-    window.addEventListener('focus',()=>{if(fouramiOfflineData&&cloudSession?.profile?.role==='student'&&navigator.onLine)void syncPending();if(navigator.onLine)void preloadOfflineBookAssets()});
-    document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&navigator.onLine)void preloadOfflineBookAssets()});
+    window.addEventListener('online',()=>{if(fouramiOfflineData&&cloudSession?.profile?.role==='student')void syncPending()});
+    window.addEventListener('focus',()=>{if(fouramiOfflineData&&cloudSession?.profile?.role==='student'&&navigator.onLine)void syncPending()});
   }
   window.__fouramiOfflineMode={
     sync:syncPending,refreshProfile:refreshOfflineProfilePanel,savePackage,captureCurrentSession,
-    queueMathAttempt,queueSubjectProgress,clearIfDifferent,resetUnlockedPackage,
-    preloadBookAssets:preloadOfflineBookAssets,auditBookCache:auditFouramiOfflineBookCache
+    queueMathAttempt,queueSubjectProgress,clearIfDifferent,resetUnlockedPackage
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
