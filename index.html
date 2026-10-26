@@ -3576,7 +3576,17 @@ function startBookExam(mode='annual'){
  paintExamQuestion();
 }
 function paintExamQuestion(){examSelectedAnswer=null;examAnswered=false;const q=examItems[examIndex];if(!q){paintMathQuestionVisual(null,$('examQuestionVisualAid'));finishBookExam();return}$('examProgress').textContent=`${(examIndex+1).toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent=`فصل ${q.chapter} · ${questionTypeLabel(q)} · ${q.q}`;paintMathQuestionVisual(q,$('examQuestionVisualAid'));$('examAnswer').value='';$('examAnswer').disabled=false;renderAnswerControls(q,'examOptions','examAnswer','examChoice',v=>examSelectedAnswer=v);$('examFeedback').classList.add('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ'}
-function finishBookExam(){paintMathQuestionVisual(null,$('examQuestionVisualAid'));const score=Math.round((examScore/Math.max(1,examItems.length))*20);const level=score>=17?'خیلی خوب':score>=13?'خوب':score>=10?'قابل قبول':'نیاز به تلاش';$('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent='🏁 آزمون به پایان رسید!';$('examOptions').innerHTML='';$('examAnswer').classList.add('hidden');$('examFeedback').classList.add('hidden');$('examSubmit').classList.add('hidden');$('examResult').classList.remove('hidden');const examName=examMode==='term1'?'نوبت اول':examMode==='term2'?'نوبت دوم':String(examMode).startsWith('chapter:')?`آزمون فصل ${faDigits(String(examMode).split(':')[1])}`:'آزمون تمرینی سالانه';$('examResult').innerHTML=`<b>${examName} به پایان رسید.</b><p>پاسخ درست: <strong>${examScore.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}</strong></p><p>نمرهٔ معادل از ۲۰: <strong>${score.toLocaleString('fa-IR')} از ۲۰</strong></p><p>سطح عملکرد: <strong>${level}</strong></p>${window.__fouramiOfflineExamPending?'<p role="status">این نمره موقت است؛ پس از اتصال و همگام‌سازی پاسخ‌های ذخیره‌شده، نمره دوباره محاسبه می‌شود.</p>':''}<p>برای تقویت مهارت‌ها، از بخش آموزش و تمرین فصل‌هایی را که نیاز به مرور دارند دوباره انجام بده.</p>`;$('examQuestionBox').classList.remove('hidden')}
+function finishBookExam(){
+ if(cloudSession?.offline&&fouramiOfflineData?.pendingAttempts?.some(item=>item.attemptGroup===currentCloudAttemptGroup&&String(item.source||'').startsWith('exam:'))){
+  paintMathQuestionVisual(null,$('examQuestionVisualAid'));
+  $('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;
+  $('examQuestion').textContent='🏁 پاسخ‌های آزمون ذخیره شدند';
+  $('examOptions').innerHTML='';$('examAnswer').classList.add('hidden');$('examFeedback').classList.add('hidden');$('examSubmit').classList.add('hidden');$('examResult').classList.remove('hidden');
+  $('examResult').innerHTML='<b>پاسخ‌های آزمون روی همین دستگاه ذخیره شدند.</b><p>برای دیدن نمره، اینترنت را وصل کن تا پاسخ‌ها بررسی و همگام شوند.</p>';
+  $('examQuestionBox').classList.remove('hidden');
+  return;
+ }
+ paintMathQuestionVisual(null,$('examQuestionVisualAid'));const score=Math.round((examScore/Math.max(1,examItems.length))*20);const level=score>=17?'خیلی خوب':score>=13?'خوب':score>=10?'قابل قبول':'نیاز به تلاش';$('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent='🏁 آزمون به پایان رسید!';$('examOptions').innerHTML='';$('examAnswer').classList.add('hidden');$('examFeedback').classList.add('hidden');$('examSubmit').classList.add('hidden');$('examResult').classList.remove('hidden');const examName=examMode==='term1'?'نوبت اول':examMode==='term2'?'نوبت دوم':String(examMode).startsWith('chapter:')?`آزمون فصل ${faDigits(String(examMode).split(':')[1])}`:'آزمون تمرینی سالانه';$('examResult').innerHTML=`<b>${examName} به پایان رسید.</b><p>پاسخ درست: <strong>${examScore.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}</strong></p><p>نمرهٔ معادل از ۲۰: <strong>${score.toLocaleString('fa-IR')} از ۲۰</strong></p><p>سطح عملکرد: <strong>${level}</strong></p><p>برای تقویت مهارت‌ها، از بخش آموزش و تمرین فصل‌هایی را که نیاز به مرور دارند دوباره انجام بده.</p>`;$('examQuestionBox').classList.remove('hidden')}
 $('startBookExam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('annual')};
 $('startTerm1Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term1')};
 $('startTerm2Exam').onclick=()=>{$('examSubmit').classList.remove('hidden');startBookExam('term2')};
@@ -3672,8 +3682,19 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   });
   function progressKey(name){return STORAGE_P+normalizeAnswer(name)}
   function practiceHistoryKey(q){const id=String(q?.id??'').trim();if(id)return 'id:'+id;const text=normalizeAnswer(q?.q||q?.prompt||q?.question||'');return text?'text:'+text:''}
-  function loadStudentProgress(name){return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}})}
-  function storeStudentProgress(){if(activeStudentName)localWrite(progressKey(activeStudentName),studentProgress)}
+  function loadStudentProgress(name){
+    if(fouramiOfflineData?.studentId===cloudSession?.user?.id&&fouramiOfflineData.studentProgress)return fouramiClone(fouramiOfflineData.studentProgress);
+    return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}});
+  }
+  function storeStudentProgress(){
+    if(!activeStudentName)return;
+    if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
+      fouramiOfflineData.studentProgress=fouramiClone(studentProgress);
+      fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline progress could not be saved',error));
+      return;
+    }
+    localWrite(progressKey(activeStudentName),studentProgress);
+  }
   function awardProgress(chapter,correct,question=null){
     studentProgress.attempts=(studentProgress.attempts||0)+1;
     if(correct){studentProgress.correct=(studentProgress.correct||0)+1;studentProgress.streak=(studentProgress.streak||0)+1;studentProgress.bestStreak=Math.max(studentProgress.bestStreak||0,studentProgress.streak)}else studentProgress.streak=0;
@@ -3893,6 +3914,18 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   const CLOUD_URL = 'https://fourami-api-fallback.vercel.app/api/supabase';
   const CLOUD_PUBLISHABLE_KEY = 'sb_publishable_x982WMiKCYpdV2EvH5PD2g__vRZuEkd';
   const CLOUD_SESSION_KEY = 'yare-math-auth-v1';
+  let fouramiOfflineData=null;
+  let fouramiOfflineKey=null;
+  let fouramiOfflineSalt=null;
+  let fouramiOfflineRecord=null;
+  let fouramiOfflineSaveChain=Promise.resolve();
+  let fouramiOfflineSyncInProgress=false;
+  function fouramiClone(value){return value==null?value:JSON.parse(JSON.stringify(value))}
+  function fouramiPersistEncryptedOfflinePackage(){return window.__fouramiOfflineMode&&typeof window.__fouramiOfflineMode.savePackage==='function'?window.__fouramiOfflineMode.savePackage():Promise.resolve()}
+  function fouramiSyncOfflineQueue(){return window.__fouramiOfflineMode&&typeof window.__fouramiOfflineMode.sync==='function'?window.__fouramiOfflineMode.sync():Promise.resolve()}
+  function fouramiQueueOfflineMath(q,response,source,groupId,clientAttemptId){if(!window.__fouramiOfflineMode||typeof window.__fouramiOfflineMode.queueMathAttempt!=='function')throw new Error('ذخیره‌سازی آفلاین آماده نیست؛ صفحه را دوباره باز کن.');return window.__fouramiOfflineMode.queueMathAttempt(q,response,source,groupId,clientAttemptId)}
+  function fouramiQueueOfflineSubject(payload){if(!window.__fouramiOfflineMode||typeof window.__fouramiOfflineMode.queueSubjectProgress!=='function')return Promise.resolve({synced:false,reason:'offline-mode-not-ready'});return window.__fouramiOfflineMode.queueSubjectProgress(payload)}
+  function fouramiClearUnlockedPackageIfDifferent(studentId){if(window.__fouramiOfflineMode&&typeof window.__fouramiOfflineMode.clearIfDifferent==='function')window.__fouramiOfflineMode.clearIfDifferent(studentId)}
   window.cloudSession = null;
   let cloudTeacherAttempts = [];
   let cloudAssignmentScores = [];
@@ -3923,13 +3956,21 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(response.status===401 && allowRefresh && cloudSession?.refresh_token && !path.includes('/auth/v1/token')){
       const refreshResponse=await fetch(CLOUD_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:cloudHeaders(null,{'Content-Type':'application/json'}),body:JSON.stringify({refresh_token:cloudSession.refresh_token}),cache:'no-store',credentials:'omit'});
       const refreshBody=await refreshResponse.json().catch(()=>({}));
-      if(refreshResponse.ok&&refreshBody.access_token){cloudSession={...cloudSession,access_token:refreshBody.access_token,refresh_token:refreshBody.refresh_token||cloudSession.refresh_token};saveCloudSession();return cloudFetch(path,options,false)}
-      clearCloudSession(false);
+      if(refreshResponse.ok&&refreshBody.access_token){
+        cloudSession={...cloudSession,access_token:refreshBody.access_token,refresh_token:refreshBody.refresh_token||cloudSession.refresh_token};
+        if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession.user?.id){
+          window.__fouramiOfflineMode?.captureCurrentSession?.();
+          await fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline session refresh could not be saved',error));
+        }
+        if(!cloudSession?.offline)saveCloudSession();
+        return cloudFetch(path,options,false)
+      }
+      if(!cloudSession?.offline)clearCloudSession(false);
     }
     if(!response.ok){const msg=typeof data==='object'&&data?(data.msg||data.message||data.error_description||data.error||data.details):data;throw new Error(msg||`خطای سرور (${response.status})`)}
     return data;
   }
-  function saveCloudSession(){if(!cloudSession)return;try{sessionStorage.setItem(CLOUD_SESSION_KEY,JSON.stringify(cloudSession))}catch{}}
+  function saveCloudSession(){if(!cloudSession)return;try{if(cloudSession.offline){sessionStorage.removeItem(CLOUD_SESSION_KEY);return}sessionStorage.setItem(CLOUD_SESSION_KEY,JSON.stringify(cloudSession))}catch{}}
   let studentPresenceTimer=null,studentPresenceListenersReady=false;
   async function pingStudentPresence(){
     if(!cloudSession||cloudSession.role!=='student'||cloudSession.studentViewAsTeacher||document.visibilityState==='hidden')return;
@@ -3946,6 +3987,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   function clearCloudSession(returnHome=true){
     cloudSession=null;try{sessionStorage.removeItem(CLOUD_SESSION_KEY)}catch{}
+    window.__fouramiOfflineMode?.resetUnlockedPackage?.();
     activeStudentName='';activeUsername='';activeProfile={};studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
     practiceAsked=0;practiceCorrect=0;practiceSeen.clear();currentPractice=null;selectedPracticeAnswer=null;practiceWasChecked=false;
     examItems=[];examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;currentCloudAttemptGroup=null;
@@ -4047,6 +4089,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const user=await authUserForToken(auth.access_token);
       if(!user?.id)throw new Error('توکن تابع student-login، نشست معتبر Supabase Auth نیست. تابع باید access_token معتبر همان پروژه را برگرداند.');
       const profile=await loadCloudProfile(auth.access_token,user.id);
+      fouramiClearUnlockedPackageIfDifferent(user.id);
       if(profile.role!=='student'&&profile.role!=='teacher')throw new Error('این حساب نقش دانش‌آموز یا معلم ندارد.');
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:'student',profile,username,studentViewAsTeacher:profile.role==='teacher'};
       saveCloudSession();
@@ -4101,6 +4144,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const auth=await cloudFetch('/auth/v1/token?grant_type=password',{method:'POST',token:null,body:{email,password}});
       if(!auth?.access_token||!auth?.user?.id)throw new Error('Supabase توکن معتبر برنگرداند.');
       const profile=await loadCloudProfile(auth.access_token,auth.user.id);
+      fouramiClearUnlockedPackageIfDifferent(auth.user.id);
       if(profile.role!=='teacher')throw new Error('این حساب در جدول yare_profiles نقش معلم ندارد.');
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user:auth.user,role:'teacher',profile};saveCloudSession();
       $('teacherPassword').value='';show('teacher');yareTeacherShowSectionMenu();
@@ -4799,15 +4843,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   async function submitServerAnswer(q,response,source,groupId=null){
     if(!cloudSession||!(cloudSession.role==='student'||(cloudSession.role==='teacher'&&cloudSession.studentViewAsTeacher)))throw new Error('ابتدا وارد حساب دانش‌آموز شو یا از پیش‌نمایش معلم استفاده کن.');
     if(!q?.id)throw new Error('شناسهٔ سؤال آنلاین موجود نیست؛ بانک سؤال را دوباره بارگذاری کن.');
-    const offlineMode=window.__fouramiOfflineMode;
-    if(cloudSession.offline||!navigator.onLine){
-      if(!offlineMode?.queueMathAttempt)throw new Error('حالت آفلاین این دستگاه فعال نیست. وقتی اینترنت وصل است، از پروفایل بستهٔ آفلاین را فعال کن.');
-      return await offlineMode.queueMathAttempt(q,response,source,groupId);
-    }
+    if(cloudSession.offline&&!navigator.onLine)return await fouramiQueueOfflineMath(q,response,source,groupId,null);
+    if(cloudSession.offline&&navigator.onLine)await fouramiSyncOfflineQueue();
+    const canQueue=!!(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession.user?.id);
+    const clientAttemptId=canQueue?crypto.randomUUID():null;
     try{
-      return await cloudFetch('/functions/v1/submit-practice-answer',{method:'POST',body:{question_id:q.id,submitted_answer:answerForServer(q,response),source,attempt_group:groupId}});
+      return await cloudFetch('/functions/v1/submit-practice-answer',{method:'POST',body:{question_id:q.id,submitted_answer:answerForServer(q,response),source,attempt_group:groupId,client_attempt_id:clientAttemptId}});
     }catch(error){
-      if(!navigator.onLine&&offlineMode?.queueMathAttempt)return await offlineMode.queueMathAttempt(q,response,source,groupId);
+      if(canQueue&&(!navigator.onLine||error instanceof TypeError))return await fouramiQueueOfflineMath(q,response,source,groupId,clientAttemptId);
       throw error;
     }
   }
@@ -4820,16 +4863,16 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     try{
       const mode=$('practiceSetMode')?.value||'chapter';const source=mode==='chapter'?'practice:chapter':`practice:${mode}`;
       const result=await submitServerAnswer(currentPractice,response,source,null);
-      if(result?.pendingOffline){
-        practiceWasChecked=true;practiceAsked++;
-        const f=$('bookPracticeFeedback');f.classList.remove('hidden');f.textContent='پاسخت به‌صورت رمزگذاری‌شده روی همین گوشی ذخیره شد. درست یا غلط بودن آن پس از اتصال اینترنت بررسی می‌شود.';
-        f.style.background='transparent';f.style.color='#72541a';
-        this.textContent='ذخیره شد؛ بررسی پس از اتصال';this.disabled=true;updatePracticeStats();
-        setCloudStatus('پاسخ آفلاین ذخیره شد؛ پس از اتصال اینترنت به‌صورت امن همگام‌سازی می‌شود.');
+      practiceWasChecked=true;practiceAsked++;
+      if(result.pendingOffline){
+        const f=$('bookPracticeFeedback');f.classList.remove('hidden');
+        f.innerHTML='<div class="notice" role="status"><b>🔒 پاسخ به‌صورت رمزگذاری‌شده ذخیره شد.</b><p>بعد از وصل شدن اینترنت، پاسخ بررسی و پیشرفتت همگام می‌شود.</p></div>';
+        this.textContent='🔒 پاسخ ذخیره شد';this.disabled=true;updatePracticeStats();
+        setCloudStatus('پاسخ تمرین روی همین دستگاه ذخیره شد و در انتظار همگام‌سازی است.');
         return;
       }
-      practiceWasChecked=true;practiceAsked++;if(result.correct)practiceCorrect++;
-      awardProgress(Number(currentPractice.chapter||$('bookPracticeTopic').value),!!result.correct);
+      if(result.correct)practiceCorrect++;
+      awardProgress(Number(currentPractice.chapter||$('bookPracticeTopic').value),!!result.correct,currentPractice);
       const f=$('bookPracticeFeedback');f.classList.remove('hidden');
        f.innerHTML=renderQuestionFeedback(currentPractice,!!result.correct,currentPractice.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(currentPractice)),result.explanation||currentPractice.why||'');
        f.style.background='transparent';f.style.color=result.correct?'#126a49':'#72541a';
@@ -4849,18 +4892,16 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       setBusy(this,true,'در حال ثبت پاسخ…');
       try{
         const result=await submitServerAnswer(q,response,`exam:${String(examMode).replace(/[^a-zA-Z0-9:_-]/g,'').slice(0,40)}`,currentCloudAttemptGroup);
-        if(result?.pendingOffline){
-          examAnswered=true;window.__fouramiOfflineExamPending=true;
-          const f=$('examFeedback');f.classList.remove('hidden');f.textContent='پاسخت به‌صورت رمزگذاری‌شده ذخیره شد. تصحیح و نمرهٔ نهایی پس از اتصال اینترنت انجام می‌شود.';
+        examAnswered=true;
+        const f=$('examFeedback');f.classList.remove('hidden');
+        if(result.pendingOffline){
+          f.innerHTML='<div class="notice" role="status"><b>🔒 پاسخ ذخیره شد.</b><p>نمره پس از وصل شدن اینترنت و بررسی پاسخ‌ها مشخص می‌شود.</p></div>';
           f.style.background='transparent';f.style.color='#ffcc7a';
-          $('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;
-          this.textContent=examIndex===examItems.length-1?'پایان آزمون (نمره موقت)':'رفتن به سؤال بعد';
-          setCloudStatus('پاسخ آزمون ذخیره شد؛ نمره تا زمان همگام‌سازی موقت است.');
-          return;
+        }else{
+          if(result.correct)examScore++;
+          awardProgress(Number(q.chapter||0),!!result.correct,q);
+          f.innerHTML=renderQuestionFeedback(q,!!result.correct,q.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(q)),result.explanation||q.why||q.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
         }
-        if(result.correct)examScore++;
-        examAnswered=true;awardProgress(Number(q.chapter||0),!!result.correct);
-        const f=$('examFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(q,!!result.correct,q.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(q)),result.explanation||q.why||q.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
         $('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;
         this.textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';
       }catch(e){alert('پاسخ آزمون ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ آزمون ناموفق بود: '+cloudMessage(e),true)}
@@ -5964,13 +6005,22 @@ loadExpandedPersianVocabulary();
   let selectedOtherSubject = null;
   let selectedOtherLesson = null;
   function otherProgressKey(){return 'yare-other-subject-progress-v1-'+String(cloudSession?.user?.id||activeUsername||'guest')}
-  function readOtherProgress(){try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}}
-  function writeOtherProgress(data){try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}try{if($('unifiedSubjectCards'))renderUnifiedLearningReport()}catch{}}
+  function readOtherProgress(){
+    if(fouramiOfflineData?.studentId===cloudSession?.user?.id)return fouramiClone(fouramiOfflineData.otherProgress||{});
+    try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}
+  }
+  function writeOtherProgress(data){
+    if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
+      fouramiOfflineData.otherProgress=fouramiClone(data);
+      fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline subject progress could not be saved',error));
+    }else{
+      try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}
+    }
+    try{if($('unifiedSubjectCards'))renderUnifiedLearningReport()}catch{}
+  }
   function isRealStudentSession(){return !!(cloudSession?.access_token&&cloudSession?.user?.id&&cloudSession.role==='student'&&cloudSession.profile?.role==='student'&&!cloudSession.studentViewAsTeacher)}
   async function saveSubjectPracticeProgress(record){
-    const offlineMode=window.__fouramiOfflineMode;
-    const isOfflineStudent=cloudSession?.role==='student'&&cloudSession?.profile?.role==='student'&&!cloudSession.studentViewAsTeacher;
-    if(!isRealStudentSession()&&!(isOfflineStudent&&(cloudSession?.offline||!navigator.onLine)))return {synced:false,reason:'no-student-session'};
+    if(!isRealStudentSession())return {synced:false,reason:'no-student-session'};
     const payload={
       student_id:cloudSession.user.id,
       class_id:cloudSession.profile?.class_id??null,
@@ -5987,19 +6037,16 @@ loadExpandedPersianVocabulary();
       metadata:record.metadata&&typeof record.metadata==='object'?record.metadata:{},
       updated_at:record.updated_at||new Date().toISOString()
     };
-    if(cloudSession?.offline||!navigator.onLine){
-      if(!isOfflineStudent||!offlineMode?.queueSubjectProgress)return {synced:false,reason:'offline-package-not-open'};
-      return await offlineMode.queueSubjectProgress(payload);
-    }
+    if(cloudSession?.offline&&!navigator.onLine)return await fouramiQueueOfflineSubject(payload);
     try{
       await cloudFetch('/rest/v1/yare_subject_practice_progress?on_conflict=student_id,subject,lesson_id,activity_key',{
         method:'POST',body:payload,headers:{Prefer:'resolution=merge-duplicates,return=minimal'}
       });
-      return {synced:true};
     }catch(error){
-      if(!navigator.onLine&&isOfflineStudent&&offlineMode?.queueSubjectProgress)return await offlineMode.queueSubjectProgress(payload);
+      if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id&&(!navigator.onLine||error instanceof TypeError))return await fouramiQueueOfflineSubject(payload);
       throw error;
     }
+    return {synced:true};
   }
   function rowToSubjectProgressKey(row){
     const q=String(row.activity_key||'').match(/^(?:quiz-|practice-tab-|exam-tab-)(\d+)$/);
@@ -9707,6 +9754,5 @@ function paintMathQuestionVisual(q,target){
 })();
 
 </script>
-<script src="./offline.js?v=20261026-offline-v1" defer></script>
-
+<script src="./offline.js"></script>
 </body></html>
