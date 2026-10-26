@@ -327,7 +327,7 @@
   async function loginWithOfflinePin(){
     const status=$offline('fouramiOfflineLoginStatus');
     try{
-      const username=String($offline('studentNameInput')?.value||'').trim();
+      const username=String($offline('fouramiOfflineUsernameInput')?.value||'').trim();
       const pin=fouramiNormalizePin($offline('fouramiOfflinePinLogin')?.value);
       if(!username)throw new Error('ابتدا نام کاربری دانش‌آموز را وارد کن.');
       if(!/^\d{6,12}$/.test(pin))throw new Error('PIN باید ۶ تا ۱۲ رقم باشد.');
@@ -399,8 +399,6 @@
     layout.id='fouramiUnifiedStudentLogin';
     layout.setAttribute('aria-label','ورود دانش‌آموز');
     layout.style.cssText='display:block;width:100%;box-sizing:border-box;margin:0;grid-column:1/-1;';
-    const userRow=document.createElement('div');
-    userRow.style.cssText='width:100%;min-width:0;box-sizing:border-box;margin:0 0 8px;';
     const columns=document.createElement('div');
     columns.id='fouramiUnifiedLoginColumns';
     columns.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch;width:100%;min-width:0;box-sizing:border-box;';
@@ -412,11 +410,30 @@
     onlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';
     onlineColumn.appendChild(onlineTitle);
     const offlineDescription=panel.querySelector('h3 + p');
-    if(offlineDescription){offlineDescription.textContent='فقط با PIN ذخیره‌شده روی همین دستگاه.';offlineDescription.style.cssText='font-size:10px;line-height:1.3;margin:0 0 6px;';}
+    if(offlineDescription){offlineDescription.textContent='نام کاربری و PIN این دستگاه را وارد کن.';offlineDescription.style.cssText='font-size:10px;line-height:1.3;margin:0 0 6px;';}
     const offlineTitle=panel.querySelector('h3');
-    if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';}
+    if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;'}
     panel.classList.add('fourami-login-offline-column');
     panel.style.cssText='margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
+    if(!$offline('fouramiOfflineUsernameInput')){
+      const offlineUsernameLabel=document.createElement('label');
+      offlineUsernameLabel.className='field';
+      offlineUsernameLabel.htmlFor='fouramiOfflineUsernameInput';
+      offlineUsernameLabel.textContent='نام کاربری آفلاین';
+      offlineUsernameLabel.style.cssText='display:block;font-size:12px;margin:0 0 5px;';
+      const offlineUsername=document.createElement('input');
+      offlineUsername.id='fouramiOfflineUsernameInput';
+      offlineUsername.type='text';
+      offlineUsername.autocomplete='username';
+      offlineUsername.inputMode='text';
+      offlineUsername.placeholder='نام کاربری دانش‌آموز';
+      offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
+      const pinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
+      panel.insertBefore(offlineUsernameLabel,pinLabel||panel.firstChild);
+      panel.insertBefore(offlineUsername, pinLabel||panel.firstChild);
+    }
+    const offlineUsername=$offline('fouramiOfflineUsernameInput');
+    if(offlineUsername)offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;margin:0 0 8px;';
     const offlinePinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
     const offlinePin=panel.querySelector('#fouramiOfflinePinLogin');
     const offlineButton=panel.querySelector('#fouramiOfflineLoginButton');
@@ -437,12 +454,12 @@
     assetStatus.className='muted';
     assetStatus.setAttribute('role','status');
     assetStatus.style.cssText='font-size:11px;line-height:1.4;margin:8px 0 0;overflow-wrap:anywhere;';
-    assetStatus.textContent='تصاویر کتاب‌ها پس از اتصال به اینترنت برای استفادهٔ آفلاین ذخیره می‌شوند.';
-    layout.append(userRow,columns,assetStatus);
+    assetStatus.textContent='هنگام استفادهٔ آنلاین، تصاویر کتاب‌ها به‌تدریج برای استفادهٔ آفلاین ذخیره می‌شوند.';
+    layout.append(columns,assetStatus);
     columns.append(onlineColumn,panel);
     if(insertBefore.parentElement===host)host.insertBefore(layout,insertBefore);
     else host.prepend(layout);
-    moveLoginField('studentNameInput',userRow);
+    moveLoginField('studentNameInput',onlineColumn);
     moveLoginField('studentPasswordInput',onlineColumn);
     onlineColumn.appendChild(onlineButton);
     const onlineStatus=$offline('studentLoginStatus')||$offline('studentLoginError');
@@ -578,6 +595,7 @@
         examItems=[];examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;currentCloudAttemptGroup=null;
         show('home');
         if($offline('studentNameInput'))$offline('studentNameInput').value='';
+        if($offline('fouramiOfflineUsernameInput'))$offline('fouramiOfflineUsernameInput').value='';
         if($offline('fouramiOfflinePinLogin'))$offline('fouramiOfflinePinLogin').value='';
         return;
       }
