@@ -1,4 +1,4 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v112';;;
+const CACHE_NAME = 'riazi4-pwa-shell-v113';;;
 const APP_SHELL = [
   './',
   './index.html',
@@ -48,10 +48,48 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  const isDedicatedOfflineAsset = url.pathname.includes('/assets/book-pages/') || url.pathname.endsWith('/assets/math-fourth.pdf') || url.pathname.endsWith('/assets/books/persian-pages.pdf');
+  const isOfflineAsset =
+    request.destination === 'image' ||
+    request.destination === 'audio' ||
+    url.pathname.includes('/assets/book-pages/') ||
+    url.pathname.endsWith('/assets/math-fourth.pdf') ||
+    url.pathname.endsWith('/assets/books/persian-pages.pdf') ||
+    url.pathname.endsWith('/assets/source-question-banks.json.gz.b64') ||
+    url.pathname.endsWith('/assets/persian-vocabulary.json.gz.b64');
+
+  if (isOfflineAsset) {
+    event.respondWith((async () => {
+      const offlineCache = await caches.open('fourami-book-pages-v1');
+      const saved = await offlineCache.match(request);
+      if (saved) return saved;
+
+      // Migrate any page/image previously saved in the older app-shell cache.
+      const legacySaved = await caches.match(request);
+      if (legacySaved) {
+        await offlineCache.put(request, legacySaved.clone()).catch(() => {});
+        return legacySaved;
+      }
+
+      try {
+        const response = await fetch(request);
+        if (response && response.ok && response.type === 'basic') {
+          await offlineCache.put(request, response.clone()).catch(error => {
+            console.warn('Could not save an offline image or book file', url.pathname, error);
+          });
+        }
+        return response;
+      } catch (error) {
+        const fallback = await offlineCache.match(request) || await caches.match(request);
+        if (fallback) return fallback;
+        return Response.error();
+      }
+    })());
+    return;
+  }
+
   event.respondWith(
     caches.match(request).then(cached => cached || fetch(request).then(response => {
-      if (response && response.ok && response.type === 'basic' && !isDedicatedOfflineAsset) {
+      if (response && response.ok && response.type === 'basic') {
         const copy = response.clone();
         caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
       }
