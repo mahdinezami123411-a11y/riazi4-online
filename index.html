@@ -3987,6 +3987,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   function clearCloudSession(returnHome=true){
     cloudSession=null;try{sessionStorage.removeItem(CLOUD_SESSION_KEY)}catch{}
+    window.__fouramiOfflineMode?.resetUnlockedPackage?.();
     activeStudentName='';activeUsername='';activeProfile={};studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
     practiceAsked=0;practiceCorrect=0;practiceSeen.clear();currentPractice=null;selectedPracticeAnswer=null;practiceWasChecked=false;
     examItems=[];examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;currentCloudAttemptGroup=null;
