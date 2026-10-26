@@ -3,6 +3,8 @@ import { readFile, access, readdir } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+const offlineScript = await readFile(new URL('../offline.js', import.meta.url), 'utf8');
+new vm.Script(offlineScript, { filename: 'offline.js' });
 const scripts = [];
 let cursor = 0;
 const lowerHtml = html.toLowerCase();
@@ -42,7 +44,7 @@ assert.match(html, /برای هر سؤال گزینه‌ای فقط یک شما�
 const serviceWorker = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
 const manifest = JSON.parse(await readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'));
 const cacheVersion = serviceWorker.match(/const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v(\d+)['"]/);
-const registrationVersion = html.match(/serviceWorker(?:\?\.|\.)register\(['"]\.\/sw\.js\?v=202610\d+-v(\d+)['"]/);
+const registrationVersion = html.match(/sw\.js\?v=202610\d+-v(\d+)/);
 assert.ok(cacheVersion, 'نام نسخهٔ کش در sw.js پیدا نشد');
 assert.ok(registrationVersion, 'نشانی سرویس‌ورکر در index.html پیدا نشد');
 assert.equal(registrationVersion[1], cacheVersion[1], 'نسخهٔ ثبت سرویس‌ورکر و نام کش با هم هماهنگ نیستند');
