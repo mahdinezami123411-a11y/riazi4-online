@@ -79,7 +79,7 @@ async function getBookCacheEntries(page) {
 }
 
 try {
-  const context = await browser.newContext({ serviceWorkers: 'allow' });
+  const context = await browser.newContext({ serviceWorkers: 'block' });
   const page = await context.newPage();
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__fouramiOfflineMode?.queueMathAttempt), { timeout: 15000 });
