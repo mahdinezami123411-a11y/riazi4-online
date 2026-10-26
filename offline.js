@@ -192,6 +192,7 @@
         await savePackage();
       }
       if(fouramiOfflineData){
+        if(!(fouramiOfflineData.pendingAttempts||[]).some(saved=>String(saved.source||'').startsWith('exam:')))window.__fouramiOfflineExamPending=false;
         captureCurrentSession();
         await savePackage();
         const count=(fouramiOfflineData.pendingAttempts?.length||0)+(fouramiOfflineData.pendingSubjectProgress?.length||0);
