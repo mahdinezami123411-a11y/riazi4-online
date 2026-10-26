@@ -29,9 +29,12 @@ const server = http.createServer(async (req, res) => {
   const origin = req.headers.origin || "";
   const cors = corsHeaders(origin);
 
-  if (req.url === "/health" && req.method === "GET") {
+  const requestPath = String(req.url || "/").split("?")[0].replace(/\/+$/, "") || "/";
+
+  // Public diagnostic endpoints must work from direct browser navigation too.
+  if (req.method === "GET" && (requestPath === "/" || requestPath === "/health")) {
     res.writeHead(200, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...cors });
-    return res.end(JSON.stringify({ ok: true, service: "fourami-api-proxy" }));
+    return res.end(JSON.stringify({ ok: true, service: "fourami-api-proxy", health: "/health" }));
   }
 
   if (req.method === "OPTIONS") {
