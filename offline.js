@@ -184,7 +184,7 @@
         captureCurrentSession();
         await savePackage();
         const stillPending=fouramiOfflineData.pendingAttempts.some(saved=>saved.attemptGroup===item.attemptGroup&&String(saved.source||'').startsWith('exam:'));
-        if(item.source.startsWith('exam:')&&item.attemptGroup===currentCloudAttemptGroup&&!stillPending&&$('examResult')&&!$('examResult').classList.contains('hidden')){window.__fouramiOfflineExamPending=(fouramiOfflineData.pendingAttempts||[]).some(saved=>String(saved.source||'').startsWith('exam:'));finishBookExam();}
+        if(item.source.startsWith('exam:')&&item.attemptGroup===currentCloudAttemptGroup&&!stillPending&&$('examResult')&&!$('examResult').classList.contains('hidden'))finishBookExam();
       }
       for(const item of [...fouramiOfflineData.pendingSubjectProgress]){
         await cloudFetch('/rest/v1/yare_subject_practice_progress?on_conflict=student_id,subject,lesson_id,activity_key',{method:'POST',body:item.payload,headers:{Prefer:'resolution=merge-duplicates,return=minimal'}});
@@ -192,7 +192,6 @@
         await savePackage();
       }
       if(fouramiOfflineData){
-        if(!(fouramiOfflineData.pendingAttempts||[]).some(saved=>String(saved.source||'').startsWith('exam:')))window.__fouramiOfflineExamPending=false;
         captureCurrentSession();
         await savePackage();
         const count=(fouramiOfflineData.pendingAttempts?.length||0)+(fouramiOfflineData.pendingSubjectProgress?.length||0);
