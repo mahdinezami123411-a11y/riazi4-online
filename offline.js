@@ -382,6 +382,7 @@
       group.appendChild(label);
     }
     group.appendChild(input);
+    if(inputId==='studentNameInput')input.placeholder='نام کاربری';
     input.style.cssText='display:block;width:100%;height:38px;max-width:100%;min-width:0;box-sizing:border-box;margin:0;';
     target.appendChild(group);
     return group;
@@ -435,7 +436,7 @@
       offlineUsername.type='text';
       offlineUsername.autocomplete='username';
       offlineUsername.inputMode='text';
-      offlineUsername.placeholder='نام کاربری دانش‌آموز';
+      offlineUsername.placeholder='نام کاربری';
       offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
       const pinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
       const offlineUsernameGroup=document.createElement('div');
@@ -445,7 +446,7 @@
       panel.insertBefore(offlineUsernameGroup,pinLabel||panel.firstChild);
     }
     const offlineUsername=$offline('fouramiOfflineUsernameInput');
-    if(offlineUsername)offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;margin:0 0 8px;';
+    if(offlineUsername)offlineUsername.style.cssText='display:block;width:100%;height:38px;max-width:100%;min-width:0;box-sizing:border-box;margin:0;';
     const offlinePinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
     const offlinePin=panel.querySelector('#fouramiOfflinePinLogin');
     const offlineButton=panel.querySelector('#fouramiOfflineLoginButton');
