@@ -3577,7 +3577,7 @@ function startBookExam(mode='annual'){
 }
 function paintExamQuestion(){examSelectedAnswer=null;examAnswered=false;const q=examItems[examIndex];if(!q){paintMathQuestionVisual(null,$('examQuestionVisualAid'));finishBookExam();return}$('examProgress').textContent=`${(examIndex+1).toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;$('examQuestion').textContent=`فصل ${q.chapter} · ${questionTypeLabel(q)} · ${q.q}`;paintMathQuestionVisual(q,$('examQuestionVisualAid'));$('examAnswer').value='';$('examAnswer').disabled=false;renderAnswerControls(q,'examOptions','examAnswer','examChoice',v=>examSelectedAnswer=v);$('examFeedback').classList.add('hidden');$('examSubmit').disabled=false;$('examSubmit').textContent='ثبت پاسخ'}
 function finishBookExam(){
- if(cloudSession?.offline&&fouramiOfflineData?.pendingAttempts?.some(item=>item.attemptGroup===currentCloudAttemptGroup&&String(item.source||'').startsWith('exam:'))){
+ if(fouramiOfflineData?.pendingAttempts?.some(item=>item.attemptGroup===currentCloudAttemptGroup&&String(item.source||'').startsWith('exam:'))){
   paintMathQuestionVisual(null,$('examQuestionVisualAid'));
   $('examProgress').textContent=`${examItems.length.toLocaleString('fa-IR')} از ${examItems.length.toLocaleString('fa-IR')}`;
   $('examQuestion').textContent='🏁 پاسخ‌های آزمون ذخیره شدند';
