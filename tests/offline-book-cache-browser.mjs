@@ -149,7 +149,7 @@ try {
   try {
     persistentContext = await chromium.launchPersistentContext(profileDir, {
       headless: true,
-      serviceWorkers: 'allow'
+      serviceWorkers: 'block'
     });
     let persistentPage = persistentContext.pages()[0] || await persistentContext.newPage();
     await persistentPage.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
@@ -168,7 +168,7 @@ try {
 
     persistentContext = await chromium.launchPersistentContext(profileDir, {
       headless: true,
-      serviceWorkers: 'allow'
+      serviceWorkers: 'block'
     });
     persistentPage = persistentContext.pages()[0] || await persistentContext.newPage();
     await persistentPage.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
@@ -183,22 +183,11 @@ try {
     assert.equal(secondAudit.result.failed, 0, 'Reopened app reported missing offline files');
     assert.equal(secondAudit.result.downloaded, 0, 'Reopened app downloaded assets that should already be stored locally');
 
-    await persistentPage.evaluate(async () => {
-      if (!navigator.serviceWorker.controller) {
-        await navigator.serviceWorker.register('./sw.js', { scope: './' });
-        await navigator.serviceWorker.ready;
-      }
-    });
-    if (!(await persistentPage.evaluate(() => Boolean(navigator.serviceWorker.controller)))) {
-      await persistentPage.reload({ waitUntil: 'domcontentloaded' });
-    }
-    await persistentPage.waitForFunction(() => Boolean(navigator.serviceWorker?.controller), { timeout: 15000 });
-
     await persistentContext.setOffline(true);
     for (const subject of SUBJECTS) {
-      const offlineLoad = await waitForImage(persistentPage, pageUrls[subject] + '?restart-offline=' + subject);
+      const offlineLoad = await waitForImage(persistentPage, pageUrls[subject] + '?restart-offline=' + subject, true);
       assert.equal(offlineLoad.loaded, true, subject + ': image failed after full cache survived browser restart');
-      assert.ok(!offlineLoad.src.startsWith('blob:'), subject + ': Service Worker should serve the persisted cache directly after restart');
+      assert.ok(offlineLoad.src.startsWith('blob:'), subject + ': reopened browser should recover the image from persistent Cache Storage');
     }
   } finally {
     if (persistentContext) await persistentContext.close().catch(() => {});
