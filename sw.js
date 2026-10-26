@@ -59,16 +59,27 @@ self.addEventListener('fetch', event => {
 
   if (isOfflineAsset) {
     event.respondWith((async () => {
-      const offlineCache = await caches.open('fourami-book-pages-v1');
-      const saved = await offlineCache.match(request);
-      if (saved) return saved;
+      let offlineCache;
+      try {
+        offlineCache = await caches.open('fourami-book-pages-v1');
+      } catch (error) {
+        console.warn('Offline asset cache is unavailable; loading from network', error);
+        try { return await fetch(request); } catch { return Response.error(); }
+      }
+
+      try {
+        const saved = await offlineCache.match(request);
+        if (saved) return saved;
+      } catch {}
 
       // Migrate any page/image previously saved in the older app-shell cache.
-      const legacySaved = await caches.match(request);
-      if (legacySaved) {
-        await offlineCache.put(request, legacySaved.clone()).catch(() => {});
-        return legacySaved;
-      }
+      try {
+        const legacySaved = await caches.match(request);
+        if (legacySaved) {
+          await offlineCache.put(request, legacySaved.clone()).catch(() => {});
+          return legacySaved;
+        }
+      } catch {}
 
       try {
         const response = await fetch(request);
@@ -79,8 +90,10 @@ self.addEventListener('fetch', event => {
         }
         return response;
       } catch (error) {
-        const fallback = await offlineCache.match(request) || await caches.match(request);
-        if (fallback) return fallback;
+        try {
+          const fallback = await offlineCache.match(request) || await caches.match(request);
+          if (fallback) return fallback;
+        } catch {}
         return Response.error();
       }
     })());
