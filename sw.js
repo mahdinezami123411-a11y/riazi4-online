@@ -1,8 +1,8 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v117';
+const CACHE_NAME = 'riazi4-pwa-shell-v118';
 const APP_SHELL = [
   './',
   './index.html',
-  './offline.js?v=20261027-offline-v7',
+  './offline.js?v=20261027-offline-v8',
   './manifest.webmanifest',
   './icons/app-icon-2.png',
   './assets/persian-vocabulary.json.gz.b64',
@@ -20,7 +20,10 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key.startsWith('riazi4-pwa-shell-') && key !== CACHE_NAME).map(key => caches.delete(key))))
+      .then(keys => Promise.all([
+        ...keys.filter(key => key.startsWith('riazi4-pwa-shell-') && key !== CACHE_NAME).map(key => caches.delete(key)),
+        caches.delete('fourami-book-pages-v1')
+      ]))
       .then(() => self.clients.claim())
   );
 });
@@ -33,11 +36,21 @@ self.addEventListener('fetch', event => {
   // Never intercept external requests, including Supabase authentication/data APIs.
   if (url.origin !== self.location.origin) return;
 
+  // Textbook page images, page maps, and book PDFs are deliberately online-only.
+  const isTextbookAsset =
+    url.pathname.includes('/assets/book-pages/') ||
+    url.pathname.endsWith('/assets/math-fourth.pdf') ||
+    url.pathname.endsWith('/assets/books/persian-pages.pdf');
+  if (isTextbookAsset) {
+    event.respondWith(fetch(request).catch(() => Response.error()));
+    return;
+  }
+
   // The HTML may still reference the previous query string for offline.js.
   // Always serve the exact current version pre-cached in APP_SHELL.
   if (url.pathname.endsWith('/offline.js')) {
     event.respondWith((async () => {
-      const latestUrl = new URL('./offline.js?v=20261027-offline-v7', self.registration.scope).href;
+      const latestUrl = new URL('./offline.js?v=20261027-offline-v8', self.registration.scope).href;
       try {
         const cache = await caches.open(CACHE_NAME);
         const saved = await cache.match(latestUrl);
