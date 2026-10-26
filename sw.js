@@ -1,8 +1,8 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v118';
+const CACHE_NAME = 'riazi4-pwa-shell-v119';
 const APP_SHELL = [
   './',
   './index.html',
-  './offline.js?v=20261027-offline-v8',
+  './offline.js?v=20261027-offline-v9',
   './manifest.webmanifest',
   './icons/app-icon-2.png',
   './assets/persian-vocabulary.json.gz.b64',
@@ -42,7 +42,7 @@ self.addEventListener('fetch', event => {
     url.pathname.endsWith('/assets/math-fourth.pdf') ||
     url.pathname.endsWith('/assets/books/persian-pages.pdf');
   if (isTextbookAsset) {
-    event.respondWith(fetch(request).catch(() => Response.error()));
+    event.respondWith(fetch(request, { cache: 'no-store' }).catch(() => Response.error()));
     return;
   }
 
@@ -50,7 +50,7 @@ self.addEventListener('fetch', event => {
   // Always serve the exact current version pre-cached in APP_SHELL.
   if (url.pathname.endsWith('/offline.js')) {
     event.respondWith((async () => {
-      const latestUrl = new URL('./offline.js?v=20261027-offline-v8', self.registration.scope).href;
+      const latestUrl = new URL('./offline.js?v=20261027-offline-v9', self.registration.scope).href;
       try {
         const cache = await caches.open(CACHE_NAME);
         const saved = await cache.match(latestUrl);
