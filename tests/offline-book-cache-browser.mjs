@@ -72,10 +72,10 @@ try {
   const page = await context.newPage();
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__fouramiOfflineMode?.queueMathAttempt), { timeout: 15000 });
-  await page.waitForSelector('#fouramiOfflineLoginPanel', { timeout: 15000 });
+  await page.waitForSelector('#fouramiOfflineLoginPanel', { state: 'attached', timeout: 15000 });
 
   // Check 1: PIN-based offline login remains, and explains the intentionally unavailable textbook files.
-  const loginText = await page.locator('#fouramiOfflineLoginPanel').innerText();
+  const loginText = await page.locator('#fouramiOfflineLoginPanel').evaluate(element => element.textContent || '');
   assert.match(loginText, /تصاویر و فایل‌های کتاب در دسترس نیستند/);
   assert.match(loginText, /آموزش‌ها، تمرین‌ها و آزمون‌ها همچنان فعال‌اند/);
   assert.ok(await page.locator('#fouramiOfflineUsernameInput').count(), 'Offline username field should remain available');
@@ -93,7 +93,7 @@ try {
     }
     student.classList.remove('hidden');
     nav.classList.remove('hidden');
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+    window.scrollTo(0, document.documentElement.scrollHeight);
     window.yareScrollToSectionNav();
     await new Promise(resolve => setTimeout(resolve, 700));
     return { navTop: nav.getBoundingClientRect().top, scrollY: window.scrollY };
