@@ -109,7 +109,15 @@ try {
   const swContext = await createOfflineAwareContext('allow');
   const swPage = await swContext.newPage();
   await swPage.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
-  await swPage.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await swPage.evaluate(async () => {
+    const existing = await navigator.serviceWorker.getRegistration('./');
+    if (!existing) await navigator.serviceWorker.register('./sw.js?offline-cache-test-v114', { scope: './' });
+    const registration = await Promise.race([
+      navigator.serviceWorker.ready.then(() => true),
+      new Promise(resolve => setTimeout(() => resolve(false), 12000))
+    ]);
+    if (!registration) throw new Error('Service Worker did not become ready in the browser cache test.');
+  });
   if (!(await swPage.evaluate(() => Boolean(navigator.serviceWorker.controller)))) {
     await swPage.reload({ waitUntil: 'domcontentloaded' });
   }
