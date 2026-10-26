@@ -498,16 +498,75 @@
     status.textContent=message;
     status.style.color=isError?'#b3263c':'';
   }
+  const fouramiOfflineImageCacheJobs=new Map();
+  function getFouramiBookImageUrl(rawUrl){
+    try{
+      const url=new URL(rawUrl,document.baseURI);
+      if(url.origin!==location.origin||!url.pathname.includes('/assets/book-pages/')||!/\.webp$/i.test(url.pathname))return null;
+      return url;
+    }catch{return null}
+  }
+  async function cacheFouramiBookImage(rawUrl){
+    const url=getFouramiBookImageUrl(rawUrl);
+    if(!url||!('caches' in window))return false;
+    const key=url.href;
+    if(fouramiOfflineImageCacheJobs.has(key))return fouramiOfflineImageCacheJobs.get(key);
+    const job=(async()=>{
+      const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
+      if(await cache.match(url.href,{ignoreSearch:true}))return true;
+      if(!navigator.onLine)return false;
+      const response=await fetch(url.href,{cache:'force-cache'});
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      await cache.put(url.href,response.clone());
+      return true;
+    })().catch(error=>{
+      console.warn('Could not keep this textbook image for offline use',url.pathname,error);
+      return false;
+    }).finally(()=>fouramiOfflineImageCacheJobs.delete(key));
+    fouramiOfflineImageCacheJobs.set(key,job);
+    return job;
+  }
+  async function restoreFouramiBookImageFromCache(image){
+    if(!image||image.dataset.fouramiOfflineRestore==='checking'||image.dataset.fouramiOfflineRestore==='done')return;
+    const url=getFouramiBookImageUrl(image.currentSrc||image.src);
+    if(!url)return;
+    image.dataset.fouramiOfflineRestore='checking';
+    try{
+      const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
+      const saved=await cache.match(url.href,{ignoreSearch:true})||await caches.match(url.href,{ignoreSearch:true});
+      if(!saved){image.dataset.fouramiOfflineRestore='missing';return}
+      const blob=await saved.blob();
+      const objectUrl=URL.createObjectURL(blob);
+      const previous=image.dataset.fouramiOfflineObjectUrl;
+      if(previous)URL.revokeObjectURL(previous);
+      image.dataset.fouramiOfflineObjectUrl=objectUrl;
+      image.dataset.fouramiOfflineRestore='done';
+      image.src=objectUrl;
+    }catch(error){
+      image.dataset.fouramiOfflineRestore='missing';
+      console.warn('Could not restore a textbook page from offline storage',url.pathname,error);
+    }
+  }
+  function setupFouramiOfflineBookImageCache(){
+    if(window.__fouramiOfflineBookImageCacheReady)return;
+    window.__fouramiOfflineBookImageCacheReady=true;
+    document.addEventListener('load',event=>{
+      const image=event.target;
+      if(image instanceof HTMLImageElement&&image.naturalWidth>0)void cacheFouramiBookImage(image.currentSrc||image.src);
+    },true);
+    document.addEventListener('error',event=>{
+      const image=event.target;
+      if(image instanceof HTMLImageElement)void restoreFouramiBookImageFromCache(image);
+    },true);
+    document.querySelectorAll('img').forEach(image=>{
+      if(image.complete&&image.naturalWidth>0)void cacheFouramiBookImage(image.currentSrc||image.src);
+    });
+  }
   async function preloadOfflineBookAssets(){
     if(!navigator.onLine||!('caches' in window)||fouramiOfflineAssetPreloadPromise)return fouramiOfflineAssetPreloadPromise;
     fouramiOfflineAssetPreloadPromise=(async()=>{
       try{if(navigator.storage&&typeof navigator.storage.persist==='function')await navigator.storage.persist()}catch{}
       const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
-      const readyUrl=new URL('./fourami-offline-assets-ready-v1',document.baseURI).href;
-      if(await cache.match(readyUrl)){
-        updateOfflineAssetsStatus('تصاویر کتاب‌ها و فایل‌های لازم از قبل ذخیره شده‌اند و آمادهٔ استفادهٔ آفلاین هستند.');
-        return {total:0,failed:0,cached:true};
-      }
       updateOfflineAssetsStatus('در حال بررسی صفحات کتاب‌ها برای ذخیرهٔ آفلاین…');
       const paths=new Set([
         './manifest.webmanifest',
@@ -522,7 +581,7 @@
         const relative='./assets/book-pages/'+subject+'/page-map.json';
         const url=new URL(relative,document.baseURI).href;
         try{
-          let response=await cache.match(url);
+          let response=await cache.match(url,{ignoreSearch:true});
           if(!response){
             response=await fetch(url);
             if(!response.ok)throw new Error('HTTP '+response.status);
@@ -552,7 +611,7 @@
           if(index>=urls.length)return;
           const url=urls[index];
           try{
-            let response=await cache.match(url);
+            let response=await cache.match(url,{ignoreSearch:true});
             if(!response){
               let lastError=null;
               for(let attempt=0;attempt<3&&!response;attempt++){
@@ -581,12 +640,15 @@
       };
       updateOfflineAssetsStatus('در حال آماده‌سازی صفحه‌های کتاب برای آفلاین… بارگیری اولیه حدود ۶۰ مگابایت است.');
       await Promise.all(Array.from({length:2},()=>worker()));
-      const failures=[...new Set([...manifestFailures.map(path=>new URL(path,document.baseURI).href),...failed])];
+      const missingAfterDownload=[];
+      for(const url of urls){
+        try{if(!await cache.match(url,{ignoreSearch:true}))missingAfterDownload.push(url)}catch{missingAfterDownload.push(url)}
+      }
+      const failures=[...new Set([...manifestFailures.map(path=>new URL(path,document.baseURI).href),...failed,...missingAfterDownload])];
       if(failures.length){
-        updateOfflineAssetsStatus('ذخیرهٔ آفلاین کامل نشد؛ '+failures.length.toLocaleString('fa-IR')+' فایل باقی مانده است. با اتصال اینترنت دوباره تلاش می‌شود.',true);
+        updateOfflineAssetsStatus('ذخیرهٔ آفلاین کامل نشد؛ '+failures.length.toLocaleString('fa-IR')+' فایل واقعاً در حافظه پیدا نشد. با اتصال اینترنت دوباره تلاش می‌شود.',true);
       }else{
-        await cache.put(readyUrl,new Response(JSON.stringify({savedAt:new Date().toISOString(),assetCount:urls.length}),{headers:{'Content-Type':'application/json'}}));
-        updateOfflineAssetsStatus('آماده شد؛ تصاویر صفحات شش کتاب و فایل‌های لازم روی این دستگاه ذخیره شدند. برای آماده‌سازی اولیه حدود ۶۰ مگابایت اینترنت مصرف می‌شود.');
+        updateOfflineAssetsStatus('تأیید شد: '+urls.filter(url=>url.includes('/assets/book-pages/')&&url.endsWith('.webp')).length.toLocaleString('fa-IR')+' تصویر کتاب و فایل‌های لازم در حافظهٔ آفلاین وجود دارند.');
       }
       return {total:urls.length,failed:failures.length};
     })().catch(error=>{
@@ -620,6 +682,7 @@
     const banner=$offline('fouramiOfflineSessionBanner');if(banner)banner.classList.add('hidden');
   }
   function init(){
+    setupFouramiOfflineBookImageCache();
     addOfflineLoginUi();addOfflineSessionBanner();setupOfflinePackagePanel();
     if(navigator.onLine)void preloadOfflineBookAssets();
     const profileNav=document.querySelector('[data-app-view="profile"]');
