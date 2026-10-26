@@ -8725,6 +8725,49 @@ const persianBookPageMap={
   document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')void yareSyncActiveCloudView(false)});
   window.setInterval(()=>{void yareSyncActiveCloudView(false)},30000);
 
+  // Explicit bridge: offline.js is a separate script and cannot see this IIFE's lexical scope.
+  const fouramiOfflineScopeBridge = {
+    get fouramiOfflineData(){return fouramiOfflineData}, set fouramiOfflineData(value){fouramiOfflineData=value},
+    get fouramiOfflineKey(){return fouramiOfflineKey}, set fouramiOfflineKey(value){fouramiOfflineKey=value},
+    get fouramiOfflineSalt(){return fouramiOfflineSalt}, set fouramiOfflineSalt(value){fouramiOfflineSalt=value},
+    get fouramiOfflineRecord(){return fouramiOfflineRecord}, set fouramiOfflineRecord(value){fouramiOfflineRecord=value},
+    get fouramiOfflineSaveChain(){return fouramiOfflineSaveChain}, set fouramiOfflineSaveChain(value){fouramiOfflineSaveChain=value},
+    get fouramiOfflineSyncInProgress(){return fouramiOfflineSyncInProgress}, set fouramiOfflineSyncInProgress(value){fouramiOfflineSyncInProgress=value},
+    get cloudBankRows(){return cloudBankRows}, set cloudBankRows(value){cloudBankRows=value},
+    get activeStudentName(){return activeStudentName}, set activeStudentName(value){activeStudentName=value},
+    get activeUsername(){return activeUsername}, set activeUsername(value){activeUsername=value},
+    get activeProfile(){return activeProfile}, set activeProfile(value){activeProfile=value},
+    get currentCloudAttemptGroup(){return currentCloudAttemptGroup}, set currentCloudAttemptGroup(value){currentCloudAttemptGroup=value},
+    get CLOUD_SESSION_KEY(){return CLOUD_SESSION_KEY},
+    get fouramiClone(){return fouramiClone},
+    get cloudFetch(){return cloudFetch},
+    get answerForServer(){return answerForServer},
+    get otherProgressKey(){return otherProgressKey},
+    get readProfile(){return readProfile},
+    get renderStudentDashboard(){return renderStudentDashboard},
+    get showStudentAppView(){return showStudentAppView},
+    get yareAppPushStudentRootHistory(){return yareAppPushStudentRootHistory},
+    get updatePracticeTopicOptions(){return updatePracticeTopicOptions},
+    get updatePracticeStats(){return updatePracticeStats},
+    get isCourseLessonOpen(){return isCourseLessonOpen},
+    get awardProgress(){return awardProgress},
+    get finishBookExam(){return finishBookExam},
+    get clearCloudSession(){return clearCloudSession}
+  };
+  for (const name of Object.keys(fouramiOfflineScopeBridge)) {
+    const existing = Object.getOwnPropertyDescriptor(window, name);
+    if (existing && existing.configurable === false) continue;
+    Object.defineProperty(window, name, {
+      configurable: true,
+      enumerable: false,
+      get(){return fouramiOfflineScopeBridge[name]},
+      set: Object.getOwnPropertyDescriptor(fouramiOfflineScopeBridge, name).set
+        ? value => { fouramiOfflineScopeBridge[name] = value }
+        : undefined
+    });
+  }
+  window.fouramiClone = fouramiClone;
+
 })();
 
 if('serviceWorker' in navigator){
@@ -8768,7 +8811,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261026-offline-v111',{updateViaCache:'none'});
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261026-offline-v112',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }
@@ -9755,5 +9798,5 @@ function paintMathQuestionVisual(q,target){
 })();
 
 </script>
-<script src="./offline.js?v=20261026-offline-v3"></script>
+<script src="./offline.js?v=20261026-offline-v4"></script>
 </body></html>
