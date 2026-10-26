@@ -2865,9 +2865,21 @@ window.fa = window.fa || (value => Number(value).toLocaleString('fa-IR'));
 const subjects=[['➗','ریاضی','یادآوری، کتاب، تمرین و امتحان']];
 let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},courseSettingsBySubject={},courseBookObjectUrls={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual';
 const $=id=>document.getElementById(id);
-function show(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});window.scrollTo({top:0,behavior:'smooth'})}
+function yareScrollToSectionNav(){
+  const student=document.getElementById('student');
+  const nav=document.getElementById('studentAppNav');
+  if(student&&!student.classList.contains('hidden')&&nav&&!nav.classList.contains('hidden')){
+    const targetTop=window.scrollY+nav.getBoundingClientRect().top;
+    window.scrollTo({top:Math.max(0,targetTop),behavior:'smooth'});
+  }else{
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+window.yareScrollToSectionNav=yareScrollToSectionNav;
+
+function show(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});yareScrollToSectionNav()}
 $('studentEnter').onclick=()=>{show('studentNamePage');const err=$('studentLoginError');if(err)err.classList.add('hidden');const name=$('studentNameInput'),pass=$('studentPasswordInput');if(name)name.value='';if(pass)pass.value='';setTimeout(()=>name?.focus(),100)};$('teacherEnter').onclick=()=>show('teacherGate');$('studentBack').onclick=()=>show('home');$('teacherBack').onclick=()=>show('home');$('teacherHome').onclick=()=>show('home');$('demoTeacherLogin').onclick=()=>{const status=$('teacherEmail');if(status)status.focus();};
-document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>{const book=b.dataset.studentView==='book';$('remindersView').classList.toggle('hidden',book);$('bookView').classList.toggle('hidden',!book);window.scrollTo({top:0,behavior:'smooth'});if(book)renderChapterPicker()});
+document.querySelectorAll('[data-student-view]').forEach(b=>b.onclick=()=>{const book=b.dataset.studentView==='book';$('remindersView').classList.toggle('hidden',book);$('bookView').classList.toggle('hidden',!book);yareScrollToSectionNav();if(book)renderChapterPicker()});
 function renderFullTimesTable(){const colors=['#2498cf','#d78a35','#55a45e','#d85c86','#7556a4','#7556a4','#d85c86','#2498cf','#d78a35','#55a45e'];let h='<div class="times-columns" aria-label="همه جدول‌های ضرب یک تا ده">';for(let n=1;n<=10;n++){h+=`<section class="times-column" style="--stripe:${colors[n-1]}"><h4>جدول ضرب ${n.toLocaleString('fa-IR')}</h4><ol>`;for(let m=1;m<=10;m++){h+=`<li>${m.toLocaleString('fa-IR')} × ${n.toLocaleString('fa-IR')} = ${(m*n).toLocaleString('fa-IR')}</li>`}h+='</ol></section>'}h+='</div>';$('fullTimesTable').innerHTML=h}
 function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
 function newReminderMath(){const type=$('reminderMathType').value;let a,b,text;if(type==='divide'){b=rand(2,10);let q=rand(2,10);a=b*q;currentReminderAnswer=q;text=`${a} ÷ ${b} = ؟`}else if(type==='concept'){a=rand(2,8);b=rand(2,9);currentReminderAnswer=a*b;text=`${a} گروهِ ${b}تایی چندتا می‌شود؟`}else{a=rand(1,10);b=rand(1,10);currentReminderAnswer=a*b;text=`${a} × ${b} = ؟`}currentReminderQuestion={kind:type,a,b,text,answered:false};$('checkReminderMath').disabled=false;$('reminderMathQuestion').textContent=text;$('reminderMathAnswer').value='';$('reminderMathFeedback').classList.add('hidden');$('reminderMathBox').classList.remove('hidden')}
@@ -3137,7 +3149,7 @@ $('practiceDifficultyFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPrac
 // Initial display: show accurate bank size before the first question.
 updatePracticeStats();
 
-$('chapterToPractice').onclick=()=>{$('mathChapterLessonView').classList.add('hidden');$('bookView').classList.remove('hidden');document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x.dataset.bookTab==='practice'));document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-practice'));$('bookPracticeTopic').value=String(activeChapter);newBookPractice();window.scrollTo({top:0,behavior:'smooth'})};
+$('chapterToPractice').onclick=()=>{$('mathChapterLessonView').classList.add('hidden');$('bookView').classList.remove('hidden');document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x.dataset.bookTab==='practice'));document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-practice'));$('bookPracticeTopic').value=String(activeChapter);newBookPractice();yareScrollToSectionNav()};
 $('bookPracticeTopic').onchange=()=>{if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice()};
 renderChapterPicker();updatePracticeTopicOptions();renderTeacherChapterList();
 // Teacher-panel demo controls
@@ -3603,7 +3615,7 @@ document.querySelectorAll('#teacherNav [data-tab]').forEach(b=>b.onclick=()=>{
   const back=$('teacherStageBack');
   if(back)back.classList.remove('hidden');
   if(b.dataset.tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}
-  window.scrollTo({top:0,behavior:'smooth'});
+  yareScrollToSectionNav();
 });
 
 renderFullTimesTable();
@@ -3672,7 +3684,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
 
   // One-page name entry, followed by the student workspace.
   const originalShow=show;
-  show=function(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});window.scrollTo({top:0,behavior:'smooth'});if(id==='student'&&activeStudentName)renderStudentDashboard()};
+  show=function(id){['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});yareScrollToSectionNav();if(id==='student'&&activeStudentName)renderStudentDashboard()};
   let activeStudentName='';let studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
   // Read-only snapshot for the global lesson/map renderers; keep the live record inside the student scope.
   window.__yareStudentProgressSnapshot=()=>({
@@ -3878,7 +3890,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(view==='report')loadStudentMonthlyEvaluationReport();
     if(view==='profile')renderProfileProgressChart();
     if(view==='assignments')loadStudentAssignments();
-    window.scrollTo({top:0,behavior:'smooth'});
+    yareScrollToSectionNav();
   }
   function syncPracticeModeUI(){
     const mode=$('practiceSetMode')?.value||'chapter';
@@ -4011,7 +4023,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   function show(id){
     ['home','studentNamePage','student','teacherGate','teacher'].forEach(x=>{const el=$(x);if(el)el.classList.toggle('hidden',x!==id)});
-    window.scrollTo({top:0,behavior:'smooth'});
+    yareScrollToSectionNav();
     if(id==='student'&&activeStudentName)renderStudentDashboard();
   }
   $('studentEnter').onclick=()=>show('studentNamePage');
@@ -4744,7 +4756,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     if(tab==='curriculum'){renderTeacherChapterList();renderSubjectAccessControls()}
     if(tab==='evaluations')loadTeacherEvaluations(true);
     yareTeacherStageSyncButton();
-    window.scrollTo({top:0,behavior:'smooth'});
+    yareScrollToSectionNav();
   }
   function yareTeacherShowSectionMenu(){
     yareTeacherStageHistory.length=0;
@@ -4757,7 +4769,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     $('teacherEvaluationEditor')?.classList.add('hidden');
     $('teacherEvaluationMonthPicker')?.classList.remove('hidden');
     $('teacherStageBack')?.classList.add('hidden');
-    window.scrollTo({top:0,behavior:'smooth'});
+    yareScrollToSectionNav();
   }
   function yareTeacherStageGoBack(){
     const evaluationDetail=!!$('tab-evaluations')?.classList.contains('active')&&
@@ -6392,13 +6404,13 @@ function buildExpandableSubjectSections(subjectId){
   button.onclick=()=>{
    lessonMenu.classList.add('hidden');lessonPageHost.classList.remove('hidden');
    lessonPageHost.querySelectorAll('.persian-lesson-section-page').forEach(page=>page.classList.toggle('hidden',page.dataset.otherSubjectSectionPage!==button.dataset.otherSubjectSectionOpen));
-   window.scrollTo({top:0,behavior:'smooth'});
+   yareScrollToSectionNav();
   };
  });
  lessonPageHost.querySelectorAll('[data-other-subject-section-back]').forEach(button=>{
   button.onclick=()=>{
    lessonPageHost.classList.add('hidden');lessonMenu.classList.remove('hidden');
-   window.scrollTo({top:0,behavior:'smooth'});
+   yareScrollToSectionNav();
   };
  });
 }
@@ -7022,11 +7034,11 @@ async function loadSourceQuestionBanks(){
         pgSetLessonBoardVisible(false);$('pgLessonPrompt').textContent='اول درس موردنظرت را از فهرست انتخاب کن؛ بعد بازی‌ها فقط از همان درس پرسش می‌سازند.';
         $('pgLessonSelect').focus();
       }else{pgStartSession();pgSetMode('build')}
-      window.scrollTo({top:0,behavior:'smooth'});
+      yareScrollToSectionNav();
     };
     $('persianChooseLesson').onclick=()=>{
       pgSetGameVisible('lessons');$('otherSubjectTabs')?.classList.remove('hidden');$('otherSubjectLessons')?.classList.remove('hidden');$('otherSubjectLessonBody')?.classList.add('hidden');$('otherSubjectActivityPanel')?.classList.add('hidden');$('otherSubjectExplorePanel')?.classList.add('hidden');$('persianLessonBackRow')?.classList.remove('hidden');setOtherSubjectTabActive('lessons');
-      window.scrollTo({top:0,behavior:'smooth'});
+      yareScrollToSectionNav();
     };
     $('pgNext').onclick=()=>pgNextQuestion(pgState.mode);
     $('pgCheckBuild').onclick=pgCheckBuild;$('pgCheckFix').onclick=pgCheckFix;$('pgCheckCloze').onclick=pgCheckCloze;$('pgHint').onclick=pgGiveHint;
@@ -7753,7 +7765,7 @@ const persianBookPageMap={
         lessonPageHost.querySelectorAll('.persian-lesson-section-page').forEach(page=>{
           page.classList.toggle('hidden',page.dataset.persianSectionPage!==button.dataset.persianSectionOpen);
         });
-        window.scrollTo({top:0,behavior:'smooth'});
+        yareScrollToSectionNav();
       };
     });
 
