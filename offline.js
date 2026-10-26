@@ -417,7 +417,7 @@
     onlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';
     onlineColumn.appendChild(onlineTitle);
     const offlineDescription=panel.querySelector('h3 + p');
-    if(offlineDescription){offlineDescription.textContent='ورود با نام کاربری و PIN ذخیره‌شده روی همین دستگاه. در حالت آفلاین، تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌ها فعال می‌مانند.';offlineDescription.style.cssText='font-size:10px;line-height:1.45;margin:6px 0 0;';}
+    if(offlineDescription){offlineDescription.textContent='ورود با نام کاربری و PIN ذخیره‌شده روی همین دستگاه. در حالت آفلاین، تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌ها همچنان فعال‌اند.';offlineDescription.style.cssText='font-size:10px;line-height:1.45;margin:6px 0 0;';}
     const offlineTitle=panel.querySelector('h3');
     if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;'}
     panel.classList.add('fourami-login-offline-column');
