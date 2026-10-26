@@ -371,11 +371,20 @@
   }
   function moveLoginField(inputId,target){
     const input=$offline(inputId);
-    if(!input)return;
+    if(!input)return null;
     const label=document.querySelector('label[for="'+inputId+'"]');
-    const holder=input.parentElement;
-    const nodes=holder&&holder.querySelectorAll('input').length===1&&(!label||holder.contains(label))?[holder]:[label,input].filter(Boolean);
-    nodes.forEach(node=>target.appendChild(node));
+    const group=document.createElement('div');
+    group.className='fourami-login-field-group';
+    group.style.cssText='display:flex;flex-direction:column;gap:5px;min-width:0;width:100%;box-sizing:border-box;margin:0 0 9px;';
+    if(label){
+      if(inputId==='studentNameInput')label.textContent='نام کاربری';
+      label.style.cssText='display:block;min-height:18px;line-height:18px;margin:0;font-size:12px;';
+      group.appendChild(label);
+    }
+    group.appendChild(input);
+    input.style.cssText='display:block;width:100%;height:38px;max-width:100%;min-width:0;box-sizing:border-box;margin:0;';
+    target.appendChild(group);
+    return group;
   }
   function setupUnifiedStudentLogin(panel){
     if($offline('fouramiUnifiedStudentLogin'))return;
@@ -404,22 +413,22 @@
     columns.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch;width:100%;min-width:0;box-sizing:border-box;';
     const onlineColumn=document.createElement('section');
     onlineColumn.className='item';
-    onlineColumn.style.cssText='margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
+    onlineColumn.style.cssText='display:flex;flex-direction:column;align-items:stretch;margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
     const onlineTitle=document.createElement('h3');
     onlineTitle.textContent='🌐 ورود آنلاین';
     onlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';
     onlineColumn.appendChild(onlineTitle);
     const offlineDescription=panel.querySelector('h3 + p');
-    if(offlineDescription){offlineDescription.textContent='نام کاربری و PIN این دستگاه را وارد کن.';offlineDescription.style.cssText='font-size:10px;line-height:1.3;margin:0 0 6px;';}
+    if(offlineDescription){offlineDescription.textContent='فقط با نام کاربری و PIN ذخیره‌شده روی همین دستگاه.';offlineDescription.style.cssText='font-size:10px;line-height:1.3;margin:6px 0 0;';}
     const offlineTitle=panel.querySelector('h3');
     if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;'}
     panel.classList.add('fourami-login-offline-column');
-    panel.style.cssText='margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
+    panel.style.cssText='display:flex;flex-direction:column;align-items:stretch;margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
     if(!$offline('fouramiOfflineUsernameInput')){
       const offlineUsernameLabel=document.createElement('label');
       offlineUsernameLabel.className='field';
       offlineUsernameLabel.htmlFor='fouramiOfflineUsernameInput';
-      offlineUsernameLabel.textContent='نام کاربری آفلاین';
+      offlineUsernameLabel.textContent='نام کاربری';
       offlineUsernameLabel.style.cssText='display:block;font-size:12px;margin:0 0 5px;';
       const offlineUsername=document.createElement('input');
       offlineUsername.id='fouramiOfflineUsernameInput';
@@ -429,26 +438,37 @@
       offlineUsername.placeholder='نام کاربری دانش‌آموز';
       offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
       const pinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
-      panel.insertBefore(offlineUsernameLabel,pinLabel||panel.firstChild);
-      panel.insertBefore(offlineUsername, pinLabel||panel.firstChild);
+      const offlineUsernameGroup=document.createElement('div');
+      offlineUsernameGroup.className='fourami-login-field-group';
+      offlineUsernameGroup.style.cssText='display:flex;flex-direction:column;gap:5px;min-width:0;width:100%;box-sizing:border-box;margin:0 0 9px;';
+      offlineUsernameGroup.append(offlineUsernameLabel,offlineUsername);
+      panel.insertBefore(offlineUsernameGroup,pinLabel||panel.firstChild);
     }
     const offlineUsername=$offline('fouramiOfflineUsernameInput');
     if(offlineUsername)offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;margin:0 0 8px;';
     const offlinePinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
     const offlinePin=panel.querySelector('#fouramiOfflinePinLogin');
     const offlineButton=panel.querySelector('#fouramiOfflineLoginButton');
-    if(offlinePinLabel)offlinePinLabel.style.cssText='display:block;font-size:12px;margin:0 0 5px;';
-    if(offlinePin)offlinePin.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
-    if(offlineButton){offlineButton.textContent='ورود آفلاین';offlineButton.style.cssText='display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:8px 4px;font-size:12px;white-space:normal;';}
+    if(offlinePinLabel)offlinePinLabel.style.cssText='display:block;min-height:18px;line-height:18px;font-size:12px;margin:0;';
+    if(offlinePin){
+      offlinePin.style.cssText='display:block;width:100%;height:38px;max-width:100%;min-width:0;box-sizing:border-box;margin:0;';
+      if(offlinePinLabel&&offlinePin.parentElement===panel){
+        const pinGroup=document.createElement('div');
+        pinGroup.className='fourami-login-field-group';
+        pinGroup.style.cssText='display:flex;flex-direction:column;gap:5px;min-width:0;width:100%;box-sizing:border-box;margin:0 0 9px;';
+        panel.insertBefore(pinGroup,offlinePinLabel);
+        pinGroup.append(offlinePinLabel,offlinePin);
+      }
+    }
+    if(offlineButton){offlineButton.textContent='ورود آفلاین';offlineButton.style.cssText='display:block;width:100%;min-height:38px;box-sizing:border-box;margin-top:auto;padding:8px 4px;font-size:12px;white-space:normal;';}
     const offlineStatus=$offline('fouramiOfflineLoginStatus');
-    if(offlineStatus)offlineStatus.style.cssText='font-size:11px;overflow-wrap:anywhere;margin:6px 0 0;';
+    if(offlineStatus)offlineStatus.style.cssText='font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0;';
+    if(offlineDescription)panel.appendChild(offlineDescription);
     const usernameLabel=document.querySelector('label[for="studentNameInput"]');
-    if(usernameLabel)usernameLabel.style.cssText='display:block;margin:0 0 5px;';
-    username.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
+    if(usernameLabel){usernameLabel.textContent='نام کاربری';usernameLabel.style.cssText='display:block;min-height:18px;line-height:18px;margin:0;font-size:12px;';}
     const passwordLabel=document.querySelector('label[for="studentPasswordInput"]');
-    if(passwordLabel)passwordLabel.style.cssText='display:block;margin:0 0 5px;';
-    password.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
-    onlineButton.style.cssText='display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:8px 4px;font-size:12px;white-space:normal;';
+    if(passwordLabel)passwordLabel.style.cssText='display:block;min-height:18px;line-height:18px;margin:0;font-size:12px;';
+    onlineButton.style.cssText='display:block;width:100%;min-height:38px;box-sizing:border-box;margin-top:auto;padding:8px 4px;font-size:12px;white-space:normal;';
     const assetStatus=document.createElement('p');
     assetStatus.id='fouramiOfflineAssetsStatus';
     assetStatus.className='muted';
@@ -463,7 +483,10 @@
     moveLoginField('studentPasswordInput',onlineColumn);
     onlineColumn.appendChild(onlineButton);
     const onlineStatus=$offline('studentLoginStatus')||$offline('studentLoginError');
-    if(onlineStatus&&!layout.contains(onlineStatus)&&host.contains(onlineStatus))onlineColumn.appendChild(onlineStatus);
+    if(onlineStatus&&!layout.contains(onlineStatus)&&host.contains(onlineStatus)){
+      onlineStatus.style.cssText='font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0;';
+      onlineColumn.appendChild(onlineStatus);
+    }
     for(const oldParent of oldParents){
       if(!oldParent||oldParent===host||layout.contains(oldParent)||!oldParent.isConnected)continue;
       if(!oldParent.querySelector('input,button,select,textarea')&&!oldParent.textContent.trim()&&!oldParent.children.length)oldParent.remove();
