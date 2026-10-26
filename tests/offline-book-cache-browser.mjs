@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict';
+import { mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 let chromium;
 try {
@@ -138,10 +141,71 @@ try {
   assert.ok(!replay.src.startsWith('blob:'), 'Service Worker should serve the cached response directly, not rely on the image-error fallback');
   await swContext.close();
 
-  // Check 3: all six page maps and the on-screen image/fallback path were
-  // exercised, not just one hard-coded image URL.
+  // Check 3: download the full course cache into a persistent browser profile,
+  // close and relaunch the browser context, and verify all images remain stored.
   assert.equal(Object.keys(pageUrls).length, 6);
-  console.log('Offline textbook image checks passed: six book caches, direct offline recovery, and Service Worker replay.');
+  const profileDir = await mkdtemp(join(tmpdir(), 'fourami-offline-profile-'));
+  let persistentContext;
+  try {
+    persistentContext = await chromium.launchPersistentContext(profileDir, {
+      headless: true,
+      serviceWorkers: 'allow'
+    });
+    let persistentPage = persistentContext.pages()[0] || await persistentContext.newPage();
+    await persistentPage.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
+    await persistentPage.waitForFunction(() => Boolean(window.__fouramiOfflineMode?.preloadBookAssets), { timeout: 15000 });
+
+    const firstAudit = await persistentPage.evaluate(async () => {
+      const result = await window.__fouramiOfflineMode.preloadBookAssets();
+      const audit = await window.__fouramiOfflineMode.auditBookCache();
+      return { result, audit };
+    });
+    assert.equal(firstAudit.result.failed, 0, 'Initial full offline download reported missing files');
+    assert.equal(firstAudit.audit.images, 662, 'Initial download did not cache all 662 mapped textbook images');
+
+    await persistentContext.close();
+    persistentContext = null;
+
+    persistentContext = await chromium.launchPersistentContext(profileDir, {
+      headless: true,
+      serviceWorkers: 'allow'
+    });
+    persistentPage = persistentContext.pages()[0] || await persistentContext.newPage();
+    await persistentPage.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
+    await persistentPage.waitForFunction(() => Boolean(window.__fouramiOfflineMode?.preloadBookAssets), { timeout: 15000 });
+
+    const secondAudit = await persistentPage.evaluate(async () => {
+      const result = await window.__fouramiOfflineMode.preloadBookAssets();
+      const audit = await window.__fouramiOfflineMode.auditBookCache();
+      return { result, audit };
+    });
+    assert.equal(secondAudit.audit.images, 662, 'Cached textbook images did not survive browser-context restart');
+    assert.equal(secondAudit.result.failed, 0, 'Reopened app reported missing offline files');
+    assert.equal(secondAudit.result.downloaded, 0, 'Reopened app downloaded assets that should already be stored locally');
+
+    await persistentPage.evaluate(async () => {
+      if (!navigator.serviceWorker.controller) {
+        await navigator.serviceWorker.register('./sw.js', { scope: './' });
+        await navigator.serviceWorker.ready;
+      }
+    });
+    if (!(await persistentPage.evaluate(() => Boolean(navigator.serviceWorker.controller)))) {
+      await persistentPage.reload({ waitUntil: 'domcontentloaded' });
+    }
+    await persistentPage.waitForFunction(() => Boolean(navigator.serviceWorker?.controller), { timeout: 15000 });
+
+    await persistentContext.setOffline(true);
+    for (const subject of SUBJECTS) {
+      const offlineLoad = await waitForImage(persistentPage, pageUrls[subject] + '?restart-offline=' + subject);
+      assert.equal(offlineLoad.loaded, true, subject + ': image failed after full cache survived browser restart');
+      assert.ok(!offlineLoad.src.startsWith('blob:'), subject + ': Service Worker should serve the persisted cache directly after restart');
+    }
+  } finally {
+    if (persistentContext) await persistentContext.close().catch(() => {});
+    await rm(profileDir, { recursive: true, force: true }).catch(() => {});
+  }
+
+  console.log('Offline textbook checks passed: six subjects, image fallback, Service Worker replay, 662 images cached across browser restart, and zero repeat downloads.');
 } finally {
   await browser.close();
 }
