@@ -412,7 +412,7 @@
     onlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';
     onlineColumn.appendChild(onlineTitle);
     const offlineDescription=panel.querySelector('h3 + p');
-    if(offlineDescription)offlineDescription.remove();
+    if(offlineDescription){offlineDescription.textContent='فقط با PIN ذخیره‌شده روی همین دستگاه.';offlineDescription.style.cssText='font-size:10px;line-height:1.3;margin:0 0 6px;';}
     const offlineTitle=panel.querySelector('h3');
     if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';}
     panel.classList.add('fourami-login-offline-column');
@@ -461,6 +461,7 @@
   async function preloadOfflineBookAssets(){
     if(!navigator.onLine||!('caches' in window)||fouramiOfflineAssetPreloadPromise)return fouramiOfflineAssetPreloadPromise;
     fouramiOfflineAssetPreloadPromise=(async()=>{
+      try{if(navigator.storage&&typeof navigator.storage.persist==='function')await navigator.storage.persist()}catch{}
       const cache=await caches.open(FOURAMI_OFFLINE_BOOK_CACHE);
       updateOfflineAssetsStatus('در حال بررسی صفحات کتاب‌ها برای ذخیرهٔ آفلاین…');
       const paths=new Set([
@@ -522,7 +523,7 @@
           }
         }
       };
-      updateOfflineAssetsStatus('در حال آماده‌سازی صفحه‌های کتاب و فایل‌های لازم برای حالت آفلاین…');
+      updateOfflineAssetsStatus('در حال آماده‌سازی صفحه‌های کتاب برای آفلاین… بارگیری اولیه حدود ۶۰ مگابایت است.');
       await Promise.all(Array.from({length:4},()=>worker()));
       const failures=[...new Set([...manifestFailures.map(path=>new URL(path,document.baseURI).href),...failed])];
       if(failures.length){
