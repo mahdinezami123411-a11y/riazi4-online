@@ -3683,21 +3683,17 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function progressKey(name){return STORAGE_P+normalizeAnswer(name)}
   function practiceHistoryKey(q){const id=String(q?.id??'').trim();if(id)return 'id:'+id;const text=normalizeAnswer(q?.q||q?.prompt||q?.question||'');return text?'text:'+text:''}
   function loadStudentProgress(name){
-    if(cloudSession?.offline&&fouramiOfflineData?.studentId===cloudSession.user?.id&&fouramiOfflineData.studentProgress)return fouramiClone(fouramiOfflineData.studentProgress);
+    if(fouramiOfflineData?.studentId===cloudSession?.user?.id&&fouramiOfflineData.studentProgress)return fouramiClone(fouramiOfflineData.studentProgress);
     return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}});
   }
   function storeStudentProgress(){
     if(!activeStudentName)return;
-    if(cloudSession?.offline&&fouramiOfflineData?.studentId===cloudSession.user?.id){
+    if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
       fouramiOfflineData.studentProgress=fouramiClone(studentProgress);
       fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline progress could not be saved',error));
       return;
     }
     localWrite(progressKey(activeStudentName),studentProgress);
-    if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
-      fouramiOfflineData.studentProgress=fouramiClone(studentProgress);
-      fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Offline progress cache refresh failed',error));
-    }
   }
   function awardProgress(chapter,correct,question=null){
     studentProgress.attempts=(studentProgress.attempts||0)+1;
@@ -6009,19 +6005,15 @@ loadExpandedPersianVocabulary();
   let selectedOtherLesson = null;
   function otherProgressKey(){return 'yare-other-subject-progress-v1-'+String(cloudSession?.user?.id||activeUsername||'guest')}
   function readOtherProgress(){
-    if(cloudSession?.offline&&fouramiOfflineData?.studentId===cloudSession.user?.id)return fouramiClone(fouramiOfflineData.otherProgress||{});
+    if(fouramiOfflineData?.studentId===cloudSession?.user?.id)return fouramiClone(fouramiOfflineData.otherProgress||{});
     try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}
   }
   function writeOtherProgress(data){
-    if(cloudSession?.offline&&fouramiOfflineData?.studentId===cloudSession.user?.id){
+    if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
       fouramiOfflineData.otherProgress=fouramiClone(data);
       fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline subject progress could not be saved',error));
     }else{
       try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}
-      if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
-        fouramiOfflineData.otherProgress=fouramiClone(data);
-        fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Offline subject progress cache refresh failed',error));
-      }
     }
     try{if($('unifiedSubjectCards'))renderUnifiedLearningReport()}catch{}
   }
