@@ -2860,6 +2860,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 </main>
 <script>
 // Global fallback used by UI callbacks declared in separate scopes.
+window.fouramiClone = window.fouramiClone || function(value){return value==null?value:JSON.parse(JSON.stringify(value))};
 window.fa = window.fa || (value => Number(value).toLocaleString('fa-IR'));
 const subjects=[['➗','ریاضی','یادآوری، کتاب، تمرین و امتحان']];
 let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},courseSettingsBySubject={},courseBookObjectUrls={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual';
@@ -3683,13 +3684,13 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function progressKey(name){return STORAGE_P+normalizeAnswer(name)}
   function practiceHistoryKey(q){const id=String(q?.id??'').trim();if(id)return 'id:'+id;const text=normalizeAnswer(q?.q||q?.prompt||q?.question||'');return text?'text:'+text:''}
   function loadStudentProgress(name){
-    if(fouramiOfflineData?.studentId===cloudSession?.user?.id&&fouramiOfflineData.studentProgress)return fouramiClone(fouramiOfflineData.studentProgress);
+    if(fouramiOfflineData?.studentId===cloudSession?.user?.id&&fouramiOfflineData.studentProgress)return window.fouramiClone(fouramiOfflineData.studentProgress);
     return localRead(progressKey(name),{attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}});
   }
   function storeStudentProgress(){
     if(!activeStudentName)return;
     if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
-      fouramiOfflineData.studentProgress=fouramiClone(studentProgress);
+      fouramiOfflineData.studentProgress=window.fouramiClone(studentProgress);
       fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline progress could not be saved',error));
       return;
     }
@@ -6006,12 +6007,12 @@ loadExpandedPersianVocabulary();
   let selectedOtherLesson = null;
   function otherProgressKey(){return 'yare-other-subject-progress-v1-'+String(cloudSession?.user?.id||activeUsername||'guest')}
   function readOtherProgress(){
-    if(fouramiOfflineData?.studentId===cloudSession?.user?.id)return fouramiClone(fouramiOfflineData.otherProgress||{});
+    if(fouramiOfflineData?.studentId===cloudSession?.user?.id)return window.fouramiClone(fouramiOfflineData.otherProgress||{});
     try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}
   }
   function writeOtherProgress(data){
     if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession?.user?.id){
-      fouramiOfflineData.otherProgress=fouramiClone(data);
+      fouramiOfflineData.otherProgress=window.fouramiClone(data);
       fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline subject progress could not be saved',error));
     }else{
       try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}
@@ -8767,7 +8768,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261026-offline-v110',{updateViaCache:'none'});
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261026-offline-v111',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }
@@ -9754,5 +9755,5 @@ function paintMathQuestionVisual(q,target){
 })();
 
 </script>
-<script src="./offline.js?v=20261026-offline-v2"></script>
+<script src="./offline.js?v=20261026-offline-v3"></script>
 </body></html>
