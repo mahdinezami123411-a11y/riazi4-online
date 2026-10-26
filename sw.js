@@ -1,8 +1,8 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v113';;;
+const CACHE_NAME = 'riazi4-pwa-shell-v114';;;
 const APP_SHELL = [
   './',
   './index.html',
-  './offline.js?v=20261026-offline-v4',
+  './offline.js?v=20261026-offline-v5',
   './manifest.webmanifest',
   './icons/app-icon-2.png',
   './assets/persian-vocabulary.json.gz.b64',
@@ -68,13 +68,13 @@ self.addEventListener('fetch', event => {
       }
 
       try {
-        const saved = await offlineCache.match(request);
+        const saved = await offlineCache.match(request,{ignoreSearch:true});
         if (saved) return saved;
       } catch {}
 
       // Migrate any page/image previously saved in the older app-shell cache.
       try {
-        const legacySaved = await caches.match(request);
+        const legacySaved = await caches.match(request,{ignoreSearch:true});
         if (legacySaved) {
           await offlineCache.put(request, legacySaved.clone()).catch(() => {});
           return legacySaved;
@@ -91,7 +91,7 @@ self.addEventListener('fetch', event => {
         return response;
       } catch (error) {
         try {
-          const fallback = await offlineCache.match(request) || await caches.match(request);
+          const fallback = await offlineCache.match(request,{ignoreSearch:true}) || await caches.match(request,{ignoreSearch:true});
           if (fallback) return fallback;
         } catch {}
         return Response.error();
