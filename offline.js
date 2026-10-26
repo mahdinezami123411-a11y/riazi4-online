@@ -247,6 +247,7 @@
       const pin=fouramiNormalizePin($offline('fouramiOfflinePin')?.value);
       if(!/^\d{6,12}$/.test(pin))throw new Error('PIN باید ۶ تا ۱۲ رقم باشد.');
       const studentId=String(cloudSession.profile.id);
+      const legacyOtherProgress=(()=>{try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}})();
       const existing=await readPackageByStudent(studentId);
       if(existing){
         let opened;
@@ -269,7 +270,7 @@
       fouramiOfflineData.courseSettings=fouramiClone(courseSettingsBySubject||{});
       fouramiOfflineData.questionBank=fouramiClone(cloudBankRows?.length?cloudBankRows:fouramiOfflineData.questionBank);
       fouramiOfflineData.studentProgress=fouramiClone(studentProgress||defaultProgress());
-      fouramiOfflineData.otherProgress=fouramiMergeOtherProgress(fouramiOfflineData.otherProgress,readOtherProgress());
+      fouramiOfflineData.otherProgress=fouramiMergeOtherProgress(fouramiOfflineData.otherProgress,legacyOtherProgress);
       if(!Array.isArray(fouramiOfflineData.pendingAttempts))fouramiOfflineData.pendingAttempts=[];
       if(!Array.isArray(fouramiOfflineData.pendingSubjectProgress))fouramiOfflineData.pendingSubjectProgress=[];
       captureCurrentSession();
