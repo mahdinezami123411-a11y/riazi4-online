@@ -24,8 +24,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Parse all inline JavaScript
-        run: node tests/quiz-regression.mjs
+      - name: Parse app and Service Worker scripts
+        run: |
+          node --check offline.js
+          node --check sw.js
+          node tests/quiz-regression.mjs
       - name: Install Playwright
         run: |
           mkdir -p "$RUNNER_TEMP/quiz-test"
@@ -41,6 +44,7 @@ jobs:
           cp assets/persian-vocabulary.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
           cp assets/book-pages/persian/page-*.webp assets/book-pages/persian/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/persian/"
           cp assets/books/persian-pages.pdf "$RUNNER_TEMP/quiz-site/assets/books/"
+          cp assets/math-fourth.pdf "$RUNNER_TEMP/quiz-site/assets/"
           for subject in math science social gifts quran; do
             if [ -d "assets/book-pages/$subject" ]; then
               mkdir -p "$RUNNER_TEMP/quiz-site/assets/book-pages/$subject"
