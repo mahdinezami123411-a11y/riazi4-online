@@ -7898,7 +7898,7 @@ const persianBookPageMap={
     if(subject.id!=='persian'&&subject.id!=='dictation')loadLessonBookSection(subject.id,l);
     if(['math','persian','science','social','gifts'].includes(subject.id))loadSubjectVideo(subject.id,l.id);
     if(['math','persian','science','social','gifts'].includes(subject.id))loadSubjectResources(subject.id,l.id);
-    $('otherSubjectLessonBody').scrollIntoView({behavior:'smooth',block:'start'});
+    yareScrollToSectionNav();
   }
   $('checkOtherLessonAnswer').onclick=async()=>{
     const l=selectedOtherLesson;if(!l)return;
@@ -8259,7 +8259,7 @@ const persianBookPageMap={
       lessonSelect.value=String(lessonId);
       renderOtherSubjectActivity('practice');
     }
-    $('otherSubjectActivityPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+    yareScrollToSectionNav();
   }
 
 
