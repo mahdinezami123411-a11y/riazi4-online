@@ -8,6 +8,14 @@
   const encoder=new TextEncoder();
   const decoder=new TextDecoder();
   const $offline=id=>document.getElementById(id);
+  // Initialize offline state before any focus/online handler can read it.
+  let fouramiOfflineData=null;
+  let fouramiOfflineKey=null;
+  let fouramiOfflineSalt=null;
+  let fouramiOfflineRecord=null;
+  let fouramiOfflineSaveChain=Promise.resolve();
+  let fouramiOfflineSyncInProgress=false;
+  if(!Array.isArray(window.cloudBankRows))window.cloudBankRows=[];
   // Clone JSON-compatible app data without depending on a helper from index.html.
   function fouramiClone(value){
     if(value===undefined)return undefined;
@@ -136,8 +144,33 @@
       if(!isCourseLessonOpen('math',chapter))return;
       practiceBank[chapter].push({id:row.id,chapter,skill:row.skill||'تمرین ریاضی',q:row.prompt,type:row.question_type||'mc',opts:Array.isArray(row.options)?row.options:[],difficulty:row.difficulty||'medium',pdfSampleSet:row.pdf_sample_set||null,why:''});
     });
-    cloudBankRows=mathRows;
+    window.cloudBankRows=mathRows;
     window.__termPracticeCache={};practiceSeen.clear();updatePracticeTopicOptions();updatePracticeStats();
+  }
+  function getOfflineQuestionBankRows(){
+    if(Array.isArray(window.cloudBankRows)&&window.cloudBankRows.length)return window.cloudBankRows;
+    const rows=[];
+    if(typeof practiceBank!=='undefined'&&practiceBank){
+      for(let chapter=1;chapter<=7;chapter++){
+        const questions=Array.isArray(practiceBank[chapter])?practiceBank[chapter]:[];
+        questions.forEach(question=>{
+          if(!question||typeof question!=='object')return;
+          rows.push({
+            id:question.id,
+            subject:'math',
+            lesson_id:Number(question.lesson_id??question.chapter??chapter),
+            chapter_id:Number(question.chapter_id??question.chapter??chapter),
+            skill:question.skill||'تمرین ریاضی',
+            prompt:question.prompt??question.q??question.question??'',
+            question_type:question.question_type??question.type??'mc',
+            options:Array.isArray(question.options)?question.options:(Array.isArray(question.opts)?question.opts:[]),
+            difficulty:question.difficulty||'medium',
+            pdf_sample_set:question.pdf_sample_set??question.pdfSampleSet??null
+          });
+        });
+      }
+    }
+    return rows;
   }
   async function queueMathAttempt(q,response,source,groupId,existingClientAttemptId=null){
     if(!fouramiOfflineData||!fouramiOfflineKey||fouramiOfflineData.studentId!==cloudSession?.user?.id)throw new Error('ابتدا هنگام اتصال اینترنت، حالت آفلاین را در پروفایل فعال کن.');
@@ -267,13 +300,14 @@
         fouramiOfflineRecord={studentId,username:fouramiNormalizeUsername(cloudSession.username||activeUsername),salt:bytesToBase64(salt),iv:'',ciphertext:'',failedAttempts:0,lockUntil:0,updatedAt:new Date().toISOString()};
         fouramiOfflineData={version:1,studentId,username:cloudSession.username||activeUsername,profile:fouramiClone(cloudSession.profile),session:{},courseSettings:{},questionBank:[],studentProgress:defaultProgress(),otherProgress:{},pendingAttempts:[],pendingSubjectProgress:[],createdAt:new Date().toISOString()};
       }
-      if(!Array.isArray(cloudBankRows)||!cloudBankRows.length){
-        if(!Array.isArray(fouramiOfflineData.questionBank)||!fouramiOfflineData.questionBank.length)throw new Error('بانک سؤال هنوز بارگیری نشده است. یک‌بار از حساب دانش‌آموز آنلاین وارد شو، کمی صبر کن تا بارگیری کامل شود و دوباره تلاش کن.');
+      const availableQuestionBank=getOfflineQuestionBankRows();
+      if(!availableQuestionBank.length&&!(Array.isArray(fouramiOfflineData.questionBank)&&fouramiOfflineData.questionBank.length)){
+        throw new Error('بانک سؤال هنوز بارگیری نشده است. یک‌بار از حساب دانش‌آموز آنلاین وارد شو، کمی صبر کن تا بارگیری کامل شود و دوباره تلاش کن.');
       }
       fouramiOfflineData.version=1;fouramiOfflineData.studentId=studentId;fouramiOfflineData.username=cloudSession.username||activeUsername;
       fouramiOfflineData.profile=fouramiClone(cloudSession.profile);
       fouramiOfflineData.courseSettings=fouramiClone(courseSettingsBySubject||{});
-      fouramiOfflineData.questionBank=fouramiClone(cloudBankRows?.length?cloudBankRows:fouramiOfflineData.questionBank);
+      fouramiOfflineData.questionBank=fouramiClone(availableQuestionBank.length?availableQuestionBank:fouramiOfflineData.questionBank);
       fouramiOfflineData.studentProgress=fouramiClone(studentProgress||defaultProgress());
       fouramiOfflineData.otherProgress=fouramiMergeOtherProgress(fouramiOfflineData.otherProgress,legacyOtherProgress);
       if(!Array.isArray(fouramiOfflineData.pendingAttempts))fouramiOfflineData.pendingAttempts=[];
@@ -312,8 +346,8 @@
       activeProfile={...readProfile(activeStudentName),name:cloudSession.profile.display_name||activeStudentName,nickname:cloudSession.profile.nickname||'',favorite:cloudSession.profile.favorite_skill||''};
       studentProgress=fouramiClone(opened.data.studentProgress||defaultProgress());
       courseSettingsBySubject=fouramiClone(opened.data.courseSettings||{});
-      cloudBankRows=fouramiClone(opened.data.questionBank||[]);
-      loadOfflineMathBank(cloudBankRows);
+      window.cloudBankRows=fouramiClone(opened.data.questionBank||[]);
+      loadOfflineMathBank(window.cloudBankRows);
       renderStudentDashboard();
       $offline('studentPasswordInput').value='';$offline('fouramiOfflinePinLogin').value='';
       if($offline('fouramiOfflineProfilePanel'))$offline('fouramiOfflineProfilePanel').classList.add('hidden');
