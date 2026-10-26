@@ -8,6 +8,10 @@
   const encoder=new TextEncoder();
   const decoder=new TextDecoder();
   const $offline=id=>document.getElementById(id);
+  function fouramiClone(value){
+    if(value===undefined)return undefined;
+    return JSON.parse(JSON.stringify(value));
+  }
   const defaultProgress=()=>({attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{}});
   function fouramiNormalizeUsername(value){return String(value||'').trim().toLowerCase()}
   function fouramiNormalizePin(value){return String(value||'').replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).trim()}
