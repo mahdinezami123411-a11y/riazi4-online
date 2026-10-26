@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
 let chromium;
 try {
@@ -10,6 +12,11 @@ try {
 const BASE_URL = 'http://127.0.0.1:8765/index.html';
 const SUBJECTS = ['math', 'persian', 'science', 'social', 'gifts', 'quran'];
 const browser = await chromium.launch({ headless: true });
+const swSource = await readFile(join(process.env.GITHUB_WORKSPACE, 'sw.js'), 'utf8');
+const offlineSource = await readFile(join(process.env.GITHUB_WORKSPACE, 'offline.js'), 'utf8');
+assert.match(swSource, /const isTextbookAsset =([\s\S]*?)if \(isTextbookAsset\)[\s\S]*?fetch\(request, \{ cache: 'no-store' \}\)/);
+assert.match(swSource, /caches\.delete\('fourami-book-pages-v1'\)/);
+assert.doesNotMatch(offlineSource, /preloadOfflineBookAssets|setupFouramiOfflineBookImageCache|fourami-book-pages-v1/);
 
 async function firstPageUrl(page, subject) {
   return page.evaluate(async subject => {
