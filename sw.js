@@ -1,4 +1,4 @@
-const CACHE_NAME = 'riazi4-pwa-shell-v114';;;
+const CACHE_NAME = 'riazi4-pwa-shell-v115';;;
 const APP_SHELL = [
   './',
   './index.html',
@@ -32,6 +32,29 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   // Never intercept external requests, including Supabase authentication/data APIs.
   if (url.origin !== self.location.origin) return;
+
+  // The HTML may still reference the previous query string for offline.js.
+  // Always serve the exact current version pre-cached in APP_SHELL.
+  if (url.pathname.endsWith('/offline.js')) {
+    event.respondWith((async () => {
+      const latestUrl = new URL('./offline.js?v=20261026-offline-v5', self.registration.scope).href;
+      try {
+        const cache = await caches.open(CACHE_NAME);
+        const saved = await cache.match(latestUrl);
+        if (saved) return saved;
+        const response = await fetch(latestUrl);
+        if (response && response.ok) await cache.put(latestUrl, response.clone());
+        return response;
+      } catch (error) {
+        try {
+          const fallback = await caches.match(request);
+          if (fallback) return fallback;
+        } catch {}
+        return Response.error();
+      }
+    })());
+    return;
+  }
 
   if (request.mode === 'navigate') {
     event.respondWith(
