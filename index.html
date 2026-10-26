@@ -5968,7 +5968,9 @@ loadExpandedPersianVocabulary();
   function writeOtherProgress(data){try{localStorage.setItem(otherProgressKey(),JSON.stringify(data))}catch{}try{if($('unifiedSubjectCards'))renderUnifiedLearningReport()}catch{}}
   function isRealStudentSession(){return !!(cloudSession?.access_token&&cloudSession?.user?.id&&cloudSession.role==='student'&&cloudSession.profile?.role==='student'&&!cloudSession.studentViewAsTeacher)}
   async function saveSubjectPracticeProgress(record){
-    if(!isRealStudentSession())return {synced:false,reason:'no-student-session'};
+    const offlineMode=window.__fouramiOfflineMode;
+    const isOfflineStudent=cloudSession?.role==='student'&&cloudSession?.profile?.role==='student'&&!cloudSession.studentViewAsTeacher;
+    if(!isRealStudentSession()&&!(isOfflineStudent&&(cloudSession?.offline||!navigator.onLine)))return {synced:false,reason:'no-student-session'};
     const payload={
       student_id:cloudSession.user.id,
       class_id:cloudSession.profile?.class_id??null,
@@ -5985,10 +5987,19 @@ loadExpandedPersianVocabulary();
       metadata:record.metadata&&typeof record.metadata==='object'?record.metadata:{},
       updated_at:record.updated_at||new Date().toISOString()
     };
-    await cloudFetch('/rest/v1/yare_subject_practice_progress?on_conflict=student_id,subject,lesson_id,activity_key',{
-      method:'POST',body:payload,headers:{Prefer:'resolution=merge-duplicates,return=minimal'}
-    });
-    return {synced:true};
+    if(cloudSession?.offline||!navigator.onLine){
+      if(!isOfflineStudent||!offlineMode?.queueSubjectProgress)return {synced:false,reason:'offline-package-not-open'};
+      return await offlineMode.queueSubjectProgress(payload);
+    }
+    try{
+      await cloudFetch('/rest/v1/yare_subject_practice_progress?on_conflict=student_id,subject,lesson_id,activity_key',{
+        method:'POST',body:payload,headers:{Prefer:'resolution=merge-duplicates,return=minimal'}
+      });
+      return {synced:true};
+    }catch(error){
+      if(!navigator.onLine&&isOfflineStudent&&offlineMode?.queueSubjectProgress)return await offlineMode.queueSubjectProgress(payload);
+      throw error;
+    }
   }
   function rowToSubjectProgressKey(row){
     const q=String(row.activity_key||'').match(/^(?:quiz-|practice-tab-|exam-tab-)(\d+)$/);
