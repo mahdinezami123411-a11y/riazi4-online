@@ -92,8 +92,10 @@ try {
   assert.ok(await page.locator('#fouramiOfflineUsernameInput').count(), 'Offline username field should remain available');
   assert.ok(await page.locator('#fouramiOfflinePinLogin').count(), 'Offline PIN field should remain available');
   assert.ok(await page.locator('#fouramiOfflineLoginButton').count(), 'Offline login button should remain available');
-  assert.ok(await page.locator('#studentAppNav [data-app-view="practice"]').count(), 'Practice navigation should remain available');
-  assert.ok(await page.locator('#studentAppNav [data-app-view="exam"]').count(), 'Exam navigation should remain available');
+  assert.ok(await page.locator('#booktab-practice').count(), 'Practice section should remain available inside the book view');
+  assert.ok(await page.locator('#booktab-exam').count(), 'Exam section should remain available inside the book view');
+  assert.ok(await page.locator('#mathChapterLessonView').count(), 'Math lesson view should remain available offline');
+  assert.ok(await page.locator('#otherSubjectLessonBody').count(), 'Other subject lesson view should remain available offline');
 
   // Check 2: lesson navigation scrolls the section-selector bar to the top, not the whole document to y=0.
   const navScroll = await page.evaluate(async () => {
