@@ -14,9 +14,13 @@ const SUBJECTS = ['math', 'persian', 'science', 'social', 'gifts', 'quran'];
 const browser = await chromium.launch({ headless: true });
 const swSource = await readFile(join(process.env.GITHUB_WORKSPACE, 'sw.js'), 'utf8');
 const offlineSource = await readFile(join(process.env.GITHUB_WORKSPACE, 'offline.js'), 'utf8');
+const appSource = await readFile(join(process.env.GITHUB_WORKSPACE, 'index.html'), 'utf8');
 assert.match(swSource, /const isTextbookAsset =([\s\S]*?)if \(isTextbookAsset\)[\s\S]*?fetch\(request, \{ cache: 'no-store' \}\)/);
 assert.match(swSource, /caches\.delete\('fourami-book-pages-v1'\)/);
 assert.doesNotMatch(offlineSource, /preloadOfflineBookAssets|setupFouramiOfflineBookImageCache|fourami-book-pages-v1/);
+assert.equal((appSource.match(/window\\.scrollTo\\(\\{top:0,behavior:'smooth'\\}\\)/g) || []).length, 1, 'Only the non-student fallback should scroll to the document top');
+assert.equal((appSource.match(/scrollIntoView/g) || []).length, 1, 'Student lessons and activities should scroll to the section bar, not their content');
+assert.ok((appSource.match(/yareScrollToSectionNav\\(\\)/g) || []).length >= 17, 'Student section navigation should use the nav-bar scroll helper');
 
 async function firstPageUrl(page, subject) {
   return page.evaluate(async subject => {
