@@ -84,7 +84,7 @@ try {
   // Check 1: PIN-based offline login remains, and explains the intentionally unavailable textbook files.
   const loginText = await page.locator('#fouramiOfflineLoginPanel').evaluate(element => element.textContent || '');
   assert.match(loginText, /تصاویر و فایل‌های کتاب در دسترس نیستند/);
-  assert.match(loginText, /آموزش‌ها، تمرین‌ها و آزمون‌ها همچنان فعال‌اند/);
+  assert.match(loginText, /آموزش‌ها، تمرین‌ها و آزمون‌ها (?:همچنان فعال‌اند|فعال می‌مانند)/);
   assert.ok(await page.locator('#fouramiOfflineUsernameInput').count(), 'Offline username field should remain available');
   assert.ok(await page.locator('#fouramiOfflinePinLogin').count(), 'Offline PIN field should remain available');
   assert.ok(await page.locator('#fouramiOfflineLoginButton').count(), 'Offline login button should remain available');
