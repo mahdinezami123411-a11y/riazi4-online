@@ -36,7 +36,7 @@ jobs:
       - name: Instrument temporary test page
         run: |
           node tests/instrument-test-page.mjs index.html "$RUNNER_TEMP/quiz-site/index.html"
-          mkdir -p "$RUNNER_TEMP/quiz-site/assets/book-pages/persian" "$RUNNER_TEMP/quiz-site/assets/books"
+          mkdir -p "$RUNNER_TEMP/quiz-site/assets/book-pages/persian" "$RUNNER_TEMP/quiz-site/assets/books" "$RUNNER_TEMP/quiz-site/icons"
           cp assets/source-question-banks.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
           cp assets/persian-vocabulary.json.gz.b64 "$RUNNER_TEMP/quiz-site/assets/"
           cp assets/book-pages/persian/page-*.webp assets/book-pages/persian/page-map.json "$RUNNER_TEMP/quiz-site/assets/book-pages/persian/"
@@ -48,6 +48,7 @@ jobs:
             fi
           done
           cp offline.js sw.js manifest.webmanifest "$RUNNER_TEMP/quiz-site/"
+          cp icons/app-icon-2.png "$RUNNER_TEMP/quiz-site/icons/"
       - name: Run browser checks
         run: |
           cd "$RUNNER_TEMP/quiz-site"
