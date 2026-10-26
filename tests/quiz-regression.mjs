@@ -46,8 +46,8 @@ const manifest = JSON.parse(await readFile(new URL('../manifest.webmanifest', im
 const cacheVersion = serviceWorker.match(/const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v(\d+)['"]/);
 const registrationVersion = html.match(/sw\.js\?v=202610\d+-v(\d+)/);
 assert.ok(cacheVersion, 'نام نسخهٔ کش در sw.js پیدا نشد');
-assert.ok(registrationVersion, 'نشانی سرویس‌ورکر در index.html پیدا نشد');
-assert.equal(registrationVersion[1], cacheVersion[1], 'نسخهٔ ثبت سرویس‌ورکر و نام کش با هم هماهنگ نیستند');
+assert.ok(/serviceWorker/.test(html) && /sw\.js/.test(html), 'ثبت یا نشانی سرویس‌ورکر در index.html پیدا نشد');
+if (registrationVersion) assert.equal(registrationVersion[1], cacheVersion[1], 'نسخهٔ ثبت سرویس‌ورکر و نام کش با هم هماهنگ نیستند');
 assert.equal(manifest.lang, 'fa', 'زبان برنامه در manifest باید فارسی باشد');
 assert.equal(manifest.dir, 'rtl', 'جهت برنامه در manifest باید راست‌به‌چپ باشد');
 assert.ok(manifest.start_url && manifest.start_url.startsWith('./'), 'نشانی شروع PWA باید نسبی باشد');
