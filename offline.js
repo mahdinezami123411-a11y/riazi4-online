@@ -453,6 +453,36 @@
   }
   function init(){
     addOfflineLoginUi();addOfflineSessionBanner();setupOfflinePackagePanel();
+    document.addEventListener('click',event=>{
+      const target=event.target instanceof Element?event.target.closest('#studentLoginConfirm'):null;
+      if(!target||navigator.onLine)return;
+      event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+      void loginWithOfflinePin();
+    },true);
+    document.addEventListener('keydown',event=>{
+      if(event.key!=='Enter'||navigator.onLine)return;
+      const target=event.target;
+      if(!(target instanceof Element)||!target.matches('#studentNameInput,#studentPasswordInput'))return;
+      event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+      void loginWithOfflinePin();
+    },true);
+    const onlineLoginError=$offline('studentLoginError');
+    if(onlineLoginError&&'MutationObserver' in window){
+      let fallbackQueued=false;
+      const observer=new MutationObserver(()=>{
+        const message=String(onlineLoginError.textContent||'');
+        const networkFailure=/(failed to fetch|fetch failed|network|connection|timeout|timed out|اتصال|شبکه|در دسترس نیست|پروکسی|gateway|502|503|504)/i.test(message);
+        if(fallbackQueued||onlineLoginError.classList.contains('hidden')||!networkFailure)return;
+        fallbackQueued=true;
+        Promise.resolve().then(async()=>{
+          try{
+            const latest=String(onlineLoginError.textContent||'');
+            if(!navigator.onLine||/(failed to fetch|fetch failed|network|connection|timeout|timed out|اتصال|شبکه|در دسترس نیست|پروکسی|gateway|502|503|504)/i.test(latest))await loginWithOfflinePin();
+          }finally{fallbackQueued=false}
+        });
+      });
+      observer.observe(onlineLoginError,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});
+    }
     const profileNav=document.querySelector('[data-app-view="profile"]');
     if(profileNav)profileNav.addEventListener('click',()=>setTimeout(()=>{void refreshOfflineProfilePanel()},0));
     const studentEnter=$offline('studentEnter');
