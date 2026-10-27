@@ -420,7 +420,7 @@
   }
   function setupUnifiedStudentLogin(panel){
     if(!panel||$offline('fouramiUnifiedStudentLogin'))return;
-    panel.id='fouramiUnifiedStudentLoginNote';
+    panel.id='fouramiUnifiedStudentLogin';
     panel.className='notice';
     panel.style.cssText='display:block;width:100%;box-sizing:border-box;margin:10px 0 0;padding:9px 11px;font-size:12px;line-height:1.5;';
     panel.innerHTML='<p style="margin:0">از همین نام کاربری و رمز عبور برای ورود استفاده کن. اگر اینترنت در دسترس نباشد، این اطلاعات روی دستگاهی که قبلاً برای دانش‌آموز آماده شده، ورود آفلاین را انجام می‌دهد. در حالت آفلاین تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال می‌مانند.</p><p id="fouramiOfflineLoginStatus" class="muted" role="status" aria-live="polite" style="font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0"></p>';
@@ -434,7 +434,7 @@
     const onlineButton=$offline('studentLoginConfirm');
     if(!onlineButton||$offline('fouramiUnifiedStudentLogin'))return;
     const panel=document.createElement('section');
-    panel.id='fouramiUnifiedStudentLogin';
+    panel.id='fouramiUnifiedStudentLoginNote';
     panel.className='notice';
     onlineButton.insertAdjacentElement('afterend',panel);
     setupUnifiedStudentLogin(panel);
