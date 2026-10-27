@@ -249,10 +249,11 @@
     if(!profileCard)return;
     const panel=document.createElement('section');
     panel.id='fouramiOfflineProfilePanel';panel.className='card';panel.style.marginTop='14px';
-    panel.innerHTML='<h3>📴 حالت آفلاین روی همین گوشی</h3><p class="muted">در حالت آنلاین، PIN محلی بساز تا این دستگاه بستهٔ تمرین را نگه دارد. پاسخ‌های همگام‌نشده با AES-GCM رمزگذاری می‌شوند و فقط با PIN همان حساب باز می‌شوند.</p><div class="grid"><div><label class="field" for="fouramiOfflinePin">PIN آفلاین (۶ تا ۱۲ رقم)</label><input id="fouramiOfflinePin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN عددی"><div id="fouramiOfflineConfirmWrap"><label class="field" for="fouramiOfflinePinConfirm">تکرار PIN</label><input id="fouramiOfflinePinConfirm" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="تکرار PIN"></div></div></div><button type="button" id="fouramiOfflineSaveButton" style="width:100%;margin-top:10px">فعال‌سازی دسترسی آفلاین</button><div id="fouramiOfflineProfileStatus" class="notice" role="status" style="margin-top:10px">برای استفادهٔ آفلاین، ابتدا بستهٔ درس و سؤال را روی همین دستگاه ذخیره کن.</div><p class="muted" style="font-size:12px">PIN فقط برای همین مرورگر است. پاک شدن داده‌های سایت یا تعویض گوشی، بستهٔ محلی را حذف می‌کند. در نسخهٔ فعلی، پنل معلم، انتشار تکلیف جدید و فایل‌های ذخیره‌شده در فضای ابری همچنان به اینترنت نیاز دارند.</p>';
+    panel.innerHTML='<h3>📴 ورود آفلاین با رمز حساب</h3><p class="muted">برای آماده‌کردن همین گوشی، رمز عبور فعلی حساب دانش‌آموز را وارد کن. رمز به‌صورت متن ساده ذخیره نمی‌شود؛ بستهٔ آفلاین با کلید رمزنگاری‌شده روی همین دستگاه نگهداری می‌شود.</p><label class="field" for="fouramiOfflinePin">رمز عبور حساب دانش‌آموز</label><input id="fouramiOfflinePin" type="password" autocomplete="current-password" maxlength="128" placeholder="همان رمز ورود دانش‌آموز"><div id="fouramiOfflineConfirmWrap"><label class="field" for="fouramiOfflinePinConfirm">تکرار رمز عبور حساب</label><input id="fouramiOfflinePinConfirm" type="password" autocomplete="new-password" maxlength="128" placeholder="تکرار همان رمز عبور"></div><div id="fouramiOfflineLegacyPinWrap" class="hidden"><label class="field" for="fouramiOfflineLegacyPin">رمز یا PIN قبلی بستهٔ آفلاین</label><input id="fouramiOfflineLegacyPin" type="password" autocomplete="off" maxlength="128" placeholder="فقط برای انتقال یک‌بارهٔ بستهٔ قدیمی"><p class="muted" style="font-size:12px">این فیلد فقط برای انتقال بسته‌ای است که قبلاً با PIN جداگانه ساخته شده؛ پس از انتقال، ورود آفلاین با رمز حساب انجام می‌شود.</p></div><button type="button" id="fouramiOfflineSaveButton" style="width:100%;margin-top:10px">فعال‌سازی ورود آفلاین</button><div id="fouramiOfflineProfileStatus" class="notice" role="status" style="margin-top:10px">برای استفادهٔ آفلاین، بستهٔ درس و سؤال را روی همین دستگاه آماده کن.</div><p class="muted" style="font-size:12px">این بسته فقط روی همین مرورگر و دستگاه در دسترس است. اگر داده‌های سایت پاک شوند یا دستگاه عوض شود، باید هنگام اتصال اینترنت دوباره آماده شود. تصاویر و فایل‌های کتاب در حالت آفلاین در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال می‌مانند.</p>';
     profileCard.insertAdjacentElement('afterend',panel);
-    $offline('fouramiOfflinePin').addEventListener('input',e=>{e.target.value=fouramiNormalizePin(e.target.value).slice(0,12)});
-    $offline('fouramiOfflinePinConfirm').addEventListener('input',e=>{e.target.value=fouramiNormalizePin(e.target.value).slice(0,12)});
+    for(const id of ['fouramiOfflinePin','fouramiOfflinePinConfirm','fouramiOfflineLegacyPin']){
+      $offline(id).addEventListener('input',e=>{e.target.value=String(e.target.value||'').slice(0,128)});
+    }
     $offline('fouramiOfflineSaveButton').addEventListener('click',saveOrRefreshOfflinePackage);
   }
   async function refreshOfflineProfilePanel(){
@@ -264,17 +265,19 @@
     if(!isStudent)return;
     const existing=await readPackageByStudent(cloudSession.profile.id).catch(()=>null);
     const confirmWrap=$offline('fouramiOfflineConfirmWrap');
+    const legacyWrap=$offline('fouramiOfflineLegacyPinWrap');
     const button=$offline('fouramiOfflineSaveButton');
-    const pinLabel=panel.querySelector('label[for="fouramiOfflinePin"]');
+    const label=panel.querySelector('label[for="fouramiOfflinePin"]');
+    if(legacyWrap)legacyWrap.classList.add('hidden');
     if(existing){
       confirmWrap.classList.add('hidden');
-      if(pinLabel)pinLabel.textContent='PIN فعلی بستهٔ آفلاین';
-      button.textContent='بازکردن بسته، همگام‌سازی و به‌روزرسانی';
-      updateStatus('بستهٔ آفلاین این دانش‌آموز روی این گوشی وجود دارد؛ برای همگام‌سازی، PIN فعلی را وارد کن.');
+      if(label)label.textContent='رمز عبور فعلی حساب دانش‌آموز';
+      button.textContent='بازکردن، انتقال یا به‌روزرسانی بستهٔ آفلاین';
+      updateStatus('این دستگاه قبلاً بستهٔ آفلاین دارد؛ رمز حساب را وارد کن. اگر بسته با PIN قدیمی ساخته شده باشد، فقط برای انتقال یک‌باره، PIN یا رمز قبلی هم لازم می‌شود.');
     }else{
       confirmWrap.classList.remove('hidden');
-      if(pinLabel)pinLabel.textContent='PIN آفلاین جدید (۶ تا ۱۲ رقم)';
-      button.textContent='فعال‌سازی دسترسی آفلاین';
+      if(label)label.textContent='رمز عبور حساب دانش‌آموز';
+      button.textContent='فعال‌سازی ورود آفلاین';
     }
   }
   async function saveOrRefreshOfflinePackage(){
@@ -386,7 +389,7 @@
   }
   function setupUnifiedStudentLogin(panel){
     if(!panel||$offline('fouramiUnifiedStudentLogin'))return;
-    panel.id='fouramiUnifiedStudentLogin';
+    panel.id='fouramiUnifiedStudentLoginNote';
     panel.className='notice';
     panel.style.cssText='display:block;width:100%;box-sizing:border-box;margin:10px 0 0;padding:9px 11px;font-size:12px;line-height:1.5;';
     panel.innerHTML='<p style="margin:0">از همین نام کاربری و رمز عبور برای ورود استفاده کن. اگر اینترنت در دسترس نباشد، این اطلاعات روی دستگاهی که قبلاً برای دانش‌آموز آماده شده، ورود آفلاین را انجام می‌دهد. در حالت آفلاین تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال می‌مانند.</p><p id="fouramiOfflineLoginStatus" class="muted" role="status" aria-live="polite" style="font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0"></p>';
