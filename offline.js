@@ -283,29 +283,51 @@
   async function saveOrRefreshOfflinePackage(){
     const status=$offline('fouramiOfflineProfileStatus');
     try{
-      if(!navigator.onLine)throw new Error('برای ساخت یا به‌روزرسانی بسته، ابتدا اینترنت را وصل کن.');
+      if(!navigator.onLine)throw new Error('برای آماده‌سازی یا به‌روزرسانی بسته، ابتدا اینترنت را وصل کن.');
       if(!cloudSession?.access_token||cloudSession.profile?.role!=='student'||cloudSession.studentViewAsTeacher)throw new Error('این قابلیت فقط برای حساب دانش‌آموز در دسترس است.');
-      const pin=fouramiNormalizePin($offline('fouramiOfflinePin')?.value);
-      if(!/^\d{6,12}$/.test(pin))throw new Error('PIN باید ۶ تا ۱۲ رقم باشد.');
+      const password=String($offline('fouramiOfflinePin')?.value||'');
+      if(!password)throw new Error('رمز عبور فعلی حساب دانش‌آموز را وارد کن.');
       const studentId=String(cloudSession.profile.id);
       const legacyOtherProgress=(()=>{try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}})();
       const existing=await readPackageByStudent(studentId);
+      let migratedLegacyPackage=false;
       if(existing){
         let opened;
-        try{opened=await decryptPackage(existing,pin)}catch{throw new Error('PIN فعلی درست نیست یا بستهٔ آفلاین قابل باز کردن نیست؛ برای حفظ پاسخ‌های ذخیره‌شده چیزی بازنویسی نشد.')}
-        fouramiOfflineData=opened.data;fouramiOfflineKey=opened.key;fouramiOfflineSalt=opened.salt;fouramiOfflineRecord={...existing,failedAttempts:0,lockUntil:0};
+        try{
+          opened=await decryptPackage(existing,password);
+        }catch(passwordError){
+          const legacyPassword=String($offline('fouramiOfflineLegacyPin')?.value||'');
+          if(!legacyPassword){
+            const legacyWrap=$offline('fouramiOfflineLegacyPinWrap');
+            if(legacyWrap)legacyWrap.classList.remove('hidden');
+            throw new Error('رمز حساب نتوانست بستهٔ قبلی را باز کند. اگر این بسته قبلاً با PIN جداگانه ساخته شده بود، PIN یا رمز قبلی را در بخش انتقال وارد کن و دوباره بزن.');
+          }
+          try{opened=await decryptPackage(existing,legacyPassword);migratedLegacyPackage=true}
+          catch{throw new Error('رمز حساب و PIN یا رمز قبلی نتوانستند بسته را باز کنند؛ برای حفظ پاسخ‌های ذخیره‌شده، بسته بازنویسی نشد.')}
+        }
+        fouramiOfflineData=opened.data;
+        fouramiOfflineSalt=opened.salt;
+        if(migratedLegacyPackage){
+          fouramiOfflineSalt=crypto.getRandomValues(new Uint8Array(16));
+          fouramiOfflineKey=await deriveOfflineKey(password,fouramiOfflineSalt);
+          fouramiOfflineRecord={...existing,salt:bytesToBase64(fouramiOfflineSalt),iv:'',ciphertext:'',failedAttempts:0,lockUntil:0};
+        }else{
+          fouramiOfflineKey=opened.key;
+          fouramiOfflineRecord={...existing,failedAttempts:0,lockUntil:0};
+        }
         if(String(fouramiOfflineData.studentId)!==studentId)throw new Error('این بسته متعلق به حساب دیگری است.');
       }else{
-        const confirmation=fouramiNormalizePin($offline('fouramiOfflinePinConfirm')?.value);
-        if(pin!==confirmation)throw new Error('دو بار وارد کردن PIN یکسان نیست.');
+        const confirmation=String($offline('fouramiOfflinePinConfirm')?.value||'');
+        if(password!==confirmation)throw new Error('رمز عبور و تکرار آن یکسان نیستند.');
         const salt=crypto.getRandomValues(new Uint8Array(16));
-        fouramiOfflineSalt=salt;fouramiOfflineKey=await deriveOfflineKey(pin,salt);
+        fouramiOfflineSalt=salt;
+        fouramiOfflineKey=await deriveOfflineKey(password,salt);
         fouramiOfflineRecord={studentId,username:fouramiNormalizeUsername(cloudSession.username||activeUsername),salt:bytesToBase64(salt),iv:'',ciphertext:'',failedAttempts:0,lockUntil:0,updatedAt:new Date().toISOString()};
         fouramiOfflineData={version:1,studentId,username:cloudSession.username||activeUsername,profile:fouramiClone(cloudSession.profile),session:{},courseSettings:{},questionBank:[],studentProgress:defaultProgress(),otherProgress:{},pendingAttempts:[],pendingSubjectProgress:[],createdAt:new Date().toISOString()};
       }
       const availableQuestionBank=getOfflineQuestionBankRows();
       if(!availableQuestionBank.length&&!(Array.isArray(fouramiOfflineData.questionBank)&&fouramiOfflineData.questionBank.length)){
-        throw new Error('بانک سؤال هنوز بارگیری نشده است. یک‌بار از حساب دانش‌آموز آنلاین وارد شو، کمی صبر کن تا بارگیری کامل شود و دوباره تلاش کن.');
+        throw new Error('بانک سؤال هنوز بارگیری نشده است. یک‌بار آنلاین وارد شو، صبر کن تا بارگیری کامل شود و دوباره تلاش کن.');
       }
       fouramiOfflineData.version=1;fouramiOfflineData.studentId=studentId;fouramiOfflineData.username=cloudSession.username||activeUsername;
       fouramiOfflineData.profile=fouramiClone(cloudSession.profile);
@@ -318,11 +340,14 @@
       captureCurrentSession();
       fouramiOfflineRecord.failedAttempts=0;fouramiOfflineRecord.lockUntil=0;
       await savePackage();
-      $offline('fouramiOfflinePin').value='';$offline('fouramiOfflinePinConfirm').value='';
+      $offline('fouramiOfflinePin').value='';
+      $offline('fouramiOfflinePinConfirm').value='';
+      $offline('fouramiOfflineLegacyPin').value='';
+      if($offline('fouramiOfflineLegacyPinWrap'))$offline('fouramiOfflineLegacyPinWrap').classList.add('hidden');
       await refreshOfflineProfilePanel();
-      updateStatus('دسترسی آفلاین آماده شد. اکنون می‌توانی این گوشی را بدون اینترنت هم برای تمرین‌های ذخیره‌شده استفاده کنی.');
+      updateStatus('ورود آفلاین با همان نام کاربری و رمز حساب آماده شد. این بسته فقط روی همین دستگاه ذخیره شده است.');
       if(navigator.onLine)await syncPending();
-    }catch(error){if(status){status.textContent=error.message||'فعال‌سازی حالت آفلاین ناموفق بود.';status.style.color='#b3263c'}}
+    }catch(error){if(status){status.textContent=error.message||'آماده‌سازی حالت آفلاین ناموفق بود.';status.style.color='#b3263c'}}
   }
   async function loginWithOfflinePin(){
     const status=$offline('fouramiOfflineLoginStatus');
