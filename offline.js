@@ -15,6 +15,7 @@
   let fouramiOfflineRecord=null;
   let fouramiOfflineSaveChain=Promise.resolve();
   let fouramiOfflineSyncInProgress=false;
+  let fouramiOfflineLoginInProgress=false;
   if(!Array.isArray(window.cloudBankRows))window.cloudBankRows=[];
   // Clone JSON-compatible app data without depending on a helper from index.html.
   function fouramiClone(value){
@@ -351,20 +352,22 @@
   }
   async function loginWithOfflinePin(){
     const status=$offline('fouramiOfflineLoginStatus');
+    if(fouramiOfflineLoginInProgress)return;
+    fouramiOfflineLoginInProgress=true;
     try{
-      const username=String($offline('fouramiOfflineUsernameInput')?.value||'').trim();
-      const pin=fouramiNormalizePin($offline('fouramiOfflinePinLogin')?.value);
-      if(!username)throw new Error('ابتدا نام کاربری دانش‌آموز را وارد کن.');
-      if(!/^\d{6,12}$/.test(pin))throw new Error('PIN باید ۶ تا ۱۲ رقم باشد.');
+      const username=String($offline('studentNameInput')?.value||'').trim();
+      const password=String($offline('studentPasswordInput')?.value||'');
+      if(!username)throw new Error('نام کاربری دانش‌آموز را وارد کن.');
+      if(!password)throw new Error('رمز عبور حساب را وارد کن.');
       const record=await readPackageByUsername(username);
-      if(!record)throw new Error('برای این نام کاربری، هنوز روی همین گوشی دسترسی آفلاین فعال نشده است. ابتدا آنلاین وارد شو و از پروفایل فعالش کن.');
+      if(!record)throw new Error('برای این نام کاربری هنوز روی همین گوشی بستهٔ آفلاین آماده نشده است. یک‌بار آنلاین وارد شو و از پروفایل آن را فعال کن.');
       if(record.lockUntil&&record.lockUntil>Date.now())throw new Error('پس از چند تلاش ناموفق، ورود موقتاً قفل شده است. کمی بعد دوباره امتحان کن.');
       let opened;
-      try{opened=await decryptPackage(record,pin)}catch(error){
+      try{opened=await decryptPackage(record,password)}catch(error){
         record.failedAttempts=(Number(record.failedAttempts)||0)+1;
         if(record.failedAttempts>=5){record.failedAttempts=0;record.lockUntil=Date.now()+60000}
         await writePackage(record).catch(()=>{});
-        throw error.message?.includes('موقتاً قفل')?error:new Error('PIN نادرست است یا بستهٔ آفلاین آسیب دیده است.');
+        throw error.message?.includes('موقتاً قفل')?error:new Error('رمز عبور نادرست است یا بستهٔ آفلاین با این رمز آماده نشده است.');
       }
       if(opened.data.profile?.role!=='student'||String(opened.data.profile.id)!==String(record.studentId))throw new Error('این بسته برای ورود دانش‌آموزی معتبر نیست.');
       fouramiOfflineData=opened.data;fouramiOfflineKey=opened.key;fouramiOfflineSalt=opened.salt;fouramiOfflineRecord={...record,failedAttempts:0,lockUntil:0};
@@ -377,15 +380,18 @@
       window.cloudBankRows=fouramiClone(opened.data.questionBank||[]);
       loadOfflineMathBank(window.cloudBankRows);
       renderStudentDashboard();
-      $offline('studentPasswordInput').value='';$offline('fouramiOfflinePinLogin').value='';
+      $offline('studentPasswordInput').value='';
+      const onlineError=$offline('studentLoginError');if(onlineError)onlineError.classList.add('hidden');
+      if(status)status.textContent='';
       if($offline('fouramiOfflineProfilePanel'))$offline('fouramiOfflineProfilePanel').classList.add('hidden');
       const banner=$offline('fouramiOfflineSessionBanner');if(banner)banner.classList.remove('hidden');
       show('student');showStudentAppView('home');yareAppPushStudentRootHistory();
-      updateStatus('با PIN محلی وارد شدی. پاسخ‌های تمرین ریاضی تا زمان اتصال بررسی نمی‌شوند؛ سایر تمرین‌های ثابت می‌توانند محلی تصحیح شوند.');
+      updateStatus('با همان نام کاربری و رمز عبور وارد شدی. تصاویر و فایل‌های کتاب آفلاین نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال‌اند.');
       if(navigator.onLine)void syncPending();
-    }catch(error){if(status){status.textContent=error.message||'ورود آفلاین ناموفق بود.';status.style.color='#b3263c'}}
+    }catch(error){
+      if(status){status.textContent=error.message||'ورود ناموفق بود.';status.style.color='#b3263c'}
+    }finally{fouramiOfflineLoginInProgress=false}
   }
-
   function getLoginFieldNodes(inputId){
     const input=$offline(inputId);
     if(!input)return [];
@@ -450,7 +456,11 @@
     const profileNav=document.querySelector('[data-app-view="profile"]');
     if(profileNav)profileNav.addEventListener('click',()=>setTimeout(()=>{void refreshOfflineProfilePanel()},0));
     const studentEnter=$offline('studentEnter');
-    if(studentEnter)studentEnter.addEventListener('click',()=>{if($offline('fouramiOfflinePinLogin'))$offline('fouramiOfflinePinLogin').value='';if($offline('fouramiOfflineLoginStatus'))$offline('fouramiOfflineLoginStatus').textContent=''});
+    if(studentEnter)studentEnter.addEventListener('click',()=>{
+      if($offline('studentNameInput'))$offline('studentNameInput').value='';
+      if($offline('studentPasswordInput'))$offline('studentPasswordInput').value='';
+      if($offline('fouramiOfflineLoginStatus'))$offline('fouramiOfflineLoginStatus').textContent='';
+    });
     const originalStudentBack=$offline('studentBack')?.onclick;
     if($offline('studentBack'))$offline('studentBack').onclick=function(){
       if(cloudSession?.offline){
@@ -460,8 +470,8 @@
         examItems=[];examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;currentCloudAttemptGroup=null;
         show('home');
         if($offline('studentNameInput'))$offline('studentNameInput').value='';
-        if($offline('fouramiOfflineUsernameInput'))$offline('fouramiOfflineUsernameInput').value='';
-        if($offline('fouramiOfflinePinLogin'))$offline('fouramiOfflinePinLogin').value='';
+        if($offline('studentPasswordInput'))$offline('studentPasswordInput').value='';
+        if($offline('fouramiOfflineLoginStatus'))$offline('fouramiOfflineLoginStatus').textContent='';
         return;
       }
       if(originalStudentBack)originalStudentBack.call(this);
