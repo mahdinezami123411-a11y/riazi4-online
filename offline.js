@@ -15,6 +15,7 @@
   let fouramiOfflineRecord=null;
   let fouramiOfflineSaveChain=Promise.resolve();
   let fouramiOfflineSyncInProgress=false;
+  let fouramiOfflineLoginInProgress=false;
   if(!Array.isArray(window.cloudBankRows))window.cloudBankRows=[];
   // Clone JSON-compatible app data without depending on a helper from index.html.
   function fouramiClone(value){
@@ -249,10 +250,11 @@
     if(!profileCard)return;
     const panel=document.createElement('section');
     panel.id='fouramiOfflineProfilePanel';panel.className='card';panel.style.marginTop='14px';
-    panel.innerHTML='<h3>📴 حالت آفلاین روی همین گوشی</h3><p class="muted">در حالت آنلاین، PIN محلی بساز تا این دستگاه بستهٔ تمرین را نگه دارد. پاسخ‌های همگام‌نشده با AES-GCM رمزگذاری می‌شوند و فقط با PIN همان حساب باز می‌شوند.</p><div class="grid"><div><label class="field" for="fouramiOfflinePin">PIN آفلاین (۶ تا ۱۲ رقم)</label><input id="fouramiOfflinePin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN عددی"><div id="fouramiOfflineConfirmWrap"><label class="field" for="fouramiOfflinePinConfirm">تکرار PIN</label><input id="fouramiOfflinePinConfirm" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="تکرار PIN"></div></div></div><button type="button" id="fouramiOfflineSaveButton" style="width:100%;margin-top:10px">فعال‌سازی دسترسی آفلاین</button><div id="fouramiOfflineProfileStatus" class="notice" role="status" style="margin-top:10px">برای استفادهٔ آفلاین، ابتدا بستهٔ درس و سؤال را روی همین دستگاه ذخیره کن.</div><p class="muted" style="font-size:12px">PIN فقط برای همین مرورگر است. پاک شدن داده‌های سایت یا تعویض گوشی، بستهٔ محلی را حذف می‌کند. در نسخهٔ فعلی، پنل معلم، انتشار تکلیف جدید و فایل‌های ذخیره‌شده در فضای ابری همچنان به اینترنت نیاز دارند.</p>';
+    panel.innerHTML='<h3>📴 ورود آفلاین با رمز حساب</h3><p class="muted">برای آماده‌کردن همین گوشی، رمز عبور فعلی حساب دانش‌آموز را وارد کن. رمز به‌صورت متن ساده ذخیره نمی‌شود؛ بستهٔ آفلاین با کلید رمزنگاری‌شده روی همین دستگاه نگهداری می‌شود.</p><label class="field" for="fouramiOfflinePin">رمز عبور حساب دانش‌آموز</label><input id="fouramiOfflinePin" type="password" autocomplete="current-password" maxlength="128" placeholder="همان رمز ورود دانش‌آموز"><div id="fouramiOfflineConfirmWrap"><label class="field" for="fouramiOfflinePinConfirm">تکرار رمز عبور حساب</label><input id="fouramiOfflinePinConfirm" type="password" autocomplete="new-password" maxlength="128" placeholder="تکرار همان رمز عبور"></div><div id="fouramiOfflineLegacyPinWrap" class="hidden"><label class="field" for="fouramiOfflineLegacyPin">رمز یا PIN قبلی بستهٔ آفلاین</label><input id="fouramiOfflineLegacyPin" type="password" autocomplete="off" maxlength="128" placeholder="فقط برای انتقال یک‌بارهٔ بستهٔ قدیمی"><p class="muted" style="font-size:12px">این فیلد فقط برای انتقال بسته‌ای است که قبلاً با PIN جداگانه ساخته شده؛ پس از انتقال، ورود آفلاین با رمز حساب انجام می‌شود.</p></div><button type="button" id="fouramiOfflineSaveButton" style="width:100%;margin-top:10px">فعال‌سازی ورود آفلاین</button><div id="fouramiOfflineProfileStatus" class="notice" role="status" style="margin-top:10px">برای استفادهٔ آفلاین، بستهٔ درس و سؤال را روی همین دستگاه آماده کن.</div><p class="muted" style="font-size:12px">این بسته فقط روی همین مرورگر و دستگاه در دسترس است. اگر داده‌های سایت پاک شوند یا دستگاه عوض شود، باید هنگام اتصال اینترنت دوباره آماده شود. تصاویر و فایل‌های کتاب در حالت آفلاین در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال می‌مانند.</p>';
     profileCard.insertAdjacentElement('afterend',panel);
-    $offline('fouramiOfflinePin').addEventListener('input',e=>{e.target.value=fouramiNormalizePin(e.target.value).slice(0,12)});
-    $offline('fouramiOfflinePinConfirm').addEventListener('input',e=>{e.target.value=fouramiNormalizePin(e.target.value).slice(0,12)});
+    for(const id of ['fouramiOfflinePin','fouramiOfflinePinConfirm','fouramiOfflineLegacyPin']){
+      $offline(id).addEventListener('input',e=>{e.target.value=String(e.target.value||'').slice(0,128)});
+    }
     $offline('fouramiOfflineSaveButton').addEventListener('click',saveOrRefreshOfflinePackage);
   }
   async function refreshOfflineProfilePanel(){
@@ -264,45 +266,69 @@
     if(!isStudent)return;
     const existing=await readPackageByStudent(cloudSession.profile.id).catch(()=>null);
     const confirmWrap=$offline('fouramiOfflineConfirmWrap');
+    const legacyWrap=$offline('fouramiOfflineLegacyPinWrap');
     const button=$offline('fouramiOfflineSaveButton');
-    const pinLabel=panel.querySelector('label[for="fouramiOfflinePin"]');
+    const label=panel.querySelector('label[for="fouramiOfflinePin"]');
+    if(legacyWrap)legacyWrap.classList.add('hidden');
     if(existing){
       confirmWrap.classList.add('hidden');
-      if(pinLabel)pinLabel.textContent='PIN فعلی بستهٔ آفلاین';
-      button.textContent='بازکردن بسته، همگام‌سازی و به‌روزرسانی';
-      updateStatus('بستهٔ آفلاین این دانش‌آموز روی این گوشی وجود دارد؛ برای همگام‌سازی، PIN فعلی را وارد کن.');
+      if(label)label.textContent='رمز عبور فعلی حساب دانش‌آموز';
+      button.textContent='بازکردن، انتقال یا به‌روزرسانی بستهٔ آفلاین';
+      updateStatus('این دستگاه قبلاً بستهٔ آفلاین دارد؛ رمز حساب را وارد کن. اگر بسته با PIN قدیمی ساخته شده باشد، فقط برای انتقال یک‌باره، PIN یا رمز قبلی هم لازم می‌شود.');
     }else{
       confirmWrap.classList.remove('hidden');
-      if(pinLabel)pinLabel.textContent='PIN آفلاین جدید (۶ تا ۱۲ رقم)';
-      button.textContent='فعال‌سازی دسترسی آفلاین';
+      if(label)label.textContent='رمز عبور حساب دانش‌آموز';
+      button.textContent='فعال‌سازی ورود آفلاین';
     }
   }
   async function saveOrRefreshOfflinePackage(){
     const status=$offline('fouramiOfflineProfileStatus');
     try{
-      if(!navigator.onLine)throw new Error('برای ساخت یا به‌روزرسانی بسته، ابتدا اینترنت را وصل کن.');
+      if(!navigator.onLine)throw new Error('برای آماده‌سازی یا به‌روزرسانی بسته، ابتدا اینترنت را وصل کن.');
       if(!cloudSession?.access_token||cloudSession.profile?.role!=='student'||cloudSession.studentViewAsTeacher)throw new Error('این قابلیت فقط برای حساب دانش‌آموز در دسترس است.');
-      const pin=fouramiNormalizePin($offline('fouramiOfflinePin')?.value);
-      if(!/^\d{6,12}$/.test(pin))throw new Error('PIN باید ۶ تا ۱۲ رقم باشد.');
+      const password=String($offline('fouramiOfflinePin')?.value||'');
+      if(!password)throw new Error('رمز عبور فعلی حساب دانش‌آموز را وارد کن.');
       const studentId=String(cloudSession.profile.id);
       const legacyOtherProgress=(()=>{try{return JSON.parse(localStorage.getItem(otherProgressKey())||'{}')}catch{return {}}})();
       const existing=await readPackageByStudent(studentId);
+      let migratedLegacyPackage=false;
       if(existing){
         let opened;
-        try{opened=await decryptPackage(existing,pin)}catch{throw new Error('PIN فعلی درست نیست یا بستهٔ آفلاین قابل باز کردن نیست؛ برای حفظ پاسخ‌های ذخیره‌شده چیزی بازنویسی نشد.')}
-        fouramiOfflineData=opened.data;fouramiOfflineKey=opened.key;fouramiOfflineSalt=opened.salt;fouramiOfflineRecord={...existing,failedAttempts:0,lockUntil:0};
+        try{
+          opened=await decryptPackage(existing,password);
+        }catch(passwordError){
+          const legacyPassword=String($offline('fouramiOfflineLegacyPin')?.value||'');
+          if(!legacyPassword){
+            const legacyWrap=$offline('fouramiOfflineLegacyPinWrap');
+            if(legacyWrap)legacyWrap.classList.remove('hidden');
+            throw new Error('رمز حساب نتوانست بستهٔ قبلی را باز کند. اگر این بسته قبلاً با PIN جداگانه ساخته شده بود، PIN یا رمز قبلی را در بخش انتقال وارد کن و دوباره بزن.');
+          }
+          try{opened=await decryptPackage(existing,legacyPassword);migratedLegacyPackage=true}
+          catch{throw new Error('رمز حساب و PIN یا رمز قبلی نتوانستند بسته را باز کنند؛ برای حفظ پاسخ‌های ذخیره‌شده، بسته بازنویسی نشد.')}
+        }
+        fouramiOfflineData=opened.data;
+        fouramiOfflineSalt=opened.salt;
+        if(migratedLegacyPackage){
+          fouramiOfflineSalt=crypto.getRandomValues(new Uint8Array(16));
+          fouramiOfflineKey=await deriveOfflineKey(password,fouramiOfflineSalt);
+          fouramiOfflineRecord={...existing,salt:bytesToBase64(fouramiOfflineSalt),iv:'',ciphertext:'',failedAttempts:0,lockUntil:0};
+        }else{
+          fouramiOfflineKey=opened.key;
+          fouramiOfflineRecord={...existing,failedAttempts:0,lockUntil:0};
+        }
         if(String(fouramiOfflineData.studentId)!==studentId)throw new Error('این بسته متعلق به حساب دیگری است.');
       }else{
-        const confirmation=fouramiNormalizePin($offline('fouramiOfflinePinConfirm')?.value);
-        if(pin!==confirmation)throw new Error('دو بار وارد کردن PIN یکسان نیست.');
+        const confirmation=String($offline('fouramiOfflinePinConfirm')?.value||'');
+        if(password!==confirmation)throw new Error('رمز عبور و تکرار آن یکسان نیستند.');
         const salt=crypto.getRandomValues(new Uint8Array(16));
-        fouramiOfflineSalt=salt;fouramiOfflineKey=await deriveOfflineKey(pin,salt);
+        fouramiOfflineSalt=salt;
+        fouramiOfflineKey=await deriveOfflineKey(password,salt);
         fouramiOfflineRecord={studentId,username:fouramiNormalizeUsername(cloudSession.username||activeUsername),salt:bytesToBase64(salt),iv:'',ciphertext:'',failedAttempts:0,lockUntil:0,updatedAt:new Date().toISOString()};
         fouramiOfflineData={version:1,studentId,username:cloudSession.username||activeUsername,profile:fouramiClone(cloudSession.profile),session:{},courseSettings:{},questionBank:[],studentProgress:defaultProgress(),otherProgress:{},pendingAttempts:[],pendingSubjectProgress:[],createdAt:new Date().toISOString()};
       }
       const availableQuestionBank=getOfflineQuestionBankRows();
       if(!availableQuestionBank.length&&!(Array.isArray(fouramiOfflineData.questionBank)&&fouramiOfflineData.questionBank.length)){
-        throw new Error('بانک سؤال هنوز بارگیری نشده است. یک‌بار از حساب دانش‌آموز آنلاین وارد شو، کمی صبر کن تا بارگیری کامل شود و دوباره تلاش کن.');
+        throw new Error('بانک سؤال هنوز بارگیری نشده است. یک‌بار آنلاین وارد شو، صبر کن تا بارگیری کامل شود و دوباره تلاش کن.');
       }
       fouramiOfflineData.version=1;fouramiOfflineData.studentId=studentId;fouramiOfflineData.username=cloudSession.username||activeUsername;
       fouramiOfflineData.profile=fouramiClone(cloudSession.profile);
@@ -315,28 +341,33 @@
       captureCurrentSession();
       fouramiOfflineRecord.failedAttempts=0;fouramiOfflineRecord.lockUntil=0;
       await savePackage();
-      $offline('fouramiOfflinePin').value='';$offline('fouramiOfflinePinConfirm').value='';
+      $offline('fouramiOfflinePin').value='';
+      $offline('fouramiOfflinePinConfirm').value='';
+      $offline('fouramiOfflineLegacyPin').value='';
+      if($offline('fouramiOfflineLegacyPinWrap'))$offline('fouramiOfflineLegacyPinWrap').classList.add('hidden');
       await refreshOfflineProfilePanel();
-      updateStatus('دسترسی آفلاین آماده شد. اکنون می‌توانی این گوشی را بدون اینترنت هم برای تمرین‌های ذخیره‌شده استفاده کنی.');
+      updateStatus('ورود آفلاین با همان نام کاربری و رمز حساب آماده شد. این بسته فقط روی همین دستگاه ذخیره شده است.');
       if(navigator.onLine)await syncPending();
-    }catch(error){if(status){status.textContent=error.message||'فعال‌سازی حالت آفلاین ناموفق بود.';status.style.color='#b3263c'}}
+    }catch(error){if(status){status.textContent=error.message||'آماده‌سازی حالت آفلاین ناموفق بود.';status.style.color='#b3263c'}}
   }
   async function loginWithOfflinePin(){
     const status=$offline('fouramiOfflineLoginStatus');
+    if(fouramiOfflineLoginInProgress)return;
+    fouramiOfflineLoginInProgress=true;
     try{
-      const username=String($offline('fouramiOfflineUsernameInput')?.value||'').trim();
-      const pin=fouramiNormalizePin($offline('fouramiOfflinePinLogin')?.value);
-      if(!username)throw new Error('ابتدا نام کاربری دانش‌آموز را وارد کن.');
-      if(!/^\d{6,12}$/.test(pin))throw new Error('PIN باید ۶ تا ۱۲ رقم باشد.');
+      const username=String($offline('studentNameInput')?.value||'').trim();
+      const password=String($offline('studentPasswordInput')?.value||'');
+      if(!username)throw new Error('نام کاربری دانش‌آموز را وارد کن.');
+      if(!password)throw new Error('رمز عبور حساب را وارد کن.');
       const record=await readPackageByUsername(username);
-      if(!record)throw new Error('برای این نام کاربری، هنوز روی همین گوشی دسترسی آفلاین فعال نشده است. ابتدا آنلاین وارد شو و از پروفایل فعالش کن.');
+      if(!record)throw new Error('برای این نام کاربری هنوز روی همین گوشی بستهٔ آفلاین آماده نشده است. یک‌بار آنلاین وارد شو و از پروفایل آن را فعال کن.');
       if(record.lockUntil&&record.lockUntil>Date.now())throw new Error('پس از چند تلاش ناموفق، ورود موقتاً قفل شده است. کمی بعد دوباره امتحان کن.');
       let opened;
-      try{opened=await decryptPackage(record,pin)}catch(error){
+      try{opened=await decryptPackage(record,password)}catch(error){
         record.failedAttempts=(Number(record.failedAttempts)||0)+1;
         if(record.failedAttempts>=5){record.failedAttempts=0;record.lockUntil=Date.now()+60000}
         await writePackage(record).catch(()=>{});
-        throw error.message?.includes('موقتاً قفل')?error:new Error('PIN نادرست است یا بستهٔ آفلاین آسیب دیده است.');
+        throw error.message?.includes('موقتاً قفل')?error:new Error('رمز عبور نادرست است یا بستهٔ آفلاین با این رمز آماده نشده است.');
       }
       if(opened.data.profile?.role!=='student'||String(opened.data.profile.id)!==String(record.studentId))throw new Error('این بسته برای ورود دانش‌آموزی معتبر نیست.');
       fouramiOfflineData=opened.data;fouramiOfflineKey=opened.key;fouramiOfflineSalt=opened.salt;fouramiOfflineRecord={...record,failedAttempts:0,lockUntil:0};
@@ -349,15 +380,18 @@
       window.cloudBankRows=fouramiClone(opened.data.questionBank||[]);
       loadOfflineMathBank(window.cloudBankRows);
       renderStudentDashboard();
-      $offline('studentPasswordInput').value='';$offline('fouramiOfflinePinLogin').value='';
+      $offline('studentPasswordInput').value='';
+      const onlineError=$offline('studentLoginError');if(onlineError)onlineError.classList.add('hidden');
+      if(status)status.textContent='';
       if($offline('fouramiOfflineProfilePanel'))$offline('fouramiOfflineProfilePanel').classList.add('hidden');
       const banner=$offline('fouramiOfflineSessionBanner');if(banner)banner.classList.remove('hidden');
       show('student');showStudentAppView('home');yareAppPushStudentRootHistory();
-      updateStatus('با PIN محلی وارد شدی. پاسخ‌های تمرین ریاضی تا زمان اتصال بررسی نمی‌شوند؛ سایر تمرین‌های ثابت می‌توانند محلی تصحیح شوند.');
+      updateStatus('با همان نام کاربری و رمز عبور وارد شدی. تصاویر و فایل‌های کتاب آفلاین نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال‌اند.');
       if(navigator.onLine)void syncPending();
-    }catch(error){if(status){status.textContent=error.message||'ورود آفلاین ناموفق بود.';status.style.color='#b3263c'}}
+    }catch(error){
+      if(status){status.textContent=error.message||'ورود ناموفق بود.';status.style.color='#b3263c'}
+    }finally{fouramiOfflineLoginInProgress=false}
   }
-
   function getLoginFieldNodes(inputId){
     const input=$offline(inputId);
     if(!input)return [];
@@ -385,113 +419,24 @@
     return group;
   }
   function setupUnifiedStudentLogin(panel){
-    if($offline('fouramiUnifiedStudentLogin'))return;
-    const username=$offline('studentNameInput');
-    const password=$offline('studentPasswordInput');
-    const onlineButton=$offline('studentLoginConfirm');
-    if(!username||!password||!onlineButton||!panel)return;
-    let host=username.parentElement;
-    while(host&&host!==document.body&&!(host.contains(password)&&host.contains(onlineButton)))host=host.parentElement;
-    if(!host||host===document.body)return;
-    const usernameNodes=getLoginFieldNodes('studentNameInput');
-    const anchor=usernameNodes[0]||username;
-    let insertBefore=anchor;
-    while(insertBefore.parentElement&&insertBefore.parentElement!==host)insertBefore=insertBefore.parentElement;
-    const oldParents=[...new Set([
-      username.parentElement,password.parentElement,onlineButton.parentElement,
-      document.querySelector('label[for="studentNameInput"]')?.parentElement,
-      document.querySelector('label[for="studentPasswordInput"]')?.parentElement
-    ])];
-    const layout=document.createElement('section');
-    layout.id='fouramiUnifiedStudentLogin';
-    layout.setAttribute('aria-label','ورود دانش‌آموز');
-    layout.style.cssText='display:block;width:100%;box-sizing:border-box;margin:0;grid-column:1/-1;';
-    const columns=document.createElement('div');
-    columns.id='fouramiUnifiedLoginColumns';
-    columns.style.cssText='display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch;width:100%;min-width:0;box-sizing:border-box;';
-    const onlineColumn=document.createElement('section');
-    onlineColumn.className='item';
-    onlineColumn.style.cssText='display:flex;flex-direction:column;align-items:stretch;margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
-    const onlineTitle=document.createElement('h3');
-    onlineTitle.textContent='🌐 ورود آنلاین';
-    onlineTitle.style.cssText='font-size:14px;margin:0 0 8px;';
-    onlineColumn.appendChild(onlineTitle);
-    const offlineDescription=panel.querySelector('h3 + p');
-    if(offlineDescription){offlineDescription.textContent='ورود با نام کاربری و PIN ذخیره‌شده روی همین دستگاه. در حالت آفلاین، تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌ها همچنان فعال‌اند.';offlineDescription.style.cssText='font-size:10px;line-height:1.45;margin:6px 0 0;';}
-    const offlineTitle=panel.querySelector('h3');
-    if(offlineTitle){offlineTitle.textContent='📴 ورود آفلاین';offlineTitle.style.cssText='font-size:14px;margin:0 0 8px;'}
-    panel.classList.add('fourami-login-offline-column');
-    panel.style.cssText='display:flex;flex-direction:column;align-items:stretch;margin:0;padding:10px;min-width:0;box-sizing:border-box;height:100%;';
-    if(!$offline('fouramiOfflineUsernameInput')){
-      const offlineUsernameLabel=document.createElement('label');
-      offlineUsernameLabel.className='field';
-      offlineUsernameLabel.htmlFor='fouramiOfflineUsernameInput';
-      offlineUsernameLabel.textContent='نام کاربری';
-      offlineUsernameLabel.style.cssText='display:block;font-size:12px;margin:0 0 5px;';
-      const offlineUsername=document.createElement('input');
-      offlineUsername.id='fouramiOfflineUsernameInput';
-      offlineUsername.type='text';
-      offlineUsername.autocomplete='username';
-      offlineUsername.inputMode='text';
-      offlineUsername.placeholder='نام کاربری';
-      offlineUsername.style.cssText='display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;';
-      const pinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
-      const offlineUsernameGroup=document.createElement('div');
-      offlineUsernameGroup.className='fourami-login-field-group';
-      offlineUsernameGroup.style.cssText='display:flex;flex-direction:column;gap:5px;min-width:0;width:100%;box-sizing:border-box;margin:0 0 9px;';
-      offlineUsernameGroup.append(offlineUsernameLabel,offlineUsername);
-      panel.insertBefore(offlineUsernameGroup,pinLabel||panel.firstChild);
-    }
-    const offlineUsername=$offline('fouramiOfflineUsernameInput');
-    if(offlineUsername)offlineUsername.style.cssText='display:block;width:100%;height:38px;max-width:100%;min-width:0;box-sizing:border-box;margin:0;';
-    const offlinePinLabel=panel.querySelector('label[for="fouramiOfflinePinLogin"]');
-    const offlinePin=panel.querySelector('#fouramiOfflinePinLogin');
-    const offlineButton=panel.querySelector('#fouramiOfflineLoginButton');
-    if(offlinePinLabel)offlinePinLabel.style.cssText='display:block;min-height:18px;line-height:18px;font-size:12px;margin:0;';
-    if(offlinePin){
-      offlinePin.style.cssText='display:block;width:100%;height:38px;max-width:100%;min-width:0;box-sizing:border-box;margin:0;';
-      if(offlinePinLabel&&offlinePin.parentElement===panel){
-        const pinGroup=document.createElement('div');
-        pinGroup.className='fourami-login-field-group';
-        pinGroup.style.cssText='display:flex;flex-direction:column;gap:5px;min-width:0;width:100%;box-sizing:border-box;margin:0 0 9px;';
-        panel.insertBefore(pinGroup,offlinePinLabel);
-        pinGroup.append(offlinePinLabel,offlinePin);
-      }
-    }
-    if(offlineButton){offlineButton.textContent='ورود آفلاین';offlineButton.style.cssText='display:block;width:100%;min-height:38px;box-sizing:border-box;margin-top:auto;padding:8px 4px;font-size:12px;white-space:normal;';}
-    const offlineStatus=$offline('fouramiOfflineLoginStatus');
-    if(offlineStatus)offlineStatus.style.cssText='font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0;';
-    if(offlineDescription)panel.appendChild(offlineDescription);
+    if(!panel||$offline('fouramiUnifiedStudentLogin'))return;
+    panel.id='fouramiUnifiedStudentLogin';
+    panel.className='notice';
+    panel.style.cssText='display:block;width:100%;box-sizing:border-box;margin:10px 0 0;padding:9px 11px;font-size:12px;line-height:1.5;';
+    panel.innerHTML='<p style="margin:0">از همین نام کاربری و رمز عبور برای ورود استفاده کن. اگر اینترنت در دسترس نباشد، این اطلاعات روی دستگاهی که قبلاً برای دانش‌آموز آماده شده، ورود آفلاین را انجام می‌دهد. در حالت آفلاین تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال می‌مانند.</p><p id="fouramiOfflineLoginStatus" class="muted" role="status" aria-live="polite" style="font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0"></p>';
     const usernameLabel=document.querySelector('label[for="studentNameInput"]');
-    if(usernameLabel){usernameLabel.textContent='نام کاربری';usernameLabel.style.cssText='display:block;min-height:18px;line-height:18px;margin:0;font-size:12px;';}
-    const passwordLabel=document.querySelector('label[for="studentPasswordInput"]');
-    if(passwordLabel)passwordLabel.style.cssText='display:block;min-height:18px;line-height:18px;margin:0;font-size:12px;';
-    onlineButton.style.cssText='display:block;width:100%;min-height:38px;box-sizing:border-box;margin-top:auto;padding:8px 4px;font-size:12px;white-space:normal;';
-    layout.append(columns);
-    columns.append(onlineColumn,panel);
-    if(insertBefore.parentElement===host)host.insertBefore(layout,insertBefore);
-    else host.prepend(layout);
-    moveLoginField('studentNameInput',onlineColumn);
-    moveLoginField('studentPasswordInput',onlineColumn);
-    onlineColumn.appendChild(onlineButton);
-    const onlineStatus=$offline('studentLoginStatus')||$offline('studentLoginError');
-    if(onlineStatus&&!layout.contains(onlineStatus)&&host.contains(onlineStatus)){
-      onlineStatus.style.cssText='font-size:11px;line-height:1.4;overflow-wrap:anywhere;margin:6px 0 0;';
-      onlineColumn.appendChild(onlineStatus);
-    }
-    for(const oldParent of oldParents){
-      if(!oldParent||oldParent===host||layout.contains(oldParent)||!oldParent.isConnected)continue;
-      if(!oldParent.querySelector('input,button,select,textarea')&&!oldParent.textContent.trim()&&!oldParent.children.length)oldParent.remove();
-    }
+    if(usernameLabel)usernameLabel.textContent='نام کاربری';
+    const username=$offline('studentNameInput');if(username)username.placeholder='نام کاربری';
+    const button=$offline('studentLoginConfirm');
+    if(button)button.textContent='ورود به برنامه';
   }
   function addOfflineLoginUi(){
     const onlineButton=$offline('studentLoginConfirm');
-    if(!onlineButton||$offline('fouramiOfflineLoginPanel'))return;
-    const panel=document.createElement('section');panel.id='fouramiOfflineLoginPanel';panel.className='item';panel.style.marginTop='12px';
-    panel.innerHTML='<h3 style="margin-top:0">📴 ورود بدون اینترنت</h3><p class="muted">در حالت آفلاین، تصاویر و فایل‌های کتاب در دسترس نیستند؛ آموزش‌ها، تمرین‌ها و آزمون‌ها همچنان فعال‌اند.</p><label class="field" for="fouramiOfflinePinLogin">PIN آفلاین</label><input id="fouramiOfflinePinLogin" type="password" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="PIN عددی"><button type="button" id="fouramiOfflineLoginButton" class="outline" style="width:100%;margin-top:10px">ورود با PIN آفلاین</button><p id="fouramiOfflineLoginStatus" class="muted" role="status"></p>';
+    if(!onlineButton||$offline('fouramiUnifiedStudentLogin'))return;
+    const panel=document.createElement('section');
+    panel.id='fouramiUnifiedStudentLoginNote';
+    panel.className='notice';
     onlineButton.insertAdjacentElement('afterend',panel);
-    $offline('fouramiOfflinePinLogin').addEventListener('input',e=>{e.target.value=fouramiNormalizePin(e.target.value).slice(0,12)});
-    $offline('fouramiOfflineLoginButton').addEventListener('click',loginWithOfflinePin);
     setupUnifiedStudentLogin(panel);
   }
   function addOfflineSessionBanner(){
@@ -508,10 +453,44 @@
   }
   function init(){
     addOfflineLoginUi();addOfflineSessionBanner();setupOfflinePackagePanel();
+    document.addEventListener('click',event=>{
+      const target=event.target instanceof Element?event.target.closest('#studentLoginConfirm'):null;
+      if(!target||navigator.onLine)return;
+      event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+      void loginWithOfflinePin();
+    },true);
+    document.addEventListener('keydown',event=>{
+      if(event.key!=='Enter'||navigator.onLine)return;
+      const target=event.target;
+      if(!(target instanceof Element)||!target.matches('#studentNameInput,#studentPasswordInput'))return;
+      event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();
+      void loginWithOfflinePin();
+    },true);
+    const onlineLoginError=$offline('studentLoginError');
+    if(onlineLoginError&&'MutationObserver' in window){
+      let fallbackQueued=false;
+      const observer=new MutationObserver(()=>{
+        const message=String(onlineLoginError.textContent||'');
+        const networkFailure=/(failed to fetch|fetch failed|network|connection|timeout|timed out|اتصال|شبکه|در دسترس نیست|پروکسی|gateway|502|503|504)/i.test(message);
+        if(fallbackQueued||onlineLoginError.classList.contains('hidden')||!networkFailure)return;
+        fallbackQueued=true;
+        Promise.resolve().then(async()=>{
+          try{
+            const latest=String(onlineLoginError.textContent||'');
+            if(!navigator.onLine||/(failed to fetch|fetch failed|network|connection|timeout|timed out|اتصال|شبکه|در دسترس نیست|پروکسی|gateway|502|503|504)/i.test(latest))await loginWithOfflinePin();
+          }finally{fallbackQueued=false}
+        });
+      });
+      observer.observe(onlineLoginError,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});
+    }
     const profileNav=document.querySelector('[data-app-view="profile"]');
     if(profileNav)profileNav.addEventListener('click',()=>setTimeout(()=>{void refreshOfflineProfilePanel()},0));
     const studentEnter=$offline('studentEnter');
-    if(studentEnter)studentEnter.addEventListener('click',()=>{if($offline('fouramiOfflinePinLogin'))$offline('fouramiOfflinePinLogin').value='';if($offline('fouramiOfflineLoginStatus'))$offline('fouramiOfflineLoginStatus').textContent=''});
+    if(studentEnter)studentEnter.addEventListener('click',()=>{
+      if($offline('studentNameInput'))$offline('studentNameInput').value='';
+      if($offline('studentPasswordInput'))$offline('studentPasswordInput').value='';
+      if($offline('fouramiOfflineLoginStatus'))$offline('fouramiOfflineLoginStatus').textContent='';
+    });
     const originalStudentBack=$offline('studentBack')?.onclick;
     if($offline('studentBack'))$offline('studentBack').onclick=function(){
       if(cloudSession?.offline){
@@ -521,8 +500,8 @@
         examItems=[];examIndex=0;examScore=0;examSelectedAnswer=null;examAnswered=false;currentCloudAttemptGroup=null;
         show('home');
         if($offline('studentNameInput'))$offline('studentNameInput').value='';
-        if($offline('fouramiOfflineUsernameInput'))$offline('fouramiOfflineUsernameInput').value='';
-        if($offline('fouramiOfflinePinLogin'))$offline('fouramiOfflinePinLogin').value='';
+        if($offline('studentPasswordInput'))$offline('studentPasswordInput').value='';
+        if($offline('fouramiOfflineLoginStatus'))$offline('fouramiOfflineLoginStatus').textContent='';
         return;
       }
       if(originalStudentBack)originalStudentBack.call(this);

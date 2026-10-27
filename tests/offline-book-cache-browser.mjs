@@ -83,15 +83,19 @@ try {
   const page = await context.newPage();
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForFunction(() => Boolean(window.__fouramiOfflineMode?.queueMathAttempt), { timeout: 15000 });
-  await page.waitForSelector('#fouramiOfflineLoginPanel', { state: 'attached', timeout: 15000 });
+  await page.waitForSelector('#fouramiUnifiedStudentLogin', { state: 'attached', timeout: 15000 });
 
-  // Check 1: PIN-based offline login remains, and explains the intentionally unavailable textbook files.
-  const loginText = await page.locator('#fouramiOfflineLoginPanel').evaluate(element => element.textContent || '');
+  // Check 1: one shared username/password form handles online and prepared offline sign-ins.
+  const loginText = await page.locator('#fouramiUnifiedStudentLogin').evaluate(element => element.textContent || '');
   assert.match(loginText, /تصاویر و فایل‌های کتاب در دسترس نیستند/);
-  assert.match(loginText, /آموزش‌ها، تمرین‌ها و آزمون‌ها (?:همچنان فعال‌اند|فعال می‌مانند)/);
-  assert.ok(await page.locator('#fouramiOfflineUsernameInput').count(), 'Offline username field should remain available');
-  assert.ok(await page.locator('#fouramiOfflinePinLogin').count(), 'Offline PIN field should remain available');
-  assert.ok(await page.locator('#fouramiOfflineLoginButton').count(), 'Offline login button should remain available');
+  assert.match(loginText, /آموزش‌ها، تمرین‌ها و آزمون‌های ذخیره‌شده فعال می‌مانند/);
+  assert.ok(await page.locator('#studentNameInput').count(), 'Shared username field should remain available');
+  assert.ok(await page.locator('#studentPasswordInput').count(), 'Shared password field should remain available');
+  assert.ok(await page.locator('#studentLoginConfirm').count(), 'Shared sign-in button should remain available');
+  assert.equal(await page.locator('#fouramiOfflineUsernameInput').count(), 0, 'Separate offline username field should be removed');
+  assert.equal(await page.locator('#fouramiOfflinePinLogin').count(), 0, 'Separate offline PIN field should be removed');
+  assert.equal(await page.locator('#fouramiOfflineLoginButton').count(), 0, 'Separate offline login button should be removed');
+  assert.match(offlineSource, /deriveOfflineKey\(password/);
   assert.ok(await page.locator('#booktab-practice').count(), 'Practice section should remain available inside the book view');
   assert.ok(await page.locator('#mathChapterLessonView').count(), 'Math lesson view should remain available offline');
   assert.ok(await page.locator('#studentAppNav [data-app-view="home"]').count(), 'Book-selection section should remain available');
@@ -143,7 +147,7 @@ try {
   assert.deepEqual(await getBookCacheEntries(page), [], 'Book files unexpectedly appeared in Cache Storage after offline checks');
 
   await context.close();
-  console.log('Offline behavior checks passed: PIN login retained, warning shown, practice/exams retained, section-nav scroll verified, and book page/PDF caching disabled.');
+  console.log('Offline behavior checks passed: shared username/password login shown, offline warning retained, practice/exams retained, section-nav scroll verified, and book page/PDF caching disabled.');
 } finally {
   await browser.close();
 }
