@@ -432,7 +432,22 @@
   }
   function addOfflineLoginUi(){
     const onlineButton=$offline('studentLoginConfirm');
-    if(!onlineButton||$offline('fouramiUnifiedStudentLogin'))return;
+    if(!onlineButton)return;
+
+    // Remove the obsolete standalone username/PIN login card left in older page markup.
+    const legacyPin=$offline('fouramiOfflinePinLogin');
+    const legacyUsername=$offline('fouramiOfflineUsernameInput');
+    const legacyButton=$offline('fouramiOfflineLoginButton');
+    const legacyField=legacyPin||legacyUsername||legacyButton;
+    if(legacyField){
+      const legacyCard=legacyField.closest('.card, section, form')||legacyField.parentElement;
+      if(legacyCard&&!legacyCard.contains(onlineButton))legacyCard.remove();
+      else{
+        [legacyPin,legacyUsername,legacyButton].forEach(el=>el?.remove());
+      }
+    }
+
+    if($offline('fouramiUnifiedStudentLogin'))return;
     const panel=document.createElement('section');
     panel.id='fouramiUnifiedStudentLoginNote';
     panel.className='notice';
