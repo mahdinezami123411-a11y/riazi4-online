@@ -3,8 +3,25 @@ on:
   push:
     branches: [main]
     paths:
+      - 'manifest.webmanifest'
+      - 'icons/**'
+      - 'proxy/**'
       - 'index.html'
+      - 'offline.js'
       - 'sw.js'
+      - 'assets/source-question-banks.json.gz.b64'
+      - 'assets/persian-vocabulary.json.gz.b64'
+      - 'assets/book-pages/**'
+      - 'tests/**'
+      - '.github/workflows/question-regression.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'offline.js'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - 'icons/**'
+      - 'proxy/**'
       - 'assets/source-question-banks.json.gz.b64'
       - 'assets/persian-vocabulary.json.gz.b64'
       - 'assets/book-pages/**'
@@ -59,6 +76,7 @@ jobs:
           python3 -m http.server 8765 > "$RUNNER_TEMP/quiz-http.log" 2>&1 &
           echo $! > "$RUNNER_TEMP/quiz-http.pid"
           cd "$RUNNER_TEMP/quiz-test"
+          node "$GITHUB_WORKSPACE/tests/pwa-service-worker-browser.mjs"
           node "$GITHUB_WORKSPACE/tests/offline-book-cache-browser.mjs"
           node "$GITHUB_WORKSPACE/tests/persian-gallery-browser.mjs"
           if grep -Fq 'BUNDLED_COURSE_PAGE_IMAGES = true' "$GITHUB_WORKSPACE/index.html"; then

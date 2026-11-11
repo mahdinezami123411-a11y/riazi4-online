@@ -9,6 +9,11 @@ on:
       - 'social-book-pages-assets.zip'
       - 'gifts-book-pages-assets.zip'
       - 'quran-book-pages-github.zip'
+      - 'index.html'
+      - 'offline.js'
+      - 'sw.js'
+      - 'tests/**'
+      - '.github/workflows/question-regression.yml'
       - '.github/workflows/install-course-book-pages.yml'
   workflow_dispatch:
 
@@ -109,7 +114,7 @@ jobs:
             if (/const\s+BUNDLED_COURSE_PAGE_IMAGES\s*=\s*false\s*;/.test(html)) {
               html = html.replace(/const\s+BUNDLED_COURSE_PAGE_IMAGES\s*=\s*false\s*;/, 'const BUNDLED_COURSE_PAGE_IMAGES = true;');
             }
-            const registration = /(serviceWorker\.register\(['"]\.\/sw\.js\?v=)(202610\d+-v)(\d+)/;
+            const registration = /(serviceWorker\.register\(['"]\.\/sw\.js\?v=)([^'"]*-v)(\d+)/;
             const cacheName = /(const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v)(\d+)/;
             const reg = html.match(registration), cache = sw.match(cacheName);
             if (!reg || !cache) throw new Error('PWA cache version strings were not found');

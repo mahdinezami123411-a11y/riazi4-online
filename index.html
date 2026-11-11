@@ -60,6 +60,9 @@ input,select,textarea{width:100%;border:1px solid #c9dff5;border-radius:12px;pad
 .exam-option input{width:auto;flex:0 0 auto}
 .exam-option.selected{background:#e8f3ff;border-color:#438ce0}
 @media(max-width:420px){.times-poster{padding:4px}.times-columns{gap:3px}.times-column{border-width:1px;border-radius:7px}.times-column h4{font-size:7px;padding:4px 0}.times-column ol{padding:2px 0}.times-column li{font-size:6.6px;padding:4px 0}.stack-sum{font-size:19px}}
+@media(max-width:700px){.times-poster{overflow:visible!important;padding:7px}.times-columns{grid-template-columns:repeat(2,minmax(0,1fr))!important;min-width:0!important;gap:8px!important}.times-column h4{font-size:14px!important;padding:8px 4px!important;white-space:normal!important}.times-column li{font-size:14px!important;padding:8px 4px!important}.times-column{border-width:2px!important;border-radius:10px!important}}
+@media(max-width:360px){.times-columns{grid-template-columns:1fr!important}.times-column h4{font-size:15px!important}.times-column li{font-size:15px!important}}
+
 
 /* آموزش کامل و مرحله‌به‌مرحله فصل‌های ریاضی */
 .chapter-intro,.chapter-goals{border-radius:15px;padding:13px;margin:10px 0;border:1px solid #cde3f8;background:linear-gradient(140deg,#eff8ff,#f8fcff)}
@@ -334,7 +337,7 @@ input,select,textarea{border:1.5px solid #c5dcf7;border-radius:13px;background:#
 
 
 /* بازطراحی کامل: پایگاه فضایی / آرکید ریاضی — پوستهٔ سراسری */
-:root{color-scheme:dark;--blue:#6ee7f2!important;--blue2:#a78bfa!important;--navy:#0a1025!important;--ink:#f3f5ff!important;--muted:#a8b4d5!important;--bg:#0b1020!important;--card:#171f3a!important;--line:#39476c!important;--green:#63e5ad!important;--red:#ff7e92!important;--gold:#ffca66!important;--purple:#b99aff!important;--cyan:#63e7f1!important;--orange:#ff995d!important}
+:root{color-scheme:dark;--blue:#6ee7f2;--blue2:#a78bfa;--navy:#0a1025;--ink:#f3f5ff;--muted:#a8b4d5;--bg:#0b1020;--card:#171f3a;--line:#39476c;--green:#63e5ad;--red:#ff7e92;--gold:#ffca66;--purple:#b99aff;--cyan:#63e7f1;--orange:#ff995d}
 html{background:#0b1020!important}
 body{background:#0b1020!important;background-image:radial-gradient(circle at 12% 9%,#a78bfa34 0 2px,transparent 3px),radial-gradient(circle at 88% 20%,#54e5f055 0 2px,transparent 3px),radial-gradient(circle at 70% 82%,#ffb34e28 0 2px,transparent 3px),radial-gradient(ellipse at 50% -10%,#263b71 0,transparent 52%),linear-gradient(180deg,#0b1020 0%,#0d142b 58%,#11152b 100%)!important;background-size:47px 47px,61px 61px,73px 73px,auto,auto!important;color:#f3f5ff!important}
 .wrap{max-width:1120px!important;padding:16px 14px 28px!important}
@@ -2863,7 +2866,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--primary)}
 window.fouramiClone = window.fouramiClone || function(value){return value==null?value:JSON.parse(JSON.stringify(value))};
 window.fa = window.fa || (value => Number(value).toLocaleString('fa-IR'));
 const subjects=[['➗','ریاضی','یادآوری، کتاب، تمرین و امتحان']];
-let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},courseSettingsBySubject={},courseBookObjectUrls={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual';
+let questions=[],activities=[],unlocked=new Set(['ریاضی']),bookUrls={},bookNames={},courseSettingsBySubject={},courseBookObjectUrls={},currentReminderAnswer=null,currentAdditionAnswer=null,currentReminderQuestion=null,currentAdditionQuestion=null,currentBookPracticeAnswer=null,examItems=[],examIndex=0,examScore=0,examSelectedAnswer=null,examAnswered=false,examMode='annual',examRunId=0;
 const $=id=>document.getElementById(id);
 function yareScrollToSectionNav(){
   const student=document.getElementById('student');
@@ -2933,7 +2936,16 @@ function buildQuestionSpecificExplanation(q,rightAnswer,providedExplanation){
  const fa=n=>Number(n).toLocaleString('fa-IR');
  const clean=String(providedExplanation||'').trim();
  const authored=String(q?.why||q?.explanation||'').trim();
- if(authored.length>35 && normalizeAnswer(authored)!==normalizeAnswer(prompt) && !/^(پاسخ|جواب)\s*(صحیح|درست)?\s*(این سؤال)?\s*[:：.]?$/i.test(authored)) return authored;
+ const isAuthoredExplanation=text=>{
+  const value=String(text||'').trim();
+  if(value.length<12)return false;
+  if(normalizeAnswer(value)===normalizeAnswer(prompt)||normalizeAnswer(value)===normalizeAnswer(ans))return false;
+  return !/^(پاسخ|جواب)\s*(صحیح|درست)?\s*(این سؤال)?\s*[:：.]?$/i.test(value);
+ };
+ // A teacher-authored / answer-key explanation is the source of truth; never replace it
+ // with a generic heuristic that may describe the wrong method.
+ if(isAuthoredExplanation(authored))return authored;
+ if(isAuthoredExplanation(clean))return clean;
  const arithmetic=normalized.match(/(-?\d+)\s*(\+|-|\*|\/|÷)\s*(-?\d+)/);
  if(arithmetic){
   const a=Number(arithmetic[1]),op=arithmetic[2],b=Number(arithmetic[3]);
@@ -2953,7 +2965,6 @@ function buildQuestionSpecificExplanation(q,rightAnswer,providedExplanation){
  if(/ضرب|چند برابر|ردیف|ستون/.test(prompt)&&nums.length>=2)return 'برای پیدا کردن تعداد کلِ ردیف‌ها و ستون‌ها، تعداد ردیف‌ها را در تعداد هر ردیف ضرب می‌کنیم. عددهای سؤال '+nums.slice(0,4).map(fa).join('، ')+' هستند؛ حاصل ضرب با خواستهٔ مسئله تطبیق داده می‌شود. پاسخ: '+ans+'.';
  if(/ساعت|دقیقه|زمان/.test(prompt)&&nums.length)return 'در تبدیل زمان، هر ساعت ۶۰ دقیقه است؛ بنابراین هنگام جمع یا کم کردن دقیقه‌ها از ۶۰ استفاده می‌کنیم، نه ۱۰۰. زمان‌های مطرح‌شده '+nums.slice(0,5).map(fa).join('، ')+' هستند. پاسخ درست: '+ans+'.';
  if(/بزرگ‌تر|کوچک‌تر|بیشتر|کمتر|مقایسه|ترتیب صعودی|ترتیب نزولی/.test(prompt)&&nums.length>=2)return 'برای مقایسه از رقم سمت چپ شروع می‌کنیم؛ هر عددی که در اولین مرتبهٔ متفاوت رقم بزرگ‌تری داشته باشد، بزرگ‌تر است. عددهای مورد مقایسه '+nums.slice(0,5).map(fa).join('، ')+' هستند. طبق ترتیب خواسته‌شده پاسخ درست '+ans+' است.';
- if(clean.length>20 && normalizeAnswer(clean)!==normalizeAnswer(prompt)) return clean;
  const skill=String(q?.skill||q?.topic||q?.chapter_title||'این مبحث'),opts=Array.isArray(q?.opts)?q.opts:(Array.isArray(q?.options)?q.options:[]);
  const keyOption=Number.isInteger(q?.a)?opts[q.a]:'';
  return 'این سؤال از مبحث «'+skill+'» است. خواستهٔ دقیق آن این است: «'+prompt+'». اول اطلاعات لازم را از متن جدا کن، بعد قانون مربوط به '+skill+' را به کار ببر و در پایان نتیجه را دوباره با خواستهٔ سؤال بسنج. '+(nums.length?'عددهای مهم: '+nums.slice(0,5).map(fa).join('، ')+'. ':'')+(opts.length?'گزینهٔ درست «'+String(keyOption||ans)+'» است. ':'')+'پاسخ صحیح: '+ans+'.';
@@ -3006,6 +3017,8 @@ async function submitReminderOnline(kind,a,b,inputId,feedbackId,questionText){
    return;
   }
   const result=await cloudFetch('/functions/v1/submit-reminder-answer',{method:'POST',body:{kind,a,b,submitted_answer:raw,question_text:questionText}});
+  const current=kind==='addition'?currentAdditionQuestion:currentReminderQuestion;
+  if(state!==current)return;
   if(typeof result.correct==='boolean'){
    // Trust the server's answer when it responds, while keeping the feedback visible.
    const serverCorrect=result.correct;
@@ -3024,7 +3037,7 @@ async function submitReminderOnline(kind,a,b,inputId,feedbackId,questionText){
   if(saveStatus)saveStatus.textContent='پاسخ محاسبه و بررسی شد، اما ذخیرهٔ آنلاین ناموفق بود: '+cloudMessage(e);
   setCloudStatus('ذخیرهٔ آنلاین پاسخ ناموفق بود: '+cloudMessage(e),true);
  }finally{
-  setBusy(button,false);if(state?.answered)button.disabled=true;
+  setBusy(button,false);const current=kind==='addition'?currentAdditionQuestion:currentReminderQuestion;if(state===current&&state?.answered)button.disabled=true;else button.disabled=false;
  }
 }
 $('checkReminderMath').onclick=()=>{if(!currentReminderQuestion){$('reminderMathFeedback').textContent='ابتدا سؤال جدید بگیر.';$('reminderMathFeedback').classList.remove('hidden');return}submitReminderOnline(currentReminderQuestion.kind,currentReminderQuestion.a,currentReminderQuestion.b,'reminderMathAnswer','reminderMathFeedback',currentReminderQuestion.text)};
@@ -3107,6 +3120,22 @@ function renderChapter(id){
 }
 if(location.hostname==='127.0.0.1'||location.hostname==='localhost')window.__renderMathChapterForTest=renderChapter;
 function normalizeAnswer(v){return String(v??'').trim().replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/٫/g,'.').replace(/٬/g,'').replace(/[،,]/g,'').replace(/\s/g,'').toLowerCase()}
+function numericAnswerValue(value){
+ const text=String(value??'').normalize('NFKC').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫]/g,'.').replace(/[٬،,\s]/g,'').replace(/\u200c/g,'');
+ if(!text)return null;
+ const mixed=text.match(/^(-?\d+)(?:و|\+)(\d+)\/(\d+)$/);
+ if(mixed){const whole=Number(mixed[1]),num=Number(mixed[2]),den=Number(mixed[3]);return den?whole+(whole<0?-1:1)*num/den:null}
+ const fraction=text.match(/^(-?\d+)\/(\d+)$/);
+ if(fraction){const den=Number(fraction[2]);return den?Number(fraction[1])/den:null}
+ if(/^-?\d+(?:\.\d+)?$/.test(text))return Number(text);
+ return null;
+}
+function answersEquivalent(left,right){
+ const a=normalizeAnswer(left),b=normalizeAnswer(right);
+ if(a===b)return true;
+ const x=numericAnswerValue(a),y=numericAnswerValue(b);
+ return Number.isFinite(x)&&Number.isFinite(y)&&Math.abs(x-y)<1e-9;
+}
 function shuffledCopy(a){const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function shuffledQuestion(q){
  if(!q.opts)return {...q};
@@ -3120,26 +3149,36 @@ function shuffledQuestion(q){
 }
 function questionTypeLabel(q){const type=q.type==='multi'?'mc':(q.type||'mc');return ({mc:'چهارگزینه‌ای',blank_mc:'جای‌خالی چهارگزینه‌ای',matching:'جورکردنی',input:'پاسخ کوتاه',tf:'درست / نادرست'})[type]||'تمرین'}
 function getPracticeFilteredList(){const mode=$('practiceSetMode')?.value||'chapter';const type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))}
-let practiceAsked=0,practiceCorrect=0,practiceSeen=new Set(),practiceWasChecked=false;
+let practiceAsked=0,practiceCorrect=0,practiceSeen=new Set(),practiceWasChecked=false,practiceGeneration=0;
 function updatePracticeStats(){const list=getPracticeFilteredList();$('practicePoolCount').textContent=list.length.toLocaleString('fa-IR');$('practiceAskedCount').textContent=practiceAsked.toLocaleString('fa-IR');$('practiceCorrectCount').textContent=practiceCorrect.toLocaleString('fa-IR')}
 
 function renderAnswerControls(q,containerId,inputId,name,setSelected){
  const box=$(containerId),input=$(inputId),type=q.type==='multi'?'mc':(q.type||'mc');
  const isText=type==='input',isMatching=type==='matching',multi=false;
  box.innerHTML='';input.classList.toggle('hidden',!isText);box.classList.toggle('hidden',isText);
- if(isText){input.placeholder=q.answers?'پاسخ را به شکل خواسته‌شده بنویس':'پاسخ کوتاه را بنویس';return}
+ if(isText){
+  const hintId=inputId+'-hint';
+  let hint=document.getElementById(hintId);
+  if(!hint){hint=document.createElement('p');hint.id=hintId;hint.className='muted short-answer-hint';input.insertAdjacentElement('beforebegin',hint)}
+  hint.textContent=q.answers?'پاسخ را دقیقاً به شکلی که خواسته شده بنویس؛ راهنما با تایپ کردن پنهان نمی‌شود.':'پاسخ کوتاه را بنویس؛ راهنما با تایپ کردن پنهان نمی‌شود.';
+  input.setAttribute('aria-label','پاسخ کوتاه');
+  const questionId=containerId==='bookPracticeOptions'?'bookPracticeQuestion':(containerId==='examOptions'?'examQuestion':'');
+  input.setAttribute('aria-describedby',questionId?hintId+' '+questionId:hintId);
+  input.placeholder=q.answers?'پاسخ را به شکل خواسته‌شده بنویس':'پاسخ کوتاه را بنویس';
+  return
+ }
  if(isMatching){
   const left=q.opts.slice(0,4),right=q.opts.slice(4,8),picked=[-1,-1,-1,-1];
   box.innerHTML='<p class="muted">برای هر مورد از ستون چپ، یک پاسخ از فهرست سمت راست انتخاب کن؛ هر پاسخ یک بار استفاده می‌شود.</p><div class="question-matching-list">'+left.map((item,i)=>'<div class="question-matching-row"><span><b>'+fa(i+1)+'.</b> '+escapeHtml(item)+'</span><select aria-label="جور کردن مورد '+fa(i+1)+'"><option value="">انتخاب پاسخ…</option>'+right.map((answer,j)=>'<option value="'+(j+4)+'">'+escapeHtml(answer)+'</option>').join('')+'</select></div>').join('')+'</div>';
-  box.querySelectorAll('select').forEach((el,i)=>el.onchange=()=>{picked[i]=el.value===''?-1:Number(el.value);setSelected([...picked]);box.querySelectorAll('select').forEach((other,j)=>[...other.options].forEach(option=>{if(option.value!=='')option.disabled=picked.some((value,k)=>k!==j&&value>=4&&value===Number(option.value))}))});
+  box.querySelectorAll('select').forEach((el,i)=>el.onchange=()=>{picked[i]=el.value===''?-1:Number(el.value);setSelected([...picked]);const group=el.closest('.question-matching-list')||box;const controls=[...group.querySelectorAll('select')];controls.forEach((other,j)=>[...other.options].forEach(option=>{if(option.value!=='')option.disabled=picked.some((value,k)=>k!==j&&value>=4&&value===Number(option.value))}))});
   return;
  }
  box.innerHTML=q.opts.map((o,i)=>'<label class="'+(name==='practiceOption'?'practice-option':'exam-option')+'"><input type="'+(multi?'checkbox':'radio')+'" name="'+name+'" value="'+i+'"><span>'+escapeHtml(o)+'</span></label>').join('');
  box.querySelectorAll('input').forEach(el=>el.onchange=()=>{let selection;if(multi)selection=[...box.querySelectorAll('input:checked')].map(r=>Number(r.value)).sort((a,b)=>a-b);else selection=Number(el.value);box.querySelectorAll('label').forEach((item,i)=>item.classList.toggle('selected',multi?[...box.querySelectorAll('input:checked')].some(r=>Number(r.value)===i):i===selection));setSelected(selection)});
 }
-function isQuestionCorrect(q,response){if((q.type||'mc')==='input'){const val=normalizeAnswer(response);const accepted=(q.answers||[q.answer]).map(normalizeAnswer);return val!==''&&accepted.includes(val)}if(q.type==='matching'){if(!Array.isArray(response)||!Array.isArray(q.answer))return false;return response.length===q.answer.length&&response.every((v,i)=>v===q.answer[i])}if(q.type==='multi'){const correct=(q.as||[]).map(Number).filter(Number.isInteger)[0];return Number.isInteger(correct)&&response===correct}return response===q.a}
+function isQuestionCorrect(q,response){if((q.type||'mc')==='input'){const val=String(response??'').trim();const accepted=(q.answers||[q.answer]);return val!==''&&accepted.some(x=>answersEquivalent(x,val))}if(q.type==='matching'){if(!Array.isArray(response)||!Array.isArray(q.answer))return false;return response.length===q.answer.length&&response.every((v,i)=>v===q.answer[i])}if(q.type==='multi'){const correct=(q.as||[]).map(Number).filter(Number.isInteger)[0];return Number.isInteger(correct)&&response===correct}return response===q.a}
 function correctAnswerText(q){if(q.type==='input')return (q.answers||[q.answer]).join(' یا ');if(q.type==='matching')return Array.isArray(q.answer)&&Array.isArray(q.opts)?q.opts.slice(0,4).map((left,i)=>String(left)+' ↔ '+String(q.opts[q.answer[i]]||'')).join('؛ '):'جفت‌های صحیح را با ستون پاسخ‌ها مقایسه کن.';if(q.type==='multi')return q.opts?.[(q.as||[]).map(Number).filter(Number.isInteger)[0]]||'';return q.opts?.[q.a]||''}
-function newBookPractice(){const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;$('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';if(!filtered.length){currentPractice=null;paintMathQuestionVisual(null,$('bookPracticeVisualAid'));$('bookPracticeSkill').textContent='این انتخاب سؤال ندارد';$('bookPracticeQuestion').textContent='برای این فصل و فیلتر انتخاب‌شده سؤالی پیدا نشد. فیلتر «همه نوع‌ها» یا «همه سطح‌ها» را انتخاب کن.';$('bookPracticeOptions').innerHTML='';$('bookPracticeOptions').classList.add('hidden');$('bookPracticeAnswer').classList.add('hidden');updatePracticeStats();return}
+function newBookPractice(){practiceGeneration++;const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;$('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';if(!filtered.length){currentPractice=null;paintMathQuestionVisual(null,$('bookPracticeVisualAid'));$('bookPracticeSkill').textContent='این انتخاب سؤال ندارد';$('bookPracticeQuestion').textContent='برای این فصل و فیلتر انتخاب‌شده سؤالی پیدا نشد. فیلتر «همه نوع‌ها» یا «همه سطح‌ها» را انتخاب کن.';$('bookPracticeOptions').innerHTML='';$('bookPracticeOptions').classList.add('hidden');$('bookPracticeAnswer').classList.add('hidden');updatePracticeStats();return}
  let fresh=filtered.filter(q=>!practiceSeen.has(q.q));if(!fresh.length){practiceSeen.clear();fresh=filtered.slice()}const history=typeof window.__yareStudentProgressSnapshot==='function'?(window.__yareStudentProgressSnapshot().questionHistory||{}):{};const reviewRows=filtered.filter(q=>{const rec=history[practiceHistoryKey(q)];return rec&&(Number(rec.incorrect)||0)>(Number(rec.correct)||0)});const reviewFresh=reviewRows.filter(q=>!practiceSeen.has(q.q));const reviewPool=reviewFresh.length?reviewFresh:reviewRows;const chosen=reviewPool.length&&Math.random()<0.7?reviewPool[Math.floor(Math.random()*reviewPool.length)]:fresh[Math.floor(Math.random()*fresh.length)];practiceSeen.add(chosen.q);currentPractice=shuffledQuestion(chosen);const practiceMode=$('practiceSetMode')?.value||'chapter';const practiceScope=practiceMode==='term1'?'تمرین نوبت اول':practiceMode==='term2'?'تمرین نوبت دوم':`فصل ${faDigits($('bookPracticeTopic').value)}`;$('bookPracticeSkill').textContent=`${practiceScope} · ${currentPractice.skill||'تمرین ریاضی'} · ${questionTypeLabel(currentPractice)}${practiceMode==='chapter'?' · '+({easy:'آسان',medium:'متوسط',hard:'چالشی'})[currentPractice.difficulty||'medium']:''}`;$('bookPracticeQuestion').textContent=currentPractice.q;renderAnswerControls(currentPractice,'bookPracticeOptions','bookPracticeAnswer','practiceOption',v=>selectedPracticeAnswer=v);updatePracticeStats()}
 $('newBookPractice').onclick=newBookPractice;$('nextBookPractice').onclick=newBookPractice;
 $('checkBookPractice').onclick=()=>{if(!currentPractice||practiceWasChecked)return;let response=(currentPractice.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(currentPractice.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(currentPractice.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}practiceWasChecked=true;practiceAsked++;const ok=isQuestionCorrect(currentPractice,response);if(ok)practiceCorrect++;const f=$('bookPracticeFeedback');f.classList.remove('hidden');f.innerHTML=renderQuestionFeedback(currentPractice,ok,correctAnswerText(currentPractice),currentPractice.why||'');f.style.background='transparent';f.style.color=ok?'#126a49':'#72541a';$('checkBookPractice').textContent=ok?'✅ درست بود!':'📘 نکته را مرور کن';$('checkBookPractice').disabled=true;updatePracticeStats()};
@@ -3148,6 +3187,9 @@ $('practiceTypeFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBo
 $('practiceDifficultyFilter').onchange=()=>{practiceSeen.clear();if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice();else updatePracticeStats()};
 // Initial display: show accurate bank size before the first question.
 updatePracticeStats();
+for(const id of ['bookPracticeFeedback','examFeedback','reminderMathFeedback','additionFeedback','studentAssignmentFeedback']){
+ const el=$(id);if(el){el.setAttribute('role','status');el.setAttribute('aria-live','polite');el.setAttribute('aria-atomic','true')}
+}
 
 $('chapterToPractice').onclick=()=>{$('mathChapterLessonView').classList.add('hidden');$('bookView').classList.remove('hidden');document.querySelectorAll('[data-book-tab]').forEach(x=>x.classList.toggle('active',x.dataset.bookTab==='practice'));document.querySelectorAll('#bookView .tabpane').forEach(x=>x.classList.toggle('active',x.id==='booktab-practice'));$('bookPracticeTopic').value=String(activeChapter);newBookPractice();yareScrollToSectionNav()};
 $('bookPracticeTopic').onchange=()=>{if(!$('bookPracticeBox').classList.contains('hidden'))newBookPractice()};
@@ -3306,12 +3348,6 @@ async function loadCourseSettings(silent=false){
  try{
    const data=await cloudFetch('/functions/v1/manage-course-settings',{method:'POST',body:{action:'list'}});
    courseSettingsBySubject=data?.settings&&typeof data.settings==='object'?data.settings:{};
-    const persianCatalogMigrationV18=courseSettingsBySubject.persian;
-    if(persianCatalogMigrationV18){
-      persianCatalogMigrationV18.courseEnabled=true;persianCatalogMigrationV18.allowPractice=true;persianCatalogMigrationV18.allowExam=true;
-      persianCatalogMigrationV18.courseTitle='فارسی';
-      if(!Array.isArray(persianCatalogMigrationV18.lessons)||persianCatalogMigrationV18.lessons.length<17){persianCatalogMigrationV18.defaultLocked=false;persianCatalogMigrationV18.lessons=[];}
-    }
    if($('settingSubject'))renderCourseSettingsForm();
    if(typeof renderSubjectAccessControls==='function')renderSubjectAccessControls();
    if($('reportSubjectFilter'))populateLessonFilter('reportSubjectFilter','reportLessonFilter');
@@ -3452,7 +3488,7 @@ async function previewTeacherBook(id){
  if(!url&&config.bookFilePath&&cloudSession?.access_token){try{const blob=await fetchClassMaterial(config.bookFilePath);url=URL.createObjectURL(blob);courseBookObjectUrls[id]=url}catch(error){console.warn('Shared book preview unavailable',error)}}
  if(!url&&BUNDLED_BOOK_ASSETS.has(subject.asset)&&await assetExists(subject.asset))url=subject.asset;
  if(!url){target.innerHTML='<div class="notice">برای «'+escapeHtml(subject.name)+'» هنوز PDF مشترک قابل پیش‌نمایش وجود ندارد. از بخش «کتاب‌ها و منابع» فایل را بارگذاری و در فضای مشترک کلاس ذخیره کن.</div>';return}
- target.innerHTML='<div class="item"><div class="row"><h4>'+subject.icon+' پیش‌نمایش '+escapeHtml(subject.name)+'</h4><button type="button" class="outline" id="closeTeacherBookPreview">بستن پیش‌نمایش</button></div><iframe class="pdfview" title="پیش‌نمایش '+escapeHtml(subject.name)+'" src="'+url+'#view=FitH"></iframe></div>';
+ target.innerHTML='<div class="item"><div class="row"><h4>'+subject.icon+' پیش‌نمایش '+escapeHtml(subject.name)+'</h4><button type="button" class="outline" id="closeTeacherBookPreview">بستن پیش‌نمایش</button></div><iframe class="pdfview" sandbox referrerpolicy="no-referrer" title="پیش‌نمایش '+escapeHtml(subject.name)+'" src="'+url+'#view=FitH"></iframe></div>';
  $('closeTeacherBookPreview').onclick=()=>{target.innerHTML=''};
 }
 $('bookSubject').innerHTML=bookSubjectCatalog.map(s=>'<option value="'+s.id+'">'+s.icon+' '+escapeHtml(s.name)+'</option>').join('');
@@ -3470,12 +3506,30 @@ if($('lessonFileSubject')){
  populateLessonResourceLessons();
 }
 let lessonResourceObjectUrl=null;
+async function inspectAllowedMaterialFile(file){
+ // Trust the bytes, not the extension or the browser-supplied MIME label.
+ try{
+  const head=new Uint8Array(await file.slice(0,16).arrayBuffer());
+  const ascii=(a,b)=>String.fromCharCode(...head.slice(a,b));
+  const isPdf=ascii(0,5)==='%PDF-';
+  const isPng=head[0]===0x89&&head[1]===0x50&&head[2]===0x4e&&head[3]===0x47;
+  const isJpeg=head[0]===0xff&&head[1]===0xd8&&head[2]===0xff;
+  const isGif=ascii(0,3)==='GIF';
+  const isWebp=ascii(0,4)==='RIFF'&&ascii(8,12)==='WEBP';
+  if(isPdf)return 'pdf';
+  if(isPng||isJpeg||isGif||isWebp)return 'image';
+ }catch(error){console.warn('Could not inspect selected material',error)}
+ return null;
+}
+function safeMaterialFrame(url,title){
+ return '<iframe class="pdfview" sandbox referrerpolicy="no-referrer" title="'+escapeHtml(title||'فایل PDF آموزشی')+'" src="'+url+'#view=FitH"></iframe>';
+}
 $('saveLessonResource')?.addEventListener('click',async()=>{
  const file=$('lessonResourceFile')?.files?.[0],subject=$('lessonFileSubject')?.value||'math',lesson=Number($('lessonFileLesson')?.value||1),status=$('lessonResourceStatus');
  if(!cloudSession||cloudSession.role!=='teacher'){status.textContent='برای انتشار فایل برای دانش‌آموزان، ابتدا با حساب معلم وارد شو.';return}
  if(!file){status.textContent='ابتدا فایل PDF یا تصویر انتخاب کن.';return}
- const isPdf=file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf'),isImage=file.type.startsWith('image/');
- if(!isPdf&&!isImage){status.textContent='فقط فایل PDF یا تصویر پشتیبانی می‌شود.';return}
+ const materialKind=await inspectAllowedMaterialFile(file);
+ if(!materialKind){status.textContent='فقط فایل واقعی PDF یا تصویر (PNG، JPEG، WebP یا GIF) پشتیبانی می‌شود؛ پسوند یا نوع اعلام‌شده کافی نیست.';return}
  if(file.size>80*1024*1024){status.textContent='حجم فایل بیشتر از ۸۰ مگابایت است.';return}
  const storageChapter=subject==='math'?lesson:({persian:1000,science:2000,social:3000,gifts:4000}[subject]||5000)+lesson;
  const title=courseName(subject)+' · '+courseLessonTitle(subject,lesson)+' · '+file.name;
@@ -3484,17 +3538,16 @@ $('saveLessonResource')?.addEventListener('click',async()=>{
  catch(error){status.textContent='ذخیره فایل ناموفق بود: '+cloudMessage(error)}
  finally{setBusy(btn,false)}
 });
-$('previewLessonResource')?.addEventListener('click',()=>{
+$('previewLessonResource')?.addEventListener('click',async()=>{
  const file=$('lessonResourceFile')?.files?.[0],target=$('lessonResourcePreview'),status=$('lessonResourceStatus');
  if(!file){status.textContent='ابتدا یک فایل PDF یا تصویر انتخاب کن.';return}
- const isPdf=file.type==='application/pdf'||file.name.toLowerCase().endsWith('.pdf');
- const isImage=file.type.startsWith('image/');
- if(!isPdf&&!isImage){status.textContent='فقط فایل PDF یا تصویر پشتیبانی می‌شود.';return}
+ const materialKind=await inspectAllowedMaterialFile(file);
+ if(!materialKind){status.textContent='فقط فایل واقعی PDF یا تصویر (PNG، JPEG، WebP یا GIF) قابل پیش‌نمایش است؛ پسوند یا نوع اعلام‌شده کافی نیست.';return}
  if(lessonResourceObjectUrl)URL.revokeObjectURL(lessonResourceObjectUrl);
  lessonResourceObjectUrl=URL.createObjectURL(file);
- target.innerHTML=isImage
+ target.innerHTML=materialKind==='image'
   ?'<div class="item"><img alt="پیش‌نمایش فایل آموزشی" src="'+lessonResourceObjectUrl+'" style="display:block;max-width:100%;max-height:75vh;object-fit:contain;margin:auto;border-radius:12px"></div>'
-  :'<div class="item"><iframe class="pdfview" title="پیش‌نمایش PDF درس" src="'+lessonResourceObjectUrl+'#view=FitH"></iframe></div>';
+  :'<div class="item">'+safeMaterialFrame(lessonResourceObjectUrl,'پیش‌نمایش PDF درس')+'</div>';
  status.textContent='پیش‌نمایش «'+file.name+'» برای '+courseName($('lessonFileSubject').value)+' · '+courseLessonTitle($('lessonFileSubject').value,$('lessonFileLesson').value)+' نمایش داده شد. این پیش‌نمایش فعلاً فقط در همین دستگاه است و فایل هنوز در فضای مشترک کلاس ذخیره نشده است.';
 });
 
@@ -3503,7 +3556,7 @@ $('attachBook').onclick=async()=>{
  const id=$('bookSubject').value,file=$('bookPdf').files?.[0],subject=bookSubjectCatalog.find(s=>s.id===id);
  if(!subject){$('teacherBookStatus').textContent='ابتدا کتاب موردنظر را انتخاب کن.';return}
  if(!file){$('teacherBookStatus').textContent='ابتدا فایل PDF کتاب «'+subject.name+'» را انتخاب کن.';return}
- if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){$('teacherBookStatus').textContent='لطفاً فایل PDF انتخاب کن.';return}
+ if(await inspectAllowedMaterialFile(file)!=='pdf'){$('teacherBookStatus').textContent='فقط فایل واقعی PDF برای کتاب مجاز است؛ پسوند یا نوع اعلام‌شده کافی نیست.';return}
  if(!cloudSession||cloudSession.role!=='teacher'){$('teacherBookStatus').textContent='برای انتشار مشترک کتاب، ابتدا با حساب معلم وارد شو.';return}
  const btn=$('attachBook');setBusy(btn,true,'در حال بارگذاری در فضای کلاس…');
  const classId=cloudSession.profile?.class_id;
@@ -3641,6 +3694,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   if(difficultyFilter){difficultyFilter.value='all';const cell=difficultyFilter.parentElement;if(cell)cell.style.display='none';const parent=cell?.parentElement;if(parent)parent.style.gridTemplateColumns='1fr'}
   getPracticeFilteredList=function(){const mode=$('practiceSetMode')?.value||'chapter',type=$('practiceTypeFilter')?.value||'all',difficulty=$('practiceDifficultyFilter')?.value||'all';if(courseSettingsBySubject.math?.allowPractice===false||!isCourseLessonOpen('math',Number($('bookPracticeTopic')?.value||1)))return [];if(mode==='term1'||mode==='term2'){window.__termPracticeCache=window.__termPracticeCache||{};if(!window.__termPracticeCache[mode]&&typeof buildTermQuestionSet==='function')window.__termPracticeCache[mode]=buildTermQuestionSet(mode);return (window.__termPracticeCache[mode]||[]).filter(q=>isCourseLessonOpen('math',Number(q.chapter||1))&&(type==='all'||(q.type||'mc')===type))}const chapter=Number($('bookPracticeTopic').value);return (practiceBank[chapter]||[]).filter(q=>(type==='all'||(q.type||'mc')===type)&&(difficulty==='all'||(q.difficulty||'medium')===difficulty))};
   newBookPractice=function(){
+    practiceGeneration++;
     const filtered=getPracticeFilteredList();selectedPracticeAnswer=null;practiceWasChecked=false;
     $('checkBookPractice').disabled=false;$('checkBookPractice').textContent='بررسی پاسخ';$('bookPracticeBox').classList.remove('hidden');$('bookPracticeFeedback').classList.add('hidden');$('bookPracticeAnswer').value='';
     if(!filtered.length){currentPractice=null;$('bookPracticeSkill').textContent='در این فهرست سؤالی پیدا نشد.';$('bookPracticeQuestion').textContent='فصل دیگری یا نوع دیگری از سؤال را انتخاب کن.';$('bookPracticeOptions').innerHTML='';$('bookPracticeOptions').classList.add('hidden');$('bookPracticeAnswer').classList.add('hidden');updatePracticeStats();return}
@@ -3805,7 +3859,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     const count=v=>{const n=Number(v);return Number.isFinite(n)&&n>=0?Math.floor(n):0};
     const raw=src.byChapter&&typeof src.byChapter==='object'&&!Array.isArray(src.byChapter)?src.byChapter:{};
     const byChapter={};Object.keys(raw).forEach(k=>{const v=raw[k]&&typeof raw[k]==='object'?raw[k]:{};byChapter[String(k)]={attempts:count(v.attempts),correct:count(v.correct)}});
-    return {attempts:count(src.attempts),correct:count(src.correct),streak:count(src.streak),bestStreak:count(src.bestStreak),byChapter};
+    const rawHistory=src.questionHistory&&typeof src.questionHistory==='object'&&!Array.isArray(src.questionHistory)?src.questionHistory:{};
+    const questionHistory={};
+    Object.keys(rawHistory).forEach(key=>{
+      const item=rawHistory[key]&&typeof rawHistory[key]==='object'?rawHistory[key]:{};
+      const attempts=count(item.attempts),correct=Math.min(attempts,count(item.correct));
+      questionHistory[String(key)]={attempts,correct,incorrect:Math.min(Math.max(0,attempts-correct),count(item.incorrect)),lastCorrect:item.lastCorrect===true,updatedAt:typeof item.updatedAt==='string'?item.updatedAt:''};
+    });
+    return {attempts:count(src.attempts),correct:count(src.correct),streak:count(src.streak),bestStreak:count(src.bestStreak),byChapter,questionHistory};
   }
   const oldLoadStudentProgress=loadStudentProgress;
   loadStudentProgress=function(username){return normalizeStudentProgressRecord(oldLoadStudentProgress(username))};
@@ -3947,6 +4008,8 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   let currentCloudAttemptGroup = null;
   let cloudBankRows = [];
   let cloudBusy = false;
+  let cloudSessionEpoch = 0;
+  let studentLoginSerial = 0;
   let yareCloudWarmupActive = false;
   let yareCloudWarmupUserId = null;
 
@@ -3958,19 +4021,27 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   function cloudHeaders(token, extra={}){
     const h={apikey:CLOUD_PUBLISHABLE_KEY,...extra};if(token)h.Authorization=`Bearer ${token}`;return h;
   }
+  function cloudSessionChangedError(){const error=new Error('نشست تغییر کرد؛ نتیجهٔ درخواست قبلی نادیده گرفته شد.');error.name='SessionChangedError';return error}
   async function cloudFetch(path, options={}, allowRefresh=true){
     const method=options.method||'GET';
+    const requestEpoch=cloudSessionEpoch;
+    const requestSession=cloudSession;
     const token=Object.prototype.hasOwnProperty.call(options,'token')?options.token:(cloudSession?.access_token||null);
     const headers=cloudHeaders(token,options.headers||{});
     if(options.body!==undefined && !(options.body instanceof FormData)) headers['Content-Type']='application/json';
     const response=await fetch(CLOUD_URL+path,{method,headers,body:options.body===undefined?undefined:(options.body instanceof FormData?options.body:JSON.stringify(options.body)),cache:'no-store',credentials:'omit'});
+    if(requestEpoch!==cloudSessionEpoch)throw cloudSessionChangedError();
     const raw=await response.text(); let data=null;
     try{data=raw?JSON.parse(raw):null}catch{data=raw}
-    if(response.status===401 && allowRefresh && cloudSession?.refresh_token && !path.includes('/auth/v1/token')){
-      const refreshResponse=await fetch(CLOUD_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:cloudHeaders(null,{'Content-Type':'application/json'}),body:JSON.stringify({refresh_token:cloudSession.refresh_token}),cache:'no-store',credentials:'omit'});
+    if(response.status===401 && allowRefresh && requestSession?.refresh_token && !path.includes('/auth/v1/token')){
+      if(requestEpoch!==cloudSessionEpoch||cloudSession!==requestSession)throw cloudSessionChangedError();
+      const refreshResponse=await fetch(CLOUD_URL+'/auth/v1/token?grant_type=refresh_token',{method:'POST',headers:cloudHeaders(null,{'Content-Type':'application/json'}),body:JSON.stringify({refresh_token:requestSession.refresh_token}),cache:'no-store',credentials:'omit'});
+      if(requestEpoch!==cloudSessionEpoch||cloudSession!==requestSession)throw cloudSessionChangedError();
       const refreshBody=await refreshResponse.json().catch(()=>({}));
       if(refreshResponse.ok&&refreshBody.access_token){
-        cloudSession={...cloudSession,access_token:refreshBody.access_token,refresh_token:refreshBody.refresh_token||cloudSession.refresh_token};
+        // Merge into the exact session that started this request; never write
+        // account A's token/user identity over account B's session.
+        cloudSession={...requestSession,access_token:refreshBody.access_token,refresh_token:refreshBody.refresh_token||requestSession.refresh_token};
         if(fouramiOfflineData&&fouramiOfflineKey&&fouramiOfflineData.studentId===cloudSession.user?.id){
           window.__fouramiOfflineMode?.captureCurrentSession?.();
           await fouramiPersistEncryptedOfflinePackage().catch(error=>console.warn('Encrypted offline session refresh could not be saved',error));
@@ -3978,7 +4049,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         if(!cloudSession?.offline)saveCloudSession();
         return cloudFetch(path,options,false)
       }
-      if(!cloudSession?.offline)clearCloudSession(false);
+      if(!requestSession?.offline)clearCloudSession(false);
     }
     if(!response.ok){const msg=typeof data==='object'&&data?(data.msg||data.message||data.error_description||data.error||data.details):data;throw new Error(msg||`خطای سرور (${response.status})`)}
     return data;
@@ -3999,6 +4070,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     pingStudentPresence();
   }
   function clearCloudSession(returnHome=true){
+    cloudSessionEpoch++;
     cloudSession=null;try{sessionStorage.removeItem(CLOUD_SESSION_KEY)}catch{}
     window.__fouramiOfflineMode?.resetUnlockedPackage?.();
     activeStudentName='';activeUsername='';activeProfile={};studentProgress={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{}};
@@ -4059,10 +4131,15 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
     $('teacherBankTotal').textContent=fa(mathRows.length)+' سؤال ریاضی آنلاین';
   }
   async function refreshStudentProgressFromCloud(){
-    if(!cloudSession?.user?.id)return;
-    const q=`?select=chapter_id,question_id,is_correct,created_at&student_id=eq.${encodeURIComponent(cloudSession.user.id)}&order=created_at.asc&limit=5000`;
+    const session=cloudSession;
+    if(!session?.user?.id)return;
+    const userId=String(session.user.id);
+    // Snapshot local history for this account before the await; a later login
+    // must not merge account A's remote rows into account B's local state.
+    const localHistory={...(studentProgress?.questionHistory||{})};
+    const q=`?select=chapter_id,question_id,is_correct,created_at&student_id=eq.${encodeURIComponent(userId)}&order=created_at.asc&limit=5000`;
     const rows=await cloudFetch('/rest/v1/yare_practice_attempts'+q,{method:'GET'});
-    const localHistory=studentProgress?.questionHistory||{};
+    if(cloudSession!==session||String(cloudSession?.user?.id||'')!==userId)return;
     const remoteHistory={};
     const p={attempts:0,correct:0,streak:0,bestStreak:0,byChapter:{},questionHistory:{...localHistory}};
     for(const row of (Array.isArray(rows)?rows:[])){
@@ -4078,8 +4155,6 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         rec.updatedAt=row.created_at||rec.updatedAt;
       }
     }
-    // Use the larger local/cloud tallies to retain recent local attempts while sharing
-    // question-level mistakes from the authenticated server history across devices.
     for(const [key,remote] of Object.entries(remoteHistory)){
       const local=localHistory[key]||{};
       const attempts=Math.max(Number(local.attempts)||0,remote.attempts);
@@ -4088,10 +4163,11 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const localTime=Date.parse(local.updatedAt||'')||0,remoteTime=Date.parse(remote.updatedAt||'')||0;
       p.questionHistory[key]={attempts,correct,incorrect,lastCorrect:remoteTime>=localTime?remote.lastCorrect:local.lastCorrect,updatedAt:remoteTime>=localTime?remote.updatedAt:(local.updatedAt||'')};
     }
+    if(cloudSession!==session||String(cloudSession?.user?.id||'')!==userId)return;
     studentProgress=p;storeStudentProgress();renderStudentDashboard();
   }
   async function studentLogin(){
-    if(cloudBusy)return;cloudBusy=true;setBusy($('studentLoginConfirm'),true,'در حال بررسی…');
+    if(cloudBusy)return;cloudBusy=true;const loginId=++studentLoginSerial;setBusy($('studentLoginConfirm'),true,'در حال بررسی…');
     const username=$('studentNameInput').value.trim().replace(/\s+/g,'');const password=$('studentPasswordInput').value;
     const err=$('studentLoginError');err.classList.add('hidden');
     try{
@@ -4100,11 +4176,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const auth=await cloudFetch('/functions/v1/super-endpoint',{method:'POST',token:null,body:{student_code:username,password}});
       if(!auth?.access_token)throw new Error('تابع student-login توکن ورود برنگرداند؛ کد تابع را بررسی کن.');
       const user=await authUserForToken(auth.access_token);
+      if(loginId!==studentLoginSerial)return;
       if(!user?.id)throw new Error('توکن تابع student-login، نشست معتبر Supabase Auth نیست. تابع باید access_token معتبر همان پروژه را برگرداند.');
       const profile=await loadCloudProfile(auth.access_token,user.id);
+      if(loginId!==studentLoginSerial)return;
       fouramiClearUnlockedPackageIfDifferent(user.id);
       if(profile.role!=='student'&&profile.role!=='teacher')throw new Error('این حساب نقش دانش‌آموز یا معلم ندارد.');
       cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user,role:'student',profile,username,studentViewAsTeacher:profile.role==='teacher'};
+      cloudSessionEpoch++;
       saveCloudSession();
       activeStudentName=username;activeUsername=username;
       activeProfile={...readProfile(username),name:profile.display_name||username,nickname:profile.nickname||'',favorite:profile.favorite_skill||''};
@@ -4159,7 +4238,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       const profile=await loadCloudProfile(auth.access_token,auth.user.id);
       fouramiClearUnlockedPackageIfDifferent(auth.user.id);
       if(profile.role!=='teacher')throw new Error('این حساب در جدول yare_profiles نقش معلم ندارد.');
-      cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user:auth.user,role:'teacher',profile};saveCloudSession();
+      cloudSession={access_token:auth.access_token,refresh_token:auth.refresh_token||null,user:auth.user,role:'teacher',profile};cloudSessionEpoch++;saveCloudSession();
       $('teacherPassword').value='';show('teacher');yareTeacherShowSectionMenu();
       setCloudStatus('ورود معلم تأیید شد؛ اطلاعات تکمیلی در پس‌زمینه بارگیری می‌شود.');
       const loginUserId=auth.user.id;
@@ -4210,7 +4289,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         const table=document.createElement('table');table.className='student-accounts-table';
         const thead=document.createElement('thead'),headRow=document.createElement('tr');
         [
-          ['ردیف','row-number'],['نام و نام خانوادگی',''],['نام کاربری',''],['رمز عبور',''],['تاریخ ثبت','']
+          ['ردیف','row-number'],['نام و نام خانوادگی',''],['نام کاربری',''],['وضعیت رمز',''],['تاریخ ثبت','']
         ].forEach(([label,cls])=>{const th=document.createElement('th');th.textContent=label;if(cls)th.className=cls;headRow.appendChild(th)});
         thead.appendChild(headRow);table.appendChild(thead);
         const tbody=document.createElement('tbody');
@@ -4220,24 +4299,20 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
           const name=document.createElement('td');name.textContent=student.display_name||'—';tr.appendChild(name);
           const username=document.createElement('td');username.className='username';username.textContent=student.student_code||'—';tr.appendChild(username);
           const password=document.createElement('td');password.className='password-cell';
-          if(student.initial_password){
-            password.textContent=student.initial_password;
-          }else{
-            password.textContent='ثبت نشده ';
-            const reset=document.createElement('button');reset.type='button';reset.className='outline';reset.style.marginInlineStart='8px';reset.textContent='تعیین رمز';
-            reset.onclick=async()=>{
-              const newPassword=window.prompt('رمز جدید برای «'+(student.display_name||student.student_code)+'» را وارد کن (حداقل ۶ نویسه):');
-              if(newPassword===null)return;
-              if(newPassword.length<6||newPassword.length>128){alert('رمز باید حداقل ۶ و حداکثر ۱۲۸ نویسه داشته باشد.');return}
-              reset.disabled=true;
-              try{
-                await cloudFetch('/functions/v1/manage-student-accounts',{method:'POST',body:{action:'set_password',student_id:student.id,password:newPassword}});
-                status.textContent='رمز حساب «'+(student.display_name||student.student_code)+'» تغییر کرد و در فهرست ذخیره شد.';
-                await loadStudentAccounts();
-              }catch(e){status.textContent='تغییر رمز ناموفق بود: '+cloudMessage(e);reset.disabled=false}
-            };
-            password.appendChild(reset);
-          }
+          password.textContent=student.has_initial_password?'رمز تعیین شده ':'رمز ثبت نشده ';
+          const reset=document.createElement('button');reset.type='button';reset.className='outline';reset.style.marginInlineStart='8px';reset.textContent=student.has_initial_password?'تعیین رمز جدید':'تعیین رمز';
+          reset.onclick=async()=>{
+            const newPassword=window.prompt('رمز جدید برای «'+(student.display_name||student.student_code)+'» را وارد کن (حداقل ۶ نویسه). رمز قبلی برای امنیت نمایش داده نمی‌شود:');
+            if(newPassword===null)return;
+            if(newPassword.length<6||newPassword.length>128){alert('رمز باید حداقل ۶ و حداکثر ۱۲۸ نویسه داشته باشد.');return}
+            reset.disabled=true;
+            try{
+              await cloudFetch('/functions/v1/manage-student-accounts',{method:'POST',body:{action:'set_password',student_id:student.id,password:newPassword}});
+              status.textContent='رمز حساب «'+(student.display_name||student.student_code)+'» تغییر کرد. رمزها در فهرست نمایش داده نمی‌شوند.';
+              await loadStudentAccounts();
+            }catch(e){status.textContent='تغییر رمز ناموفق بود: '+cloudMessage(e);reset.disabled=false}
+          };
+          password.appendChild(reset);
           tr.appendChild(password);
           const created=document.createElement('td');created.textContent=student.created_at?new Date(student.created_at).toLocaleDateString('fa-IR'):'—';tr.appendChild(created);
           tbody.appendChild(tr);
@@ -4869,13 +4944,19 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
   }
   const previousPracticeCheckCloud=$('checkBookPractice').onclick;
   $('checkBookPractice').onclick=async function(){
-    if(!currentPractice||practiceWasChecked)return;
-    const response=(currentPractice.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;
-    if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(currentPractice.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(currentPractice.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(currentPractice.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
+    const question=currentPractice;
+    if(!question||practiceWasChecked)return;
+    const generation=practiceGeneration;
+    const response=(question.type||'mc')==='input' ? $('bookPracticeAnswer').value : selectedPracticeAnswer;
+    if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(question.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(question.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(question.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
     setBusy(this,true,'در حال بررسی پاسخ…');
     try{
       const mode=$('practiceSetMode')?.value||'chapter';const source=mode==='chapter'?'practice:chapter':`practice:${mode}`;
-      const result=await submitServerAnswer(currentPractice,response,source,null);
+      const result=await submitServerAnswer(question,response,source,null);
+      // The student may have moved to a new question while this request was in
+      // flight. The server still records the old attempt, but the old response
+      // must not lock, score, or repaint the new question.
+      if(generation!==practiceGeneration||currentPractice!==question)return;
       practiceWasChecked=true;practiceAsked++;
       if(result.pendingOffline){
         const f=$('bookPracticeFeedback');f.classList.remove('hidden');
@@ -4885,26 +4966,34 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
         return;
       }
       if(result.correct)practiceCorrect++;
-      awardProgress(Number(currentPractice.chapter||$('bookPracticeTopic').value),!!result.correct,currentPractice);
+      awardProgress(Number(question.chapter||$('bookPracticeTopic').value),!!result.correct,question);
       const f=$('bookPracticeFeedback');f.classList.remove('hidden');
-       f.innerHTML=renderQuestionFeedback(currentPractice,!!result.correct,currentPractice.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(currentPractice)),result.explanation||currentPractice.why||'');
+       f.innerHTML=renderQuestionFeedback(question,!!result.correct,question.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(question)),result.explanation||question.why||'');
        f.style.background='transparent';f.style.color=result.correct?'#126a49':'#72541a';
       this.textContent=result.correct?'✅ درست بود!':'📘 نکته را مرور کن';this.disabled=true;updatePracticeStats();
       setCloudStatus('پاسخ تمرین در Supabase ثبت و در سمت سرور بررسی شد.');
-    }catch(e){alert('پاسخ ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ ناموفق بود: '+cloudMessage(e),true)}
-    finally{this.disabled=practiceWasChecked; if(!practiceWasChecked)this.textContent='بررسی پاسخ'}
+    }catch(e){
+      if(generation===practiceGeneration&&currentPractice===question){alert('پاسخ ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ ناموفق بود: '+cloudMessage(e),true)}
+    }
+    finally{
+      if(generation===practiceGeneration&&currentPractice===question){this.disabled=practiceWasChecked;if(!practiceWasChecked)this.textContent='بررسی پاسخ'}
+      else{this.disabled=false;this.textContent='بررسی پاسخ'}
+    }
   };
 
   const previousStartBookExam=startBookExam;
-  startBookExam=function(mode='annual'){currentCloudAttemptGroup=(crypto?.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c==='x'?r:(r&3|8)).toString(16)})));return previousStartBookExam(mode)};
+  startBookExam=function(mode='annual'){examRunId++;currentCloudAttemptGroup=(crypto?.randomUUID?crypto.randomUUID():('xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,c=>{const r=Math.random()*16|0;return (c==='x'?r:(r&3|8)).toString(16)})));return previousStartBookExam(mode)};
   $('examSubmit').onclick=async function(){
     if(!examItems.length){alert('برای شروع، دکمه‌ی «شروع آزمون» را بزن.');return}
     if(!examAnswered){
-      const q=examItems[examIndex];const response=(q.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;
-      if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(q.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(q.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(q.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
+      const question=examItems[examIndex],runId=examRunId,attemptGroup=currentCloudAttemptGroup;
+      const response=(question.type||'mc')==='input' ? $('examAnswer').value : examSelectedAnswer;
+      if(response===null||response===undefined||response===''||(Array.isArray(response)&&response.length===0)||(question.type==='matching'&&(!Array.isArray(response)||response.length!==4||response.some(n=>!Number.isInteger(n)||n<4)))){alert(question.type==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':(question.type||'mc')==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
       setBusy(this,true,'در حال ثبت پاسخ…');
       try{
-        const result=await submitServerAnswer(q,response,`exam:${String(examMode).replace(/[^a-zA-Z0-9:_-]/g,'').slice(0,40)}`,currentCloudAttemptGroup);
+        const result=await submitServerAnswer(question,response,`exam:${String(examMode).replace(/[^a-zA-Z0-9:_-]/g,'').slice(0,40)}`,attemptGroup);
+        // A new exam may have started while the old answer was being saved.
+        if(runId!==examRunId)return;
         examAnswered=true;
         const f=$('examFeedback');f.classList.remove('hidden');
         if(result.pendingOffline){
@@ -4912,12 +5001,14 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
           f.style.background='transparent';f.style.color='#ffcc7a';
         }else{
           if(result.correct)examScore++;
-          awardProgress(Number(q.chapter||0),!!result.correct,q);
-          f.innerHTML=renderQuestionFeedback(q,!!result.correct,q.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(q)),result.explanation||q.why||q.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
+          awardProgress(Number(question.chapter||0),!!result.correct,question);
+          f.innerHTML=renderQuestionFeedback(question,!!result.correct,question.type==='matching'?(result.correct_answers||[]):(result.correct_answer||correctAnswerText(question)),result.explanation||question.why||question.explanation||'');f.style.background='transparent';f.style.color=result.correct?'#63e5ad':'#ffcc7a';
         }
         $('examOptions').querySelectorAll('input').forEach(r=>r.disabled=true);$('examAnswer').disabled=true;
         this.textContent=examIndex===examItems.length-1?'پایان و مشاهده‌ی نتیجه':'رفتن به سؤال بعد';
-      }catch(e){alert('پاسخ آزمون ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ آزمون ناموفق بود: '+cloudMessage(e),true)}
+      }catch(e){
+        if(runId===examRunId){alert('پاسخ آزمون ثبت نشد: '+friendlyAuthError(e));setCloudStatus('ثبت پاسخ آزمون ناموفق بود: '+cloudMessage(e),true)}
+      }
       finally{this.disabled=false}
       return;
     }
@@ -4944,7 +5035,7 @@ if(typeof populateChapterExamSelect==='function')populateChapterExamSelect();
       }
       const allSubjectProgress=[];
       for(let offset=0;offset<50000;offset+=1000){
-        const page=await cloudFetch(`/rest/v1/yare_subject_practice_progress?select=id,student_id,class_id,subject,lesson_id,activity_key,activity_type,selected_answer,correct_answer,is_correct,attempt_count,question_text,explanation,metadata,updated_at,created_at&order=updated_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
+        const page=await cloudFetch(`/rest/v1/yare_subject_practice_progress?select=id,student_id,class_id,subject,lesson_id,activity_key,activity_type,selected_answer,correct_answer,is_correct,attempt_count,scoring_source,question_text,explanation,metadata,updated_at,created_at&order=updated_at.desc&limit=1000&offset=${offset}`,{method:'GET'});
         if(!Array.isArray(page))throw new Error('ساختار پیشرفت درس‌های دیگر نامعتبر است.');
         allSubjectProgress.push(...page);if(page.length<1000)break;
       }
@@ -5123,18 +5214,18 @@ function renderTeacherReport(){
       const expected=meta.correct_text??(r.correct_answer==null?'—':String(r.correct_answer+1));
       const at=Date.parse(r.updated_at||r.created_at);
       const time=Number.isFinite(at)?new Date(at).toLocaleString('fa-IR'):'—';
-      return '<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(subjectPracticeNames[r.subject]||r.subject)+'</td><td>'+escapeHtml(fa(r.lesson_id))+'</td><td>'+escapeHtml(r.activity_type||r.activity_key)+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(answer)+'</td><td>'+escapeHtml(expected)+'</td><td style="font-weight:700;color:'+(r.is_correct?'#16804a':'#b7791f')+'">'+(r.is_correct?'درست':'نیاز به تمرین')+'</td><td>'+escapeHtml(fa(r.attempt_count||1))+'</td><td>'+escapeHtml(time)+'</td><td><details><summary>تحلیل</summary><p>'+escapeHtml(r.explanation||'تحلیلی برای این فعالیت ثبت نشده است.')+'</p></details></td></tr>';
+      return '<tr><td>'+escapeHtml(nameById.get(r.student_id)||r.student_id)+'</td><td>'+escapeHtml(subjectPracticeNames[r.subject]||r.subject)+'</td><td>'+escapeHtml(fa(r.lesson_id))+'</td><td>'+escapeHtml(r.activity_type||r.activity_key)+'</td><td>'+escapeHtml(r.question_text||'—')+'</td><td>'+escapeHtml(answer)+'</td><td>'+escapeHtml(expected)+'</td><td style="font-weight:700;color:'+(r.is_correct?'#16804a':'#b7791f')+'">'+(r.is_correct?'درست':'نیاز به تمرین')+'</td><td>'+escapeHtml(fa(r.attempt_count||1))+'</td><td>'+escapeHtml(r.scoring_source==='server'?'سروری':'خوداظهاری')+'</td><td>'+escapeHtml(time)+'</td><td><details><summary>تحلیل</summary><p>'+escapeHtml(r.explanation||'تحلیلی برای این فعالیت ثبت نشده است.')+'</p></details></td></tr>';
     }).join('');
     panel.innerHTML='<div class="row" style="flex-wrap:wrap;align-items:center"><div><h3>📚 گزارش پیشرفت درس‌های دیگر</h3><p class="muted">آخرین پاسخ هر فعالیت؛ جدا از نمره‌های رسمی ریاضی. '+fa(rows.length)+' فعالیت · '+fa(correct)+' پاسخ صحیح ('+fa(percent)+'٪)</p></div><button type="button" class="outline" id="exportSubjectPracticeCsv">خروجی CSV درس‌های دیگر</button></div>'+
-      (rows.length?'<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1120px"><thead><tr><th>دانش‌آموز</th><th>درس</th><th>شماره مبحث</th><th>نوع فعالیت</th><th>پرسش</th><th>پاسخ دانش‌آموز</th><th>پاسخ صحیح</th><th>نتیجه</th><th>تلاش</th><th>آخرین ثبت</th><th>تحلیل</th></tr></thead><tbody>'+tableRows+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'. نتیجه‌ها مربوط به تمرین خودکار هستند و جایگزین نمرهٔ رسمی امتحان نیستند.</p>':'<div class="notice">هنوز پاسخ تمرینی از بخش درس‌های دیگر به Supabase نرسیده است. پس از پاسخ دادن دانش‌آموز، گزارش اینجا ثبت می‌شود.</div>');
+      (rows.length?'<div style="overflow-x:auto"><table class="math-matrix" style="min-width:1200px"><thead><tr><th>دانش‌آموز</th><th>درس</th><th>شماره مبحث</th><th>نوع فعالیت</th><th>پرسش</th><th>پاسخ دانش‌آموز</th><th>پاسخ صحیح</th><th>نتیجه</th><th>تلاش</th><th>اعتبار</th><th>آخرین ثبت</th><th>تحلیل</th></tr></thead><tbody>'+tableRows+'</tbody></table></div><p class="muted">نمایش '+fa(Math.min(rows.length,500))+' ردیف از '+fa(rows.length)+'. این پاسخ‌ها در مرورگر تولید و خوداظهاری می‌شوند؛ ستون «اعتبار» آن‌ها را از نمره‌های سروری جدا می‌کند و جایگزین نمرهٔ رسمی امتحان نیستند.</p>':'<div class="notice">هنوز پاسخ تمرینی از بخش درس‌های دیگر به Supabase نرسیده است. پس از پاسخ دادن دانش‌آموز، گزارش اینجا ثبت می‌شود.</div>');
     const exportButton=$('exportSubjectPracticeCsv');
     if(exportButton)exportButton.onclick=()=>{
       if(!cloudSession||cloudSession.role!=='teacher'){alert('ابتدا با حساب معلم وارد شو.');return}
-      const head=['نام دانش‌آموز','شناسه دانش‌آموز','درس','شماره مبحث','نوع فعالیت','پرسش','پاسخ دانش‌آموز','پاسخ صحیح','درست','تعداد تلاش','تحلیل','آخرین ثبت'];
+      const head=['نام دانش‌آموز','شناسه دانش‌آموز','درس','شماره مبحث','نوع فعالیت','پرسش','پاسخ دانش‌آموز','پاسخ صحیح','درست','تعداد تلاش','اعتبار','تحلیل','آخرین ثبت'];
       const lines=[head.map(csvSafe).join(',')];
       rows.forEach(r=>{
         const meta=r.metadata&&typeof r.metadata==='object'?r.metadata:{};
-        lines.push([nameById.get(r.student_id)||r.student_id,r.student_id,subjectPracticeNames[r.subject]||r.subject,r.lesson_id,r.activity_type||r.activity_key,r.question_text,meta.selected_text??r.selected_answer,meta.correct_text??r.correct_answer,r.is_correct?'بله':'خیر',r.attempt_count,r.explanation,r.updated_at||r.created_at].map(csvSafe).join(','));
+        lines.push([nameById.get(r.student_id)||r.student_id,r.student_id,subjectPracticeNames[r.subject]||r.subject,r.lesson_id,r.activity_type||r.activity_key,r.question_text,meta.selected_text??r.selected_answer,meta.correct_text??r.correct_answer,r.is_correct?'بله':'خیر',r.attempt_count,r.scoring_source==='server'?'سروری':'خوداظهاری',r.explanation,r.updated_at||r.created_at].map(csvSafe).join(','));
       });
       const blob=new Blob(['\\ufeff'+lines.join('\\r\\n')],{type:'text/csv;charset=utf-8;'});
       const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='yare-subject-practice-report.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -5260,6 +5351,128 @@ $('teacherSaveQuestion').onclick=async()=>{
 };
 
 let studentAssignmentState=null;
+  const assignmentStatusLabel={in_progress:'در حال انجام',submitted:'تحویل‌شده',expired:'زمان تمام‌شده'};
+  function assignmentQuestionType(q){const t=String(q?.question_type||q?.type||'mc');return t==='multi'?'multi':t}
+  function assignmentAnswerValue(q){
+    const type=assignmentQuestionType(q),box=$('studentAssignmentQuestion');if(!box)return null;
+    if(type==='input')return String(box.querySelector('#studentAssignmentAnswerInput')?.value||'').trim();
+    if(type==='multi')return [...box.querySelectorAll('input[data-assignment-option]:checked')].map(x=>x.value);
+    if(type==='matching')return [...box.querySelectorAll('select[data-assignment-match]')].map(x=>x.value);
+    return box.querySelector('input[data-assignment-option]:checked')?.value??null;
+  }
+  function assignmentAnswerValid(q,value){
+    const type=assignmentQuestionType(q);
+    if(type==='multi')return Array.isArray(value)&&value.length>0;
+    if(type==='matching')return Array.isArray(value)&&value.length===4&&value.every(Boolean)&&new Set(value).size===4;
+    return value!==null&&value!==undefined&&String(value).trim()!=='';
+  }
+  function renderStudentAssignmentQuestion(){
+    const st=studentAssignmentState;if(!st)return;
+    const q=st.questions[st.index],box=$('studentAssignmentQuestion'),fb=$('studentAssignmentFeedback');
+    if(!q||!box)return;
+    const type=assignmentQuestionType(q),opts=Array.isArray(q.options)?q.options:[];
+    const answered=st.saved.has(q.id),saved=st.answers.get(q.id);
+    const label=type==='input'?'<label class="field" for="studentAssignmentAnswerInput">پاسخ خود را بنویس</label>':'';
+    let controls='';
+    if(type==='input'){
+      controls=label+'<input id="studentAssignmentAnswerInput" type="text" autocomplete="off" value="'+escapeHtml(typeof saved==='string'?saved:'')+'" aria-describedby="studentAssignmentAnswerHint"><p id="studentAssignmentAnswerHint" class="muted">پاسخ عددی را می‌توانی به شکل اعشاری یا کسر بنویسی؛ نمایش ساده‌ترین شکل لازم نیست، مگر در صورت سؤال خواسته شده باشد.</p>';
+    }else if(type==='multi'){
+      controls='<p class="muted">همهٔ گزینه‌های درست را انتخاب کن.</p>'+opts.map((o,i)=>'<label class="option"><input type="checkbox" data-assignment-option value="'+escapeHtml(o)+'"'+((Array.isArray(saved)&&saved.map(String).includes(String(o)))?' checked':'')+'> '+escapeHtml(o)+'</label>').join('');
+    }else if(type==='matching'){
+      const left=opts.slice(0,4),right=opts.slice(4,8),picked=Array.isArray(saved)?saved:[];
+      controls='<p class="muted">برای هر مورد ستون چپ، پاسخ مناسب را از فهرست انتخاب کن؛ هر پاسخ فقط یک بار استفاده می‌شود.</p><div class="question-matching-list">'+left.map((item,i)=>'<div class="question-matching-row"><span><b>'+fa(i+1)+'.</b> '+escapeHtml(item)+'</span><select data-assignment-match aria-label="جور کردن مورد '+fa(i+1)+'"><option value="">انتخاب پاسخ…</option>'+right.map(answer=>'<option value="'+escapeHtml(answer)+'"'+(String(picked[i]??'')===String(answer)?' selected':'')+'>'+escapeHtml(answer)+'</option>').join('')+'</select></div>').join('')+'</div>';
+    }else{
+      const choices=type==='tf'&&opts.length!==2?['درست','نادرست']:opts;
+      controls=choices.map(o=>'<label class="option"><input type="radio" name="studentAssignmentOption" data-assignment-option value="'+escapeHtml(o)+'"'+(saved!==undefined&&String(saved)===String(o)?' checked':'')+'> '+escapeHtml(o)+'</label>').join('');
+    }
+    box.innerHTML='<p><b>'+escapeHtml(q.prompt||'')+'</b></p><p class="muted">'+escapeHtml(q.skill||'')+'</p>'+controls;
+    box.querySelectorAll('input,select').forEach(el=>{el.disabled=answered;if(!answered&&el.matches('select[data-assignment-match]'))el.onchange=()=>{const group=box.querySelector('.question-matching-list')||box;const selects=[...group.querySelectorAll('select')];const values=selects.map(x=>x.value);selects.forEach((sel,index)=>{[...sel.options].forEach(o=>{if(o.value!=='')o.disabled=values.some((v,k)=>k!==index&&v===o.value)})})}});
+    $('studentAssignmentProgress').textContent='سؤال '+fa(st.index+1)+' از '+fa(st.questions.length)+' · تلاش '+fa(st.attempt.attempt_number)+' از '+fa(st.assignment.max_attempts);
+    const submit=$('studentAssignmentSubmit'),next=$('studentAssignmentNext');
+    submit.classList.toggle('hidden',answered);submit.disabled=answered;submit.textContent='ثبت پاسخ';
+    next.classList.remove('hidden');next.textContent=st.index===st.questions.length-1?'تحویل و پایان فعالیت':'سؤال بعدی';next.disabled=!answered;
+    if(fb){fb.classList.add('hidden');fb.textContent='';fb.style.color=''}
+  }
+  function renderStudentAssignmentList(assignments){
+    const list=$('studentAssignmentList');if(!list)return;
+    if(!assignments.length){list.innerHTML='هنوز فعالیت منتشرشده‌ای برای این کلاس وجود ندارد.';return}
+    list.innerHTML=assignments.map(a=>{
+      const attempts=Array.isArray(a.attempts)?a.attempts:[];
+      const used=attempts.length,last=attempts[attempts.length-1],active=attempts.find(t=>t.status==='in_progress');
+      const max=Number(a.max_attempts||1),full=used>=max&&!active;
+      const parts=[courseName(a.subject||'math'),fa(a.question_count||0)+' سؤال',a.duration_minutes?fa(a.duration_minutes)+' دقیقه':'بدون محدودیت',fa(max)+' تلاش'];
+      const history=attempts.length?'<p class="muted">تلاش‌ها: '+attempts.map(t=>fa(t.attempt_number)+' · '+(assignmentStatusLabel[t.status]||escapeHtml(t.status||'—'))+(t.score!==null&&t.score!==undefined?' · نمره '+fa(t.score)+' از '+fa(t.total_points??a.question_count??0):'')).join('؛ ')+'</p>':'';
+      return '<div class="item"><b>'+escapeHtml(a.title)+'</b><p class="muted">'+parts.map(escapeHtml).join(' · ')+'</p>'+history+'<button type="button" data-start-assignment="'+escapeHtml(a.id)+'"'+(full?' disabled':'')+'>'+(active?'ادامهٔ فعالیت':full?'تعداد تلاش تمام شد':'شروع فعالیت')+'</button></div>';
+    }).join('');
+  }
+  async function loadStudentAssignments(){
+    const list=$('studentAssignmentList');if(!list)return;
+    if(!cloudSession||!['student','teacher'].includes(cloudSession.role)){list.textContent='برای دیدن فعالیت‌ها وارد حساب دانش‌آموز شو.';return}
+    list.textContent='در حال خواندن فعالیت‌ها…';
+    try{
+      const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'list',view_as_student:cloudSession.role==='teacher'?true:undefined}});
+      if(!cloudSession||!['student','teacher'].includes(cloudSession.role))return;
+      renderStudentAssignmentList(Array.isArray(r?.assignments)?r.assignments:[]);
+    }catch(e){
+      if(e?.name==='SessionChangedError')return;
+      list.textContent='خواندن فعالیت‌ها ناموفق بود: '+cloudMessage(e);
+    }
+  }
+  async function startStudentAssignment(id,button){
+    if(!id)return;setBusy(button,true,'در حال شروع…');
+    try{
+      const r=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'start',assignment_id:id}});
+      if(!r?.attempt||!Array.isArray(r.questions)||!r.questions.length)throw new Error('سؤال‌های این فعالیت در دسترس نیستند.');
+      const answers=new Map((r.answers||[]).filter(x=>x&&x.question_id).map(x=>[x.question_id,x.submitted_answer]));
+      studentAssignmentState={assignment:r.assignment||{},attempt:r.attempt,questions:r.questions,index:0,answers,saved:new Set(answers.keys())};
+      $('studentAssignmentList').classList.add('hidden');$('studentAssignmentRunner').classList.remove('hidden');
+      $('studentAssignmentTitle').textContent=String(r.assignment?.title||'فعالیت کلاسی');
+      $('studentAssignmentFeedback').classList.add('hidden');
+      renderStudentAssignmentQuestion();
+      $('studentAssignmentRunner').scrollIntoView({behavior:'smooth',block:'start'});
+    }catch(e){if(e?.name!=='SessionChangedError')alert('شروع فعالیت ناموفق بود: '+cloudMessage(e))}
+    finally{setBusy(button,false)}
+  }
+  async function submitStudentAssignmentAnswer(){
+    const st=studentAssignmentState,button=$('studentAssignmentSubmit'),fb=$('studentAssignmentFeedback');if(!st||!button)return;
+    const q=st.questions[st.index],value=assignmentAnswerValue(q);
+    if(!assignmentAnswerValid(q,value)){alert(assignmentQuestionType(q)==='matching'?'هر چهار مورد را با چهار پاسخ متفاوت جور کن.':assignmentQuestionType(q)==='multi'?'حداقل یک گزینه را انتخاب کن.':'اول پاسخت را وارد یا انتخاب کن.');return}
+    setBusy(button,true,'در حال ثبت…');
+    try{
+      const result=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'answer',attempt_id:st.attempt.id,question_id:q.id,submitted_answer:value}});
+      if(studentAssignmentState!==st)return;
+      st.answers.set(q.id,value);st.saved.add(q.id);
+      fb.classList.remove('hidden');
+      if(typeof result?.correct==='boolean'){
+        fb.innerHTML='<b>'+(result.correct?'✅ پاسخ درست بود.':'📘 پاسخ درست نبود.')+'</b>'+(result.correct_answers?.length?'<p>پاسخ صحیح: '+escapeHtml(Array.isArray(result.correct_answers)?result.correct_answers.join('، '):String(result.correct_answer||''))+'</p>':(result.correct_answer?'<p>پاسخ صحیح: '+escapeHtml(result.correct_answer)+'</p>':''))+(result.explanation?'<p>'+escapeHtml(result.explanation)+'</p>':'');
+        fb.style.color=result.correct?'#126a49':'#72541a';
+      }else{
+        fb.innerHTML='<b>پاسخ ثبت شد.</b><p>نتیجهٔ این فعالیت پس از تحویل نمایش داده می‌شود.</p>';fb.style.color='';
+      }
+      renderStudentAssignmentQuestion();
+      fb.classList.remove('hidden');
+    }catch(e){if(e?.name!=='SessionChangedError'){fb.classList.remove('hidden');fb.textContent='ثبت پاسخ ناموفق بود: '+cloudMessage(e);fb.style.color='#a62638'}}
+    finally{setBusy(button,false);if(studentAssignmentState===st&&st.saved.has(q.id))button.classList.add('hidden')}
+  }
+  async function nextStudentAssignmentQuestion(){
+    const st=studentAssignmentState,button=$('studentAssignmentNext');if(!st||!button)return;
+    const q=st.questions[st.index];if(!st.saved.has(q.id)){alert('اول پاسخ این سؤال را ثبت کن.');return}
+    if(st.index<st.questions.length-1){st.index++;renderStudentAssignmentQuestion();return}
+    setBusy(button,true,'در حال تحویل…');
+    try{
+      const result=await cloudFetch('/functions/v1/manage-assignments',{method:'POST',body:{action:'finish',attempt_id:st.attempt.id}});
+      if(studentAssignmentState!==st)return;
+      const box=$('studentAssignmentQuestion');if(box)box.innerHTML='<p><b>فعالیت تحویل شد.</b></p>'+(result?.score!==undefined?'<p>نمرهٔ تو: '+fa(result.score)+' از '+fa(result.total_points??st.questions.length)+'</p>':'')+(result?.grade_out_of_20!==null&&result?.grade_out_of_20!==undefined?'<p>نمره از ۲۰: '+fa(result.grade_out_of_20)+'</p>':'')+(result?.status==='expired'?'<p class="muted">مهلت فعالیت تمام شده بود؛ پاسخ‌های ثبت‌شده تحویل داده شدند.</p>':'');
+      $('studentAssignmentSubmit').classList.add('hidden');button.classList.add('hidden');$('studentAssignmentFeedback').classList.add('hidden');
+      studentAssignmentState=null;
+      $('studentAssignmentList').classList.remove('hidden');loadStudentAssignments();
+    }catch(e){if(e?.name!=='SessionChangedError')alert('تحویل فعالیت ناموفق بود: '+cloudMessage(e))}
+    finally{setBusy(button,false)}
+  }
+  $('refreshStudentAssignments')?.addEventListener('click',loadStudentAssignments);
+  $('studentAssignmentList')?.addEventListener('click',event=>{const button=event.target.closest('[data-start-assignment]');if(button&&!button.disabled)startStudentAssignment(button.dataset.startAssignment,button)});
+  $('studentAssignmentSubmit')?.addEventListener('click',submitStudentAssignmentAnswer);
+  $('studentAssignmentNext')?.addEventListener('click',nextStudentAssignmentQuestion);
   async function loadTeacherAssignments(){
  if(!cloudSession||cloudSession.role!=='teacher')return;
  try{
@@ -5314,6 +5527,7 @@ $('saveDemoActivity').onclick=async()=>{
   function cloudObjectPath(path){return path.split('/').map(encodeURIComponent).join('/')}
   async function uploadClassMaterial(file,chapterId,kind,title){
     if(!cloudSession||cloudSession.role!=='teacher')throw new Error('برای بارگذاری فایل باید با حساب معلم وارد شوی.');
+    if(kind==='resource'&&!await inspectAllowedMaterialFile(file))throw new Error('فقط فایل واقعی PDF یا تصویر مجاز است؛ پسوند یا نوع اعلام‌شده کافی نیست.');
     const classId=cloudSession.profile?.class_id;if(!classId)throw new Error('کلاس معلم مشخص نیست.');
     const safeName=String(file.name||'file').replace(/[^\p{L}\p{N}._-]+/gu,'_').slice(-100)||'file';
     const path=classId+'/'+chapterId+'/'+crypto.randomUUID()+'-'+safeName;
@@ -5365,8 +5579,9 @@ async function loadSubjectResources(subject,lessonId){
   const rows=await cloudFetch('/rest/v1/yare_learning_materials?select=id,title,file_path,mime_type&class_id=eq.'+encodeURIComponent(cloudSession.profile.class_id)+'&chapter_id=eq.'+storageChapter+'&kind=eq.resource&order=created_at.desc&limit=20',{method:'GET'});
   target.querySelectorAll('.shared-lesson-resource').forEach(x=>x.remove());
   for(const row of (rows||[]).slice().reverse()){
-   const blob=await fetchClassMaterial(row.file_path),url=URL.createObjectURL(blob),mime=row.mime_type||blob.type||'';
-   const content=mime.startsWith('image/')?'<img alt="فایل تصویری آموزشی" src="'+url+'" style="display:block;max-width:100%;max-height:75vh;object-fit:contain;margin:auto;border-radius:12px">':'<iframe class="pdfview" title="فایل PDF آموزشی" src="'+url+'#view=FitH"></iframe>';
+   const blob=await fetchClassMaterial(row.file_path),url=URL.createObjectURL(blob);
+   const materialKind=await inspectAllowedMaterialFile(blob);
+   const content=materialKind==='image'?'<img alt="فایل تصویری آموزشی" src="'+url+'" style="display:block;max-width:100%;max-height:75vh;object-fit:contain;margin:auto;border-radius:12px">':materialKind==='pdf'?'<div>'+safeMaterialFrame(url,'فایل PDF آموزشی')+'</div>':'<p class="notice">نوع این فایل مجاز نیست و برای امنیت نمایش داده نمی‌شود. معلم باید فایل واقعی PDF یا تصویر بارگذاری کند.</p>';
    target.insertAdjacentHTML('beforeend','<section class="chapter-video shared-lesson-resource"><h4>📎 '+escapeHtml(row.title||'فایل آموزشی')+'</h4>'+content+'</section>');
   }
  }catch(error){console.warn('Could not load lesson resources',error)}
@@ -5392,7 +5607,7 @@ async function loadSubjectVideo(subject,lessonId){
     if(!cloudSession||cloudSession.role!=='student')return;
     try{
       const photo=$('profilePhotoInput').files?.[0];let avatar_path=cloudSession.profile.avatar_path||null;
-      if(photo){if(!photo.type.startsWith('image/')||photo.size>5*1024*1024)throw new Error('تصویر باید از نوع عکس و حداکثر ۵ مگابایت باشد.');const safe=String(photo.name||'avatar').replace(/[^\\p{L}\\p{N}._-]+/gu,'_').slice(-80)||'avatar';const path=cloudSession.profile.class_id+'/profiles/'+cloudSession.user.id+'/'+crypto.randomUUID()+'-'+safe;const up=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':photo.type,'x-upsert':'false'},body:photo,cache:'no-store'});if(!up.ok)throw new Error('بارگذاری تصویر ناموفق بود ('+up.status+').');if(avatar_path)fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(avatar_path),{method:'DELETE',headers:cloudHeaders(cloudSession.access_token)}).catch(()=>{});avatar_path=path}
+      if(photo){if(photo.size>5*1024*1024||await inspectAllowedMaterialFile(photo)!=='image')throw new Error('تصویر باید فایل واقعی PNG، JPEG، WebP یا GIF و حداکثر ۵ مگابایت باشد.');const safe=String(photo.name||'avatar').replace(/[^\\p{L}\\p{N}._-]+/gu,'_').slice(-80)||'avatar';const path=cloudSession.profile.class_id+'/profiles/'+cloudSession.user.id+'/'+crypto.randomUUID()+'-'+safe;const up=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(path),{method:'POST',headers:{...cloudHeaders(cloudSession.access_token),'Content-Type':photo.type||'application/octet-stream','x-upsert':'false'},body:photo,cache:'no-store'});if(!up.ok)throw new Error('بارگذاری تصویر ناموفق بود ('+up.status+').');if(avatar_path){const oldDelete=await fetch(CLOUD_URL+'/storage/v1/object/yare-class-materials/'+cloudObjectPath(avatar_path),{method:'DELETE',headers:cloudHeaders(cloudSession.access_token)}).catch(error=>null);if(!oldDelete||!oldDelete.ok)console.warn('Old avatar cleanup failed',oldDelete?.status)}avatar_path=path}
       await cloudFetch('/rest/v1/yare_profiles?id=eq.'+encodeURIComponent(cloudSession.user.id),{method:'PATCH',headers:{Prefer:'return=minimal'},body:{display_name:$('profileNameInput').value.trim(),nickname:$('profileNicknameInput').value.trim(),favorite_skill:$('profileFavoriteInput').value,avatar_path,updated_at:new Date().toISOString()}});
       cloudSession.profile={...cloudSession.profile,display_name:$('profileNameInput').value.trim(),nickname:$('profileNicknameInput').value.trim(),favorite_skill:$('profileFavoriteInput').value,avatar_path};saveCloudSession();if(avatar_path)await loadStudentAvatar(avatar_path);$('profileStatus').textContent='پروفایل و تصویر در Supabase ذخیره و همگام شد.';
     }catch(e){$('profileStatus').textContent='پروفایل محلی ذخیره شد، اما همگام‌سازی آنلاین ناموفق بود: '+cloudMessage(e)}
@@ -5944,10 +6159,10 @@ const persianSourceLexicon={
 8:{spelling:[],meanings:[],synonyms:[],opposites:[],families:[]},
 9:{spelling:[],meanings:[],synonyms:[],opposites:[],families:[]},
 10:{spelling:['باغچه‌بان','کودکی','فعال','کنجکاو','شعر','کودکانه','تصویر','کاغذپاره','نقاشی','جنگل','کوه','دوردست','اندیشه','مکتب','شاگردی','استاد','بنایی','قنادی','خانواده','توان','تلاش','اراده','پشتکار','علاقه','ناشنوا','نابینا','الفبا','ابداع','استعداد','پرورش','آموزش','اعتماد','توکل','خدمت','تبریز'],meanings:[['طاق','سقف'],['مکتب','محل درس خواندن در گذشته'],['رونق داشتن','خوب بودن وضع کسب‌وکار'],['برگزیده شدن','انتخاب شدن'],['جویا','کنجکاو'],['اقامت گزیدم','در جایی ساکن شدم، ماندم'],['پشتکار','تلاش برای انجام کاری'],['مدارا','با نرمی و مهربانی رفتار کردن']],synonyms:[['خشنود','راضی، خوشحال'],['عاجز','ناتوان'],['ابداع','نوآوری'],['لبریز','پر، لبالب'],['سرمشق','الگو، نمونه'],['بام','پشت‌بام'],['دل‌سوز','مهربان'],['بردباری','شکیبایی']],opposites:[['باسواد','بی‌سواد'],['جدید','قدیم'],['قبول','رد، مردود'],['ابتدا','انتها'],['توانا','ناتوان'],['اسیر','آزاد'],['گدا','ثروتمند'],['مسکین','ثروتمند']],families:[['صبر','صابر، صبور'],['فعال','فعالیت'],['رحمت','رحیم، رحم'],['مقصود','قصد، قاصد'],['قبول','قابل، مقبول'],['کتاب','کاتب، مکتوب'],['مکتب','کتاب، مکتوب'],['کرم','کریم، کرامت']]},
-11:{spelling:['جبهه','خانواده','دلتنگی','دیدار','قصه','ناتمام','عروسک','پلاستیکی','رزمندگان','شهدا','خرمشهر','متجاوزان','اشغال','آزادی','مقاومت','تکبیر','بالگرد','فرماندهان','میدان نبرد','خستگی‌ناپذیر','شور و شوق','تسخیرناپذیر','دژ','دلاوران','وصف‌ناپذیر'],meanings:[['دلتنگ','غمگین'],['مانع','سد، جلوگیری'],['محور','اساس، مبنا'],['مقابله','رویارویی'],['مسئولیت','سرپرستی یک کار مهم'],['اعتقاد','باور'],['به شدت','زیاده از حد، بسیار زیاد'],['محتاج','نیازمند']],synonyms:[['سقوط','افتادن'],['تسخیرناپذیر','چیزی که به آسانی به دست نیاید'],['دم','لحظه'],['شوق','میل و علاقهٔ فراوان'],['وصف‌ناپذیر','غیرقابل توصیف'],['نفوذناپذیر','غیرقابل نفوذ'],['بی‌وقفه','بی‌درنگ، بدون توقف'],['گذرگاه','محل عبور، جای گذر']],opposites:[['مظلوم','ظالم'],['پنهان','آشکار'],['خاموش','روشن'],['دوردست','نزدیک'],['اشغال','آزاد'],['پاک','ناپاک'],['محتاج','بی‌نیاز'],['سبک','سنگین']],families:[['منتظر','انتظار'],['اعتقاد','عقیده'],['مانع','منع'],['مرخصی','ترخیص'],['محتاج','احتیاج'],['نیازمند','بی‌نیاز'],['مسئولیت','مسئول'],['وصف','توصیف']]},
+11:{spelling:['جبهه','خانواده','دلتنگی','دیدار','قصه','ناتمام','عروسک','پلاستیکی','رزمندگان','شهدا','خرمشهر','متجاوزان','اشغال','آزادی','مقاومت','تکبیر','بالگرد','فرماندهان','میدان نبرد','خستگی‌ناپذیر','شور و شوق','تسخیرناپذیر','دژ','دلاوران','وصف‌ناپذیر'],meanings:[['دلتنگ','غمگین'],['مانع','سد، جلوگیری'],['محور','اساس، مبنا'],['مقابله','رویارویی'],['مسئولیت','سرپرستی یک کار مهم'],['اعتقاد','باور'],['به شدت','زیاده از حد، بسیار زیاد'],['محتاج','نیازمند']],synonyms:[['سقوط','افتادن'],['تسخیرناپذیر','چیزی که به آسانی به دست نیاید'],['دم','لحظه'],['شوق','میل و علاقهٔ فراوان'],['وصف‌ناپذیر','غیرقابل توصیف'],['نفوذناپذیر','غیرقابل نفوذ'],['بی‌وقفه','بی‌درنگ، بدون توقف'],['گذرگاه','محل عبور، جای گذر']],opposites:[['مظلوم','ظالم'],['پنهان','آشکار'],['خاموش','روشن'],['دوردست','نزدیک'],['اشغال','آزاد'],['پاک','ناپاک'],['محتاج','بی‌نیاز'],['سبک','سنگین']],families:[['منتظر','انتظار'],['اعتقاد','عقیده'],['مانع','منع'],['مرخصی','ترخیص'],['محتاج','احتیاج'],['مسئولیت','مسئول'],['وصف','توصیف']]},
 12:{spelling:['باران','شیشه','نوشته','نامه','مادر','جنوب','جبهه','سایه','خدا','آرام','بی‌صدا','قطره','دفتر','برگ','شبنم','تگرگ','اتفاق','ساده','شدت','ناراحتی','گریه','خبر','مهربان','زرنگ'],meanings:[['حسرت خوردن','افسوس خوردن'],['حسرت','اندوه'],['شوق','خوشحالی، شادی'],['حومه','اطراف'],['مختصر','کم، کوتاه'],['پاسبانی','نگهبانی، پاسداری، مراقبت'],['مثل','مانند'],['گمان','خیال']],synonyms:[['سطر','یک خط از نوشته'],['سرایت کند','منتقل شود']],opposites:[['جنوب','شمال'],['خندید','گریه کرد'],['مختصر','طولانی'],['راضی','ناراضی'],['ناپسند','پسندیده'],['زنده','مرده'],['ساده','سخت'],['آخر','اول']],families:[['مثل','مثال، امثال'],['شوق','رغبت، اشتیاق'],['تولد','متولد'],['حفظ','حافظ، محفوظ'],['توصیف','وصف'],['ظلم','ظالم، مظلوم'],['انتخاب','منتخب']]},
-13:{spelling:['موسی','مادر','نیل','جلیل','حسرت','بی‌گناه','فراموش','لطف','کشتی','باطل','منزل','عشق','مهر','شیوه','گهواره','دایه','سیلاب','موج','طوفان','فرمان','ناخدا','مکتب','گرداگرد','لبالب','سراسر','دمادم'],meanings:[['کاین','که این'],['اینک','اکنون، حالا'],['اندر','در'],['صالح','شایسته، مصلحت'],['شهباز','نوعی پرندهٔ شکاری'],['زه','چلهٔ کمان'],['بگسست','پاره شد'],['حی داور','پروردگار']],synonyms:[['در فکند','انداخت، رها کرد'],['رب جلیل','خدای بلندمرتبه و بزرگ'],['پرّان','پرنده، در حال پرواز'],['خرد','کم‌سن‌وسال، کودک'],['اجل','پایان زندگی'],['حسرت','اندوه، افسوس'],['کمان','ابزار تیراندازی'],['ناخدا','صاحب کشتی']],opposites:[['بی‌گناه','گناهکار'],['کهنسال','جوان'],['خندان','گریان'],['باطل','صحیح، درست'],['عدل','ظلم، ستم'],['مرگ','زندگی'],['شاد','ناراحت']],families:[['عشق','عاشق، معشوق'],['جلیل','جلال'],['عدل','عدالت، عادل'],['صیاد','صید'],['صالح','صلح، مصلحت'],['نگون‌اقبال','خوشبخت'],['لطف','لطیف، لطافت'],['باطل','ابطال، بطلان']]},
-14:{spelling:['رنج','بیهوده','سعی','عالم','نادان','عمل','زنبور','عسل','ادب','بی‌ادب','پرهیز','ادیبان','گمان','عطار','هنرنمایی','طبل','خاموش','بلندآواز','تهی','داناست','گلستان'],meanings:[['اندوخت','جمع کرد، گردآوری کرد'],['چندان','هر مقدار، هر اندازه'],['طبله','صندوقچه'],['غازی','جنگجو'],['پرهیز کردن','دوری کردن، خودداری کردن']],synonyms:[['مشک','مادهٔ روغنی خوشبو'],['آموخت','یاد گرفت، یاد داد'],['عطار','عطرفروش'],['ناپسند','بد و نامناسب'],['رنج','درد'],['غازی','جنگجو'],['ایشان','آن‌ها'],['طبل غازی','طبل جنگی']],opposites:[['رنج','آرامش، راحتی'],['علم','جهل'],['ناپسند','پسندیده'],['تهی','پر'],['اندوخت','نیاندوخت'],['عالم','علم، علوم'],['فایده','بی‌فایده']],families:[['ناپسند','ناشایست'],['بلندآواز','با صدای بلند'],['تهی','خالی'],['خاموش','ساکت'],['هنرنما','کسی که هنری را نشان دهد'],['قاضی','دادرس'],['طالب','مطلوب'],['بلندآواز','خاموش']]},
+13:{spelling:['موسی','مادر','نیل','جلیل','حسرت','بی‌گناه','فراموش','لطف','کشتی','باطل','منزل','عشق','مهر','شیوه','گهواره','دایه','سیلاب','موج','طوفان','فرمان','ناخدا','مکتب','گرداگرد','لبالب','سراسر','دمادم'],meanings:[['کاین','که این'],['اینک','اکنون، حالا'],['اندر','در'],['صالح','شایسته، مصلحت'],['شهباز','نوعی پرندهٔ شکاری'],['زه','چلهٔ کمان'],['بگسست','پاره شد'],['حی داور','پروردگار']],synonyms:[['در فکند','انداخت، رها کرد'],['رب جلیل','خدای بلندمرتبه و بزرگ'],['پرّان','پرنده، در حال پرواز'],['خرد','کم‌سن‌وسال، کودک'],['اجل','پایان زندگی'],['حسرت','اندوه، افسوس'],['کمان','ابزار تیراندازی'],['ناخدا','صاحب کشتی']],opposites:[['بی‌گناه','گناهکار'],['کهنسال','جوان'],['خندان','گریان'],['باطل','صحیح، درست'],['عدل','ظلم، ستم'],['مرگ','زندگی'],['شاد','ناراحت']],families:[['عشق','عاشق، معشوق'],['جلیل','جلال'],['عدل','عدالت، عادل'],['صیاد','صید'],['صالح','صلح، مصلحت'],['لطف','لطیف، لطافت'],['باطل','ابطال، بطلان']]},
+14:{spelling:['رنج','بیهوده','سعی','عالم','نادان','عمل','زنبور','عسل','ادب','بی‌ادب','پرهیز','ادیبان','گمان','عطار','هنرنمایی','طبل','خاموش','بلندآواز','تهی','داناست','گلستان'],meanings:[['اندوخت','جمع کرد، گردآوری کرد'],['چندان','هر مقدار، هر اندازه'],['طبله','صندوقچه'],['غازی','جنگجو'],['پرهیز کردن','دوری کردن، خودداری کردن']],synonyms:[['مشک','مادهٔ روغنی خوشبو'],['آموخت','یاد گرفت، یاد داد'],['عطار','عطرفروش'],['ناپسند','بد و نامناسب'],['رنج','درد'],['غازی','جنگجو'],['ایشان','آن‌ها'],['طبل غازی','طبل جنگی']],opposites:[['رنج','آرامش، راحتی'],['علم','جهل'],['ناپسند','پسندیده'],['تهی','پر'],['اندوخت','نیاندوخت'],['عالم','جاهل، نادان'],['فایده','بی‌فایده']],families:[['قاضی','دادرس'],['طالب','مطلوب'],]},
 15:{spelling:['بیشه','شیر','موش','خواب','بیدار','رفتار','گوش','بیچاره','هراس','التماس','بزرگی','خطاکار','امید','فرصت','رحم','رها','دام','شکار','صیاد','دندان','بند','جان','خلاص','چاره'],meanings:[['بیشه','جنگل'],['سحر','جادو'],['خفته','خوابیده'],['درعوض','به جای'],['متغیر','خشمگین'],['صید','شکار'],['لابه','التماس'],['تحمل','صبر']],synonyms:[['بازیگوش','کسی که بیشتر به فکر بازی است'],['حاصل کرد','به دست آورد'],['یک غازی','بی‌ارزش، ناچیز'],['بشتافت','شتابان رفت'],['هراس','ترس'],['حدس زدم','گمان کردم، فکر کردم'],['فاش','آشکار، ظاهر'],['قطعات','قطعه‌ها، تکه‌ها']],opposites:[['سخت','آسان'],['خفته','بیدار'],['خواب','بیدار'],['حقیقت','دروغ'],['موفقیت','شکست'],['گریه','خنده'],['تشویق','تنبیه'],['رهایی','اسارت']],families:[['متغیر','تغییر'],['وحوش','وحشی'],['مغفرت','استغفار'],['رحم','رحیم'],['صید','صیاد'],['عوض','تعویض'],['حاصل','محصول'],['تکلیف','مکلف']]},
 16:{spelling:['پرسشگری','علامت سؤال','موجودات','جهان','زمین','آسمان','می‌چرخد','هزاران','پاسخ','پژوهشگر','دانشمند','ابوریحان بیرونی','فیلسوف','دانا','یادگیری','علاقه','ناشناخته','توجه','تسلط','مسئله','نادانسته','جاهل','بیماری','پژوهش'],meanings:[['معلق','آویزان'],['فلان','اشاره به شخص نامعلوم'],['دانش‌اندوزی','علم‌آموزی'],['فیلسوفان','دانشمندان'],['درگذرم','بمیرم'],['فزای','اضافه کن'],['رامش','آرامش، آزادگی'],['میاسای','دست از تلاش برندار']],synonyms:[['عجیب','شگفت‌آور'],['واپسین','آخرین، پایانی'],['گسترش','پهن‌شدگی، گستردگی'],['همواره','همیشه، پیوسته'],['گریزان','در حال فرار'],['بالین','کنار'],['گویی','مثل اینکه'],['سپری شد','گذشت']],opposites:[['بیماری','سلامتی'],['دانا','نادان'],['برنا','پیر'],['جاهل','دانا'],['توانا','ناتوان'],['پیر','جوان']],families:[['شبیه','شباهت'],['منتظر','انتظار'],['کشف','کاشف'],['جهل','جاهل'],['سؤال','سؤالات']]},
 17:{spelling:['نم‌نم','باران','نسیم','خنک','بهاری','لذت','مشتاق','مدرسه','حیاط','پرچم','ایران','دبستان','معرفت','دانش‌آموز','تخته','هوشمند','صفحه','لمسی','گچ','رایانه','نرم‌افزار','آموزشی','پیامک','اینترنت','مجازی','کتابخانه','پیشرفت','فناوری','علمی','پرگار','زاویه','خط‌کش','دایره','رنگی','هدیه'],meanings:[['لمسی','قابل لمس'],['نمایان','آشکار'],['طعم','مزه'],['کامران','پیروز، موفق'],['بنگری','نگاه کنی'],['کژ','کج، خمیده'],['حامی','نگهبان'],['ثنا','ستایش، ستودن']],synonyms:[['لفظ','زبان'],['الها','خدایا'],['دلنشین','جذاب و قشنگ'],['رحمت','مهربانی'],['یکنواخت','یک جور، هماهنگ'],['استقبال','پیشواز'],['تلف کردن','نابود کردن، تباه کردن'],['برّاق','درخشان']],opposites:[['مجازی','واقعی'],['حاضر','غایب'],['اولین','آخرین'],['تندتند','آرام‌آرام'],['عمیق','کم‌عمق'],['نمایان شد','پنهان شد'],['وارد','خارج'],['آغاز','پایان']],families:[['لذت','لذیذ'],['نفس','تنفس'],['حاضر','حضور'],['معرفت','عرف'],['عمیق','عمق'],['قسمت','تقسیم'],['معذور','عذر'],['انصاف','منصف']]}
@@ -5981,6 +6196,14 @@ function cleanSourceVocabPair(row){
  if(/^(?:صفحه|درس|کتاب|عنوان)$/i.test(left)||right===':')return null;
  return [left,right];
 }
+const SOURCE_VOCAB_BLOCKLIST=new Set([
+ 'عالم|علم، علوم','عالم|علم،علوم','تهی|خالی','خاموش|ساکت','ناپسند|ناشایست',
+ 'بلندآواز|با صدای بلند','بلندآواز|خاموش','هنرنما|کسی که هنری را نشان دهد',
+ 'نیازمند|بی‌نیاز','نگون‌اقبال|خوشبخت'
+].map(x=>x.split('|').map(vocabKey).join('|')));
+function filterKnownBadVocabPairs(pairs){
+ return (Array.isArray(pairs)?pairs:[]).filter(pair=>!SOURCE_VOCAB_BLOCKLIST.has(vocabKey(pair?.[0])+'|'+vocabKey(pair?.[1])));
+}
 function mergeSourcePairs(existing,sourceRows){
  const out=Array.isArray(existing)?existing.map(x=>Array.isArray(x)?[String(x[0]),String(x[1])]:x):[];
  const seen=new Set(out.filter(Array.isArray).map(x=>vocabKey(x[0])+'|'+vocabKey(x[1])));
@@ -6002,9 +6225,9 @@ async function loadExpandedPersianVocabulary(){
   const source=JSON.parse(await new Response(stream).text());
   for(const lesson of persianLessons){
    const rows=source[String(lesson.id)];if(!rows||lesson.isFreeLesson)continue;
-   lesson.meanings=mergeSourcePairs(lesson.meanings,rows.meanings);
-   lesson.synonyms=mergeSourcePairs(lesson.synonyms,rows.synonyms);
-   lesson.opposites=mergeSourcePairs(lesson.opposites,rows.opposites);
+   lesson.meanings=filterKnownBadVocabPairs(mergeSourcePairs(lesson.meanings,rows.meanings));
+   lesson.synonyms=filterKnownBadVocabPairs(mergeSourcePairs(lesson.synonyms,rows.synonyms));
+   lesson.opposites=filterKnownBadVocabPairs(mergeSourcePairs(lesson.opposites,rows.opposites));
    const existing=(lesson.families||[]).map(item=>[item.root,(item.words||[]).join('، ')]);
    lesson.families=mergeSourcePairs(existing,rows.families).map(([root,related])=>({root,words:related.split(/،|,|؛/).map(x=>x.trim()).filter(Boolean)}));
     lesson.importantWords=lesson.isFreeLesson?[]:[...new Set((lesson.meanings||[]).map(pair=>pair?.[0]).filter(Boolean))].slice(0,12);
@@ -6067,7 +6290,7 @@ loadExpandedPersianVocabulary();
   }
   async function loadOtherSubjectProgressFromCloud(){
     if(!isRealStudentSession())return;
-    const q='?select=subject,lesson_id,activity_key,activity_type,selected_answer,correct_answer,is_correct,attempt_count,question_text,explanation,metadata,updated_at&student_id=eq.'+encodeURIComponent(cloudSession.user.id)+'&order=updated_at.desc&limit=2000';
+    const q='?select=subject,lesson_id,activity_key,activity_type,selected_answer,correct_answer,is_correct,attempt_count,scoring_source,question_text,explanation,metadata,updated_at&student_id=eq.'+encodeURIComponent(cloudSession.user.id)+'&order=updated_at.desc&limit=2000';
     const rows=await cloudFetch('/rest/v1/yare_subject_practice_progress'+q,{method:'GET'});
     if(!Array.isArray(rows))throw new Error('پاسخ پیشرفت درس‌های دیگر معتبر نیست.');
     const progress=readOtherProgress();
@@ -6269,9 +6492,29 @@ function sourceQuestionSimilarity(left,right){
  if(!a.length||!b.size)return 0;
  return a.filter(x=>b.has(x)).length/Math.max(1,new Set([...a,...b]).size);
 }
+const SOURCE_ANSWER_ALIASES=[['عطارد','تیر'],['زهره','ناهید'],['تخت جمشید','تخت‌جمشید'],['غار حراء','غارحراء'],['حراء','حراء']];
+function sourceAnswerCanonical(value){
+ let t=sourceQuestionNormalize(value)
+  .replace(/^(?:درشهر|در|به|سیاره|کرهٔ|کره ی|کره|غار)\s*/,'')
+  .replace(/\s*(?:را|است|می‌باشد|میباشد)$/,'')
+  .replace(/[\u200c\s]/g,'');
+ return t;
+}
+function sourceAnswerEquivalent(left,right){
+ const a=sourceAnswerCanonical(left),b=sourceAnswerCanonical(right);
+ if(!a||!b)return false;
+ if(a===b)return true;
+ return SOURCE_ANSWER_ALIASES.some(group=>group.some(x=>sourceAnswerCanonical(x)===a)&&group.some(x=>sourceAnswerCanonical(x)===b));
+}
 function makeSourceQuestionOptions(subjectId,lessonId,qa){
  const correct=String(qa.answer||'').trim();
  if(!correct)return [];
+ // A reviewed row may carry its own vetted distractors. Never synthesize options
+ // from another row's answer when a curated set exists.
+ if(Array.isArray(qa.options)&&qa.options.length===4){
+  const curated=qa.options.map(x=>String(x??'').trim()).filter(Boolean);
+  if(curated.length===4&&new Set(curated.map(sourceAnswerCanonical)).size===4&&curated.some(x=>sourceAnswerEquivalent(x,correct)))return shuffleSourceValues(curated);
+ }
  const norm=sourceQuestionNormalize(correct),kind=sourceAnswerKind(correct);
  const sameLesson=sourceQuestionBankRows(subjectId,lessonId);
  const allRows=sourceQuestionBankSubjectRows(subjectId);
@@ -6280,6 +6523,7 @@ function makeSourceQuestionOptions(subjectId,lessonId,qa){
  for(const row of pool){
   const text=String(row.answer||'').trim(),key=sourceQuestionNormalize(text);
   if(!text||!key||seen.has(key))continue;
+  if(sourceAnswerEquivalent(text,correct))continue;
   seen.add(key);
   const answerKind=sourceAnswerKind(text);
   if(kind==='number'&&answerKind!=='number')continue;
@@ -6292,18 +6536,19 @@ function makeSourceQuestionOptions(subjectId,lessonId,qa){
  candidates.sort((a,b)=>b.score-a.score);
  const wrongs=[];
  for(const c of candidates){
-  if(wrongs.some(x=>sourceQuestionNormalize(x)===sourceQuestionNormalize(c.text)))continue;
+  if(wrongs.some(x=>sourceAnswerEquivalent(x,c.text)))continue;
   if(wrongs.length&&Math.abs(c.length-correct.length)>Math.max(90,correct.length*1.4))continue;
   wrongs.push(c.text);if(wrongs.length===3)break;
  }
  if(wrongs.length!==3)return [];
  return shuffleSourceValues([correct,...wrongs]);
 }
+
 function getSourceQuestionBankQuizzes(subjectId,lessonId){
  const rows=sourceQuestionBankRows(subjectId,lessonId);
  const quizzes=rows.map((qa,index)=>{
   const options=makeSourceQuestionOptions(subjectId,lessonId,qa);
-  const answer=options.findIndex(option=>sourceQuestionNormalize(option)===sourceQuestionNormalize(qa.answer));
+  const answer=options.findIndex(option=>sourceAnswerEquivalent(option,qa.answer));
   if(options.length!==4||answer<0)return null;
   const useBlank=index%4===0;
   return {
@@ -6467,9 +6712,11 @@ function renderOtherSubjectActivity(mode){
   return '<section class="persian-quiz-card" data-other-activity-card="'+i+'"><div class="row"><b>'+escapeForHtmlText(q.kind||'سؤال')+'</b><span class="pill">سؤال '+fa(i+1)+'</span></div><p>'+escapeForHtmlText(q.question)+'</p>'+answers+(mode==='practice'?'<button type="button" data-other-activity-check="'+i+'" style="width:100%;margin-top:8px">بررسی پاسخ</button>':'')+'<div class="notice hidden" data-other-activity-feedback aria-live="polite"></div></section>';
  }).join('')+(mode==='exam'?'<button type="button" id="submitOtherSubjectExam" style="width:100%;margin-top:10px">ثبت آزمون و مشاهده نتیجه</button>':'');
  box.querySelectorAll('select[data-other-matching-index]').forEach(select=>select.addEventListener('change',()=>{
-  const controls=[...box.querySelectorAll('select[data-other-matching-index]')],values=controls.map(el=>el.value===''?-1:Number(el.value));
+  const group=select.closest('.other-matching-list');
+  if(!group)return;
+  const controls=[...group.querySelectorAll('select[data-other-matching-index]')],values=controls.map(el=>el.value===''?-1:Number(el.value));
   controls.forEach((other,index)=>[...other.options].forEach(option=>{
-   if(option.value!=='')option.disabled=values.some((value,otherIndex)=>otherIndex!==index&&value>=4&&value===Number(option.value));
+   if(option.value!=='')option.disabled=values.some((value,otherIndex)=>otherIndex!==index&&value===Number(option.value));
   }));
  }));
  const resultTime=()=>new Date().toISOString();
@@ -7131,9 +7378,14 @@ function buildPersianLessonQuizzes(l){
       const q=l.topicCheck;
       addQuestion('واژه‌آموزی',q.question,q.options?.[q.answer],q.options?.filter((_,i)=>i!==q.answer),q.analysis,l.id+1);
     }
+    const meaningByWord=new Map((l.meanings||[]).map(([word,meaning])=>[String(word||'').trim(),String(meaning||'').trim()]));
     (l.spellingWords||[]).forEach((word,i)=>{
-      addQuestion('املای دشوار','کدام گزینه املای درست واژهٔ «'+word+'» است؟',word,spellingVariants(word),
-        'در فهرست املای بررسی‌شدهٔ همین درس، واژه به شکل «'+word+'» آمده است. گزینهٔ درست باید همین واژه را با ترتیب حروف درست نشان دهد.',l.id*19+i);
+      const meaning=meaningByWord.get(String(word||'').trim());
+      // Only ask a spelling question when a meaning/context is available; showing the
+      // target word inside the prompt turns the task into copying, not spelling.
+      if(!meaning)return;
+      addQuestion('املای واژه','املای درست واژه‌ای که در این درس با معنی «'+meaning+'» آمده است کدام است؟',word,spellingVariants(word),
+        'در واژه‌نامهٔ همین درس، واژه‌ای با معنی «'+meaning+'» به شکل «'+word+'» ثبت شده است. باید همان صورت املایی را از میان شکل‌های نادرست تشخیص بدهی.',l.id*19+i);
     });
     (l.meanings||[]).forEach(([word,meaning],i)=>{
       addQuestion('معنی واژه','در واژه‌نامهٔ همین درس، معنی «'+word+'» کدام است؟',meaning,
@@ -7158,12 +7410,6 @@ function buildPersianLessonQuizzes(l){
           [family.root,...(family.words||[])]);
       });
     });
-    const spellings=[...new Set(l.spellingWords||[])];
-    for(let i=0;quizzes.length<50&&i<spellings.length;i++){
-      const word=spellings[i];
-      addQuestion('بازبینی املا','برای بازبینی املای درس، کدام شکل باید عیناً نوشته شود: «'+word+'»؟',word,spellingVariants(word),
-        'در این تمرین باید همان صورت املایی ثبت‌شده برای «'+word+'» را بدون جابه‌جایی یا حذف حرف بنویسی.',l.id*41+i);
-    }
     return quizzes;
   }
   function selectPersianExamQuestions(pool,count){
@@ -7403,6 +7649,7 @@ const persianBookPageMap={
     const modal=document.getElementById('persianBookGalleryModal');
     if(!modal)return;
     if(modal._galleryKeyHandler)document.removeEventListener('keydown',modal._galleryKeyHandler);
+    if(Array.isArray(modal._inertTargets))for(const el of modal._inertTargets){try{el.inert=false}catch{}}
     modal.remove();
     document.body.style.overflow=modal.dataset.previousOverflow||'';
     const restoreTarget=modal._restoreFocusTarget;
@@ -7421,6 +7668,11 @@ const persianBookPageMap={
     modal._restoreFocusTarget=document.activeElement;
     modal.innerHTML='<div class="persian-book-gallery-dialog"><div class="persian-book-gallery-top"><button type="button" class="persian-book-gallery-close" data-gallery-close aria-label="بستن گالری">✕ بستن</button><span class="persian-book-gallery-counter" data-gallery-counter></span></div><div class="persian-book-gallery-stage" data-gallery-stage><button type="button" class="persian-book-gallery-nav" data-gallery-next aria-label="صفحهٔ بعدی">←</button><figure class="persian-book-gallery-frame"><img class="persian-book-gallery-image" data-gallery-image alt=""><figcaption class="persian-book-gallery-caption" data-gallery-caption></figcaption></figure><button type="button" class="persian-book-gallery-nav" data-gallery-prev aria-label="صفحهٔ قبلی">→</button></div><div class="persian-book-gallery-bottom"><span class="persian-book-gallery-hint">کشیدن تصویر از چپ به راست: صفحهٔ بعدی · از راست به چپ: صفحهٔ قبلی</span><span class="persian-book-gallery-hint">برای بزرگ‌نمایی، دو انگشت را باز کن</span></div></div>';
     document.body.appendChild(modal);
+    modal._inertTargets=[];
+    for(const child of [...document.body.children]){
+      if(child===modal||child.inert)continue;
+      try{child.inert=true;modal._inertTargets.push(child)}catch{}
+    }
     document.body.style.overflow='hidden';
     let index=Math.max(0,Math.min(pageNumbers.length-1,Number(startIndex)||0));
     let zoom=1,panX=0,panY=0;
@@ -7450,7 +7702,18 @@ const persianBookPageMap={
     };
     const render=()=>{
       const page=pageNumbers[index];
-      image.src=lessonImagePath(page,bookSubjectId);
+      const source=lessonImagePath(page,bookSubjectId);
+      image.onerror=()=>{
+        image.alt='بارگذاری تصویر صفحه ناموفق بود';
+        caption.textContent='بارگذاری صفحهٔ '+fa(page)+' ناموفق بود؛ اتصال اینترنت را بررسی کن و دوباره تلاش کن.';
+        if(!frame.querySelector('.gallery-image-retry')){
+          const retry=document.createElement('button');retry.type='button';retry.className='outline gallery-image-retry';retry.textContent='🔄 تلاش دوباره برای بارگذاری صفحه';
+          retry.onclick=()=>{retry.remove();image.src=source+'?retry='+Date.now()};
+          frame.appendChild(retry);
+        }
+      };
+      image.onload=()=>{frame.querySelector('.gallery-image-retry')?.remove();image.alt='صفحهٔ '+fa(page)+' از کتاب '+courseName(bookSubjectId)};
+      image.src=source;
       image.alt='صفحهٔ '+fa(page)+' از کتاب '+courseName(bookSubjectId);
       counter.textContent='صفحهٔ '+fa(page)+' · '+fa(index+1)+' از '+fa(pageNumbers.length);
       caption.textContent='صفحهٔ '+fa(page)+' از کتاب '+courseName(bookSubjectId);
@@ -7521,6 +7784,13 @@ const persianBookPageMap={
       if(event.key==='Escape')closePersianBookGallery();
       else if(event.key==='ArrowLeft')next();
       else if(event.key==='ArrowRight')previous();
+      else if(event.key==='Tab'){
+        const focusable=[...modal.querySelectorAll('button:not([disabled]),[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null);
+        if(!focusable.length){event.preventDefault();return}
+        const first=focusable[0],last=focusable[focusable.length-1],active=document.activeElement;
+        if(event.shiftKey&&(active===first||!modal.contains(active))){event.preventDefault();last.focus()}
+        else if(!event.shiftKey&&(active===last||!modal.contains(active))){event.preventDefault();first.focus()}
+      }
     };
     document.addEventListener('keydown',modal._galleryKeyHandler);
     render();
@@ -7591,7 +7861,7 @@ const persianBookPageMap={
     if(selectedOtherSubject?.id!==subjectId||String(selectedOtherLesson?.id)!==String(lesson.id))return;
     if(url){
       const page=pageNumber;
-      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
+      mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">صفحات مربوط به همین درس در همین صفحه نمایش داده می‌شوند.</p><iframe class="pdfview lesson-book-pdf" sandbox referrerpolicy="no-referrer" title="صفحات کتاب '+escapeHtml(courseName(displayId))+'" src="'+url+'#page='+page+'&view=FitH"></iframe></section>';
       if(subjectId==='quran'){const qrResources=renderQuranQrResources(Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}else if(subjectId==='science'||subjectId==='gifts'){const qrResources=renderSubjectQrResources(subjectId,Number(lesson.id));if(qrResources)mount.querySelector('.lesson-book-pages')?.insertAdjacentHTML('beforeend',qrResources);}
     }else{
       mount.innerHTML='<section class="lesson-book-pages"><h4>📚 صفحات کتاب '+escapeHtml(courseName(displayId))+'</h4><p class="muted">فایل PDF صفحات اصلی کتاب هنوز داخل سایت قرار نگرفته است؛ اما واژه‌های املا، معنی‌ها و تمرین‌های همین درس از فایل‌های بررسی‌شده در پایین همین صفحه در دسترس‌اند.</p></section>';
@@ -8819,7 +9089,7 @@ if('serviceWorker' in navigator){
     try{
       yareSwRegistration=yareSwRegistration||await navigator.serviceWorker.getRegistration('./').catch(()=>null);
       if(!yareSwRegistration){
-        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261027-offline-v119',{updateViaCache:'none'});
+        yareSwRegistration=await navigator.serviceWorker.register('./sw.js?v=20261111-offline-v121',{updateViaCache:'none'});
       }else{
         await yareSwRegistration.update();
       }

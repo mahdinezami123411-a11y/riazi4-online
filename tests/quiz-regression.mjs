@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile, access, readdir } from 'node:fs/promises';
+import { gunzipSync } from 'node:zlib';
 import vm from 'node:vm';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
@@ -44,10 +45,11 @@ assert.match(html, /برای هر سؤال گزینه‌ای فقط یک شما�
 const serviceWorker = await readFile(new URL('../sw.js', import.meta.url), 'utf8');
 const manifest = JSON.parse(await readFile(new URL('../manifest.webmanifest', import.meta.url), 'utf8'));
 const cacheVersion = serviceWorker.match(/const\s+CACHE_NAME\s*=\s*['"]riazi4-pwa-shell-v(\d+)['"]/);
-const registrationVersion = html.match(/sw\.js\?v=202610\d+-v(\d+)/);
+const registrationVersion = html.match(/sw\.js\?v=[^"'<>]*?-v(\d+)/);
 assert.ok(cacheVersion, 'نام نسخهٔ کش در sw.js پیدا نشد');
 assert.ok(/serviceWorker/.test(html) && /sw\.js/.test(html), 'ثبت یا نشانی سرویس‌ورکر در index.html پیدا نشد');
-if (registrationVersion) assert.equal(registrationVersion[1], cacheVersion[1], 'نسخهٔ ثبت سرویس‌ورکر و نام کش با هم هماهنگ نیستند');
+assert.ok(registrationVersion, 'نسخهٔ ثبت سرویس‌ورکر در index.html پیدا نشد');
+assert.equal(registrationVersion[1], cacheVersion[1], 'نسخهٔ ثبت سرویس‌ورکر و نام کش با هم هماهنگ نیستند');
 assert.equal(manifest.lang, 'fa', 'زبان برنامه در manifest باید فارسی باشد');
 assert.equal(manifest.dir, 'rtl', 'جهت برنامه در manifest باید راست‌به‌چپ باشد');
 assert.ok(manifest.start_url && manifest.start_url.startsWith('./'), 'نشانی شروع PWA باید نسبی باشد');
@@ -145,4 +147,31 @@ assert.match(html, /renderMathQuestionVisualMarkup\(q,true\)/, 'خروجی چا�
 assert.match(html, /class="nm-arrow-op-label"/, 'عملیات ماشین در فلش بین ستون‌ها نمایش داده نمی‌شود');
 assert.doesNotMatch(html, /chapterMachinePracticePanel|chapterMachinePracticeMount/, 'ماشین تعاملی نباید در بخش تمرین تکرار شود');
 assert.doesNotMatch(html, /machine-ha\.html/, 'برنامه نباید به صفحه جداگانه ماشین وابسته باشد');
+// FE-05/FE-07/BE-11/Q-05: the repaired contracts must stay present.
+assert.match(html, /async function loadStudentAssignments\(/, 'بارگذاری فعالیت‌های دانش‌آموز پیاده‌سازی نشده است');
+assert.match(html, /data-start-assignment=/, 'دکمهٔ شروع فعالیت کلاسی در فهرست دانش‌آموز وجود ندارد');
+assert.match(html, /action:'answer'/, 'ثبت پاسخ فعالیت کلاسی به API متصل نیست');
+assert.match(html, /action:'finish'/, 'تحویل فعالیت کلاسی به API متصل نیست');
+assert.match(html, /async function inspectAllowedMaterialFile\(/, 'بررسی محتوای واقعی فایل بارگذاری‌شده وجود ندارد');
+assert.match(html, /sandbox referrerpolicy="no-referrer"/, 'پیش‌نمایش PDF باید در iframe جداشده و بدون sandbox escape باشد');
+assert.doesNotMatch(html, /file\.name\.toLowerCase\(\)\.endsWith\(['"]\.pdf['"]\)/, 'پسوند PDF نباید تنها معیار اعتماد باشد');
+assert.doesNotMatch(html, /student\.initial_password/, 'رمز اولیه نباید در فهرست حساب‌ها برگردانده یا نمایش داده شود');
+assert.match(html, /function answersEquivalent\(/, 'هم‌ارزی عددی/کسری پاسخ‌ها در کلاینت وجود ندارد');
+assert.match(html, /function numericAnswerValue\(/, 'تبدیل پاسخ عددی و کسری در کلاینت وجود ندارد');
+assert.match(offlineScript, /attempt\.revision=/, 'نسخه‌بندی تلاش‌های صف آفلاین ثبت نشده است');
+assert.match(offlineScript, /pendingSubjectProgress\.filter\(saved=>saved\.queueId!==item\.queueId/, 'تأیید دقیق نسخهٔ پیشرفت صف آفلاین وجود ندارد');
+
+// Q-02/Q-04: reviewed rows must keep their vetted options and scientific key.
+const bankText = await readFile(new URL('../assets/source-question-banks.json.gz.b64', import.meta.url), 'utf8');
+const bank = JSON.parse(gunzipSync(Buffer.from(bankText, 'base64')).toString('utf8'));
+const spaceRow = bank.science['8'][36];
+assert.match(spaceRow.question, /وستوک/, 'صورت سؤال نخستین پرواز فضایی انسان اصلاح نشده است');
+assert.equal(spaceRow.answer, 'مدار زمین', 'کلید نخستین پرواز فضایی انسان باید مدار زمین باشد');
+assert.ok(spaceRow.options.includes('مدار زمین'), 'گزینهٔ درست سؤال فضایی باید در گزینه‌های بازبینی‌شده باشد');
+for (const [subject, lesson, index, answer] of [['science','8',16,'عطارد'],['science','8',15,'سیاره زهره را.'],['social','12',9,'درشهرتخت جمشید'],['gifts','10',7,'درغارحراء']]) {
+  const row = bank[subject][lesson][index];
+  assert.equal(row.answer, answer, 'پاسخ بازبینی‌شدهٔ ردیف بانک تغییر کرده است');
+  assert.ok(Array.isArray(row.options) && row.options.length === 4 && row.options.includes(answer), 'ردیف بازبینی‌شده باید چهار گزینهٔ تأییدشده و پاسخ درست داشته باشد');
+}
+
 console.log('Static syntax and deployment checks passed: ' + compiled + ' inline script(s), ' + shellPaths.length + ' precached assets, service-worker version ' + cacheVersion[1] + '.');

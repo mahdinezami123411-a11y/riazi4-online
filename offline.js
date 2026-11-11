@@ -9,12 +9,10 @@
   const decoder=new TextDecoder();
   const $offline=id=>document.getElementById(id);
   // Initialize offline state before any focus/online handler can read it.
-  let fouramiOfflineData=null;
-  let fouramiOfflineKey=null;
-  let fouramiOfflineSalt=null;
-  let fouramiOfflineRecord=null;
-  let fouramiOfflineSaveChain=Promise.resolve();
-  let fouramiOfflineSyncInProgress=false;
+  // State is owned by index.html and exposed through the explicit scope bridge.
+  // Keeping local `let` bindings here shadowed those accessors and split the app
+  // into two unrelated offline packages (REL-01). Only login serialization is
+  // local to this script.
   let fouramiOfflineLoginInProgress=false;
   if(!Array.isArray(window.cloudBankRows))window.cloudBankRows=[];
   // Clone JSON-compatible app data without depending on a helper from index.html.
@@ -187,7 +185,15 @@
       savedAt:new Date().toISOString()
     };
     if(!Array.isArray(fouramiOfflineData.pendingAttempts))fouramiOfflineData.pendingAttempts=[];
-    fouramiOfflineData.pendingAttempts.push(attempt);
+    const existing=fouramiOfflineData.pendingAttempts.find(saved=>saved.clientAttemptId===attempt.clientAttemptId);
+    if(existing){
+      attempt.revision=(Number(existing.revision)||0)+1;
+      const index=fouramiOfflineData.pendingAttempts.indexOf(existing);
+      fouramiOfflineData.pendingAttempts[index]=attempt;
+    }else{
+      attempt.revision=1;
+      fouramiOfflineData.pendingAttempts.push(attempt);
+    }
     captureCurrentSession();
     await savePackage();
     updateStatus('پاسخ تمرین به‌صورت رمزگذاری‌شده ذخیره شد.');
@@ -198,7 +204,7 @@
     if(!Array.isArray(fouramiOfflineData.pendingSubjectProgress))fouramiOfflineData.pendingSubjectProgress=[];
     const key=[payload.student_id,payload.subject,payload.lesson_id,payload.activity_key].join('|');
     const existing=fouramiOfflineData.pendingSubjectProgress.find(item=>item.key===key);
-    const wrapper={queueId:existing?.queueId||crypto.randomUUID(),key,payload:fouramiClone(payload),savedAt:new Date().toISOString()};
+    const wrapper={queueId:existing?.queueId||crypto.randomUUID(),revision:existing?(Number(existing.revision)||0)+1:1,key,payload:fouramiClone(payload),savedAt:new Date().toISOString()};
     if(existing){const index=fouramiOfflineData.pendingSubjectProgress.indexOf(existing);fouramiOfflineData.pendingSubjectProgress[index]=wrapper}
     else fouramiOfflineData.pendingSubjectProgress.push(wrapper);
     captureCurrentSession();
@@ -214,20 +220,22 @@
       if(!Array.isArray(fouramiOfflineData.pendingAttempts))fouramiOfflineData.pendingAttempts=[];
       if(!Array.isArray(fouramiOfflineData.pendingSubjectProgress))fouramiOfflineData.pendingSubjectProgress=[];
       for(const item of [...fouramiOfflineData.pendingAttempts]){
+        const itemRevision=Number(item.revision)||0;
         const result=await cloudFetch('/functions/v1/submit-practice-answer',{method:'POST',body:{question_id:item.questionId,submitted_answer:item.submittedAnswer,source:item.source,attempt_group:item.attemptGroup,client_attempt_id:item.clientAttemptId}});
         if(result&&typeof result.correct==='boolean'){
           if(item.source.startsWith('exam:')&&item.attemptGroup===currentCloudAttemptGroup&&result.correct)examScore++;
           awardProgress(Number(item.question?.chapter||result.chapter_id||0),result.correct,item.question||null);
         }
-        fouramiOfflineData.pendingAttempts=fouramiOfflineData.pendingAttempts.filter(saved=>saved.clientAttemptId!==item.clientAttemptId);
+        fouramiOfflineData.pendingAttempts=fouramiOfflineData.pendingAttempts.filter(saved=>saved.clientAttemptId!==item.clientAttemptId||(Number(saved.revision)||0)!==itemRevision);
         captureCurrentSession();
         await savePackage();
         const stillPending=fouramiOfflineData.pendingAttempts.some(saved=>saved.attemptGroup===item.attemptGroup&&String(saved.source||'').startsWith('exam:'));
         if(item.source.startsWith('exam:')&&item.attemptGroup===currentCloudAttemptGroup&&!stillPending&&$('examResult')&&!$('examResult').classList.contains('hidden'))finishBookExam();
       }
       for(const item of [...fouramiOfflineData.pendingSubjectProgress]){
+        const itemRevision=Number(item.revision)||0;
         await cloudFetch('/rest/v1/yare_subject_practice_progress?on_conflict=student_id,subject,lesson_id,activity_key',{method:'POST',body:item.payload,headers:{Prefer:'resolution=merge-duplicates,return=minimal'}});
-        fouramiOfflineData.pendingSubjectProgress=fouramiOfflineData.pendingSubjectProgress.filter(saved=>saved.queueId!==item.queueId);
+        fouramiOfflineData.pendingSubjectProgress=fouramiOfflineData.pendingSubjectProgress.filter(saved=>saved.queueId!==item.queueId||(Number(saved.revision)||0)!==itemRevision);
         await savePackage();
       }
       if(fouramiOfflineData){
