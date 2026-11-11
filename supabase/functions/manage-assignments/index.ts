@@ -5,6 +5,8 @@ const url=Deno.env.get("SUPABASE_URL")!,anon=Deno.env.get("SUPABASE_ANON_KEY")!,
 const admin=createClient(url,service,{auth:{persistSession:false,autoRefreshToken:false}});
 const norm=(v:unknown)=>String(v??"").normalize("NFKC").replace(/[۰-۹]/g,d=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))).replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d))).replace(/[٬،,\s]/g,"").toLowerCase();
 const uuid=(v:unknown)=>{const s=String(v??"");return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(s)?s:null};
+const uniqueValidIds=(value:unknown,max:number):number[]=>{if(!Array.isArray(value))return[];const numeric=(value as unknown[]).map((item:unknown)=>Number(item));return [...new Set(numeric.filter((item):item is number=>Number.isInteger(item)&&item>=1&&item<=max))]};
+type AssignmentAttempt={id:string;attempt_number:number;status:string;started_at:string;deadline_at:string|null;submitted_at:string|null};
 const shuffle=<T>(items:T[]):T[]=>{const out=[...items];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out};
 function numericAnswerValue(v:unknown):number|null{
  const text=String(v??"").normalize("NFKC")
@@ -62,7 +64,7 @@ Deno.serve(async req=>{
   if(action==="create"){
    if(profile.role!=="teacher")return json({error:"فقط معلم می‌تواند فعالیت بسازد."},403);
    const title=String(body.title??"").trim().slice(0,160),type=String(body.activity_type??"practice"),scope=String(body.scope??"chapter");
-   const subject=String(body.subject??"math");if(!["math","persian","dictation","science","social","gifts"].includes(subject))return json({error:"کتاب انتخاب‌شده معتبر نیست."},400);const lessonIds=Array.isArray(body.lesson_ids)?[...new Set(body.lesson_ids.map(Number).filter((x:number)=>Number.isInteger(x)&&x>=1&&x<=100))]:[];const chapterInput=Array.isArray(body.chapter_ids)?[...new Set(body.chapter_ids.map(Number).filter((x:number)=>Number.isInteger(x)&&x>=1&&x<=7))]:[];const chapters=chapterInput.length?chapterInput:[...new Set((lessonIds.length?lessonIds:[1]).map((x:number)=>Math.min(7,x)))];const finalLessonIds=lessonIds.length?lessonIds:[...chapters];
+   const subject=String(body.subject??"math");if(!["math","persian","dictation","science","social","gifts"].includes(subject))return json({error:"کتاب انتخاب‌شده معتبر نیست."},400);const lessonIds=uniqueValidIds(body.lesson_ids,100);const chapterInput=uniqueValidIds(body.chapter_ids,7);const chapters=chapterInput.length?chapterInput:[...new Set((lessonIds.length?lessonIds:[1]).map(x=>Math.min(7,x)))];const finalLessonIds: number[]=lessonIds.length?lessonIds:[...chapters];
    const count=Number(body.question_count),duration=Number(body.duration_minutes),attempts=Number(body.max_attempts);
    if(!title||!chapters.length||!finalLessonIds.length||!["practice","exam","term1","term2"].includes(type)||!["chapter","multi","midterm","final","all"].includes(scope)||!Number.isInteger(count)||count<1||count>200||!Number.isInteger(duration)||duration<0||duration>300||!Number.isInteger(attempts)||attempts<1||attempts>100)return json({error:"عنوان یا تنظیمات فعالیت معتبر نیست."},400);const feature=type==="practice"?"allowPractice":"allowExam";if(!(await courseFeatureAllowed(profile.class_id,subject,feature)))return json({error:"معلم اجازهٔ این نوع فعالیت را برای کتاب انتخاب‌شده غیرفعال کرده است."},403);for(const lessonId of finalLessonIds){if(!(await courseLessonAccessible(profile.class_id,subject,lessonId)))return json({error:"یکی از درس‌های انتخاب‌شده هنوز برای دانش‌آموزان باز نشده است."},403)}
    const {data:bank,error:be}=await admin.from("yare_question_bank").select("id,chapter_id,subject,lesson_id").eq("is_active",true).eq("subject",subject).in("lesson_id",finalLessonIds).or("class_id.is.null,class_id.eq."+profile.class_id);
@@ -94,7 +96,7 @@ Deno.serve(async req=>{
    const assignedSubject=String(a.subject||"math"),assignedLessons=Array.isArray(a.lesson_ids)&&a.lesson_ids.length?a.lesson_ids:a.chapter_ids||[1];const assignedFeature=a.activity_type==="practice"?"allowPractice":"allowExam";if(!(await courseFeatureAllowed(profile.class_id,assignedSubject,assignedFeature)))return json({error:"این نوع فعالیت برای کتاب انتخاب‌شده توسط معلم غیرفعال شده است."},403);for(const lessonId of assignedLessons){if(!(await courseLessonAccessible(profile.class_id,assignedSubject,Number(lessonId))))return json({error:"این فعالیت مربوط به درسی است که هنوز توسط معلم باز نشده است."},403)}
    const now=Date.now();if(a.available_from&&new Date(a.available_from).getTime()>now)return json({error:"زمان شروع فعالیت هنوز نرسیده است."},403);if(a.available_until&&new Date(a.available_until).getTime()<now)return json({error:"مهلت این فعالیت تمام شده است."},403);
    const {data:old}=await admin.from("yare_assignment_attempts").select("id,attempt_number,status,started_at,deadline_at,submitted_at").eq("assignment_id",id).eq("student_id",user.id).eq("status","in_progress").order("attempt_number",{ascending:false}).limit(1);
-   let attempt=old?.[0];
+   let attempt:AssignmentAttempt|null=old?.[0]??null;
    if(attempt&&attempt.deadline_at&&new Date(attempt.deadline_at).getTime()<now){await admin.from("yare_assignment_attempts").update({status:"expired",submitted_at:new Date().toISOString()}).eq("id",attempt.id);attempt=null}
    if(!attempt){
     const {data:previous}=await admin.from("yare_assignment_attempts").select("attempt_number").eq("assignment_id",id).eq("student_id",user.id);
@@ -104,7 +106,7 @@ Deno.serve(async req=>{
     const windowDeadline=a.available_until?new Date(a.available_until).getTime():null;
     const deadlines=[durationDeadline,windowDeadline].filter((value:number|null):value is number=>typeof value==="number"&&Number.isFinite(value));
     const deadline=deadlines.length?new Date(Math.min(...deadlines)).toISOString():null;
-    const {data:created,error:ce}=await admin.from("yare_assignment_attempts").insert({assignment_id:id,student_id:user.id,class_id:profile.class_id,attempt_number:next,status:"in_progress",deadline_at:deadline}).select("id,attempt_number,status,started_at,deadline_at").single();
+    const {data:created,error:ce}=await admin.from("yare_assignment_attempts").insert({assignment_id:id,student_id:user.id,class_id:profile.class_id,attempt_number:next,status:"in_progress",deadline_at:deadline}).select("id,attempt_number,status,started_at,deadline_at,submitted_at").single();
     if(ce||!created)return json({error:"شروع فعالیت ثبت نشد."},500);attempt=created;
    }
    if(!attempt)return json({error:"تلاش فعال پیدا نشد."},500);
